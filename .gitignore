@@ -2,6 +2,11 @@
 *.class
 target/*
 
+# Compiled js files
+node_modules/*
+src/main/resources/static/built/*
+package-lock.json
+
 # Log file
 *.log
 

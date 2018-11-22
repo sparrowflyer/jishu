@@ -18,12 +18,12 @@ public class TestController {
 	@Resource
 	private TestService testService;
 
-	@RequestMapping("/helloworld")
+	@RequestMapping("/jishu")
 	public String helloworld() {
 		return "helloworld";
 	}
 
-	@RequestMapping("/find")
+	@RequestMapping("/jishu/find")
 	public String find() {
 		Test test = testService.find(1);
 		return test.getName();

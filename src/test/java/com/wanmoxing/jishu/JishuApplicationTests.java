@@ -13,6 +13,4 @@ public class JishuApplicationTests {
 	public void contextLoads() {
 	}
 
-
-
 }

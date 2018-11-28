@@ -24,7 +24,11 @@ public class UserController {
 	@RequestMapping(value="/user", method=RequestMethod.GET)
 	public User find(@RequestParam("id") int id) {
 		User user = userService.find(id);
-		return user;
+		if (user != null) {
+			return user;
+		} else {
+			return null;
+		}
 	}
 	
 }

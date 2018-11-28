@@ -4,19 +4,19 @@
 <mapper namespace="com.wanmoxing.jishu.mapper.UserMapper">  
 
     <insert id = "insert" parameterType="com.wanmoxing.jishu.bean.User">
-        INSERT INTO JISHU.T_USER(NICK_NAME,EMAIL,CELL_PHONE,PASSWORD,HEAD_IMAGE,TYPE,STATUS,CREATED_TIME,UPDATED_TIME) VALUES(#{nickName},#{email},#{cellPhone},#{password},#{headImage},#{type},#{status},#{createdTime},#{updatedTime});
+        INSERT INTO jishu.T_USER(NICK_NAME,EMAIL,CELL_PHONE,PASSWORD,HEAD_IMAGE,TYPE,STATUS,CREATED_TIME,UPDATED_TIME) VALUES(#{nickName},#{email},#{cellPhone},#{password},#{headImage},#{type},#{status},#{createdTime},#{updatedTime});
     </insert>
     
     <update id="update" parameterType="com.wanmoxing.jishu.bean.User">
-        UPDATE JISHU.T_USER SET NICK_NAME=#{nickName},EMAIL=#{email},CELL_PHONE=#{cellPhone},PASSWORD=#{password},HEAD_IMAGE=#{headImage},TYPE=#{type},STATUS=#{status},CREATED_TIME=#{createdTime},UPDATED_TIME=#{updatedTime} WHERE ID=#{id}
+        UPDATE jishu.T_USER SET NICK_NAME=#{nickName},EMAIL=#{email},CELL_PHONE=#{cellPhone},PASSWORD=#{password},HEAD_IMAGE=#{headImage},TYPE=#{type},STATUS=#{status},CREATED_TIME=#{createdTime},UPDATED_TIME=#{updatedTime} WHERE ID=#{id}
     </update>
     
     <select id="find" parameterType="int" resultType="com.wanmoxing.jishu.bean.User">
-        SELECT ID,NICK_NAME,EMAIL,CELL_PHONE,PASSWORD,HEAD_IMAGE,TYPE,STATUS,CREATED_TIME,UPDATED_TIME FROM JISHU.T_USER WHERE ID=#{0}
+        SELECT ID,NICK_NAME,EMAIL,CELL_PHONE,PASSWORD,HEAD_IMAGE,TYPE,STATUS,CREATED_TIME,UPDATED_TIME FROM jishu.T_USER WHERE ID=#{0}
     </select>
     
     <delete id="delete" parameterType="int">
-        DELETE FROM JISHU.T_USER WHERE ID=#{0}
+        DELETE FROM jishu.T_USER WHERE ID=#{0}
     </delete>
     
 </mapper>

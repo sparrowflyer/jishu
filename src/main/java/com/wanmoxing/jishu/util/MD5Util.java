@@ -15,7 +15,7 @@ public class MD5Util {
 				return "";
 			}
 		} catch (Exception e) {
-			throw new RuntimeException("字符串加密失败!" + e);
+			throw new RuntimeException("加密失败!" + e);
 		}
 	}
 

@@ -8,6 +8,8 @@ import com.wanmoxing.jishu.bean.User;
 public interface UserMapper {
 	
 	public User find(int id);
+	
+	public User findByNickname(String nickname, String password);
 
     public void insert(User user);
 

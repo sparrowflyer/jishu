@@ -1,8 +1,5 @@
 package com.wanmoxing.jishu.controller;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 
@@ -19,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sun.mail.iap.Response;
 import com.wanmoxing.jishu.bean.User;
 import com.wanmoxing.jishu.service.UserService;
 import com.wanmoxing.jishu.util.MD5Util;

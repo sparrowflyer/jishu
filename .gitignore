@@ -35,3 +35,7 @@ hs_err_pid*
 .settings/*
 .classpath
 .project
+
+# idea config files
+.idea/*
+jishu.iml

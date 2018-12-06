@@ -8,6 +8,8 @@ public interface UserService {
 	
 	public User findByNickname(String nickname, String password);
 	
+	public User findByEmail(String email, String password);
+	
 	public void insert(User user);
 	
     public void update(User user);

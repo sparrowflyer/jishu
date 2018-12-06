@@ -1,13 +1,14 @@
 package com.wanmoxing.jishu.controller;
 
+import java.sql.Timestamp;
+import java.util.Date;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.wanmoxing.jishu.bean.User;
 import com.wanmoxing.jishu.service.UserService;
+import com.wanmoxing.jishu.util.CommUtil;
 import com.wanmoxing.jishu.util.MD5Util;
 
 @RestController
@@ -26,37 +28,44 @@ public class UserController {
 
 	@Resource
 	private UserService userService;
-	
-	@RequestMapping(value="/user", method=RequestMethod.GET)
-	public User find(@RequestParam("id") int id) {
-		User user = userService.find(id);
-		if (user != null) {
-			return user;
-		} else {
-			return null;
-		}
-	}
+
 	
 	/**
 	 * 登录
 	 * @param session
 	 * @param username
 	 * @param password
+	 * @param vercode
 	 * @return
 	 */
 	@RequestMapping(value="/login", method = RequestMethod.POST)
 	public ModelMap login(HttpSession session,
-			@RequestParam("nickname") String nickname,
-			@RequestParam("password") String password) {
-		User user = userService.findByNickname(nickname, MD5Util.EncodeByMD5(password));
+			@RequestParam("email") String email,
+			@RequestParam("password") String password,
+			@RequestParam("vercode") String vercode) {
+		
 		ModelMap result = new ModelMap();
-		if (user!=null) {
-			logger.info("登录成功！用户名:{},密码：{}", nickname, password);
-			result.put("data", "登录成功");
-			session.setAttribute("user", user);
+		if(CommUtil.isEmptyOrNull(email) || CommUtil.isEmptyOrNull(password) || CommUtil.isEmptyOrNull(vercode)) {
+			result.put("data","用户名、密码以及验证码不能为空");
 		} else {
-			logger.info("登录失败!");
-			result.put("data", "登录失败！");
+			User user = userService.findByEmail(email, MD5Util.EncodeByMD5(password));
+			if (user!=null) {
+				if(((String)session.getAttribute("verCode")).equals(vercode)) {
+					logger.info("登录成功!");
+					result.put("data", "登录成功");
+					result.put("status", "success");
+					session.setAttribute("user", user);
+				} else {
+					logger.info("登录失败!");
+					result.put("data", "登录失败，验证码错误！");
+					result.put("status", "failed");
+
+				}
+			} else {
+				logger.info("登录失败!");
+				result.put("data", "登录失败，用户名密码错误！");
+				result.put("status", "failed");
+			}
 		}
 		return result;
 	}
@@ -64,51 +73,115 @@ public class UserController {
 	
 	/**
 	 * 注册用户
-	 * @param user
+	 * @param nickName
+	 * @param email
+	 * @param password
+	 * @param emailVercode
 	 * @return
 	 */
 	@RequestMapping(value = "/regist", method = RequestMethod.POST)
-	public ModelMap regist(@RequestBody User user) {
+	public ModelMap regist(HttpSession session,
+							@RequestParam("nickName") String nickName,
+							@RequestParam("email") String email,
+							@RequestParam("password") String password,
+							@RequestParam("emailVercode") String emailVercode) {
 		ModelMap result = new ModelMap();
-		//保证用户名唯一
-		if(userService.findByNickname(user.getNickName(),null) != null){
-			result.put("data", "用户名已存在！");
-			return result;
-		}
 		
-		user.setPassword(MD5Util.EncodeByMD5(user.getPassword()));
-		userService.insert(user);
-		logger.info("注册成功！用户名:{}", user.getNickName());
-		result.put("data", "注册成功,请重新登录！");
-
+		if(CommUtil.isEmptyOrNull(nickName) || CommUtil.isEmptyOrNull(email)
+				|| CommUtil.isEmptyOrNull(password) || CommUtil.isEmptyOrNull(emailVercode)) {
+			result.put("data", "注册失败，用户名，密码，邮箱，验证码不能为空");
+			result.put("status", "failed");
+		} else {
+			if(((String)session.getAttribute("verCode")).equals(emailVercode)) {
+				//保证用户名唯一
+				if(userService.findByEmail(email,null) != null){
+					result.put("data", "用户已存在！");
+					result.put("status", "failed");
+					return result;
+				}
+				User user = new User();
+				user.setNickName(nickName);
+				user.setPassword(MD5Util.EncodeByMD5(user.getPassword()));
+				user.setEmail(email);
+				Date date = new Date();       
+				Timestamp createTime = new Timestamp(date.getTime());
+				user.setCreatedTime(createTime);
+				userService.insert(user);
+				logger.info("注册成功！用户名:{}", user.getNickName());
+				result.put("data", "注册成功,请重新登录！");
+				result.put("status", "success");
+			} else {
+				logger.info("注册失败！");
+				result.put("data", "注册失败，验证码不通过");
+				result.put("status", "failed");
+			}
+		}
 		return result;
 	}
 	
 	/**
-	 * 根据id更新用户密码
+	 * 根据email更新用户密码
 	 * @param session
-	 * @param id
+	 * @param email
 	 * @param password
 	 * @return
 	 */
-	@RequestMapping(value = "/update/{id}", method = RequestMethod.POST)
+	@RequestMapping(value = "/update", method = RequestMethod.POST)
 	@ResponseBody
 	public ModelMap updateUserInfo(HttpSession session,
-			@PathVariable("id") Integer id,
+			@RequestParam("email") String email,
 			@RequestParam("password") String password) {
 		ModelMap result = new ModelMap();
-		//身份检测
-		User user = (User) session.getAttribute("user");	//当前登录用户
-		if(user.getId() != id){
-			result.put("data", "只能修改自己的信息！");
-			return result;
+		if(CommUtil.isEmptyOrNull(email) || CommUtil.isEmptyOrNull(password)) {
+			logger.info("更新失败，邮箱、密码不能为空");
+			result.put("data", "信息修改失败，邮箱、密码不能为空");
+			result.put("status", "failed");
+		} else {
+			//身份检测
+			User user = userService.findByEmail(email, MD5Util.EncodeByMD5(password));	//当前登录用户
+			if(user == null){
+				result.put("data", "只能修改自己的信息！");
+				result.put("status", "failed");
+				return result;
+			}
+			//更新用户信息
+			user.setPassword(MD5Util.EncodeByMD5(password));
+			userService.update(user);
+			logger.info("成功更新id为{}的用户信息!");
+			result.put("data", "信息修改成功！");
+			result.put("status", "success");
 		}
-		//更新用户信息
-		user.setPassword(MD5Util.EncodeByMD5(password));
-		userService.update(user);
-		logger.info("成功更新id为{}的用户信息！新密码:{}",id,password);
-		result.put("data", "信息修改成功！");
-		
+		return result;
+	}
+	
+	/**
+	 * 根据email更新用户密码
+	 * @param session
+	 * @param email
+	 * @param password
+	 * @return
+	 */
+	@RequestMapping(value = "/existenceEmail", method = RequestMethod.POST)
+	@ResponseBody
+	public ModelMap checkExistEmail(HttpSession session,
+			@RequestParam("email") String email) {
+		ModelMap result = new ModelMap();
+		if(CommUtil.isEmptyOrNull(email)) {
+			logger.info("邮箱不能为空");
+			result.put("data", "邮箱不能为空");
+			result.put("status", "failed");
+		} else {
+			//检测邮箱是否存在
+			if(userService.findByEmail(email, null) != null){
+				result.put("data", "邮箱已经存在！");
+				result.put("status", "failed");
+				return result;
+			} else {
+				result.put("data", "邮箱可以注册");
+				result.put("status", "success");
+				return result;
+			}
+		}
 		return result;
 	}
 	

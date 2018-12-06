@@ -25,6 +25,11 @@ public class UserServiceImpl implements UserService {
 	public User findByNickname(String nickname, String password) {
 		return userMapper.findByNickname(nickname, password);
 	}
+	
+	@Override
+	public User findByEmail(String email, String password) {
+		return userMapper.findByEmail(email, password);
+	}
 	@Override
 	public void insert(User User) {
 		userMapper.insert(User);

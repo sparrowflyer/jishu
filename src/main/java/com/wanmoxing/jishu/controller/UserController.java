@@ -3,10 +3,8 @@ package com.wanmoxing.jishu.controller;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 
-import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,8 +19,6 @@ import com.wanmoxing.jishu.service.UserService;
 import com.wanmoxing.jishu.util.MD5Util;
 
 @RestController
-@ComponentScan({ "com.wanmoxing.jishu.service.impl" })
-@MapperScan("com.wanmoxing.jishu.mapper")
 @RequestMapping("/jishu")
 public class UserController {
 	

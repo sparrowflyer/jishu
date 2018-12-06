@@ -3,7 +3,7 @@
   
 <mapper namespace="com.wanmoxing.jishu.mapper.UserMapper">  
 
-    <insert id="insert" parameterType="com.wanmoxing.jishu.bean.User">
+    <insert id="insert" parameterType="com.wanmoxing.jishu.bean.User" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO jishu.T_USER(NICK_NAME,EMAIL,CELL_PHONE,PASSWORD,HEAD_IMAGE,TYPE,STATUS,CREATED_TIME,UPDATED_TIME) VALUES(#{nickName},#{email},#{cellPhone},#{password},#{headImage},#{type},#{status},#{createdTime},#{updatedTime});
     </insert>
     

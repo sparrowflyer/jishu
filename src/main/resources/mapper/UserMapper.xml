@@ -15,8 +15,12 @@
         SELECT ID,NICK_NAME,EMAIL,CELL_PHONE,PASSWORD,HEAD_IMAGE,TYPE,STATUS,CREATED_TIME,UPDATED_TIME FROM jishu.T_USER WHERE ID=#{0}
     </select>
     
-    <select id="findByNickname" parameterType="int" resultType="com.wanmoxing.jishu.bean.User">
+    <select id="findByNickname" resultType="com.wanmoxing.jishu.bean.User">
         SELECT ID,NICK_NAME,EMAIL,CELL_PHONE,PASSWORD,HEAD_IMAGE,TYPE,STATUS,CREATED_TIME,UPDATED_TIME FROM jishu.T_USER WHERE NICK_NAME=#{nickName} and PASSWORD=#{password}
+    </select>
+    
+    <select id="findByEmail" resultType="com.wanmoxing.jishu.bean.User">
+        SELECT ID,NICK_NAME,EMAIL,CELL_PHONE,PASSWORD,HEAD_IMAGE,TYPE,STATUS,CREATED_TIME,UPDATED_TIME FROM jishu.T_USER WHERE EMAIL=#{email} and PASSWORD=#{password}
     </select>
     
     <delete id="delete" parameterType="int">

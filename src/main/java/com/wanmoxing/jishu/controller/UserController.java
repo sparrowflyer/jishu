@@ -24,7 +24,7 @@ import com.wanmoxing.jishu.util.MD5Util;
 @RequestMapping("/jishu")
 public class UserController {
 	
-	static Logger logger = LoggerFactory.getLogger(UserController.class);
+	private static Logger logger = LoggerFactory.getLogger(UserController.class);
 
 	@Resource
 	private UserService userService;

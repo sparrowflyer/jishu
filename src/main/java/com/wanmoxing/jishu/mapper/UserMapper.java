@@ -14,6 +14,8 @@ public interface UserMapper {
 	
 	public User findByEmail(@Param("email")String email, @Param("password")String password);
 
+    public User existenceByEmail(@Param("email")String email);
+
     public void insert(User user);
 
     public void update(User user);

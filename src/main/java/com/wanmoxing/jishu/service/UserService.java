@@ -7,9 +7,11 @@ public interface UserService {
 	public User find(int id);
 	
 	public User findByNickname(String nickname, String password);
-	
+
 	public User findByEmail(String email, String password);
 	
+	public User existenceByEmail(String email);
+
 	public void insert(User user);
 	
     public void update(User user);

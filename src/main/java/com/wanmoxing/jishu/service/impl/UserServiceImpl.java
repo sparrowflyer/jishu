@@ -31,6 +31,10 @@ public class UserServiceImpl implements UserService {
 		return userMapper.findByEmail(email, password);
 	}
 	@Override
+	public User existenceByEmail(String email) {
+		return userMapper.existenceByEmail(email);
+	}
+	@Override
 	public void insert(User User) {
 		userMapper.insert(User);
 	}

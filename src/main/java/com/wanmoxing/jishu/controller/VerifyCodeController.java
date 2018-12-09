@@ -70,44 +70,6 @@ public class VerifyCodeController {
 		VerifyCodeUtil.outputImage(w, h, out, verifyCode);
 	}
 
-	public String checkEmailVerifyCode(String emailCode, HttpSession session) {
-		Object emailVerifyCodeInSessionObj = session.getAttribute("emailVerifyCode");
-		if (emailVerifyCodeInSessionObj == null) {
-			return "expired";
-		}
-		String emailVerifyCodeInSession = emailVerifyCodeInSessionObj.toString();
-		LocalDateTime localDateTime = (LocalDateTime) session.getAttribute("emailVerifyCodeTime");
-		long past = localDateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
-		long now = LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
-		if (emailVerifyCodeInSession == null || emailCode == null || emailCode.isEmpty() || !emailVerifyCodeInSession.equalsIgnoreCase(emailCode)) {
-			return "failed";
-		} else if ((now - past) / 1000 / 60 > 5) {
-			return "expired";
-		} else {
-			session.removeAttribute("emailVerifyCode");
-			session.removeAttribute("emailVerifyCodeTime");
-			return "success";
-		}
-	}
-	
-	public String checkImageVerifyCode(String imageCode, HttpSession session) {
-		Object imageVerifyCodeInSessionObj = session.getAttribute("imageVerifyCode");
-		if (imageVerifyCodeInSessionObj == null) {
-			return "expired";
-		}
-		String imageVerifyCodeInSession = imageVerifyCodeInSessionObj.toString();
-		LocalDateTime localDateTime = (LocalDateTime) session.getAttribute("imageVerifyCodeTime");
-		long past = localDateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
-		long now = LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
-		if (imageVerifyCodeInSession == null || imageCode == null || imageCode.isEmpty() || !imageVerifyCodeInSession.equalsIgnoreCase(imageCode)) {
-			return "failed";
-		} else if ((now - past) / 1000 / 60 > 5) {
-			return "expired";
-		} else {
-			session.removeAttribute("imageVerifyCode");
-			session.removeAttribute("imageVerifyCodeTime");
-			return "success";
-		}
-	}
+
 
 }

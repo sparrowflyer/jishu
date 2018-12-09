@@ -3,6 +3,19 @@
   
 <mapper namespace="com.wanmoxing.jishu.mapper.UserMapper">  
 
+	<resultMap id="userResultMap" type="com.wanmoxing.jishu.bean.User">
+		<id property="id" column="ID"/>
+		<result property="nickName" column="NICK_NAME"/>
+		<result property="email" column="EMAIL"/>
+		<result property="cellPhone" column="CELL_PHONE"/>
+		<result property="password" column="PASSWORD"/>
+		<result property="headImage" column="HEAD_IMAGE"/>
+		<result property="type" column="TYPE"/>
+		<result property="status" column="STATUS"/>
+		<result property="createdTime" column="CREATED_TIME"/>
+		<result property="updatedTime" column="UPDATED_TIME"/>
+	</resultMap>
+
     <insert id="insert" parameterType="com.wanmoxing.jishu.bean.User" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO jishu.T_USER(NICK_NAME,EMAIL,CELL_PHONE,PASSWORD,HEAD_IMAGE,TYPE,STATUS,CREATED_TIME,UPDATED_TIME) VALUES(#{nickName},#{email},#{cellPhone},#{password},#{headImage},#{type},#{status},#{createdTime},#{updatedTime});
     </insert>
@@ -11,20 +24,20 @@
         UPDATE jishu.T_USER SET NICK_NAME=#{nickName},EMAIL=#{email},CELL_PHONE=#{cellPhone},PASSWORD=#{password},HEAD_IMAGE=#{headImage},TYPE=#{type},STATUS=#{status},CREATED_TIME=#{createdTime},UPDATED_TIME=#{updatedTime} WHERE ID=#{id}
     </update>
     
-    <select id="find" parameterType="int" resultType="com.wanmoxing.jishu.bean.User">
+    <select id="find" parameterType="int" resultMap="userResultMap">
         SELECT ID,NICK_NAME,EMAIL,CELL_PHONE,PASSWORD,HEAD_IMAGE,TYPE,STATUS,CREATED_TIME,UPDATED_TIME FROM jishu.T_USER WHERE ID=#{0}
     </select>
     
-    <select id="findByNickname" resultType="com.wanmoxing.jishu.bean.User">
+    <select id="findByNickname" resultMap="userResultMap">
         SELECT ID,NICK_NAME,EMAIL,CELL_PHONE,PASSWORD,HEAD_IMAGE,TYPE,STATUS,CREATED_TIME,UPDATED_TIME FROM jishu.T_USER WHERE NICK_NAME=#{nickName} and PASSWORD=#{password}
     </select>
     
-    <select id="findByEmail" resultType="com.wanmoxing.jishu.bean.User">
+    <select id="findByEmail" resultMap="userResultMap">
         SELECT ID,NICK_NAME,EMAIL,CELL_PHONE,PASSWORD,HEAD_IMAGE,TYPE,STATUS,CREATED_TIME,UPDATED_TIME FROM jishu.T_USER WHERE EMAIL=#{email} and PASSWORD=#{password}
     </select>
 
-    <select id="existenceByEmail" resultType="com.wanmoxing.jishu.bean.User">
-        SELECT ID,NICK_NAME,EMAIL,CELL_PHONE,PASSWORD,HEAD_IMAGE,TYPE,STATUS,CREATED_TIME,UPDATED_TIME  FROM jishu.T_USER WHERE EMAIL=#{email}
+    <select id="existenceByEmail" parameterType="java.lang.String" resultMap="userResultMap">
+        SELECT * FROM jishu.T_USER WHERE EMAIL=#{email}
     </select>
 
     <delete id="delete" parameterType="int">

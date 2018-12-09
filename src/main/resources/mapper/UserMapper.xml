@@ -22,7 +22,11 @@
     <select id="findByEmail" resultType="com.wanmoxing.jishu.bean.User">
         SELECT ID,NICK_NAME,EMAIL,CELL_PHONE,PASSWORD,HEAD_IMAGE,TYPE,STATUS,CREATED_TIME,UPDATED_TIME FROM jishu.T_USER WHERE EMAIL=#{email} and PASSWORD=#{password}
     </select>
-    
+
+    <select id="existenceByEmail" resultType="com.wanmoxing.jishu.bean.User">
+        SELECT ID,NICK_NAME,EMAIL,CELL_PHONE,PASSWORD,HEAD_IMAGE,TYPE,STATUS,CREATED_TIME,UPDATED_TIME  FROM jishu.T_USER WHERE EMAIL=#{email}
+    </select>
+
     <delete id="delete" parameterType="int">
         DELETE FROM jishu.T_USER WHERE ID=#{0}
     </delete>

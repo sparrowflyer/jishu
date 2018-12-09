@@ -36,10 +36,10 @@ public class VerifyCodeController {
 		// 存入会话session
 		HttpSession session = request.getSession(true);
 		// 删除以前的
-		session.removeAttribute("verCode");
-		session.removeAttribute("codeTime");
-		session.setAttribute("verCode", verifyCode.toLowerCase());
-		session.setAttribute("codeTime", LocalDateTime.now());
+		session.removeAttribute("emailVerifyCode");
+		session.removeAttribute("emailVerifyCodeTime");
+		session.setAttribute("emailVerifyCode", verifyCode.toLowerCase());
+		session.setAttribute("emailVerifyCodeTime", LocalDateTime.now());
 		try {
 			EmailUtil.sendEmail(emailTo, "叽叔验证码", verifyCode);
 			return "success";
@@ -60,37 +60,52 @@ public class VerifyCodeController {
 		// 存入会话session
 		HttpSession session = request.getSession(true);
 		// 删除以前的
-		session.removeAttribute("verCode");
-		session.removeAttribute("codeTime");
-		session.setAttribute("verCode", verifyCode.toLowerCase());
-		session.setAttribute("codeTime", LocalDateTime.now());
+		session.removeAttribute("imageVerifyCode");
+		session.removeAttribute("imageVerifyCodeTime");
+		session.setAttribute("imageVerifyCode", verifyCode.toLowerCase());
+		session.setAttribute("imageVerifyCodeTime", LocalDateTime.now());
 		// 生成图片
 		int w = 100, h = 30;
 		OutputStream out = response.getOutputStream();
 		VerifyCodeUtil.outputImage(w, h, out, verifyCode);
 	}
 
-	@RequestMapping(value = "/checkVerifyCode", method = RequestMethod.GET)
-	public String checkVerifyCode(HttpServletRequest request, HttpSession session) {
-		String code = request.getParameter("code");
-		Object verCode = session.getAttribute("verCode");
-		if (null == verCode) {
-			request.setAttribute("errmsg", "验证码已失效，请重新输入");
+	public String checkEmailVerifyCode(String emailCode, HttpSession session) {
+		Object emailVerifyCodeInSessionObj = session.getAttribute("emailVerifyCode");
+		if (emailVerifyCodeInSessionObj == null) {
 			return "expired";
 		}
-		String verCodeStr = verCode.toString();
-		LocalDateTime localDateTime = (LocalDateTime) session.getAttribute("codeTime");
+		String emailVerifyCodeInSession = emailVerifyCodeInSessionObj.toString();
+		LocalDateTime localDateTime = (LocalDateTime) session.getAttribute("emailVerifyCodeTime");
 		long past = localDateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
 		long now = LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
-		if (verCodeStr == null || code == null || code.isEmpty() || !verCodeStr.equalsIgnoreCase(code)) {
-			request.setAttribute("errmsg", "验证码错误");
+		if (emailVerifyCodeInSession == null || emailCode == null || emailCode.isEmpty() || !emailVerifyCodeInSession.equalsIgnoreCase(emailCode)) {
 			return "failed";
 		} else if ((now - past) / 1000 / 60 > 5) {
-			request.setAttribute("errmsg", "验证码已过期，重新获取");
 			return "expired";
 		} else {
-			// 验证成功，删除存储的验证码
-			session.removeAttribute("verCode");
+			session.removeAttribute("emailVerifyCode");
+			session.removeAttribute("emailVerifyCodeTime");
+			return "success";
+		}
+	}
+	
+	public String checkImageVerifyCode(String imageCode, HttpSession session) {
+		Object imageVerifyCodeInSessionObj = session.getAttribute("imageVerifyCode");
+		if (imageVerifyCodeInSessionObj == null) {
+			return "expired";
+		}
+		String imageVerifyCodeInSession = imageVerifyCodeInSessionObj.toString();
+		LocalDateTime localDateTime = (LocalDateTime) session.getAttribute("imageVerifyCodeTime");
+		long past = localDateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+		long now = LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+		if (imageVerifyCodeInSession == null || imageCode == null || imageCode.isEmpty() || !imageVerifyCodeInSession.equalsIgnoreCase(imageCode)) {
+			return "failed";
+		} else if ((now - past) / 1000 / 60 > 5) {
+			return "expired";
+		} else {
+			session.removeAttribute("imageVerifyCode");
+			session.removeAttribute("imageVerifyCodeTime");
 			return "success";
 		}
 	}

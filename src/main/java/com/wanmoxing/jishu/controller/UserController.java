@@ -1,22 +1,24 @@
 package com.wanmoxing.jishu.controller;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.Date;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 
-import com.wanmoxing.jishu.constant.enums.UserStatus;
-import com.wanmoxing.jishu.constant.enums.UserType;
-import com.wanmoxing.jishu.dto.LoginInfoVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.wanmoxing.jishu.bean.User;
+import com.wanmoxing.jishu.constant.enums.UserStatus;
+import com.wanmoxing.jishu.constant.enums.UserType;
+import com.wanmoxing.jishu.dto.LoginInfoVo;
 import com.wanmoxing.jishu.service.UserService;
 import com.wanmoxing.jishu.util.CommUtil;
 import com.wanmoxing.jishu.util.MD5Util;

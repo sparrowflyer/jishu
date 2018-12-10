@@ -22,12 +22,8 @@
 	</resultMap>
 
     <insert id="insert" parameterType="com.wanmoxing.jishu.bean.Course" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO jishu.T_COURSE(TITLE,DETAIL,COVER_IMAGE,AUTHOR_ID,PRICE,
-        						COURSE_COLLECTION_START_TIME,COURSE_COLLECTION_END_TIME,COURSE_START_TIME,COURSE_DURATION_TIME,TARGET_STUDENT_AMOUNT,
-        						CURRENT_STUDENT_AMOUNT,STATUS,CREATED_TIME,UPDATED_TIME) 
-        VALUES(#{title},#{detail},#{coverImage},#{authorId},#{price},
-        	#{courseCollectionStartTime},#{courseCollectionEndTime},#{courseStartTime},#{courseDurationTime},#{targetStudentAmount},
-        	#{currentStudentAmount},#{status},#{createdTime},#{updatedTime});
+        INSERT INTO jishu.T_COURSE(TITLE,DETAIL,COVER_IMAGE,AUTHOR_ID,PRICE,COURSE_COLLECTION_START_TIME,COURSE_COLLECTION_END_TIME,COURSE_START_TIME,COURSE_DURATION_TIME,TARGET_STUDENT_AMOUNT,CURRENT_STUDENT_AMOUNT,STATUS,CREATED_TIME,UPDATED_TIME) 
+        VALUES(#{title},#{detail},#{coverImage},#{authorId},#{price},#{courseCollectionStartTime},#{courseCollectionEndTime},#{courseStartTime},#{courseDurationTime},#{targetStudentAmount},#{currentStudentAmount},#{status},#{createdTime},#{updatedTime});
     </insert>
     
     <update id="update" parameterType="com.wanmoxing.jishu.bean.Course">

@@ -1,6 +1,7 @@
 package com.wanmoxing.jishu.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.wanmoxing.jishu.bean.User;
 
@@ -9,7 +10,11 @@ public interface UserMapper {
 	
 	public User find(int id);
 	
-	public User findByNickname(String nickname, String password);
+	public User findByNickname(@Param("nickname")String nickname, @Param("password")String password);
+	
+	public User findByEmail(@Param("email")String email, @Param("password")String password);
+
+    public User existenceByEmail(@Param("email")String email);
 
     public void insert(User user);
 

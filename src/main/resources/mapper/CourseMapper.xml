@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+  
+<mapper namespace="com.wanmoxing.jishu.mapper.CourseMapper">  
+
+	<resultMap id="courseResultMap" type="com.wanmoxing.jishu.bean.Course">
+		<id property="id" column="ID"/>
+		<result property="title" column="TITLE"/>
+		<result property="detail" column="DETAIL"/>
+		<result property="coverImage" column="COVER_IMAGE"/>
+		<result property="authorId" column="AUTHOR_ID"/>
+		<result property="price" column="PRICE"/>
+		<result property="courseCollectionStartTime" column="COURSE_COLLECTION_START_TIME"/>
+		<result property="courseCollectionEndTime" column="COURSE_COLLECTION_END_TIME"/>
+		<result property="courseStartTime" column="COURSE_START_TIME"/>
+		<result property="courseDurationTime" column="COURSE_DURATION_TIME"/>
+		<result property="targetStudentAmount" column="TARGET_STUDENT_AMOUNT"/>
+		<result property="currentStudentAmount" column="CURRENT_STUDENT_AMOUNT"/>
+		<result property="status" column="STATUS"/>
+		<result property="createdTime" column="CREATED_TIME"/>
+		<result property="updatedTime" column="UPDATED_TIME"/>
+	</resultMap>
+
+    <insert id="insert" parameterType="com.wanmoxing.jishu.bean.Course" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO jishu.T_COURSE(TITLE,DETAIL,COVER_IMAGE,AUTHOR_ID,PRICE,COURSE_COLLECTION_START_TIME,COURSE_COLLECTION_END_TIME,COURSE_START_TIME,COURSE_DURATION_TIME,TARGET_STUDENT_AMOUNT,CURRENT_STUDENT_AMOUNT,STATUS,CREATED_TIME,UPDATED_TIME) 
+        VALUES(#{title},#{detail},#{coverImage},#{authorId},#{price},#{courseCollectionStartTime},#{courseCollectionEndTime},#{courseStartTime},#{courseDurationTime},#{targetStudentAmount},#{currentStudentAmount},#{status},#{createdTime},#{updatedTime});
+    </insert>
+    
+    <update id="update" parameterType="com.wanmoxing.jishu.bean.Course">
+        UPDATE jishu.T_COURSE 
+        SET TITLE=#{title},DETAIL=#{detail},COVER_IMAGE=#{coverImage},AUTHOR_ID=#{authorId},PRICE=#{price},COURSE_COLLECTION_START_TIME=#{courseCollectionStartTime},COURSE_COLLECTION_END_TIME=#{courseCollectionEndTime},COURSE_START_TIME=#{courseStartTime},COURSE_DURATION_TIME=#{courseDurationTime},TARGET_STUDENT_AMOUNT=#{targetStudentAmount},CURRENT_STUDENT_AMOUNT=#{currentStudentAmount},STATUS=#{status},CREATED_TIME=#{createdTime},UPDATED_TIME=#{updatedTime}
+        WHERE ID=#{id}
+    </update>
+    
+    <select id="find" parameterType="int" resultMap="courseResultMap">
+        SELECT *
+      	FROM jishu.T_COURSE
+      	WHERE ID=#{0}
+    </select>
+    
+    <delete id="delete" parameterType="int">
+        DELETE FROM jishu.T_COURSE WHERE ID=#{0}
+    </delete>
+    
+</mapper>

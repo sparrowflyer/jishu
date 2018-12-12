@@ -19,6 +19,16 @@ public class EmailUtil {
 	private static final String username = "jishueducation@163.com";
 	private static final String password = "123fighting";
 	private static final String host = "smtp.163.com";
+	
+	public static void sendEmail(String to, String subject, String content) {
+		Thread sendEmailThread = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				sendEmailSync(to, subject, content);
+			}
+		});
+		sendEmailThread.start();
+	}
 
 	/**
 	 * 发送邮件
@@ -27,7 +37,7 @@ public class EmailUtil {
 	 * @param subject
 	 * @param content
 	 */
-	public static void sendEmail(String to, String subject, String content) {
+	public static void sendEmailSync(String to, String subject, String content) {
 		Properties props = new Properties();
 		props.setProperty("mail.host", host);
 		props.setProperty("mail.smtp.auth", "true");

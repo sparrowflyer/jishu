@@ -191,5 +191,15 @@ public class Course {
 	public void setUpdatedTime(Timestamp updatedTime) {
 		this.updatedTime = updatedTime;
 	}
+
+	@Override
+	public String toString() {
+		return "Course [id=" + id + ", title=" + title + ", detail=" + detail + ", coverImage=" + coverImage
+				+ ", authorId=" + authorId + ", price=" + price + ", courseCollectionStartTime="
+				+ courseCollectionStartTime + ", courseCollectionEndTime=" + courseCollectionEndTime
+				+ ", courseStartTime=" + courseStartTime + ", courseDurationTime=" + courseDurationTime
+				+ ", targetStudentAmount=" + targetStudentAmount + ", currentStudentAmount=" + currentStudentAmount
+				+ ", status=" + status + ", createdTime=" + createdTime + ", updatedTime=" + updatedTime + "]";
+	}
 	
 }

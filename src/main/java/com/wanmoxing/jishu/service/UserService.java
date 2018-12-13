@@ -4,7 +4,7 @@ import com.wanmoxing.jishu.bean.User;
 
 public interface UserService {
 	
-	public User find(int id);
+	public User findById(int id);
 	
 	public User findByNickname(String nickname, String password);
 

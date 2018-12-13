@@ -24,8 +24,8 @@
         UPDATE jishu.T_USER SET NICK_NAME=#{nickName},EMAIL=#{email},CELL_PHONE=#{cellPhone},PASSWORD=#{password},HEAD_IMAGE=#{headImage},TYPE=#{type},STATUS=#{status},UPDATED_TIME=current_timestamp WHERE ID=#{id}
     </update>
     
-    <select id="find" parameterType="int" resultMap="userResultMap">
-        SELECT ID,NICK_NAME,EMAIL,CELL_PHONE,PASSWORD,HEAD_IMAGE,TYPE,STATUS,CREATED_TIME,UPDATED_TIME FROM jishu.T_USER WHERE ID=#{0}
+    <select id="findById" parameterType="int" resultMap="userResultMap">
+        SELECT ID,NICK_NAME,EMAIL,CELL_PHONE,PASSWORD,HEAD_IMAGE,TYPE,STATUS,CREATED_TIME,UPDATED_TIME FROM jishu.T_USER WHERE ID=#{id}
     </select>
     
     <select id="findByNickname" resultMap="userResultMap">

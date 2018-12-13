@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+  
+<mapper namespace="com.wanmoxing.jishu.mapper.CommentMapper">  
+
+	<resultMap id="commentResultMap" type="com.wanmoxing.jishu.bean.Comment">
+		<id property="cid" column="cid"/>
+		<result property="aid" column="aid"/>
+		<result property="uid" column="uid"/>
+		<result property="content" column="content"/>
+		<result property="createDate" column="create_date"/>
+		<result property="floorNumber" column="floor_number"/>
+		<result property="floorReply" column="floor_reply"/>
+		<association property="user" column="uid" select="com.wanmoxing.jishu.mapper.UserMapper.findById"></association>
+	</resultMap>
+    
+    <select id="getCommentList" resultMap="commentResultMap">
+        select * from T_COMMENT,T_USER where T_COMMENT.uid=T_USER.ID and aid=#{aid} order by cid desc
+    </select>
+
+	<select id="getCommentCount" resultType="java.lang.Integer">
+		select count(*) from T_COMMENT where aid=#{aid}
+	</select>
+	
+    <delete id="delete" parameterType="int">
+        DELETE FROM jishu.T_COMMENT WHERE cid=#{cid}
+    </delete>
+    
+    <insert id="insert" parameterType="com.wanmoxing.jishu.bean.Comment" useGeneratedKeys="true" keyProperty="cid">
+        INSERT INTO jishu.T_COMMENT(aid,uid,content,create_date,floor_number,floor_reply) VALUES(#{aid},#{uid},#{content},current_timestamp,#{floorNumber},#{floorReply})
+    </insert>
+    
+    <update id="update" parameterType="com.wanmoxing.jishu.bean.Comment">
+        UPDATE jishu.T_COMMENT SET content=#{content} WHERE cid=#{cid}
+    </update>
+    
+</mapper>

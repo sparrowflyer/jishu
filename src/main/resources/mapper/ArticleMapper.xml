@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+  
+<mapper namespace="com.wanmoxing.jishu.mapper.ArticleMapper">  
+
+	<resultMap id="articleResultMap" type="com.wanmoxing.jishu.bean.Article">
+		<id property="aid" column="aid"/>
+		<result property="title" column="title"/>
+		<result property="uid" column="uid"/>
+		<result property="content" column="content"/>
+		<result property="createDate" column="create_date"/>
+		<result property="goodCount" column="good_count"/>
+		<result property="badCount" column="bad_count"/>
+		<result property="collectCount" column="collect_count"/>
+		<result property="commentCount" column="comment_count"/>
+		<result property="imagesrc" column="image_src"/>
+		<association property="user" column="uid" select="com.wanmoxing.jishu.mapper.UserMapper.findById"></association>
+	</resultMap>
+    
+    <select id="getArticleList" resultMap="articleResultMap">
+        select * from T_ARTICLE,T_USER where T_ARTICLE.uid=T_USER.ID order by aid desc
+    </select>
+
+    <select id="getArticleById" parameterType="int" resultMap="articleResultMap">
+        SELECT * from T_ARTICLE,T_USER where T_ARTICLE.uid=T_USER.ID and aid=#{aid}
+    </select>
+
+	<select id="searchArticleByTitle" resultMap="articleResultMap">
+		select * from T_ARTICLE where title like '%' #{key} '%' order by aid desc
+	</select>
+	
+    <delete id="delete" parameterType="int">
+        DELETE FROM jishu.T_ARTICLE WHERE aid=#{aid}
+    </delete>
+    
+    <insert id="insert" parameterType="com.wanmoxing.jishu.bean.Article" useGeneratedKeys="true" keyProperty="aid">
+        INSERT INTO jishu.T_ARTICLE(title,uid,content,create_date,good_count,bad_count,collect_count,comment_count,image_src) VALUES(#{title},#{uid},#{content},current_timestamp,#{goodCount},#{badCount},#{collectCount},#{commentCount},#{imagesrc})
+    </insert>
+    
+    <update id="update" parameterType="com.wanmoxing.jishu.bean.Article">
+        UPDATE jishu.T_ARTICLE SET title=#{title},content=#{content},good_count=#{goodCount},bad_count=#{badCount},collect_count=#{collectCount},comment_count=#{commentCount},image_src=#{imagesrc} WHERE aid=#{aid}
+    </update>
+    
+</mapper>

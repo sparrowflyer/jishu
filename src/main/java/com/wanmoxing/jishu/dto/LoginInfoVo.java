@@ -13,15 +13,7 @@ public class LoginInfoVo {
 
     String emailVercode;
 
-    String ImageVercode;
-
-    public String getImageVercode() {
-        return ImageVercode;
-    }
-
-    public void setImageVercode(String imageVercode) {
-        ImageVercode = imageVercode;
-    }
+    String imageVercode;
 
     public String getNickName() {
         return nickName;
@@ -54,4 +46,14 @@ public class LoginInfoVo {
     public void setEmailVercode(String emailVercode) {
         this.emailVercode = emailVercode;
     }
+
+	public String getImageVercode() {
+		return imageVercode;
+	}
+
+	public void setImageVercode(String imageVercode) {
+		this.imageVercode = imageVercode;
+	}
+    
+    
 }

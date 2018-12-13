@@ -3,6 +3,7 @@ package com.wanmoxing.jishu.controller;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -37,6 +38,7 @@ public class VerifyCodeController {
 		// 删除以前的
 		session.removeAttribute("emailVerifyCode");
 		session.removeAttribute("emailVerifyCodeTime");
+		System.out.println("邮箱验证码"+verifyCode.toLowerCase());
 		session.setAttribute("emailVerifyCode", verifyCode.toLowerCase());
 		session.setAttribute("emailVerifyCodeTime", LocalDateTime.now());
 		try {

@@ -5,6 +5,7 @@ import java.time.ZoneId;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
+import javax.xml.transform.Result;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,9 +17,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.wanmoxing.jishu.bean.User;
+import com.wanmoxing.jishu.constant.enums.ResultDTOStatus;
 import com.wanmoxing.jishu.constant.enums.UserStatus;
 import com.wanmoxing.jishu.constant.enums.UserType;
 import com.wanmoxing.jishu.dto.LoginInfoVo;
+import com.wanmoxing.jishu.dto.ResultDTO;
 import com.wanmoxing.jishu.service.UserService;
 import com.wanmoxing.jishu.util.CommUtil;
 import com.wanmoxing.jishu.util.MD5Util;
@@ -42,10 +45,10 @@ public class UserController {
 	 * @return
 	 */
 	@RequestMapping(value="/login", method = RequestMethod.POST)
-	public ModelMap login(HttpSession session,
+	public ResultDTO login(HttpSession session,
 						  @RequestBody LoginInfoVo loginInfoVo) {
 		
-		ModelMap result = new ModelMap();
+		ResultDTO resultDTO = new ResultDTO();
 
 		String email=loginInfoVo.getEmail();
 
@@ -54,34 +57,37 @@ public class UserController {
 		String imageVercode=loginInfoVo.getImageVercode();
 
 		if(CommUtil.isEmptyOrNull(email)) {
-			result.put("data", "email不能为空");
-			result.put("status", "failed");
-			return result;
+			resultDTO.setErrorMsg("email不能为空");
+			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+			return resultDTO;
 		} else if(CommUtil.isEmptyOrNull(password)) {
-			result.put("data", "密码不能为空");
-			result.put("status", "failed");
-			return result;
+			resultDTO.setErrorMsg("密码不能为空");
+			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+			return resultDTO;
 		} else if(CommUtil.isEmptyOrNull(imageVercode)) {
-			result.put("data", "验证码不能为空");
-			result.put("status", "failed");
-			return result;
+			resultDTO.setErrorMsg("验证码不能为空");
+			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+			return resultDTO;
+		}
+		
+		if (!"success".equalsIgnoreCase(checkImageVerifyCode(imageVercode,session))){	
+			resultDTO.setErrorMsg("图形验证码错误");
+			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+			return resultDTO;
 		}
 
 		User user = userService.findByEmail(email, MD5Util.EncodeByMD5(password));
 		if (user!=null) {
-
 			logger.info("登录成功!");
-			result.put("data", "登录成功");
-			result.put("status", "success");
+			resultDTO.setErrorMsg("登录成功");
+			resultDTO.setStatus(ResultDTOStatus.SUCCESS.getStatus());
 			session.setAttribute("user", user);
-
-			return result;
+			return resultDTO;
 		}
 		logger.info("登录失败!");
-		result.put("data", "登录失败，验证码错误！");
-		result.put("status", "failed");
-
-		return result;
+		resultDTO.setErrorMsg("登录失败");
+		resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+		return resultDTO;
 	}
 	
 	
@@ -94,10 +100,10 @@ public class UserController {
 	 * @return
 	 */
 	@RequestMapping(value = "/regist", method = RequestMethod.POST)
-	public ModelMap regist(HttpSession session,
+	public ResultDTO regist(HttpSession session,
 						   @RequestBody LoginInfoVo loginInfoVo) {
 
-		ModelMap result = new ModelMap();
+		ResultDTO resultDTO = new ResultDTO();
 
 		String nickName=loginInfoVo.getNickName();
 
@@ -112,44 +118,44 @@ public class UserController {
 
 		//字段判断
 		if(CommUtil.isEmptyOrNull(nickName) ) {
-			result.put("data", "注册失败，用户名不能为空");
-			result.put("status", "failed");
-			return result;
+			resultDTO.setErrorMsg("注册失败，用户名不能为空");
+			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+			return resultDTO;
 		} else if(CommUtil.isEmptyOrNull(email)) {
-			result.put("data", "注册失败，邮箱不能为空");
-			result.put("status", "failed");
-			return result;
+			resultDTO.setErrorMsg("注册失败，邮箱不能为空");
+			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+			return resultDTO;
 		} else if(CommUtil.isEmptyOrNull(password)) {
-			result.put("data", "注册失败，密码不能为空");
-			result.put("status", "failed");
-			return result;
+			resultDTO.setErrorMsg("注册失败，密码不能为空");
+			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+			return resultDTO;
 		} else if(CommUtil.isEmptyOrNull(emailVercode)) {
-			result.put("data", "注册失败，邮箱验证码不能为空");
-			result.put("status", "failed");
-			return result;
+			resultDTO.setErrorMsg("注册失败，邮箱验证码不能为空");
+			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+			return resultDTO;
 		} else if(CommUtil.isEmptyOrNull(imageVercode)) {
-			result.put("data", "注册失败，图像验证码不能为空");
-			result.put("status", "failed");
-			return result;
+			resultDTO.setErrorMsg("注册失败，图像验证码不能为空");
+			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+			return resultDTO;
 		}
 
 
 		//验证码和账户判断
 		User user=userService.existenceByEmail(email);
 		if(user!=null){
-			result.put("data", "邮箱已经存在！");
-			result.put("status", "failed");
-			return result;
+			resultDTO.setErrorMsg("邮箱已经存在！");
+			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+			return resultDTO;
 		}
 		if (!"success".equalsIgnoreCase(checkEmailVerifyCode(emailVercode,session))){
-			result.put("data", "邮箱验证码错误！");
-			result.put("status", "failed");
-			return result;
+			resultDTO.setErrorMsg("邮箱验证码错误！");
+			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+			return resultDTO;
 		}
 		if (!"success".equalsIgnoreCase(checkImageVerifyCode(imageVercode,session))){
-			result.put("data", "图形验证码错误！");
-			result.put("status", "failed");
-			return result;
+			resultDTO.setErrorMsg("图形验证码错误！");
+			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+			return resultDTO;
 		}
 
 		User userNew = new User();
@@ -160,11 +166,9 @@ public class UserController {
 		userNew.setStatus(UserStatus.ACTIVE.getStatus());
 		userService.insert(userNew);
 		logger.info("注册成功！用户名:{}", nickName);
-		result.put("data", "注册成功,请重新登录！");
-		result.put("status", "success");
-
-
-		return result;
+		resultDTO.setErrorMsg("注册成功,请重新登录！");
+		resultDTO.setStatus(ResultDTOStatus.SUCCESS.getStatus());
+		return resultDTO;
 	}
 	
 	/**
@@ -176,9 +180,9 @@ public class UserController {
 	 */
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
 	@ResponseBody
-	public ModelMap updateUserInfo(HttpSession session,
+	public ResultDTO updateUserInfo(HttpSession session,
 								   @RequestBody LoginInfoVo loginInfoVo) {
-		ModelMap result = new ModelMap();
+		ResultDTO resultDTO = new ResultDTO();
 		String email = loginInfoVo.getEmail();
 		String password = loginInfoVo.getPassword();
 		String emailVercode = loginInfoVo.getEmailVercode();
@@ -186,73 +190,71 @@ public class UserController {
 
 		if (CommUtil.isEmptyOrNull(email)) {
 			logger.info("更新失败，邮箱不能为空");
-			result.put("data", "信息修改失败，邮箱不能为空");
-			result.put("status", "failed");
-			return result;
+			
+			resultDTO.setErrorMsg("信息修改失败，邮箱不能为空");
+			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+			return resultDTO;
 		} else if (CommUtil.isEmptyOrNull(password)) {
 			logger.info("更新失败，密码不能为空");
-			result.put("data", "信息修改失败，密码不能为空");
-			result.put("status", "failed");
-			return result;
+			resultDTO.setErrorMsg("信息修改失败，密码不能为空");
+			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+			return resultDTO;
 		} else if (CommUtil.isEmptyOrNull(emailVercode)) {
 			logger.info("更新失败，邮箱验证码不能为空");
-			result.put("data", "信息修改失败，邮箱验证码不能为空");
-			result.put("status", "failed");
-			return result;
-		} else {
-			//身份检测
-			if (!"success".equalsIgnoreCase(checkEmailVerifyCode(emailVercode, session))) {
-				result.put("data", "邮箱验证码错误！");
-				result.put("status", "failed");
-				return result;
-			}
-			User user = userService.existenceByEmail(email);    //当前登录用户
-			if (user == null) {
-				result.put("data", "只能修改自己的信息！");
-				result.put("status", "failed");
-				return result;
-			}
-			//更新用户信息
-			user.setPassword(MD5Util.EncodeByMD5(password));
-			userService.update(user);
-			logger.info("成功更新id为{}的用户信息!");
-			result.put("data", "信息修改成功！");
-			result.put("status", "success");
-
-
-			return result;
+			resultDTO.setErrorMsg("信息修改失败，邮箱验证码不能为空");
+			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+			return resultDTO;
+		} 
+		
+		// 身份检测
+		if (!"success".equalsIgnoreCase(checkEmailVerifyCode(emailVercode, session))) {
+			resultDTO.setErrorMsg("邮箱验证码错误！");
+			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+			return resultDTO;
 		}
+		User user = userService.existenceByEmail(email); // 当前登录用户
+		if (user == null) {
+			resultDTO.setErrorMsg("只能修改自己的信息！");
+			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+			return resultDTO;
+		}
+		// 更新用户信息
+		user.setPassword(MD5Util.EncodeByMD5(password));
+		userService.update(user);
+		logger.info("成功更新id为{}的用户信息!");
+
+		resultDTO.setErrorMsg("信息修改成功！");
+		resultDTO.setStatus(ResultDTOStatus.SUCCESS.getStatus());
+		return resultDTO;
 	}
 	
 	/**
-	 * 根据email更新用户密码
+	 * 检查email是否已经注册
 	 * @param session
 	 * @return
 	 */
 	@RequestMapping(value = "/existenceEmail",produces = "application/json;charset=utf-8", method = RequestMethod.POST)
 	@ResponseBody
-	public ModelMap checkExistEmail(HttpSession session,
+	public ResultDTO checkExistEmail(HttpSession session,
 			@RequestBody LoginInfoVo loginInfoVo) {
 		String email=(loginInfoVo.getEmail());
-		ModelMap result = new ModelMap();
+		ResultDTO resultDTO = new ResultDTO();
 		if(email==null) {
 			logger.info("邮箱不能为空");
-			result.put("data", "邮箱不能为空");
-			result.put("status", "failed");
-		} else {
-			//检测邮箱是否存在
-			User user=userService.existenceByEmail(email);
-			if(user!=null){
-				result.put("data", "邮箱已经存在！");
-				result.put("status", "failed");
-				return result;
-			} else {
-				result.put("data", "邮箱可以注册");
-				result.put("status", "success");
-				return result;
-			}
-		}
-		return result;
+			resultDTO.setErrorMsg("邮箱不能为空");
+			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+			return resultDTO;
+		} 
+		// 检测邮箱是否存在
+		User user = userService.existenceByEmail(email);
+		if (user != null) {
+			resultDTO.setErrorMsg("邮箱已经存在");
+			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+			return resultDTO;
+		} 
+		resultDTO.setErrorMsg("邮箱可以注册");
+		resultDTO.setStatus(ResultDTOStatus.SUCCESS.getStatus());
+		return resultDTO;
 	}
 
 	private String checkEmailVerifyCode(String emailCode, HttpSession session) {

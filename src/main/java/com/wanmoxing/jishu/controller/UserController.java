@@ -172,13 +172,13 @@ public class UserController {
 	}
 	
 	/**
-	 * 根据email更新用户密码
+	 * 根据email找回密码
 	 * @param session
 	 * @param email
 	 * @param password
 	 * @return
 	 */
-	@RequestMapping(value = "/update", method = RequestMethod.POST)
+	@RequestMapping(value = "/forgetpsd", method = RequestMethod.POST)
 	@ResponseBody
 	public ResultDTO updateUserInfo(HttpSession session,
 								   @RequestBody LoginInfoVo loginInfoVo) {
@@ -206,24 +206,26 @@ public class UserController {
 			return resultDTO;
 		} 
 		
+		User user = userService.existenceByEmail(email); // 检测用户存不存在
+		if (user == null) {
+			resultDTO.setErrorMsg("用户不存在，请注册！");
+			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+			return resultDTO;
+		}
+		
 		// 身份检测
 		if (!"success".equalsIgnoreCase(checkEmailVerifyCode(emailVercode, session))) {
 			resultDTO.setErrorMsg("邮箱验证码错误！");
 			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
 			return resultDTO;
 		}
-		User user = userService.existenceByEmail(email); // 当前登录用户
-		if (user == null) {
-			resultDTO.setErrorMsg("只能修改自己的信息！");
-			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
-			return resultDTO;
-		}
-		// 更新用户信息
+		
+		// 更新用户密码
 		user.setPassword(MD5Util.EncodeByMD5(password));
 		userService.update(user);
-		logger.info("成功更新id为{}的用户信息!");
+		logger.info("成功更新用户密码!");
 
-		resultDTO.setErrorMsg("信息修改成功！");
+		resultDTO.setErrorMsg("密码修改成功！");
 		resultDTO.setStatus(ResultDTOStatus.SUCCESS.getStatus());
 		return resultDTO;
 	}

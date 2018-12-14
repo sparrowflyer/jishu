@@ -8,13 +8,10 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Service;
 
 import com.wanmoxing.jishu.bean.Comment;
-import com.wanmoxing.jishu.bean.User;
 import com.wanmoxing.jishu.mapper.CommentMapper;
-import com.wanmoxing.jishu.mapper.UserMapper;
 import com.wanmoxing.jishu.service.CommentService;
-import com.wanmoxing.jishu.service.UserService;
 
-@Service("userService")
+@Service("commentService")
 @ComponentScan({"com.wanmoxing.jishu.mapper"})
 public class CommentServiceImpl implements CommentService {
 	

@@ -11,7 +11,7 @@ import com.wanmoxing.jishu.bean.Article;
 import com.wanmoxing.jishu.mapper.ArticleMapper;
 import com.wanmoxing.jishu.service.ArticleService;
 
-@Service("userService")
+@Service("articleService")
 @ComponentScan({"com.wanmoxing.jishu.mapper"})
 public class ArticleServiceImpl implements ArticleService {
 	

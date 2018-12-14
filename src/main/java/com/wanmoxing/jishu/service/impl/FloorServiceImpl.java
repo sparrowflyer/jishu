@@ -8,13 +8,10 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Service;
 
 import com.wanmoxing.jishu.bean.Floor;
-import com.wanmoxing.jishu.bean.User;
 import com.wanmoxing.jishu.mapper.FloorMapper;
-import com.wanmoxing.jishu.mapper.UserMapper;
 import com.wanmoxing.jishu.service.FloorService;
-import com.wanmoxing.jishu.service.UserService;
 
-@Service("userService")
+@Service("floorService")
 @ComponentScan({"com.wanmoxing.jishu.mapper"})
 public class FloorServiceImpl implements FloorService {
 	

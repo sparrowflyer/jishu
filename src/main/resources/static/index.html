@@ -14,5 +14,26 @@
     <div id="app"></div>
     <a href="templates/index.html">点我预览</a>
     <script src="../built/bundle.js"></script>
+    <script src="../assets/js/jquery-3.3.1.min.js"></script>
+    <script src="../assets/js/plugins.js"></script>
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/jquery.selectric.js"></script>
+    <script src="../assets/js/jquery-ui.min.js"></script>
+    <script src="http://ditu.google.cn/maps/api/js?key=AIzaSyD2jlT6C_to6X1mMvR9yRWeRvpIgTXgddM"></script>
+    <script>
+        $(document).ready(function() {
+            "use strict";
+            // home contact info
+            $(".trggericon").on("click", function(e){
+                $(this).parent('.top-contact').addClass('togglecontact');
+            });
+            $(".top-contact .close").on("click", function(e){
+                $(this).parent('.top-contact').removeClass('togglecontact');
+            });
+        });
+        $(function() {
+            $('.filter-select').selectric();
+        });
+    </script>
 </body>
 </html>

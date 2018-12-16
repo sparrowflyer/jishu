@@ -1,6 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-export function Header() {
+export function Header({activeTitle}) {
     return (
         <header className="masthead">
             <div className="container">
@@ -15,23 +16,23 @@ export function Header() {
                             </button>
                             <div className="collapse navbar-collapse" id="main-menu">
                                 <ul className="navbar-nav">
-                                    <li className="nav-item menu-item-has-children dropdown active">
+                                    <li className={`nav-item menu-item-has-children dropdown ${activeTitle === 'home' ? "active" : null}`}>
                                         <a className="nav-link" href="#">主页</a>
                                     </li>
-                                    <li className="nav-item menu-item-has-children dropdown">
+                                    <li className={`nav-item menu-item-has-children dropdown ${activeTitle === 'course' ? "active" : null}`}>
                                         <a className="nav-link" href="#">课程信息</a>
                                     </li>
-                                    <li className="nav-item menu-item-has-children dropdown">
+                                    <li className={`nav-item menu-item-has-children dropdown ${activeTitle === 'blog' ? "active" : null}`}>
                                         <a className="nav-link" href="#">学生贴吧</a>
                                     </li>
-                                    <li className="nav-item menu-item-has-children dropdown">
+                                    <li className={`nav-item menu-item-has-children dropdown ${activeTitle === 'event' ? "active" : null}`}>
+                                        <a className="nav-link" href="#">Event</a>
+                                    </li>
+                                    <li className={`nav-item menu-item-has-children dropdown ${activeTitle === 'other' ? "active" : null}`}>
                                         <a className="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Pages</a>
                                         <div className="dropdown-menu">
-                                            <a className="dropdown-item" href="404.html">404 Error</a>
                                             <a className="dropdown-item" href="about.html">About</a>
                                             <a className="dropdown-item" href="contact.html">Contact</a>
-                                            <a className="dropdown-item" href="events.html">Events</a>
-                                            <a className="dropdown-item" href="event-details.html">Event Details</a>
                                             <a className="dropdown-item" href="faq.html">FAQ</a>
                                             <a className="dropdown-item" href="login.html">Login</a>
                                             <a className="dropdown-item" href="register.html">Register</a>
@@ -116,3 +117,7 @@ export function Header() {
         </header>
     );
 }
+
+Header.propTypes = {
+    activeTitle: PropTypes.oneOf(['home', 'course', 'blog', 'event', 'other'])
+};

@@ -2,7 +2,7 @@ import React from 'react';
 
 export function Footer() {
     return (
-        <footer className="site-footer">x
+        <footer className="site-footer">
             <div className="footer-top light-black">
                 <div className="section-padding">
                     <div className="container">

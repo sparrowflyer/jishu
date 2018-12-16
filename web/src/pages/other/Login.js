@@ -1,8 +1,10 @@
 import React from 'react';
-import { Form } from '../components/login/form.js';
-import { Header } from '../components/common/header.js';
-import { Footer } from '../components/common/footer.js';
-import { RememberMeInLogin, RememberMeInRegister, RegisterInfoInLogin, RegisterInfoInRegister } from '../components/login/controlInLogin.js';
+import PropTypes from 'prop-types';
+import { Form } from '../../components/login/Form.js';
+import { Header } from '../../components/common/Header.js';
+import { Footer } from '../../components/common/Footer.js';
+import { BreadCrumb } from '../../components/common/BreadCrumb.js';
+import { RememberMeInLogin, RememberMeInRegister, RegisterInfoInLogin, RegisterInfoInRegister } from '../../components/login/ControlInLogin.js';
 
 const words = {
     register: {
@@ -22,9 +24,6 @@ const words = {
 const mr5 = {
     marginRight: '5px'
 };
-const breadcrumbBg = {
-    backgroundImage: 'url("../images/breadcrumb.jpg")'
-};
 
 export function Login({loginType}) {
     const {breadcrumbTitle, breadcrumbItem, title, socialTitle} = words[loginType];
@@ -36,23 +35,8 @@ export function Login({loginType}) {
     };
     return (
         <div>
-            <Header />
-            <section className="page-name background-bg" style={breadcrumbBg}>
-                <div className="overlay">
-                    <div className="section-padding">
-                        <div className="container">
-                            <h2 className="section-title">{breadcrumbTitle}</h2>
-                            <nav aria-label="breadcrumb">
-                                <ol className="breadcrumb">
-                                    <li className="breadcrumb-item"><a href="#">Home</a></li>
-                                    <li className="breadcrumb-item"><a href="#">Pages</a></li>
-                                    <li className="breadcrumb-item active" aria-current="page">{breadcrumbItem}</li>
-                                </ol>
-                            </nav>
-                        </div>
-                    </div>
-                </div>
-            </section>
+            <Header activeTitle="other" />
+            <BreadCrumb title={breadcrumbTitle} subItem="Pages" currentItem={breadcrumbItem} />
             <section className="login-register">
                 <div className="section-padding">
                     <div className="container">
@@ -77,3 +61,6 @@ export function Login({loginType}) {
     );
 }
 
+Login.propTypes = {
+    loginType: PropTypes.oneOf(['register', 'login']).isRequired
+};

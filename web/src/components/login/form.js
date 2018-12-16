@@ -1,5 +1,5 @@
 import React from 'react';
-import { InputInLogin } from './controlInLogin.js';
+import { InputInLogin } from './ControlInLogin.js';
 
 const words = {
     register: {

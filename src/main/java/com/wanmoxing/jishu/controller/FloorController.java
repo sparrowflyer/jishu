@@ -36,15 +36,13 @@ public class FloorController {
 	
 
 	/**
-	 *  楼中楼评论
+	 *  添加楼中楼评论
 	 * @param cid
 	 * @param content
 	 * @return
 	 */
 	@RequestMapping(value="/tieba/addFloorComment", method = RequestMethod.POST)
-	public ResultDTO getArticleList(HttpSession session, 
-			@RequestParam("cid") int cid,
-			@RequestParam("content") String content) {
+	public ResultDTO addFloorComment(HttpSession session, @RequestParam Floor floor) {
 		
 		ResultDTO resultDTO = new ResultDTO();
 		if(!CommUtil.isUserLogined(session)) {
@@ -52,16 +50,81 @@ public class FloorController {
 			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
 			return resultDTO;
 		}
+		int cid = floor.getCid();
+		String content = floor.getContent();
 		
+		if(cid<0) {
+			resultDTO.setErrorMsg("评论不存在，无法添加楼中楼评论");
+			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+			return resultDTO;
+		}
+		
+		if(CommUtil.isEmptyOrNull(content)) {
+			resultDTO.setErrorMsg("楼中楼评论不能为空");
+			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+			return resultDTO;
+		}
+	
 		User user = (User)session.getAttribute("User");
 		
-		Floor floor = new Floor();
-		floor.setContent(content);
-		floor.setCid(cid);
 		floor.setUid(user.getId());
 		floor.setCreateDate(new Timestamp(new Date().getTime()));
+		floorService.insert(floor);
 		logger.info("评论成功");
 		resultDTO.setErrorMsg("评论成功");
+		resultDTO.setStatus(ResultDTOStatus.SUCCESS.getStatus());
+		resultDTO.setData(floor);
+		return resultDTO;
+	}
+	
+	/**
+	 *  修改楼中楼评论
+	 * @param cid
+	 * @param content
+	 * @return
+	 */
+	@RequestMapping(value="/tieba/updateFloorComment", method = RequestMethod.POST)
+	public ResultDTO updateFloorComment(HttpSession session, @RequestParam Floor floor) {
+		
+		ResultDTO resultDTO = new ResultDTO();
+		if(!CommUtil.isUserLogined(session)) {
+			resultDTO.setErrorMsg("还未登录，请先登录");
+			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+			return resultDTO;
+		}
+		int cid = floor.getCid();
+		int fid = floor.getFid();
+		String content = floor.getContent();
+		
+		if(fid<0) {
+			resultDTO.setErrorMsg("楼中楼评论不存在");
+			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+			return resultDTO;
+		}
+		
+		if(cid<0) {
+			resultDTO.setErrorMsg("评论不存在，无法修改楼中楼评论");
+			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+			return resultDTO;
+		}
+		
+		if(CommUtil.isEmptyOrNull(content)) {
+			resultDTO.setErrorMsg("楼中楼评论不能为空");
+			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+			return resultDTO;
+		}
+	
+		User user = (User)session.getAttribute("User");
+		
+		if(user.getId() != floor.getUid()) {
+			resultDTO.setErrorMsg("只能对自己的评论更新");
+			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+			return resultDTO;
+		}
+		
+		floorService.insert(floor);
+		logger.info("评论修改成功");
+		resultDTO.setErrorMsg("评论修改成功");
 		resultDTO.setStatus(ResultDTOStatus.SUCCESS.getStatus());
 		resultDTO.setData(floor);
 		return resultDTO;

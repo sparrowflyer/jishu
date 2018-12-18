@@ -33,7 +33,7 @@ public class UploadController {
 	 * @param response
 	 * @return
 	 */
-	@RequestMapping("/upload")
+	@RequestMapping(value="/upload")
 	public ResultDTO upload(@RequestParam("file") MultipartFile file,
 			HttpServletRequest request, HttpServletResponse response) {
 
@@ -63,7 +63,7 @@ public class UploadController {
 	            return resultDTO;
 	        }
 	        
-	        if(file.getSize() > 1024) {
+	        if(file.getSize() > 1024 * 1024) {
 	        	resultDTO.setErrorMsg("文件大小不应超过1M");
 	            resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
 	            return resultDTO;

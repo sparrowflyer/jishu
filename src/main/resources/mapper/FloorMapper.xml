@@ -3,7 +3,7 @@
   
 <mapper namespace="com.wanmoxing.jishu.mapper.FloorMapper">  
 
-	<resultMap id="FloorResultMap" type="com.wanmoxing.jishu.bean.Floor">
+	<resultMap id="floorResultMap" type="com.wanmoxing.jishu.bean.Floor">
 		<id property="fid" column="fid"/>
 		<result property="cid" column="cid"/>
 		<result property="uid" column="uid"/>

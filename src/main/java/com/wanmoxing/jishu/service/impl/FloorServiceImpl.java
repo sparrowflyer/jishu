@@ -20,7 +20,12 @@ public class FloorServiceImpl implements FloorService {
 
 	@Override
 	public List<Floor> getFloorList(int cid) {
-		return floorMapper.getFloorList();
+		return floorMapper.getFloorList(cid);
+	}
+	
+	@Override
+	public Floor getFloorById(int fid) {
+		return floorMapper.getFloorById(fid);
 	}
 
 	@Override

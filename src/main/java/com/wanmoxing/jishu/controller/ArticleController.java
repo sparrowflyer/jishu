@@ -9,10 +9,10 @@ import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.wanmoxing.jishu.bean.Article;
@@ -50,15 +50,15 @@ public class ArticleController {
 	 * @param session
 	 * @return
 	 */
-	@RequestMapping(value="/tieba/articleList", method = RequestMethod.GET)
-	public ResultDTO getArticleList(HttpSession session) {
+	@RequestMapping(value="/tieba/article", method = RequestMethod.GET)
+	public ResultDTO getArticleList(HttpSession session,@RequestParam("page") int page) {
 		
 		ResultDTO resultDTO = new ResultDTO();
 		
 		logger.info("获取所有帖子");
 		resultDTO.setErrorMsg("获取所有帖子");
 		resultDTO.setStatus(ResultDTOStatus.SUCCESS.getStatus());
-		resultDTO.setData(articleService.getArticleList());
+		resultDTO.setData(articleService.getArticleList(page));
 		return resultDTO;
 	}
 	
@@ -67,8 +67,8 @@ public class ArticleController {
 	 * @param aid
 	 * @return
 	 */
-	@RequestMapping(value="/tieba/article/{aid}", method = RequestMethod.POST)
-	public ResultDTO getArticleListById(HttpSession session, @PathVariable("aid") int aid) {
+	@RequestMapping(value="/tieba/articleDetail", method = RequestMethod.GET)
+	public ResultDTO getArticleListById(HttpSession session, @RequestParam("aid") int aid) {
 		
 		ResultDTO resultDTO = new ResultDTO();
 		
@@ -109,7 +109,8 @@ public class ArticleController {
 			return resultDTO;
 		}
 		
-		User user = (User)session.getAttribute("User");
+		User user = (User)session.getAttribute("user");
+		User userDateBase = userService.findByEmail(user.getEmail(),user.getPassword());
 		String title = article.getTitle();
 		String content = article.getContent();
 		String imagesrc= article.getImagesrc();
@@ -140,7 +141,7 @@ public class ArticleController {
 		article.setCreateDate(new Timestamp(new Date().getTime()));
 		article.setImagesrc(imagesrc);
 		article.setTitle(title);
-		article.setUid(user.getId());
+		article.setUid(userDateBase.getId());
 		
 		articleService.insert(article);
 		resultDTO.setErrorMsg("发表成功");
@@ -163,13 +164,17 @@ public class ArticleController {
 			return resultDTO;
 		}
 		
-		User user = (User)session.getAttribute("User");
-		int id = article.getAid();
+		User user = (User)session.getAttribute("user");
+		User userDateBase = userService.findByEmail(user.getEmail(),user.getPassword());
+
+		int aid = article.getAid();
+		int uid = article.getUid();
+		
 		String title = article.getTitle();
 		String content = article.getContent();
 		String imagesrc= article.getImagesrc();
 		
-		if(id<0) {
+		if(aid<0) {
 			resultDTO.setErrorMsg("帖子id不存在");
 			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
 			return resultDTO;
@@ -193,12 +198,16 @@ public class ArticleController {
 			return resultDTO;
 		}
 			
-		if(user.getId() != article.getUid()) {
+		if(userDateBase.getId() != uid) {
 			resultDTO.setErrorMsg("只能对自己的帖子更新");
 			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
 			return resultDTO;
 		}
-		articleService.update(article);
+		Article articleDatabase = articleService.getArticleById(aid);
+		articleDatabase.setTitle(title);
+		articleDatabase.setContent(content);
+		articleDatabase.setImagesrc(imagesrc);
+		articleService.update(articleDatabase);
 		resultDTO.setErrorMsg("更新帖子成功");
 		resultDTO.setStatus(ResultDTOStatus.SUCCESS.getStatus());
 		resultDTO.setData(article);

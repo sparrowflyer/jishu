@@ -64,11 +64,11 @@ public class CommentController {
 			return resultDTO;
 		}
 		
-		User user = (User)session.getAttribute("User");
-		
-		comment.setUid(user.getId());
+		User user = (User)session.getAttribute("user");
+		User userDateBase = userService.findByEmail(user.getEmail(),user.getPassword());
+		comment.setUid(userDateBase.getId());
 		comment.setCreateDate(new Timestamp(new Date().getTime()));
-		comment.setUser(user);
+		comment.setUser(userDateBase);
 		comment.setFloorReply(0);
 		comment.setFloorNumber(commentService.getCommentCount(aid) + 1);
 		
@@ -95,15 +95,9 @@ public class CommentController {
 			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
 			return resultDTO;
 		}
-		int aid = comment.getAid();
 		int cid = comment.getCid();
+		int uid = comment.getUid();
 		String content = comment.getContent();
-		
-		if(aid<0) {
-			resultDTO.setErrorMsg("帖子不存在，无法修改评论");
-			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
-			return resultDTO;
-		}
 		
 		if(cid<0) {
 			resultDTO.setErrorMsg("评论不存在，无法修改");
@@ -117,14 +111,18 @@ public class CommentController {
 			return resultDTO;
 		}
 		
-		User user = (User)session.getAttribute("User");
-		
-		if(user.getId() != comment.getUid()) {
+		User user = (User)session.getAttribute("user");
+		User userDatabase = userService.findByEmail(user.getEmail(), user.getPassword());
+
+		if(userDatabase.getId() != uid) {
 			resultDTO.setErrorMsg("只能对自己的评论更新");
 			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
 			return resultDTO;
-		}		
-		commentService.insert(comment);
+		}
+		
+		Comment commentDatabase = commentService.getCommentById(cid);
+		commentDatabase.setContent(content);
+		commentService.update(commentDatabase);
 		logger.info("评论修改成功");
 		resultDTO.setErrorMsg("评论修改成功");
 		resultDTO.setStatus(ResultDTOStatus.SUCCESS.getStatus());

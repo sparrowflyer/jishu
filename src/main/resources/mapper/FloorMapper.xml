@@ -15,6 +15,10 @@
     <select id="getFloorList" resultMap="floorResultMap">
         select * from T_FLOOR,T_USER where T_FLOOR.uid=T_USER.ID and cid=#{cid} order by fid desc
     </select>
+    
+     <select id="getFloorById" resultMap="floorResultMap">
+        select * from T_FLOOR,T_USER where T_FLOOR.uid=T_USER.ID and fid=#{fid} order by fid desc
+    </select>
 	
     <delete id="delete" parameterType="int">
         DELETE FROM jishu.T_FLOOR WHERE fid=#{fid}

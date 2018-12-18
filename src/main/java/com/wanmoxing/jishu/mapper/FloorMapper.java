@@ -8,7 +8,9 @@ import com.wanmoxing.jishu.bean.Floor;
 @Mapper
 public interface FloorMapper {
 	
-	public List<Floor> getFloorList();
+	public List<Floor> getFloorList(int cid);
+	
+	public Floor getFloorById(int fid);
 		
     public void insert(Floor floor);
 

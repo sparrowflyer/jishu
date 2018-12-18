@@ -8,6 +8,8 @@ public interface CommentService {
 	
 	public List<Comment> getCommentList(int aid);
 	
+	public Comment getCommentById(int cid);
+	
 	public Integer getCommentCount(int aid);
 
 	public void insert(Comment comment);

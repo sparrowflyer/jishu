@@ -8,6 +8,8 @@ public interface FloorService {
 	
 	public List<Floor> getFloorList(int cid);
 	
+	public Floor getFloorById(int fid);
+	
 	public void insert(Floor floor);
 	
     public void update(Floor floor);

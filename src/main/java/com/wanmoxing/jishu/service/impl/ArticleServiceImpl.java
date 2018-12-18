@@ -7,7 +7,10 @@ import javax.annotation.Resource;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Service;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.wanmoxing.jishu.bean.Article;
+import com.wanmoxing.jishu.constant.CommonConstants;
 import com.wanmoxing.jishu.mapper.ArticleMapper;
 import com.wanmoxing.jishu.service.ArticleService;
 
@@ -19,8 +22,12 @@ public class ArticleServiceImpl implements ArticleService {
 	private ArticleMapper articleMapper;
 
 	@Override
-	public List<Article> getArticleList() {
-		return articleMapper.getArticleList();
+	public PageInfo<Article> getArticleList(int page) {
+		PageHelper.startPage(page, CommonConstants.DEFAULT_PAGE_SIZE);
+		System.out.println("page :" + page + "size:"+CommonConstants.DEFAULT_PAGE_SIZE);
+		List<Article> articles = articleMapper.getArticleList();
+		PageInfo<Article> pageInfo = new PageInfo<>(articles);
+		return pageInfo;
 	}
 
 	@Override

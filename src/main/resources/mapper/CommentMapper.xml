@@ -14,10 +14,14 @@
 		<association property="user" column="uid" select="com.wanmoxing.jishu.mapper.UserMapper.findById"></association>
 	</resultMap>
     
-    <select id="getCommentList" resultMap="commentResultMap">
+    <select id="getCommentList" parameterType="int" resultMap="commentResultMap">
         select * from T_COMMENT,T_USER where T_COMMENT.uid=T_USER.ID and aid=#{aid} order by cid desc
     </select>
-
+    
+    <select id="getCommentById" parameterType="int" resultMap="commentResultMap">
+        select * from T_COMMENT,T_USER where T_COMMENT.uid=T_USER.ID and cid=#{cid} order by cid desc
+    </select>
+    
 	<select id="getCommentCount" resultType="java.lang.Integer">
 		select count(*) from T_COMMENT where aid=#{aid}
 	</select>

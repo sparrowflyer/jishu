@@ -10,7 +10,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -33,8 +35,8 @@ public class UploadController {
 	 * @param response
 	 * @return
 	 */
-	@RequestMapping(value="/upload")
-	public ResultDTO upload(@RequestParam("file") MultipartFile file,
+	@RequestMapping(value="/upload",method=RequestMethod.POST)
+	public ResultDTO upload(@RequestBody MultipartFile file,
 			HttpServletRequest request, HttpServletResponse response) {
 
 		//获取文件在服务器的储存位置
@@ -45,8 +47,7 @@ public class UploadController {
             logger.debug("目录不存在，创建目录:" + filePath);
             filePath.mkdir();
         }
-
-        //获取原始文件名称(包含格式)
+        
         String originalFileName = file.getOriginalFilename();
         logger.debug("原始文件名称：" + originalFileName);
 
@@ -81,6 +82,8 @@ public class UploadController {
 	        //在指定路径下创建一个文件
 	        File targetFile = new File(path, fileName);
 	
+	        System.out.println("path:" + path);
+	        System.out.println("filename:" + path);
 	        //将文件保存到服务器指定位置
 	        try {
 	            file.transferTo(targetFile);

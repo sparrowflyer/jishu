@@ -8,7 +8,9 @@ import com.wanmoxing.jishu.bean.Comment;
 @Mapper
 public interface CommentMapper {
 	
-	public List<Comment> getCommentList();
+	public List<Comment> getCommentList(int aid);
+	
+	public Comment getCommentById(int cid);
 	
 	public Integer getCommentCount(int aid);
 	

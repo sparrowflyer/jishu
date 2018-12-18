@@ -1,12 +1,12 @@
 package com.wanmoxing.jishu.service;
 
-import java.util.List;
 
+import com.github.pagehelper.PageInfo;
 import com.wanmoxing.jishu.bean.Article;
 
 public interface ArticleService {
 	
-	public List<Article> getArticleList();
+	public PageInfo<Article> getArticleList(int page);
 	
 	public Article getArticleById(int aid);
 

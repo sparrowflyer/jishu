@@ -20,9 +20,13 @@ public class CommentServiceImpl implements CommentService {
 
 	@Override
 	public List<Comment> getCommentList(int aid) {
-		return commentMapper.getCommentList();
+		return commentMapper.getCommentList(aid);
 	}
 
+	@Override
+	public Comment getCommentById(int cid) {
+		return commentMapper.getCommentById(cid);
+	}
 	@Override
 	public Integer getCommentCount(int aid) {
 		return commentMapper.getCommentCount(aid);

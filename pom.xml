@@ -60,6 +60,12 @@
         </dependency>
         
         <dependency>
+  			<groupId>com.alipay.sdk</groupId>
+  			<artifactId>alipay-sdk-java</artifactId>
+  			<version>3.4.49.ALL</version>
+		</dependency>
+        
+        <dependency>
             <groupId>com.github.pagehelper</groupId>
             <artifactId>pagehelper-spring-boot-starter</artifactId>
             <version>1.2.3</version>

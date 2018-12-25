@@ -16,13 +16,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.wanmoxing.jishu.bean.Article;
+import com.wanmoxing.jishu.bean.CollectionCount;
 import com.wanmoxing.jishu.bean.Comment;
+import com.wanmoxing.jishu.bean.GoodBad;
 import com.wanmoxing.jishu.bean.User;
+import com.wanmoxing.jishu.constant.enums.GoodBadStatus;
 import com.wanmoxing.jishu.constant.enums.ResultDTOStatus;
 import com.wanmoxing.jishu.dto.ResultDTO;
 import com.wanmoxing.jishu.service.ArticleService;
+import com.wanmoxing.jishu.service.CollectionCountService;
 import com.wanmoxing.jishu.service.CommentService;
 import com.wanmoxing.jishu.service.FloorService;
+import com.wanmoxing.jishu.service.GoodBadService;
 import com.wanmoxing.jishu.service.UserService;
 import com.wanmoxing.jishu.util.CommUtil;
 
@@ -44,6 +49,11 @@ public class ArticleController {
 	@Resource
 	private UserService userService;
 
+	@Resource
+	private GoodBadService goodBadService;
+	
+	@Resource
+	private CollectionCountService collectionCountService;
 	
 	/**
 	 * 显示所有帖子
@@ -211,6 +221,164 @@ public class ArticleController {
 		resultDTO.setErrorMsg("更新帖子成功");
 		resultDTO.setStatus(ResultDTOStatus.SUCCESS.getStatus());
 		resultDTO.setData(article);
+		return resultDTO;
+	}
+	
+	/**
+	 * 点赞
+	 * @param aid
+	 * @return
+	 */
+	@RequestMapping(value="/tieba/clickGood", method = RequestMethod.POST)
+	public ResultDTO clickGood(HttpSession session,@RequestParam("aid") int aid) {
+		
+		ResultDTO resultDTO = new ResultDTO();
+		
+		if(!CommUtil.isUserLogined(session)) {
+			resultDTO.setErrorMsg("还未登录，请先登录");
+			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+			return resultDTO;
+		}
+		
+		User user = (User)session.getAttribute("user");
+		User userDateBase = userService.findByEmail(user.getEmail(),user.getPassword());
+		int uid = userDateBase.getId();
+		
+		GoodBad goodBad = goodBadService.getGoodByAidAndUid(aid, uid);
+		if(goodBad == null) {
+			Article article = articleService.getArticleById(aid);
+			article.setGoodCount(article.getGoodCount() + 1);
+			articleService.update(article);
+			
+			GoodBad goodBadDatabase = new GoodBad();
+			goodBadDatabase.setAid(aid);
+			goodBadDatabase.setUid(uid);
+			goodBadDatabase.setStatus(GoodBadStatus.GOOD.getValue());
+			goodBadService.insert(goodBadDatabase);		
+		} else {
+			if(goodBad.getStatus() == GoodBadStatus.GOOD.getValue()) {
+				//点过赞了，再点的话就是取消点赞
+				Article article = articleService.getArticleById(aid);
+				article.setGoodCount(article.getGoodCount() - 1);
+				articleService.update(article);
+				
+				goodBadService.delete(aid, uid);
+			} else {
+				//点踩变成点赞
+				Article article = articleService.getArticleById(aid);
+				article.setGoodCount(article.getGoodCount() + 1);
+				article.setBadCount(article.getBadCount() - 1);
+				articleService.update(article);
+				
+				goodBad.setStatus(GoodBadStatus.GOOD.getValue());
+				goodBadService.update(goodBad);
+			}
+		}
+		
+		resultDTO.setErrorMsg("点赞成功");
+		resultDTO.setStatus(ResultDTOStatus.SUCCESS.getStatus());
+		return resultDTO;
+	}
+	
+	
+	/**
+	 * 点踩
+	 * @param aid
+	 * @return
+	 */
+	@RequestMapping(value="/tieba/clickBad", method = RequestMethod.POST)
+	public ResultDTO clickBad(HttpSession session,@RequestParam("aid") int aid) {
+		
+		ResultDTO resultDTO = new ResultDTO();
+		
+		if(!CommUtil.isUserLogined(session)) {
+			resultDTO.setErrorMsg("还未登录，请先登录");
+			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+			return resultDTO;
+		}
+		
+		User user = (User)session.getAttribute("user");
+		User userDateBase = userService.findByEmail(user.getEmail(),user.getPassword());
+		int uid = userDateBase.getId();
+		
+		GoodBad goodBad = goodBadService.getGoodByAidAndUid(aid, uid);
+		if(goodBad == null) {
+			Article article = articleService.getArticleById(aid);
+			article.setBadCount(article.getBadCount() + 1);
+			articleService.update(article);
+			
+			GoodBad goodBadDatabase = new GoodBad();
+			goodBadDatabase.setAid(aid);
+			goodBadDatabase.setUid(uid);
+			goodBadDatabase.setStatus(GoodBadStatus.BAD.getValue());
+			goodBadService.insert(goodBadDatabase);		
+		} else {
+			if(goodBad.getStatus() == GoodBadStatus.BAD.getValue()) {
+				//点过踩了，再点的话就是取消点踩
+				Article article = articleService.getArticleById(aid);
+				article.setBadCount(article.getBadCount() - 1);
+				articleService.update(article);
+				
+				goodBadService.delete(aid, uid);
+			} else {
+				//点赞变成点踩
+				Article article = articleService.getArticleById(aid);
+				article.setGoodCount(article.getGoodCount() - 1);
+				article.setBadCount(article.getBadCount() + 1);
+				articleService.update(article);
+				
+				goodBad.setStatus(GoodBadStatus.BAD.getValue());
+				goodBadService.update(goodBad);
+			}
+		}
+		
+		resultDTO.setErrorMsg("点踩成功");
+		resultDTO.setStatus(ResultDTOStatus.SUCCESS.getStatus());
+		return resultDTO;
+	}
+	
+	/**
+	 * 收藏
+	 * @param aid
+	 * @return
+	 */
+	@RequestMapping(value="/tieba/clickCollection", method = RequestMethod.POST)
+	public ResultDTO clickCollection(HttpSession session,@RequestParam("aid") int aid) {
+		
+		ResultDTO resultDTO = new ResultDTO();
+		
+		if(!CommUtil.isUserLogined(session)) {
+			resultDTO.setErrorMsg("还未登录，请先登录");
+			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+			return resultDTO;
+		}
+		
+		User user = (User)session.getAttribute("user");
+		User userDateBase = userService.findByEmail(user.getEmail(),user.getPassword());
+		int uid = userDateBase.getId();
+		
+		CollectionCount collection = collectionCountService.getGoodByAidAndUid(aid, uid);
+		if(collection == null) {
+			//收藏
+			Article article = articleService.getArticleById(aid);
+			article.setCollectCount(article.getCollectCount() + 1);
+			articleService.update(article);
+			
+			CollectionCount collectionDataBase = new CollectionCount();
+			collectionDataBase.setAid(aid);
+			collectionDataBase.setUid(uid);
+			collectionCountService.insert(collectionDataBase);		
+		} else {
+			//取消收藏
+			Article article = articleService.getArticleById(aid);
+			article.setCollectCount(article.getCollectCount() - 1);
+			articleService.update(article);
+				
+			collectionCountService.delete(aid, uid);	
+		}
+		
+		resultDTO.setErrorMsg("收藏成功");
+		resultDTO.setStatus(ResultDTOStatus.SUCCESS.getStatus());
 		return resultDTO;
 	}
 	 

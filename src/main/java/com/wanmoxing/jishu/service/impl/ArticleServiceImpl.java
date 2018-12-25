@@ -24,7 +24,6 @@ public class ArticleServiceImpl implements ArticleService {
 	@Override
 	public PageInfo<Article> getArticleList(int page) {
 		PageHelper.startPage(page, CommonConstants.DEFAULT_PAGE_SIZE);
-		System.out.println("page :" + page + "size:"+CommonConstants.DEFAULT_PAGE_SIZE);
 		List<Article> articles = articleMapper.getArticleList();
 		PageInfo<Article> pageInfo = new PageInfo<>(articles);
 		return pageInfo;

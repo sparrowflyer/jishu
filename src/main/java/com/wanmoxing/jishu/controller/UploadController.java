@@ -1,23 +1,28 @@
 package com.wanmoxing.jishu.controller;
 
-import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
+import java.util.Random;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.wanmoxing.jishu.constant.CommonConstants;
+import com.google.gson.Gson;
+import com.qiniu.common.Zone;
+import com.qiniu.http.Response;
+import com.qiniu.storage.Configuration;
+import com.qiniu.storage.UploadManager;
+import com.qiniu.storage.model.DefaultPutRet;
+import com.qiniu.util.Auth;
+import com.wanmoxing.jishu.bean.QiNiuProperties;
 import com.wanmoxing.jishu.constant.enums.ResultDTOStatus;
 import com.wanmoxing.jishu.dto.ResultDTO;
 
@@ -25,86 +30,86 @@ import com.wanmoxing.jishu.dto.ResultDTO;
 @RestController
 @RequestMapping("/jishu")
 public class UploadController {
-	
-	private static Logger logger = LoggerFactory.getLogger(UploadController.class);
 
-	/**
-	 * 文件上传
-	 * @param file
-	 * @param request
-	 * @param response
-	 * @return
-	 */
-	@RequestMapping(value="/upload",method=RequestMethod.POST)
-	public ResultDTO upload(@RequestBody MultipartFile file,
-			HttpServletRequest request, HttpServletResponse response) {
+    @Autowired
+    private QiNiuProperties qiNiuProperties;
 
-		//获取文件在服务器的储存位置
-        String path = request.getSession().getServletContext().getRealPath(CommonConstants.DEFAULT_UPLOAD_ADDRESS);
-        File filePath = new File(path);
-        logger.debug("文件的保存路径：" + path);
-        if (!filePath.exists() && !filePath.isDirectory()) {
-            logger.debug("目录不存在，创建目录:" + filePath);
-            filePath.mkdir();
-        }
-        
-        String originalFileName = file.getOriginalFilename();
-        logger.debug("原始文件名称：" + originalFileName);
-
+    @RequestMapping(value = "/upload", method = RequestMethod.POST)
+    public ResultDTO uploadImg(@RequestBody MultipartFile file) throws Exception {
     	ResultDTO resultDTO = new ResultDTO();
+    	String fileName = file.getOriginalFilename();
+    	if(fileName.contains(".")) {
+	        String fileExt = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
+	        String [] fileExtArray= {"bmp","jpg","jpeg","png"}; 
+	        if(!Arrays.asList(fileExtArray).contains(fileExt)) {
+	        	resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+	        	resultDTO.setErrorMsg("仅支持bmp,jpg,jpeg,png格式");
+	        	return resultDTO;
+	        } 
+		        
+	        SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
+		    String newFileName = df.format(new Date()) + "_" + new Random().nextInt(1000) + "." + fileExt;
+		    DefaultPutRet putRet = upload(file.getBytes(), newFileName);
+		    resultDTO.setStatus(ResultDTOStatus.SUCCESS.getStatus());
+		    resultDTO.setErrorMsg("上传成功");
+		    resultDTO.setData(qiNiuProperties.getBucketUrl() + "/"+putRet.key);
+		    return resultDTO;     
+    	} else {
+    		resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+    		resultDTO.setErrorMsg("请上传图片文件");
+    		return resultDTO;
+    	}
+    }
 
-        if(originalFileName.contains(".")) {
-	        //获取文件类型，以最后一个`.`为标识
-	        String type = originalFileName.substring(originalFileName.lastIndexOf(".") + 1);
-	        logger.debug("文件类型：" + type);
-	        if(!"jpg".equalsIgnoreCase(type) && !"jpeg".equalsIgnoreCase(type)
-	        		&& !"png".equalsIgnoreCase(type)) {
-	        	resultDTO.setErrorMsg("文件类型不支持");
-	            resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
-	            return resultDTO;
-	        }
-	        
-	        if(file.getSize() > 1024 * 1024) {
-	        	resultDTO.setErrorMsg("文件大小不应超过1M");
-	            resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
-	            return resultDTO;
-	        }
-	        //获取文件名称（不包含格式）
-	        String name = originalFileName.substring(0, originalFileName.lastIndexOf("."));
-	
-	        //设置文件新名称: 当前时间+文件名称（不包含格式）
-	        Date d = new Date();
-	        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-	        String date = sdf.format(d);
-	        String fileName = date + name + File.separator + type;
-	        logger.debug("新文件名称：" + fileName);
-	
-	        //在指定路径下创建一个文件
-	        File targetFile = new File(path, fileName);
-	
-	        System.out.println("path:" + path);
-	        System.out.println("filename:" + path);
-	        //将文件保存到服务器指定位置
-	        try {
-	            file.transferTo(targetFile);
-	            logger.info("上传成功");
-	            //将文件在服务器的存储路径返回
-	            resultDTO.setErrorMsg("上传成功");
-	            resultDTO.setStatus(ResultDTOStatus.SUCCESS.getStatus());
-	            resultDTO.setData(request.getContextPath() + CommonConstants.DEFAULT_UPLOAD_ADDRESS + fileName);
-	            return resultDTO;
-	        } catch (IOException e) {
-	            logger.info("上传失败");
-	            e.printStackTrace();
-	            resultDTO.setErrorMsg("上传失败");
-	            resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
-	            return resultDTO;
-	        }
-        } else {
-        	resultDTO.setErrorMsg("上传文件格式不对！");
-        	resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
-        	return resultDTO;
-        }
-	}
-	
+
+    @RequestMapping(value = "/uploads", method = RequestMethod.POST)
+    public ResultDTO uploadImgs(@RequestBody MultipartFile [] files) throws IOException, Exception{
+    	ResultDTO resultDTO = new ResultDTO();
+    	List<String> urlList = new ArrayList<>();
+    	for(MultipartFile file: files) {
+    		String fileName = file.getOriginalFilename();
+	    	if(!fileName.contains(".")) {
+	    		resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+	    		resultDTO.setErrorMsg("请上传图片文件");
+	    		return resultDTO;
+	    	}	
+    	}
+    	
+    	for(MultipartFile file: files) {
+    		String fileName = file.getOriginalFilename();
+    		String fileExt = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
+    		String [] fileExtArray= {"bmp","jpg","jpeg","png"}; 
+	        if(!Arrays.asList(fileExtArray).contains(fileExt)) {
+	        	resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+	        	resultDTO.setErrorMsg("仅支持bmp,jpg,jpeg,png格式");
+	        	return resultDTO;
+	        } 	
+    	}
+    	for(MultipartFile file: files) {
+	    	String fileName = file.getOriginalFilename();
+		    String fileExt = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();    
+		    SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
+			String newFileName = df.format(new Date()) + "_" + new Random().nextInt(1000) + "." + fileExt;
+			DefaultPutRet putRet = upload(file.getBytes(), newFileName);
+			urlList.add(qiNiuProperties.getBucketUrl() + "/"+putRet.key);
+    	}
+    	
+    	resultDTO.setStatus(ResultDTOStatus.SUCCESS.getStatus());
+	    resultDTO.setErrorMsg("上传成功");
+	    resultDTO.setData(urlList);
+	    return resultDTO; 
+    }
+
+    public DefaultPutRet upload(byte[] file, String key) throws Exception {
+        Auth auth = Auth.create(qiNiuProperties.getAccessKey(), qiNiuProperties.getSecretKey());
+        Zone z = Zone.huadong();
+        Configuration c = new Configuration(z);
+        UploadManager uploadManager = new UploadManager(c);    
+        String token = auth.uploadToken(qiNiuProperties.getBucket());
+        Response res = uploadManager.put(file, key, token);
+        //解析上传成功的结果
+        DefaultPutRet putRet = new Gson().fromJson(res.bodyString(), DefaultPutRet.class);
+        return putRet;
+    }
+
 }

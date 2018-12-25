@@ -265,7 +265,7 @@ export function About() {
     return (
         <div>
             <Header activeTitle="other"/>
-            <BreadCrumb title="ABOUT US" subItem="Pages" currentItem="About" />
+            <BreadCrumb title="关于我们" />
             <AboutUs />
             <Facts />
             <Team />

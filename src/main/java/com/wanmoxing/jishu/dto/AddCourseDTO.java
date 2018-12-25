@@ -114,7 +114,6 @@ public class AddCourseDTO {
 		course.setTargetStudentAmount(targetStudentAmount);
 		course.setCurrentStudentAmount(0);
 		course.setStatus(CourseStatus.INIT.getStatus());
-		course.setCreatedTime(new Timestamp(System.currentTimeMillis()));
 		return course;
 	}
 	

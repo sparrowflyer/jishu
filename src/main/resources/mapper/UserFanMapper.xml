@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+  
+<mapper namespace="com.wanmoxing.jishu.mapper.UserFanMapper">  
+
+	<resultMap id="userFanResultMap" type="com.wanmoxing.jishu.bean.UserFan">
+		<result property="ownerId" column="OWNER_ID"/>
+		<result property="fanId" column="FAN_ID"/>
+	</resultMap>
+	
+	<resultMap id="userResultMap" type="com.wanmoxing.jishu.bean.User">
+		<id property="id" column="ID"/>
+		<result property="nickName" column="NICK_NAME"/>
+		<result property="email" column="EMAIL"/>
+		<result property="cellPhone" column="CELL_PHONE"/>
+		<result property="password" column="PASSWORD"/>
+		<result property="headImage" column="HEAD_IMAGE"/>
+		<result property="type" column="TYPE"/>
+		<result property="status" column="STATUS"/>
+		<result property="createdTime" column="CREATED_TIME"/>
+		<result property="updatedTime" column="UPDATED_TIME"/>
+	</resultMap>
+
+    <insert id="insert" parameterType="com.wanmoxing.jishu.bean.UserFan">
+        INSERT INTO jishu.T_USER_FAN(OWNER_ID,FAN_ID) 
+        VALUES(#{ownerId},#{fanId});
+    </insert>
+    
+    <select id="find" parameterType="int" resultMap="userFanResultMap">
+        SELECT *
+      	FROM jishu.T_USER_FAN
+      	WHERE OWNER_ID=#{ownerId}
+    </select>
+    
+    <select id="findFansUsers" parameterType="int" resultMap="userResultMap">
+    	select * 
+    	from jishu.T_USER
+    	where id in (select fan_id from jishu.T_USER_FAN where owner_id = #{ownerId}); 
+    </select>
+    
+    <delete id="delete" parameterType="com.wanmoxing.jishu.bean.UserFan">
+        DELETE FROM jishu.T_USER_FAN WHERE OWNER_ID=#{ownerId} and FAN_ID=#{fanId}
+    </delete>
+    
+</mapper>

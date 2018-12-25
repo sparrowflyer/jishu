@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.wanmoxing.jishu.bean.Course;
 import com.wanmoxing.jishu.bean.User;
 import com.wanmoxing.jishu.constant.enums.ResultDTOStatus;
+import com.wanmoxing.jishu.constant.enums.UserType;
 import com.wanmoxing.jishu.dto.AddCourseDTO;
 import com.wanmoxing.jishu.dto.ResultDTO;
 import com.wanmoxing.jishu.service.CourseService;
@@ -27,7 +28,7 @@ public class CourseController {
 	private CourseService courseService;
 	
 	@RequestMapping(value = "/addCourse", method = RequestMethod.POST)
-	public ResultDTO addCourse (HttpSession session, @RequestBody AddCourseDTO addCourseVO) {
+	public ResultDTO addCourse (HttpSession session, @RequestBody AddCourseDTO addCourseDTO) {
 		ResultDTO result = new ResultDTO();
 		try {
 			if (!CommUtil.isUserLogined(session)) {
@@ -36,10 +37,16 @@ public class CourseController {
 				return result;
 			}
 			User author = (User) session.getAttribute("user");
-			Course course = addCourseVO.transferToCourse(author);
+			if (!UserType.TEACHER.getType().equals(author.getType())) {
+				result.setStatus(ResultDTOStatus.ERROR.getStatus());
+				result.setErrorMsg("Only Teacher can add course!");
+				return result;
+			}
+			Course course = addCourseDTO.transferToCourse(author);
 			courseService.insert(course);
 			return result;
 		} catch (Exception e) {
+			e.printStackTrace();
 			result.setStatus(ResultDTOStatus.ERROR.getStatus());
 			result.setErrorMsg("Exception occured!");
 			return result;

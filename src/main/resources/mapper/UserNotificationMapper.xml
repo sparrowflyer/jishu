@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+  
+<mapper namespace="com.wanmoxing.jishu.mapper.UserNotificationMapper">  
+
+	<resultMap id="userNotificationResultMap" type="com.wanmoxing.jishu.bean.UserNotification">
+		<id property="id" column="ID"/>
+		<result property="userId" column="USER_ID"/>
+		<result property="title" column="TITLE"/>
+		<result property="content" column="CONTENT"/>
+		<result property="type" column="TYPE"/>
+		<result property="status" column="STATUS"/>
+		<result property="createdTime" column="CREATED_TIME"/>
+		<result property="updatedTime" column="UPDATED_TIME"/>
+	</resultMap>
+
+    <insert id="insert" parameterType="com.wanmoxing.jishu.bean.UserNotification" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO jishu.T_USER_NOTIFICATION(USER_ID,TITLE,CONTENT,TYPE,STATUS,CREATED_TIME,UPDATED_TIME) 
+        VALUES(#{userId},#{title},#{content},#{type},#{status},#{createdTime},#{updatedTime});
+    </insert>
+    
+    <update id="update" parameterType="com.wanmoxing.jishu.bean.UserNotification">
+        UPDATE jishu.T_USER_NOTIFICATION 
+        SET USER_ID=#{userId},
+        	TITLE=#{title},
+        	CONTENT=#{content},
+        	TYPE=#{type},
+        	STATUS=#{status},
+        	CREATED_TIME=#{createdTime},
+        	UPDATED_TIME=#{updatedTime}
+        WHERE ID=#{id}
+    </update>
+    
+    <select id="find" parameterType="int" resultMap="userNotificationResultMap">
+        SELECT *
+      	FROM jishu.T_USER_NOTIFICATION
+      	WHERE ID=#{0}
+    </select>
+    
+    <select id="findByUserId" parameterType="int" resultMap="userNotificationResultMap">
+        SELECT *
+      	FROM jishu.T_USER_NOTIFICATION
+      	WHERE USER_ID=#{0}
+    </select>
+    
+    <delete id="delete" parameterType="int">
+        DELETE FROM jishu.T_USER_NOTIFICATION WHERE ID=#{0}
+    </delete>
+    
+</mapper>

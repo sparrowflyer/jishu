@@ -1,0 +1,98 @@
+package com.wanmoxing.jishu.controller;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
+
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.wanmoxing.jishu.bean.User;
+import com.wanmoxing.jishu.bean.UserFan;
+import com.wanmoxing.jishu.constant.enums.ResultDTOStatus;
+import com.wanmoxing.jishu.dto.FansDTO;
+import com.wanmoxing.jishu.dto.GetFansDTO;
+import com.wanmoxing.jishu.dto.ResultDTO;
+import com.wanmoxing.jishu.service.UserFanService;
+import com.wanmoxing.jishu.service.UserService;
+import com.wanmoxing.jishu.util.CommUtil;
+
+@RestController
+@RequestMapping("/jishu")
+public class UserFanController {
+	
+	@Resource
+	private UserService userService;
+	@Resource
+	private UserFanService userFanService;
+	
+	@RequestMapping(value = "/addFan", method = RequestMethod.POST)
+	public ResultDTO addFan (HttpSession session, @RequestBody UserFan userFan) {
+		ResultDTO result = new ResultDTO();
+		try {
+			if (!CommUtil.isUserLogined(session)) {
+				result.setStatus(ResultDTOStatus.ERROR.getStatus());
+				result.setErrorMsg("User not logined!");
+				return result;
+			}
+			userFanService.insert(userFan);
+			return result;
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus(ResultDTOStatus.ERROR.getStatus());
+			result.setErrorMsg("Exception occured!");
+			return result;
+		}
+	}
+	
+	@RequestMapping(value = "/deleteFan", method = RequestMethod.POST)
+	public ResultDTO deleteFan (HttpSession session, @RequestBody UserFan userFan) {
+		ResultDTO result = new ResultDTO();
+		try {
+			if (!CommUtil.isUserLogined(session)) {
+				result.setStatus(ResultDTOStatus.ERROR.getStatus());
+				result.setErrorMsg("User not logined!");
+				return result;
+			}
+			userFanService.delete(userFan);
+			return result;
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus(ResultDTOStatus.ERROR.getStatus());
+			result.setErrorMsg("Exception occured!");
+			return result;
+		}
+	}
+	
+	@RequestMapping(value = "/getFans", method = RequestMethod.POST)
+	public ResultDTO getFans (HttpSession session, @RequestBody GetFansDTO getFansDTO) {
+		ResultDTO result = new ResultDTO();
+		try {
+			if (!CommUtil.isUserLogined(session)) {
+				result.setStatus(ResultDTOStatus.ERROR.getStatus());
+				result.setErrorMsg("User not logined!");
+				return result;
+			}
+			List<User> fansUsers = userFanService.findFansUsers(getFansDTO.getOwnerId());
+			List<FansDTO> fansDTOs = new ArrayList<FansDTO>();
+			for (User user : fansUsers) {
+				FansDTO fansDTO = new FansDTO();
+				fansDTO.setId(user.getId());
+				fansDTO.setNickName(user.getNickName());
+				fansDTOs.add(fansDTO);
+			}
+			result.setData(fansDTOs);
+			return result;
+		} catch (Exception e) {
+			e.printStackTrace(); 
+			result.setStatus(ResultDTOStatus.ERROR.getStatus());
+			result.setErrorMsg("Exception occured!");
+			return result;
+		}
+	}
+
+}

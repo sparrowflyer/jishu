@@ -67,7 +67,7 @@ public class Course {
 	 */
 	private String status;
 	
-	private Timestamp createdTime;
+	private Timestamp createdTime = new Timestamp(System.currentTimeMillis());
 	
 	private Timestamp updatedTime;
 	

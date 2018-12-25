@@ -21,9 +21,9 @@ function NormalContainer({title, subItem, currentItem}) {
             <h2 className="section-title">{title}</h2>
             <nav aria-label="breadcrumb">
                 <ol className="breadcrumb">
-                    <li className="breadcrumb-item"><a href="#">Home</a></li>
+                    <li className="breadcrumb-item"><a href="#">jishu</a></li>
                     <SubItem content={subItem}/>
-                    <li className="breadcrumb-item active" aria-current="page">{currentItem}</li>
+                    <li className="breadcrumb-item active" aria-current="page">{currentItem || title}</li>
                 </ol>
             </nav>
         </div>

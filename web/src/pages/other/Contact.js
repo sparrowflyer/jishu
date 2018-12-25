@@ -56,7 +56,7 @@ export function Contact() {
     return (
         <div>
             <Header activeTitle="other"/>
-            <BreadCrumb title="CONTACT US" subItem="Pages" currentItem="Contact" />
+            <BreadCrumb title="联系我们" subItem="关于我们" />
             <ContactContent />
             <Subscribe />
             <Footer />

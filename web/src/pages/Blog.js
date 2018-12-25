@@ -352,7 +352,7 @@ export function Blog() {
     return (
         <div>
             <Header activeTitle="blog" />
-            <BreadCrumb title="Blog" currentItem="Blog" />
+            <BreadCrumb title="学生贴吧" />
             <section className="blog-posts">
                 <div className="section-padding">
                     <div className="container">

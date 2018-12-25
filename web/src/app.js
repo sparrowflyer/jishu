@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import 'whatwg-fetch';
 //Import Template Icons CSS Files
 import './assets/css/font-awesome.min.css';
 import './assets/css/simple-line-icons.css';
@@ -16,10 +17,10 @@ import './assets/css/style.css';
 import './assets/css/responsive.css';
 //WooCommerce
 import './assets/css/woocommerce.css';
-import { Login } from './pages/other/Login.js';
+import { Routers } from './utils/router.js';
 
 const App = () => (
-    <Login loginType="login" />
+    <Routers />
 );
 
 ReactDOM.render(

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+  
+<mapper namespace="com.wanmoxing.jishu.mapper.CourseCommentMapper">  
+
+	<resultMap id="courseCommentResultMap" type="com.wanmoxing.jishu.bean.CourseComment">
+		<id property="id" column="ID"/>
+		<result property="courseId" column="COURSE_ID"/>
+		<result property="userId" column="USER_ID"/>
+		<result property="content" column="CONTENT"/>
+		<result property="createdTime" column="CREATED_TIME"/>
+	</resultMap>
+
+    <insert id="insert" parameterType="com.wanmoxing.jishu.bean.CourseComment" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO jishu.T_COURSE_COMMENT(COURSE_ID,USER_ID,CONTENT,CREATED_TIME) 
+        VALUES(#{courseId},#{userId},#{content},#{createdTime});
+    </insert>
+    
+    <select id="findByCourseId" parameterType="int" resultMap="courseCommentResultMap">
+        SELECT *
+      	FROM jishu.T_COURSE_COMMENT
+      	WHERE COURSE_ID=#{0}
+    </select>
+    
+    <delete id="delete" parameterType="int">
+        DELETE FROM jishu.T_COURSE_COMMENT WHERE ID=#{0}
+    </delete>
+    
+</mapper>

@@ -39,6 +39,18 @@
       	WHERE ID=#{0}
     </select>
     
+    <select id="findByBuyerId" parameterType="int" resultMap="purchaseResultMap">
+        SELECT *
+      	FROM jishu.T_PURCHASE
+      	WHERE BUYER_ID=#{0}
+    </select>
+    
+    <select id="findPayedNumPurchaseByBuyerId" parameterType="int" resultType="int">
+        SELECT count(1)
+      	FROM jishu.T_PURCHASE
+      	WHERE BUYER_ID=#{0} and STATUS in ('payed')
+    </select>
+    
     <delete id="delete" parameterType="int">
         DELETE FROM jishu.T_PURCHASE WHERE ID=#{0}
     </delete>

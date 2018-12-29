@@ -2,6 +2,7 @@ package com.wanmoxing.jishu.bean;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.List;
 
 public class Course {
 	
@@ -67,11 +68,15 @@ public class Course {
 	 */
 	private String status;
 	
+	/**
+	 * 课程类型
+	 */
+	private String type;
+	
 	private Timestamp createdTime = new Timestamp(System.currentTimeMillis());
 	
 	private Timestamp updatedTime;
 	
-
 	public int getId() {
 		return id;
 	}
@@ -192,6 +197,27 @@ public class Course {
 		this.updatedTime = updatedTime;
 	}
 
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+	
+	/**
+	 * 仅前端展示用
+	 */
+	private List<CourseComment> comments;
+	
+	public List<CourseComment> getComments() {
+		return comments;
+	}
+
+	public void setComments(List<CourseComment> comments) {
+		this.comments = comments;
+	}
+
 	@Override
 	public String toString() {
 		return "Course [id=" + id + ", title=" + title + ", detail=" + detail + ", coverImage=" + coverImage
@@ -199,7 +225,8 @@ public class Course {
 				+ courseCollectionStartTime + ", courseCollectionEndTime=" + courseCollectionEndTime
 				+ ", courseStartTime=" + courseStartTime + ", courseDurationTime=" + courseDurationTime
 				+ ", targetStudentAmount=" + targetStudentAmount + ", currentStudentAmount=" + currentStudentAmount
-				+ ", status=" + status + ", createdTime=" + createdTime + ", updatedTime=" + updatedTime + "]";
+				+ ", status=" + status + ", type=" + type + ", createdTime=" + createdTime + ", updatedTime="
+				+ updatedTime + "]";
 	}
-	
+
 }

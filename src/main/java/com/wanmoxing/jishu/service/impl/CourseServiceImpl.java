@@ -1,5 +1,7 @@
 package com.wanmoxing.jishu.service.impl;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.context.annotation.ComponentScan;
@@ -19,6 +21,16 @@ public class CourseServiceImpl implements CourseService {
 	@Override
 	public Course find(int id) {
 		return courseMapper.find(id);
+	}
+	
+	@Override
+	public List<Course> findByAuthorId(int authorId) {
+		return courseMapper.findByAuthorId(authorId);
+	}
+	
+	@Override
+	public List<Course> findByStatus(List<String> statuses) {
+		return courseMapper.findByStatus(statuses);
 	}
 
 	@Override

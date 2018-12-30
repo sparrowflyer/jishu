@@ -1,9 +1,8 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
+import { Link } from 'react-router-dom';
 import { withAlert } from 'react-alert';
-import { getEmailVerifyCode, getVerifyCodeImage, postJson } from '../../utils/server.js'
-import { Form } from '../../components/login/Form.js';
+import { getEmailVerifyCode, getVerifyCodeImage, postJson } from '../../utils/server.js';
 import { Header } from '../../components/common/Header.js';
 import { Footer } from '../../components/common/Footer.js';
 import { BreadCrumb } from '../../components/common/BreadCrumb.js';
@@ -48,6 +47,7 @@ class Register extends React.Component {
         this.sendEmailCode = this.sendEmailCode.bind(this);
         this.handlePasswordBlur = this.handlePasswordBlur.bind(this);
         this.submitRegisterInfo = this.submitRegisterInfo.bind(this);
+        this.getImageCode = this.getImageCode.bind(this);
     }
 
     componentDidMount() {
@@ -65,6 +65,22 @@ class Register extends React.Component {
                         ...state,
                         imageUrl: ''
                     }
+                });
+            });
+    }
+
+    getImageCode() {
+        getVerifyCodeImage()
+            .then(blob => {
+                this.setState((state) => {
+                    return {
+                        ...state,
+                        imageUrl: window.URL.createObjectURL(blob)
+                    }
+                });
+            }).catch(error => {
+                this.setState((state) => {
+                    return { ...state, imageUrl: '' }
                 });
             });
     }
@@ -264,7 +280,7 @@ class Register extends React.Component {
                                     <p className="form-input">
                                         <input type="text" name="imageCode" id="image_code" style={ legalImageInput }
                                                placeholder="Image Verification Code" onChange={ this.handleInputChange } required />
-                                        <img src={this.state.imageUrl} />
+                                        <img src={this.state.imageUrl} onClick={ () => { this.getImageCode(); } } />
                                     </p>
                                     <RememberMeInRegister />
                                     <p className="form-input">
@@ -274,7 +290,7 @@ class Register extends React.Component {
                                 </form>
                                 <Social title="Or Sign up using" />
                                 <p className="register">
-                                    Already have an account? <a href="#">Sign in now</a>
+                                    Already have an account? <Link to="/login">Sign in now</Link>
                                 </p>
                             </div>
                         </div>

@@ -6,7 +6,7 @@ import { Cart } from '../pages/home/Cart.js';
 import { About } from '../pages/other/About.js';
 import { Contact } from '../pages/other/Contact.js';
 import { FAQ } from '../pages/other/FAQ.js';
-import { Login } from '../pages/other/Login.js';
+import LoginWithRouter from '../pages/other/Login.js';
 import RegisterWithRouter from '../pages/other/Register.js';
 import { Blog } from '../pages/Blog.js';
 import { Course } from '../pages/Course.js';
@@ -24,7 +24,7 @@ export function Routers() {
                     <Route path='/about' component={About} />
                     <Route path='/contact' component={Contact} />
                     <Route path='/faq' component={FAQ} />
-                    <Route path='/login' component={Login} />
+                    <Route path='/login' component={ LoginWithRouter } />
                     <Route path='/register' component={ RegisterWithRouter } />
                     <Route path='/blog' component={Blog} />
                     <Route path='/course' component={Course} />

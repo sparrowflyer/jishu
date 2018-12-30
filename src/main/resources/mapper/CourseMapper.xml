@@ -17,18 +17,33 @@
 		<result property="targetStudentAmount" column="TARGET_STUDENT_AMOUNT"/>
 		<result property="currentStudentAmount" column="CURRENT_STUDENT_AMOUNT"/>
 		<result property="status" column="STATUS"/>
+		<result property="type" column="TYPE"/>
 		<result property="createdTime" column="CREATED_TIME"/>
 		<result property="updatedTime" column="UPDATED_TIME"/>
 	</resultMap>
 
     <insert id="insert" parameterType="com.wanmoxing.jishu.bean.Course" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO jishu.T_COURSE(TITLE,DETAIL,COVER_IMAGE,AUTHOR_ID,PRICE,COURSE_COLLECTION_START_TIME,COURSE_COLLECTION_END_TIME,COURSE_START_TIME,COURSE_DURATION_TIME,TARGET_STUDENT_AMOUNT,CURRENT_STUDENT_AMOUNT,STATUS,CREATED_TIME,UPDATED_TIME) 
-        VALUES(#{title},#{detail},#{coverImage},#{authorId},#{price},#{courseCollectionStartTime},#{courseCollectionEndTime},#{courseStartTime},#{courseDurationTime},#{targetStudentAmount},#{currentStudentAmount},#{status},#{createdTime},#{updatedTime});
+        INSERT INTO jishu.T_COURSE(TITLE,DETAIL,COVER_IMAGE,AUTHOR_ID,PRICE,COURSE_COLLECTION_START_TIME,COURSE_COLLECTION_END_TIME,COURSE_START_TIME,COURSE_DURATION_TIME,TARGET_STUDENT_AMOUNT,CURRENT_STUDENT_AMOUNT,STATUS,TYPE,CREATED_TIME,UPDATED_TIME) 
+        VALUES(#{title},#{detail},#{coverImage},#{authorId},#{price},#{courseCollectionStartTime},#{courseCollectionEndTime},#{courseStartTime},#{courseDurationTime},#{targetStudentAmount},#{currentStudentAmount},#{status},#{type},#{createdTime},#{updatedTime});
     </insert>
     
     <update id="update" parameterType="com.wanmoxing.jishu.bean.Course">
         UPDATE jishu.T_COURSE 
-        SET TITLE=#{title},DETAIL=#{detail},COVER_IMAGE=#{coverImage},AUTHOR_ID=#{authorId},PRICE=#{price},COURSE_COLLECTION_START_TIME=#{courseCollectionStartTime},COURSE_COLLECTION_END_TIME=#{courseCollectionEndTime},COURSE_START_TIME=#{courseStartTime},COURSE_DURATION_TIME=#{courseDurationTime},TARGET_STUDENT_AMOUNT=#{targetStudentAmount},CURRENT_STUDENT_AMOUNT=#{currentStudentAmount},STATUS=#{status},CREATED_TIME=#{createdTime},UPDATED_TIME=#{updatedTime}
+        SET TITLE=#{title},
+        	DETAIL=#{detail},
+        	COVER_IMAGE=#{coverImage},
+        	AUTHOR_ID=#{authorId},
+        	PRICE=#{price},
+        	COURSE_COLLECTION_START_TIME=#{courseCollectionStartTime},
+        	COURSE_COLLECTION_END_TIME=#{courseCollectionEndTime},
+        	COURSE_START_TIME=#{courseStartTime},
+        	COURSE_DURATION_TIME=#{courseDurationTime},
+        	TARGET_STUDENT_AMOUNT=#{targetStudentAmount},
+        	CURRENT_STUDENT_AMOUNT=#{currentStudentAmount},
+        	STATUS=#{status},
+        	TYPE=#{type},
+        	CREATED_TIME=#{createdTime},
+        	UPDATED_TIME=#{updatedTime}
         WHERE ID=#{id}
     </update>
     
@@ -36,6 +51,22 @@
         SELECT *
       	FROM jishu.T_COURSE
       	WHERE ID=#{0}
+    </select>
+    
+    <select id="findByAuthorId" parameterType="int" resultMap="courseResultMap">
+        SELECT *
+      	FROM jishu.T_COURSE
+      	WHERE AUTHOR_ID=#{0}
+    </select>
+    
+    <select id="findByStatus" parameterType="java.util.List" resultMap="courseResultMap">
+        SELECT *
+      	FROM jishu.T_COURSE
+      	WHERE STATUS in
+      	<foreach collection="list" index="index" item="item"
+            open="(" separator="," close=")">
+            #{item}
+        </foreach>
     </select>
     
     <delete id="delete" parameterType="int">

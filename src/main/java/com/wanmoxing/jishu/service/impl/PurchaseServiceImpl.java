@@ -1,5 +1,7 @@
 package com.wanmoxing.jishu.service.impl;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.context.annotation.ComponentScan;
@@ -19,6 +21,16 @@ public class PurchaseServiceImpl implements PurchaseService {
 	@Override
 	public Purchase find(int id) {
 		return purchaseMapper.find(id);
+	}
+	
+	@Override
+	public List<Purchase> findByBuyerId(int buyerId) {
+		return purchaseMapper.findByBuyerId(buyerId);
+	}
+	
+	@Override
+	public int findPayedNumPurchaseByBuyerId(int buyerId) {
+		return purchaseMapper.findPayedNumPurchaseByBuyerId(buyerId);
 	}
 
 	@Override

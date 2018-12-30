@@ -6,7 +6,7 @@
 	<groupId>com.wanmoxing</groupId>
 	<artifactId>jishu</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 
 	<name>jishu</name>
 	<description>jishu project for WanMoXing</description>

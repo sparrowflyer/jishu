@@ -1,5 +1,7 @@
 package com.wanmoxing.jishu.controller;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -16,9 +18,12 @@ import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.request.AlipayTradePagePayRequest;
 import com.wanmoxing.jishu.bean.Course;
 import com.wanmoxing.jishu.bean.Purchase;
+import com.wanmoxing.jishu.bean.User;
 import com.wanmoxing.jishu.constant.AlipayConfig;
 import com.wanmoxing.jishu.constant.enums.PurchasePayment;
+import com.wanmoxing.jishu.constant.enums.ResultDTOStatus;
 import com.wanmoxing.jishu.dto.PurchaseCourseDTO;
+import com.wanmoxing.jishu.dto.ResultDTO;
 import com.wanmoxing.jishu.service.CourseService;
 import com.wanmoxing.jishu.service.PurchaseService;
 import com.wanmoxing.jishu.service.UserService;
@@ -86,6 +91,7 @@ public class PurchaseController {
 			response.getWriter().write(form);
 			response.getWriter().flush();
 			response.getWriter().close();
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -115,6 +121,26 @@ public class PurchaseController {
 	public void alipayPurchaseNotify() {
 		// AlipaySignature.rsaCheckV1(params, publicKey, charset);
 		// purchase.setPaymentAdditionalInfo(paymentAdditionalInfo); 设置支付宝订单号
+	}
+	
+	@RequestMapping(value = "/getPurchaseHistory", method = RequestMethod.POST)
+	public ResultDTO getPurchaseHistorys(HttpSession session, @RequestBody User getCreatedCoursesDTO) {
+		ResultDTO result = new ResultDTO();
+		try {
+			if (!CommUtil.isUserLogined(session)) {
+				result.setStatus(ResultDTOStatus.ERROR.getStatus());
+				result.setErrorMsg("User not logined!");
+				return result;
+			}
+			List<Purchase> purchases = purchaseService.findByBuyerId(getCreatedCoursesDTO.getId());
+			result.setData(purchases);
+			return result;
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus(ResultDTOStatus.ERROR.getStatus());
+			result.setErrorMsg("Exception occured!");
+			return result;
+		}
 	}
 
 }

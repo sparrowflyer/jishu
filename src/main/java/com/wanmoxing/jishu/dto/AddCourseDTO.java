@@ -17,6 +17,8 @@ public class AddCourseDTO {
 	
 	private BigDecimal price;
 	
+	private String type;
+	
 	private Timestamp courseCollectionStartTime;
 	
 	private Timestamp courseCollectionEndTime;
@@ -100,6 +102,14 @@ public class AddCourseDTO {
 		this.targetStudentAmount = targetStudentAmount;
 	}
 	
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
 	public Course transferToCourse(User courseAuthor) {
 		Course course = new Course();
 		course.setTitle(title);
@@ -114,6 +124,7 @@ public class AddCourseDTO {
 		course.setTargetStudentAmount(targetStudentAmount);
 		course.setCurrentStudentAmount(0);
 		course.setStatus(CourseStatus.INIT.getStatus());
+		course.setType(type);
 		return course;
 	}
 	

@@ -1,5 +1,7 @@
 package com.wanmoxing.jishu.mapper;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 
 import com.wanmoxing.jishu.bean.Purchase;
@@ -8,6 +10,10 @@ import com.wanmoxing.jishu.bean.Purchase;
 public interface PurchaseMapper {
 	
 	public Purchase find(int id);
+	
+	public List<Purchase> findByBuyerId(int buyerId);
+	
+	public int findPayedNumPurchaseByBuyerId(int buyerId);
 
     public void insert(Purchase purchase);
 

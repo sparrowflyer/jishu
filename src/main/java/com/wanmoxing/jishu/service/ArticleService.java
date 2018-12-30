@@ -1,8 +1,11 @@
 package com.wanmoxing.jishu.service;
 
 
+import java.util.List;
+
 import com.github.pagehelper.PageInfo;
 import com.wanmoxing.jishu.bean.Article;
+import com.wanmoxing.jishu.bean.ArticleType;
 
 public interface ArticleService {
 	
@@ -11,6 +14,8 @@ public interface ArticleService {
 	public Article getArticleById(int aid);
 
 	public Article searchArticleByTitle(String key);
+	
+	public List<ArticleType> getAllArticleType();
 	
 	public void insert(Article article);
 	

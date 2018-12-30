@@ -15,6 +15,8 @@ public class Comment {
 	
 	private Timestamp createDate;
 	
+	private Timestamp updateDate;
+	
 	private int floorNumber;
 	
 	private int floorReply; //0:无回复  1:有回复
@@ -61,6 +63,14 @@ public class Comment {
 
 	public void setCreateDate(Timestamp createDate) {
 		this.createDate = createDate;
+	}
+
+	public Timestamp getUpdateDate() {
+		return updateDate;
+	}
+
+	public void setUpdateDate(Timestamp updateDate) {
+		this.updateDate = updateDate;
 	}
 
 	public int getFloorNumber() {

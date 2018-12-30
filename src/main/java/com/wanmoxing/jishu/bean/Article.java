@@ -15,6 +15,12 @@ public class Article {
 	
 	private Timestamp createDate;
 	
+	private Timestamp updateDate;
+	
+	private int typeId;
+	
+	private int status;
+	
 	private int goodCount;
 	
 	private int badCount;
@@ -67,6 +73,30 @@ public class Article {
 
 	public void setCreateDate(Timestamp createDate) {
 		this.createDate = createDate;
+	}
+
+	public Timestamp getUpdateDate() {
+		return updateDate;
+	}
+
+	public void setUpdateDate(Timestamp updateDate) {
+		this.updateDate = updateDate;
+	}
+
+	public int getTypeId() {
+		return typeId;
+	}
+
+	public void setTypeId(int typeId) {
+		this.typeId = typeId;
+	}
+
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
 	}
 
 	public int getGoodCount() {

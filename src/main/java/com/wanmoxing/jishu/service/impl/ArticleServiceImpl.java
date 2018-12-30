@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.wanmoxing.jishu.bean.Article;
+import com.wanmoxing.jishu.bean.ArticleType;
 import com.wanmoxing.jishu.constant.CommonConstants;
 import com.wanmoxing.jishu.mapper.ArticleMapper;
 import com.wanmoxing.jishu.service.ArticleService;
@@ -37,6 +38,11 @@ public class ArticleServiceImpl implements ArticleService {
 	@Override
 	public Article searchArticleByTitle(String key) {
 		return articleMapper.searchArticleByTitle(key);
+	}
+	
+	@Override
+	public List<ArticleType> getAllArticleType() {
+		return articleMapper.getAllArticleType();
 	}
 
 	@Override

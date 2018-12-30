@@ -9,6 +9,9 @@
 		<result property="uid" column="uid"/>
 		<result property="content" column="content"/>
 		<result property="createDate" column="create_date"/>
+		<result property="updateDate" column="update_date"/>
+		<result property="typeId" column="typeid"/>
+		<result property="status" column="status"/>
 		<result property="goodCount" column="good_count"/>
 		<result property="badCount" column="bad_count"/>
 		<result property="collectCount" column="collect_count"/>
@@ -16,9 +19,14 @@
 		<result property="imagesrc" column="image_src"/>
 		<association property="user" column="uid" select="com.wanmoxing.jishu.mapper.UserMapper.findById"></association>
 	</resultMap>
+	
+	<resultMap id="articleTypeResultMap" type="com.wanmoxing.jishu.bean.ArticleType">
+		<id property="id" column="id"/>
+		<result property="value" column="value"/>
+	</resultMap>
     
     <select id="getArticleList" resultMap="articleResultMap">
-        select * from T_ARTICLE,T_USER where T_ARTICLE.uid=T_USER.ID order by aid desc
+        select * from T_ARTICLE,T_USER where T_ARTICLE.uid=T_USER.ID and T_ARTICLE.status !=4 order by aid desc
     </select>
 
     <select id="getArticleById" parameterType="int" resultMap="articleResultMap">
@@ -29,16 +37,20 @@
 		select * from T_ARTICLE where title like '%' #{key} '%' order by aid desc
 	</select>
 	
+	<select id="getAllArticleType" resultMap="articleTypeResultMap">
+		select * from T_ARTICLE_TYPE  order by id asc
+	</select>
+	
     <delete id="delete" parameterType="int">
         DELETE FROM jishu.T_ARTICLE WHERE aid=#{aid}
     </delete>
     
     <insert id="insert" parameterType="com.wanmoxing.jishu.bean.Article" useGeneratedKeys="true" keyProperty="aid">
-        INSERT INTO jishu.T_ARTICLE(title,uid,content,create_date,good_count,bad_count,collect_count,comment_count,image_src) VALUES(#{title},#{uid},#{content},current_timestamp,#{goodCount},#{badCount},#{collectCount},#{commentCount},#{imagesrc})
+        INSERT INTO jishu.T_ARTICLE(title,uid,content,create_date,typeid,status,good_count,bad_count,collect_count,comment_count,image_src) VALUES(#{title},#{uid},#{content},current_timestamp,#{typeId},#{status},#{goodCount},#{badCount},#{collectCount},#{commentCount},#{imagesrc})
     </insert>
     
     <update id="update" parameterType="com.wanmoxing.jishu.bean.Article">
-        UPDATE jishu.T_ARTICLE SET title=#{title},content=#{content},good_count=#{goodCount},bad_count=#{badCount},collect_count=#{collectCount},comment_count=#{commentCount},image_src=#{imagesrc} WHERE aid=#{aid}
+        UPDATE jishu.T_ARTICLE SET title=#{title},content=#{content},update_date=current_timestamp,good_count=#{goodCount},bad_count=#{badCount},collect_count=#{collectCount},comment_count=#{commentCount},image_src=#{imagesrc} WHERE aid=#{aid}
     </update>
     
 </mapper>

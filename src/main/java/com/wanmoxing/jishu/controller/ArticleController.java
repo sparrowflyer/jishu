@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.wanmoxing.jishu.bean.Article;
+import com.wanmoxing.jishu.bean.ArticleType;
 import com.wanmoxing.jishu.bean.CollectionCount;
 import com.wanmoxing.jishu.bean.Comment;
 import com.wanmoxing.jishu.bean.GoodBad;
@@ -112,6 +113,8 @@ public class ArticleController {
 	 */
 	@RequestMapping(value="/tieba/addArticle", method = RequestMethod.POST)
 	public ResultDTO addArticle(HttpSession session, @RequestBody Article article) {
+		logger.info("发布新帖");
+
 		ResultDTO resultDTO = new ResultDTO();
 		if(!CommUtil.isUserLogined(session)) {
 			resultDTO.setErrorMsg("还未登录，请先登录");
@@ -124,6 +127,7 @@ public class ArticleController {
 		String title = article.getTitle();
 		String content = article.getContent();
 		String imagesrc= article.getImagesrc();
+		int typeId = article.getTypeId();
 		
 		if(CommUtil.isEmptyOrNull(title)) {
 			resultDTO.setErrorMsg("帖子标题不能为空");
@@ -151,6 +155,7 @@ public class ArticleController {
 		article.setCreateDate(new Timestamp(new Date().getTime()));
 		article.setImagesrc(imagesrc);
 		article.setTitle(title);
+		article.setTypeId(typeId);
 		article.setUid(userDateBase.getId());
 		
 		articleService.insert(article);
@@ -183,6 +188,7 @@ public class ArticleController {
 		String title = article.getTitle();
 		String content = article.getContent();
 		String imagesrc= article.getImagesrc();
+		int typeId= article.getTypeId();
 		
 		if(aid<0) {
 			resultDTO.setErrorMsg("帖子id不存在");
@@ -217,6 +223,7 @@ public class ArticleController {
 		articleDatabase.setTitle(title);
 		articleDatabase.setContent(content);
 		articleDatabase.setImagesrc(imagesrc);
+		articleDatabase.setTypeId(typeId);
 		articleService.update(articleDatabase);
 		resultDTO.setErrorMsg("更新帖子成功");
 		resultDTO.setStatus(ResultDTOStatus.SUCCESS.getStatus());
@@ -379,6 +386,27 @@ public class ArticleController {
 		
 		resultDTO.setErrorMsg("收藏成功");
 		resultDTO.setStatus(ResultDTOStatus.SUCCESS.getStatus());
+		return resultDTO;
+	}
+	
+	/**
+	 * @param 
+	 * @return 所有帖子的分类
+	 *
+	 */
+	@RequestMapping(value="tieba/articleType",method=RequestMethod.GET)
+	public ResultDTO getAllArticleType() {
+		ResultDTO resultDTO = new ResultDTO();
+		try {
+			List<ArticleType> articleTypes = articleService.getAllArticleType();
+			resultDTO.setErrorMsg("获取所有文章分类");
+			resultDTO.setStatus(ResultDTOStatus.SUCCESS.getStatus());
+			resultDTO.setData(articleTypes);
+		} catch (Exception e) {
+			resultDTO.setErrorMsg("获取所有文章分类时发生异常");
+			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+		}
+		
 		return resultDTO;
 	}
 	 

@@ -7,6 +7,7 @@ import { About } from '../pages/other/About.js';
 import { Contact } from '../pages/other/Contact.js';
 import { FAQ } from '../pages/other/FAQ.js';
 import { Login } from '../pages/other/Login.js';
+import RegisterWithRouter from '../pages/other/Register.js';
 import { Blog } from '../pages/Blog.js';
 import { Course } from '../pages/Course.js';
 import { Me } from '../pages/Me.js';
@@ -24,6 +25,7 @@ export function Routers() {
                     <Route path='/contact' component={Contact} />
                     <Route path='/faq' component={FAQ} />
                     <Route path='/login' component={Login} />
+                    <Route path='/register' component={ RegisterWithRouter } />
                     <Route path='/blog' component={Blog} />
                     <Route path='/course' component={Course} />
                     <Route path='/me' component={Me} />

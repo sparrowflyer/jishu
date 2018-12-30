@@ -6,7 +6,7 @@ import { getVerifyCodeImage, postJson } from '../../utils/server.js'
 import { Header } from '../../components/common/Header.js';
 import { Footer } from '../../components/common/Footer.js';
 import { BreadCrumb } from '../../components/common/BreadCrumb.js';
-import { Social } from '../../components/login/ControlInLogin.js';
+import { RememberMeInLogin, Social } from '../../components/login/ControlInLogin.js';
 
 const legalImageInput = {
     maxWidth: "380px"
@@ -116,7 +116,7 @@ class Login extends React.Component {
                     <div className="section-padding">
                         <div className="container">
                             <div className="contents text-center">
-                                <h2 className="section-title">Login</h2>
+                                <h2 className="section-title">LOG IN TO YOUR ACCOUNT</h2>
                                 <form className="sign-in-form" id="sign-in-form" onSubmit={ this.submitLoginInfo }>
                                     <p className="form-input">
                                         <input type="text" name="username" id="user_login" placeholder="Username / Email" className="input"
@@ -131,6 +131,7 @@ class Login extends React.Component {
                                                placeholder="Image Verification Code" onChange={ this.handleInputChange } required />
                                         <img src={ this.state.imageUrl } onClick={ () => { this.getImageCode(); } } />
                                     </p>
+                                    <RememberMeInLogin />
                                     <p className="form-input">
                                         <input type="submit" name="wp-submit" id="wp-submit" className="btn"
                                                value={this.state.isLoginLoading ? "Loading..." : "Sign In"} disabled={this.state.isLoginLoading} />

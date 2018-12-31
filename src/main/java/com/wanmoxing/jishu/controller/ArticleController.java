@@ -509,7 +509,7 @@ public class ArticleController {
 			resultDTO.setErrorMsg("设为普通帖子成功");
 			resultDTO.setStatus(ResultDTOStatus.SUCCESS.getStatus());
 		} catch (Exception e) {
-			resultDTO.setErrorMsg("设置普通帖子时发生异常");
+			resultDTO.setErrorMsg("设置普通帖子发生异常");
 			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
 		}
 		

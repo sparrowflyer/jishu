@@ -1,80 +1,146 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { withRouter } from 'react-router';
+import { Link } from 'react-router-dom';
+import { withAlert } from 'react-alert';
 import { getVerifyCodeImage, postJson } from '../../utils/server.js'
-import { Form } from '../../components/login/Form.js';
 import { Header } from '../../components/common/Header.js';
 import { Footer } from '../../components/common/Footer.js';
 import { BreadCrumb } from '../../components/common/BreadCrumb.js';
-import { RememberMeInLogin, RememberMeInRegister, RegisterInfoInLogin, RegisterInfoInRegister } from '../../components/login/ControlInLogin.js';
+import { RememberMeInLogin, Social } from '../../components/login/ControlInLogin.js';
 
-const words = {
-    register: {
-        breadcrumbTitle: 'Register',
-        breadcrumbItem: 'Register',
-        title: 'Register',
-        socialTitle: 'Or Sign up using'
-    },
-    login: {
-        breadcrumbTitle: 'Log In',
-        breadcrumbItem: 'Login',
-        title: 'Log in to your account',
-        socialTitle: 'Or login using'
-    }
+const legalImageInput = {
+    maxWidth: "380px"
 };
 
-const mr5 = {
-    marginRight: '5px'
-};
-
-const RememberMe = ({loginType}) => {
-    return loginType === 'register' ? <RememberMeInRegister /> : <RememberMeInLogin />;
-};
-const RegisterInfo = ({loginType}) => {
-    return loginType === 'register' ? <RegisterInfoInRegister /> : <RegisterInfoInLogin />;
-};
-
-export class Login extends React.Component {
+class Login extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            verifyCodeImage: ''
+            username: '',
+            password: '',
+            imageCode: '',
+            imageUrl: '',
+            isLoginLoading: false
         };
+        this.handleInputChange = this.handleInputChange.bind(this);
+        this.getImageCode = this.getImageCode.bind(this);
+        this.submitLoginInfo = this.submitLoginInfo.bind(this);
+    }
+
+    handleInputChange(event) {
+        const name = event.target.name;
+        const value = event.target.value;
+        this.setState((state) => {
+            return {
+                ...state,
+                [name]: [value]
+            };
+        });
+    }
+
+    submitLoginInfo(event) {
+        event.preventDefault();
+        this.setState((state) => {
+            return {
+                ...state,
+                isLoginLoading: true
+            }
+        });
+        postJson('/login', {
+            "email": this.state.username[0],
+            "password": this.state.password[0],
+            "imageVercode": this.state.imageCode[0]
+        }).then((data) => {
+            this.setState((state) => {
+                return {
+                    ...state,
+                    isLoginLoading: false
+                }
+            });
+            if (data.status === 'success') {
+                console.log(data);
+                //sessionStorage.setItem('isLogin', )
+                //this.props.history.push('/home');
+            } else {
+                this.props.alert.error(data.errorMsg || data.error);
+            }
+        }).catch((error) => {
+            this.setState((state) => {
+                return {
+                    ...state,
+                    isLoginLoading: false
+                }
+            });
+            this.props.alert.error('登录失败。');
+        });
+    }
+
+    getImageCode() {
+        getVerifyCodeImage()
+            .then(blob => {
+                this.setState((state) => {
+                    return {
+                        ...state,
+                        imageUrl: window.URL.createObjectURL(blob)
+                    }
+                });
+            }).catch(error => {
+                this.setState((state) => {
+                    return { ...state, imageUrl: '' }
+                });
+            });
     }
 
     componentDidMount() {
         getVerifyCodeImage()
             .then(blob => {
-                this.setState({
-                    verifyCodeImage: window.URL.createObjectURL(blob)
+                this.setState((state) => {
+                    return {
+                        ...state,
+                        imageUrl: window.URL.createObjectURL(blob)
+                    }
                 });
             }).catch(error => {
-                this.setState({verifyCodeImage: ''});
+                this.setState((state) => {
+                    return { ...state, imageUrl: '' }
+                });
             });
     }
 
     render() {
-        const loginType = this.props.loginType || 'login';
-        const {breadcrumbTitle, breadcrumbItem, title, socialTitle} = words[loginType];
         return (
             <div>
                 <Header activeTitle="other" />
-                <BreadCrumb title={breadcrumbTitle} subItem="个人中心" currentItem={breadcrumbItem} />
+                <BreadCrumb title="登录" subItem="个人中心" currentItem="登录" />
                 <section className="login-register">
                     <div className="section-padding">
                         <div className="container">
                             <div className="contents text-center">
-                                <h2 className="section-title">{title}</h2>
-                                <Form loginType={loginType}>
-                                    <img src={this.state.verifyCodeImage} />
-                                    <RememberMe loginType={loginType} />
-                                </Form>
-                                <div className="login-social">
-                                    <h2 className="section-title">{socialTitle}</h2>
-                                    <button className="btn facebook" style={mr5}><i className="fab fa-facebook"></i> Facebook</button>
-                                    <button className="btn twitter" style={mr5}><i className="fab fa-twitter"></i> Twitter</button>
-                                    <button className="btn google" style={mr5}><i className="fab fa-google-plus"></i> Google</button>
-                                </div>
-                                <RegisterInfo loginType={loginType} />
+                                <h2 className="section-title">LOG IN TO YOUR ACCOUNT</h2>
+                                <form className="sign-in-form" id="sign-in-form" onSubmit={ this.submitLoginInfo }>
+                                    <p className="form-input">
+                                        <input type="text" name="username" id="user_login" placeholder="Username / Email" className="input"
+                                               onChange={ this.handleInputChange } value={ this.state.username } required />
+                                    </p>
+                                    <p className="form-input">
+                                        <input type="password" name="password" id="user_pass" placeholder="Password" className="input"
+                                               onChange={ this.handleInputChange } value={ this.state.password } required />
+                                    </p>
+                                    <p className="form-input">
+                                        <input type="text" name="imageCode" id="image_code" style={ legalImageInput }
+                                               placeholder="Image Verification Code" onChange={ this.handleInputChange } required />
+                                        <img src={ this.state.imageUrl } onClick={ () => { this.getImageCode(); } } />
+                                    </p>
+                                    <RememberMeInLogin />
+                                    <p className="form-input">
+                                        <input type="submit" name="wp-submit" id="wp-submit" className="btn"
+                                               value={this.state.isLoginLoading ? "Loading..." : "Sign In"} disabled={this.state.isLoginLoading} />
+                                    </p>
+                                </form>
+                                <Social title="Or login using" />
+                                <p className="register">
+                                    Don’t have an account? <Link to="/register">Register now</Link>
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -85,6 +151,5 @@ export class Login extends React.Component {
     }
 }
 
-Login.propTypes = {
-    loginType: PropTypes.oneOf(['register', 'login'])
-};
+const LoginWithRouter = withRouter(withAlert(Login));
+export default LoginWithRouter;

@@ -21,6 +21,7 @@ import com.wanmoxing.jishu.bean.CollectionCount;
 import com.wanmoxing.jishu.bean.Comment;
 import com.wanmoxing.jishu.bean.GoodBad;
 import com.wanmoxing.jishu.bean.User;
+import com.wanmoxing.jishu.constant.enums.ArticleStatus;
 import com.wanmoxing.jishu.constant.enums.GoodBadStatus;
 import com.wanmoxing.jishu.constant.enums.ResultDTOStatus;
 import com.wanmoxing.jishu.dto.ResultDTO;
@@ -404,6 +405,111 @@ public class ArticleController {
 			resultDTO.setData(articleTypes);
 		} catch (Exception e) {
 			resultDTO.setErrorMsg("获取所有文章分类时发生异常");
+			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+		}
+		
+		return resultDTO;
+	}
+	
+	/**
+	 * 置顶
+	 * @param aid
+	 * @return 
+	 *
+	 */
+	@RequestMapping(value="tieba/topArticle",method=RequestMethod.POST)
+	public ResultDTO topArticle(HttpSession session,@RequestParam("aid") int aid) {
+		ResultDTO resultDTO = new ResultDTO();
+		try {
+			articleService.updateArticleStatus(ArticleStatus.TOP.getValue(), aid);
+			resultDTO.setErrorMsg("置顶帖子成功");
+			resultDTO.setStatus(ResultDTOStatus.SUCCESS.getStatus());
+		} catch (Exception e) {
+			resultDTO.setErrorMsg("置顶帖子时发生异常");
+			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+		}
+		
+		return resultDTO;
+	}
+	
+	/**
+	 * 加精
+	 * @param aid
+	 * @return 
+	 *
+	 */
+	@RequestMapping(value="tieba/bestArticle",method=RequestMethod.POST)
+	public ResultDTO bestArticle(HttpSession session,@RequestParam("aid") int aid) {
+		ResultDTO resultDTO = new ResultDTO();
+		try {
+			articleService.updateArticleStatus(ArticleStatus.BEST.getValue(), aid);
+			resultDTO.setErrorMsg("帖子加精成功");
+			resultDTO.setStatus(ResultDTOStatus.SUCCESS.getStatus());
+		} catch (Exception e) {
+			resultDTO.setErrorMsg("加精帖子时发生异常");
+			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+		}
+		
+		return resultDTO;
+	}
+	
+	/**
+	 * 置顶 + 加精
+	 * @param aid
+	 * @return 
+	 *
+	 */
+	@RequestMapping(value="tieba/topAndBestArticle",method=RequestMethod.POST)
+	public ResultDTO topAndBestArticle(HttpSession session,@RequestParam("aid") int aid) {
+		ResultDTO resultDTO = new ResultDTO();
+		try {
+			articleService.updateArticleStatus(ArticleStatus.TOPANDBEST.getValue(), aid);
+			resultDTO.setErrorMsg("置顶加精帖子成功");
+			resultDTO.setStatus(ResultDTOStatus.SUCCESS.getStatus());
+		} catch (Exception e) {
+			resultDTO.setErrorMsg("置顶加精帖子时发生异常");
+			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+		}
+		
+		return resultDTO;
+	}
+	
+	/**
+	 * 违规
+	 * @param aid
+	 * @return 
+	 *
+	 */
+	@RequestMapping(value="tieba/illegalArticle",method=RequestMethod.POST)
+	public ResultDTO illegalArticle(HttpSession session,@RequestParam("aid") int aid) {
+		ResultDTO resultDTO = new ResultDTO();
+		try {
+			articleService.updateArticleStatus(ArticleStatus.Illegal.getValue(), aid);
+			resultDTO.setErrorMsg("成功设该帖违规");
+			resultDTO.setStatus(ResultDTOStatus.SUCCESS.getStatus());
+		} catch (Exception e) {
+			resultDTO.setErrorMsg("设置帖子违规时发生异常");
+			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+		}
+		
+		return resultDTO;
+	}
+	
+	/**
+	 * 正常帖子
+	 * @param aid
+	 * @return 
+	 *
+	 */
+	@RequestMapping(value="tieba/generalArticle",method=RequestMethod.POST)
+	public ResultDTO generalArticle(HttpSession session,@RequestParam("aid") int aid) {
+		ResultDTO resultDTO = new ResultDTO();
+		try {
+			articleService.updateArticleStatus(ArticleStatus.GENERAL.getValue(), aid);
+			resultDTO.setErrorMsg("设为普通帖子成功");
+			resultDTO.setStatus(ResultDTOStatus.SUCCESS.getStatus());
+		} catch (Exception e) {
+			resultDTO.setErrorMsg("设置普通帖子时发生异常");
 			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
 		}
 		

@@ -53,4 +53,8 @@
         UPDATE jishu.T_ARTICLE SET title=#{title},content=#{content},update_date=current_timestamp,good_count=#{goodCount},bad_count=#{badCount},collect_count=#{collectCount},comment_count=#{commentCount},image_src=#{imagesrc} WHERE aid=#{aid}
     </update>
     
+    <update id="updateArticleStatus">
+        UPDATE jishu.T_ARTICLE SET status=#{status} WHERE aid=#{aid}
+    </update>
+    
 </mapper>

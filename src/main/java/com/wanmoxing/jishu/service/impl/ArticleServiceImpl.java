@@ -60,6 +60,9 @@ public class ArticleServiceImpl implements ArticleService {
 		articleMapper.delete(aid);
 	}
 
-	
+	@Override
+	public void updateArticleStatus(int status, int aid) {
+		articleMapper.updateArticleStatus(status, aid);
+	}
 
 }

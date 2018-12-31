@@ -22,5 +22,7 @@ public interface ArticleService {
     public void update(Article article);
 
     public void delete(int aid);
+    
+    public void updateArticleStatus(int status, int aid);
 
 }

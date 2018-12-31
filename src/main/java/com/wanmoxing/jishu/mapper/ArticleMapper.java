@@ -3,6 +3,8 @@ package com.wanmoxing.jishu.mapper;
 
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
 import com.wanmoxing.jishu.bean.Article;
 import com.wanmoxing.jishu.bean.ArticleType;
 
@@ -22,5 +24,7 @@ public interface ArticleMapper {
     public void update(Article article);
     
     public void delete(int aid);
+    
+    public void updateArticleStatus(@Param("status")int status, @Param("aid")int aid);
 	
 }

@@ -1,5 +1,6 @@
 package com.wanmoxing.jishu.controller;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -166,6 +167,7 @@ public class CourseController {
 			courseComment.setCourseId(addCourseCommentDTO.getCourseId());
 			courseComment.setUserId(addCourseCommentDTO.getUserId());
 			courseComment.setContent(addCourseCommentDTO.getContent());
+			courseComment.setCreatedTime(new Timestamp(System.currentTimeMillis()));
 			courseCommentService.insert(courseComment);
 			return result;
 		} catch (Exception e) {

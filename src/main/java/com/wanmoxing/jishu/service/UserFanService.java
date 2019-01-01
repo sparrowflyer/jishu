@@ -8,6 +8,8 @@ import com.wanmoxing.jishu.bean.UserFan;
 public interface UserFanService {
 	
 	public List<UserFan> find(int id);
+	
+	public UserFan findByOwnerAndFan(UserFan userFan);
 
     public void insert(UserFan userFan);
 

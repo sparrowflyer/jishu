@@ -50,7 +50,13 @@ public class UserFanController {
 				result.setErrorMsg("User not logined!");
 				return result;
 			}
-			userFanService.insert(userFan);
+			UserFan existingUserFan = userFanService.findByOwnerAndFan(userFan);
+			if (existingUserFan == null) {
+				userFanService.insert(userFan);
+			} else {
+				result.setStatus(ResultDTOStatus.ERROR.getStatus());
+				result.setErrorMsg("Fan for this user already exist");
+			}
 			return result;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -79,7 +85,13 @@ public class UserFanController {
 				result.setErrorMsg("User not logined!");
 				return result;
 			}
-			userFanService.delete(userFan);
+			UserFan existingUserFan = userFanService.findByOwnerAndFan(userFan);
+			if (existingUserFan == null) {
+				result.setStatus(ResultDTOStatus.ERROR.getStatus());
+				result.setErrorMsg("Fan for this user not exist");
+			} else {
+				userFanService.delete(userFan);
+			}
 			return result;
 		} catch (Exception e) {
 			e.printStackTrace();

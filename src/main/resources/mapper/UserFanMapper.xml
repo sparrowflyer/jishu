@@ -32,6 +32,12 @@
       	WHERE OWNER_ID=#{ownerId}
     </select>
     
+    <select id="findByOwnerAndFan" parameterType="com.wanmoxing.jishu.bean.UserFan" resultMap="userFanResultMap">
+        SELECT *
+      	FROM jishu.T_USER_FAN
+      	WHERE OWNER_ID=#{ownerId} and FAN_ID=#{fanId}
+    </select>
+    
     <select id="findFansUsers" parameterType="int" resultMap="userResultMap">
     	select * 
     	from jishu.T_USER

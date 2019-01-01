@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.wanmoxing.jishu.bean.User;
 import com.wanmoxing.jishu.bean.UserFan;
+import com.wanmoxing.jishu.constant.CommonConstants;
 import com.wanmoxing.jishu.constant.enums.ResultDTOStatus;
 import com.wanmoxing.jishu.dto.FansDTO;
 import com.wanmoxing.jishu.dto.GetFansDTO;
@@ -44,7 +45,7 @@ public class UserFanController {
 	public ResultDTO addFan (HttpSession session, @RequestBody UserFan userFan) {
 		ResultDTO result = new ResultDTO();
 		try {
-			if (!CommUtil.isUserLogined(session)) {
+			if (!CommonConstants.DEV_MODE && !CommUtil.isUserLogined(session)) {
 				result.setStatus(ResultDTOStatus.ERROR.getStatus());
 				result.setErrorMsg("User not logined!");
 				return result;
@@ -73,7 +74,7 @@ public class UserFanController {
 	public ResultDTO deleteFan (HttpSession session, @RequestBody UserFan userFan) {
 		ResultDTO result = new ResultDTO();
 		try {
-			if (!CommUtil.isUserLogined(session)) {
+			if (!CommonConstants.DEV_MODE && !CommUtil.isUserLogined(session)) {
 				result.setStatus(ResultDTOStatus.ERROR.getStatus());
 				result.setErrorMsg("User not logined!");
 				return result;
@@ -101,7 +102,7 @@ public class UserFanController {
 	public ResultDTO getFans (HttpSession session, @RequestBody GetFansDTO getFansDTO) {
 		ResultDTO result = new ResultDTO();
 		try {
-			if (!CommUtil.isUserLogined(session)) {
+			if (!CommonConstants.DEV_MODE && !CommUtil.isUserLogined(session)) {
 				result.setStatus(ResultDTOStatus.ERROR.getStatus());
 				result.setErrorMsg("User not logined!");
 				return result;

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.wanmoxing.jishu.bean.User;
+import com.wanmoxing.jishu.constant.CommonConstants;
 import com.wanmoxing.jishu.constant.enums.ResultDTOStatus;
 import com.wanmoxing.jishu.dto.ResultDTO;
 import com.wanmoxing.jishu.dto.UpdateUserHeadImageDTO;
@@ -49,7 +50,7 @@ public class UserController {
 	public ResultDTO updateUserNickname(HttpSession session, @RequestBody UpdateUserNicknameDTO updateUserNicknameDTO){
 		ResultDTO result = new ResultDTO();
 		try {
-			if (!CommUtil.isUserLogined(session)) {
+			if (!CommonConstants.DEV_MODE && !CommUtil.isUserLogined(session)) {
 				result.setStatus(ResultDTOStatus.ERROR.getStatus());
 				result.setErrorMsg("User not logined!");
 				return result;
@@ -80,7 +81,7 @@ public class UserController {
 	public ResultDTO updateUserHeadImage(HttpSession session, @RequestBody UpdateUserHeadImageDTO updateUserHeadImageDTO){
 		ResultDTO result = new ResultDTO();
 		try {
-			if (!CommUtil.isUserLogined(session)) {
+			if (!CommonConstants.DEV_MODE && !CommUtil.isUserLogined(session)) {
 				result.setStatus(ResultDTOStatus.ERROR.getStatus());
 				result.setErrorMsg("User not logined!");
 				return result;

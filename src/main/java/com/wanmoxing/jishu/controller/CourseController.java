@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.wanmoxing.jishu.bean.Course;
 import com.wanmoxing.jishu.bean.CourseComment;
 import com.wanmoxing.jishu.bean.User;
+import com.wanmoxing.jishu.constant.CommonConstants;
 import com.wanmoxing.jishu.constant.enums.CourseStatus;
 import com.wanmoxing.jishu.constant.enums.ResultDTOStatus;
 import com.wanmoxing.jishu.constant.enums.UserType;
@@ -63,7 +64,7 @@ public class CourseController {
 	public ResultDTO addCourse (HttpSession session, @RequestBody AddCourseDTO addCourseDTO) {
 		ResultDTO result = new ResultDTO();
 		try {
-			if (!CommUtil.isUserLogined(session)) {
+			if (!CommonConstants.DEV_MODE && !CommUtil.isUserLogined(session)) {
 				result.setStatus(ResultDTOStatus.ERROR.getStatus());
 				result.setErrorMsg("User not logined!");
 				return result;
@@ -149,7 +150,7 @@ public class CourseController {
 	public ResultDTO addCourseComment (HttpSession session, @RequestBody AddCourseCommentDTO addCourseCommentDTO) {
 		ResultDTO result = new ResultDTO();
 		try {
-			if (!CommUtil.isUserLogined(session)) {
+			if (!CommonConstants.DEV_MODE && !CommUtil.isUserLogined(session)) {
 				result.setStatus(ResultDTOStatus.ERROR.getStatus());
 				result.setErrorMsg("User not logined!");
 				return result;
@@ -188,7 +189,7 @@ public class CourseController {
 	public ResultDTO deleteCourseComment (HttpSession session, @RequestBody DeleteCourseCommentDTO deleteCourseCommentDTO) {
 		ResultDTO result = new ResultDTO();
 		try {
-			if (!CommUtil.isUserLogined(session)) {
+			if (!CommonConstants.DEV_MODE && !CommUtil.isUserLogined(session)) {
 				result.setStatus(ResultDTOStatus.ERROR.getStatus());
 				result.setErrorMsg("User not logined!");
 				return result;
@@ -216,7 +217,7 @@ public class CourseController {
 	public ResultDTO getCreatedCourses (HttpSession session, @RequestBody User getCreatedCoursesDTO) {
 		ResultDTO result = new ResultDTO();
 		try {
-			if (!CommUtil.isUserLogined(session)) {
+			if (!CommonConstants.DEV_MODE && !CommUtil.isUserLogined(session)) {
 				result.setStatus(ResultDTOStatus.ERROR.getStatus());
 				result.setErrorMsg("User not logined!");
 				return result;

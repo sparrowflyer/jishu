@@ -25,6 +25,7 @@ import com.wanmoxing.jishu.bean.Course;
 import com.wanmoxing.jishu.bean.Purchase;
 import com.wanmoxing.jishu.bean.User;
 import com.wanmoxing.jishu.constant.AlipayConfig;
+import com.wanmoxing.jishu.constant.CommonConstants;
 import com.wanmoxing.jishu.constant.enums.PurchasePayment;
 import com.wanmoxing.jishu.constant.enums.PurchaseStatus;
 import com.wanmoxing.jishu.constant.enums.ResultDTOStatus;
@@ -61,7 +62,7 @@ public class PurchaseController {
 	@RequestMapping(value = "/purchaseCourse", method = RequestMethod.POST)
 	public void purchaseCourse(HttpSession session, HttpServletResponse response, @RequestBody PurchaseCourseDTO purchaseCourseDTO) {
 		try {
-			if (!CommUtil.isUserLogined(session)) {
+			if (!CommonConstants.DEV_MODE && !CommUtil.isUserLogined(session)) {
 				System.out.println("用户未登录!购买失败！");
 				return;
 			}
@@ -271,7 +272,7 @@ public class PurchaseController {
 	public ResultDTO getPurchaseHistorys(HttpSession session, @RequestBody User getCreatedCoursesDTO) {
 		ResultDTO result = new ResultDTO();
 		try {
-			if (!CommUtil.isUserLogined(session)) {
+			if (!CommonConstants.DEV_MODE && !CommUtil.isUserLogined(session)) {
 				result.setStatus(ResultDTOStatus.ERROR.getStatus());
 				result.setErrorMsg("User not logined!");
 				return result;

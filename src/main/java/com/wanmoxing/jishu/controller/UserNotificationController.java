@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.wanmoxing.jishu.bean.UserNotification;
+import com.wanmoxing.jishu.constant.CommonConstants;
 import com.wanmoxing.jishu.constant.enums.ResultDTOStatus;
 import com.wanmoxing.jishu.constant.enums.UserNotificationStatus;
 import com.wanmoxing.jishu.dto.GetUserNotificationsDTO;
@@ -40,7 +41,7 @@ public class UserNotificationController {
 	public ResultDTO getUserNotificaitons (HttpSession session, @RequestBody GetUserNotificationsDTO getUserNotificationsDTO) {
 		ResultDTO result = new ResultDTO();
 		try {
-			if (!CommUtil.isUserLogined(session)) {
+			if (!CommonConstants.DEV_MODE && !CommUtil.isUserLogined(session)) {
 				result.setStatus(ResultDTOStatus.ERROR.getStatus());
 				result.setErrorMsg("User not logined!");
 				return result;
@@ -66,7 +67,7 @@ public class UserNotificationController {
 	public ResultDTO updateUserNotificaiton (HttpSession session, @RequestParam int id) {
 		ResultDTO result = new ResultDTO();
 		try {
-			if (!CommUtil.isUserLogined(session)) {
+			if (!CommonConstants.DEV_MODE && !CommUtil.isUserLogined(session)) {
 				result.setStatus(ResultDTOStatus.ERROR.getStatus());
 				result.setErrorMsg("User not logined!");
 				return result;

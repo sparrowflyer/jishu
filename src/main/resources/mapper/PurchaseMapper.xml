@@ -33,7 +33,7 @@
         WHERE ID=#{id}
     </update>
     
-    <select id="find" parameterType="int" resultMap="purchaseResultMap">
+    <select id="find" parameterType="java.lang.String" resultMap="purchaseResultMap">
         SELECT *
       	FROM jishu.T_PURCHASE
       	WHERE ID=#{0}
@@ -51,7 +51,7 @@
       	WHERE BUYER_ID=#{0} and STATUS in ('payed')
     </select>
     
-    <delete id="delete" parameterType="int">
+    <delete id="delete" parameterType="java.lang.String">
         DELETE FROM jishu.T_PURCHASE WHERE ID=#{0}
     </delete>
     

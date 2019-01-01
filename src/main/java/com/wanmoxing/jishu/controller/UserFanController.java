@@ -30,6 +30,16 @@ public class UserFanController {
 	@Resource
 	private UserFanService userFanService;
 	
+	/**
+	 * 关注接口
+	 	{
+			"ownerId":"1",
+			"fanId":"4"
+		}
+	 * @param session
+	 * @param userFan
+	 * @return
+	 */
 	@RequestMapping(value = "/addFan", method = RequestMethod.POST)
 	public ResultDTO addFan (HttpSession session, @RequestBody UserFan userFan) {
 		ResultDTO result = new ResultDTO();
@@ -49,6 +59,16 @@ public class UserFanController {
 		}
 	}
 	
+	/**
+	 * 取消关注接口
+	 	{
+			"ownerId":"1",
+			"fanId":"4"
+		}
+	 * @param session
+	 * @param userFan
+	 * @return
+	 */
 	@RequestMapping(value = "/deleteFan", method = RequestMethod.POST)
 	public ResultDTO deleteFan (HttpSession session, @RequestBody UserFan userFan) {
 		ResultDTO result = new ResultDTO();
@@ -68,6 +88,15 @@ public class UserFanController {
 		}
 	}
 	
+	/**
+	 * 获取所有粉丝
+	 	{
+			"ownerId":"1"
+		}
+	 * @param session
+	 * @param getFansDTO
+	 * @return
+	 */
 	@RequestMapping(value = "/getFans", method = RequestMethod.POST)
 	public ResultDTO getFans (HttpSession session, @RequestBody GetFansDTO getFansDTO) {
 		ResultDTO result = new ResultDTO();

@@ -19,7 +19,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 	private PurchaseMapper purchaseMapper;
 
 	@Override
-	public Purchase find(int id) {
+	public Purchase find(String id) {
 		return purchaseMapper.find(id);
 	}
 	
@@ -44,7 +44,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 	}
 
 	@Override
-	public void delete(int id) {
+	public void delete(String id) {
 		purchaseMapper.delete(id);
 	}
 

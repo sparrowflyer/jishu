@@ -43,6 +43,18 @@ public class CourseController {
 	
 	/**
 	 * 添加课程
+	 	{
+			"title": "我的课程1",
+			"detail": "这是我的第一个叽叔课程",
+			"coverImage": "xxx",
+			"price": "15.00",
+			"type": "overseas_life",
+			"courseCollectionStartTime": "2019-01-15 18:00:00",
+			"courseCollectionEndTime": "2019-01-16 19:00:00",
+			"courseStartTime": "2019-01-17 20:00:00",
+			"courseDurationTime": 120,
+			"targetStudentAmount": 100
+		}
 	 * @param session
 	 * @param addCourseDTO
 	 * @return
@@ -100,7 +112,10 @@ public class CourseController {
 	}
 	
 	/**
-	 * 获取课程的所有评论
+	 * 获取某个课程的所有评论
+	 	{
+			"courseId": "1"
+		}
 	 * @param session
 	 * @return
 	 */
@@ -121,6 +136,11 @@ public class CourseController {
 	
 	/**
 	 * 添加课程评论
+	 	{
+			"courseId": "1",
+			"userId": "1",
+			"content": "xxx"
+		}
 	 * @param session
 	 * @param addCourseCommentDTO
 	 * @return
@@ -156,7 +176,10 @@ public class CourseController {
 	}
 	
 	/**
-	 * 删除课程评论
+	 * 删除课程评论，下面的id为课程评论id
+	 	{
+			"id": "1"
+		}
 	 * @param session
 	 * @param deleteCourseCommentDTO
 	 * @return
@@ -181,7 +204,10 @@ public class CourseController {
 	}
 	
 	/**
-	 * 个人开课记录
+	 * 个人开课记录，下面的id为用户id
+	 	{
+			"id": "1"
+		}
 	 * @param session
 	 * @param getCreatedCoursesDTO
 	 * @return

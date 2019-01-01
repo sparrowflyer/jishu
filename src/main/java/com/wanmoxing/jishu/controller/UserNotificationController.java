@@ -1,5 +1,8 @@
 package com.wanmoxing.jishu.controller;
 
+import java.sql.Timestamp;
+import java.util.List;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 
@@ -9,44 +12,32 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.wanmoxing.jishu.bean.User;
+import com.wanmoxing.jishu.bean.UserNotification;
 import com.wanmoxing.jishu.constant.enums.ResultDTOStatus;
+import com.wanmoxing.jishu.constant.enums.UserNotificationStatus;
+import com.wanmoxing.jishu.dto.GetUserNotificationsDTO;
 import com.wanmoxing.jishu.dto.ResultDTO;
-import com.wanmoxing.jishu.dto.UpdateUserHeadImageDTO;
-import com.wanmoxing.jishu.dto.UpdateUserNicknameDTO;
 import com.wanmoxing.jishu.service.UserNotificationService;
-import com.wanmoxing.jishu.service.UserService;
 import com.wanmoxing.jishu.util.CommUtil;
 
 @RestController
 @RequestMapping("/jishu")
-public class UserController {
+public class UserNotificationController {
 	
-	//private static Logger logger = LoggerFactory.getLogger(UserController.class);
-
-	@Resource
-	private UserService userService;
 	@Resource
 	private UserNotificationService userNotificationService;
-
-	
-	@RequestMapping(value="/user",method=RequestMethod.GET)
-	public User getUserById(@RequestParam("id") int id){
-		return userService.findById(id);
-	}
 	
 	/**
-	 * 更新昵称
+	 * 获取用户的所有通知
 	 	{
-			"id":"1",
-			"nickName":"testname"
-		}
+	 		"userId":"1"
+	 	}
 	 * @param session
-	 * @param updateUserNicknameDTO
+	 * @param getUserNotificationsDTO
 	 * @return
 	 */
-	@RequestMapping(value="/updateUserNickname",method=RequestMethod.POST)
-	public ResultDTO updateUserNickname(HttpSession session, @RequestBody UpdateUserNicknameDTO updateUserNicknameDTO){
+	@RequestMapping(value = "/getUserNotificaitons", method = RequestMethod.POST)
+	public ResultDTO getUserNotificaitons (HttpSession session, @RequestBody GetUserNotificationsDTO getUserNotificationsDTO) {
 		ResultDTO result = new ResultDTO();
 		try {
 			if (!CommUtil.isUserLogined(session)) {
@@ -54,9 +45,8 @@ public class UserController {
 				result.setErrorMsg("User not logined!");
 				return result;
 			}
-			User user = userService.findById(updateUserNicknameDTO.getId());
-			user.setNickName(updateUserNicknameDTO.getNickName());
-			userService.update(user);
+			List<UserNotification> userNotifications = userNotificationService.findByUserId(getUserNotificationsDTO.getUserId());
+			result.setData(userNotifications);
 			return result;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -67,17 +57,13 @@ public class UserController {
 	}
 	
 	/**
-	 * 更新头像
-	 	{
-			"id":"1",
-			"headImage":"newHeadImageURL"
-		}
+	 * 标记通知为已读的接口
 	 * @param session
-	 * @param updateUserHeadImageDTO
+	 * @param id
 	 * @return
 	 */
-	@RequestMapping(value="updateUserHeadImage",method=RequestMethod.POST)
-	public ResultDTO updateUserHeadImage(HttpSession session, @RequestBody UpdateUserHeadImageDTO updateUserHeadImageDTO){
+	@RequestMapping(value = "/setUserNotificaitonAsRead", method = RequestMethod.GET)
+	public ResultDTO updateUserNotificaiton (HttpSession session, @RequestParam int id) {
 		ResultDTO result = new ResultDTO();
 		try {
 			if (!CommUtil.isUserLogined(session)) {
@@ -85,9 +71,10 @@ public class UserController {
 				result.setErrorMsg("User not logined!");
 				return result;
 			}
-			User user = userService.findById(updateUserHeadImageDTO.getId());
-			user.setHeadImage(updateUserHeadImageDTO.getHeadImage());
-			userService.update(user);
+			UserNotification userNotification = userNotificationService.find(id);
+			userNotification.setStatus(UserNotificationStatus.READ.getStatus());
+			userNotification.setUpdatedTime(new Timestamp(System.currentTimeMillis()));
+			userNotificationService.update(userNotification);
 			return result;
 		} catch (Exception e) {
 			e.printStackTrace();

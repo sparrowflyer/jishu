@@ -9,7 +9,7 @@ import com.wanmoxing.jishu.bean.Purchase;
 @Mapper
 public interface PurchaseMapper {
 	
-	public Purchase find(int id);
+	public Purchase find(String id);
 	
 	public List<Purchase> findByBuyerId(int buyerId);
 	
@@ -19,6 +19,6 @@ public interface PurchaseMapper {
 
     public void update(Purchase purchase);
     
-    public void delete(int id);
+    public void delete(String id);
 	
 }

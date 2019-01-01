@@ -2,6 +2,8 @@ package com.wanmoxing.jishu.bean;
 
 import java.sql.Timestamp;
 
+import com.wanmoxing.jishu.constant.enums.UserNotificationStatus;
+
 public class UserNotification {
 	
 	private int id;
@@ -14,7 +16,7 @@ public class UserNotification {
 	
 	private String type;
 	
-	private String status;
+	private String status = UserNotificationStatus.UNREAD.getStatus();
 	
 	private Timestamp createdTime = new Timestamp(System.currentTimeMillis());
 	

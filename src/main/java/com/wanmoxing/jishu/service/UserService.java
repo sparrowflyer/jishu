@@ -17,5 +17,7 @@ public interface UserService {
     public void update(User user);
 
     public void delete(int id);
+    
+    public String getUserDisplayName(int userId);
 
 }

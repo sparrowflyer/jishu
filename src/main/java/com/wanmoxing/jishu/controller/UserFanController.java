@@ -13,12 +13,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.wanmoxing.jishu.bean.User;
 import com.wanmoxing.jishu.bean.UserFan;
+import com.wanmoxing.jishu.bean.UserNotification;
 import com.wanmoxing.jishu.constant.CommonConstants;
 import com.wanmoxing.jishu.constant.enums.ResultDTOStatus;
+import com.wanmoxing.jishu.constant.enums.UserNotificationType;
 import com.wanmoxing.jishu.dto.FansDTO;
 import com.wanmoxing.jishu.dto.GetFansDTO;
 import com.wanmoxing.jishu.dto.ResultDTO;
 import com.wanmoxing.jishu.service.UserFanService;
+import com.wanmoxing.jishu.service.UserNotificationService;
 import com.wanmoxing.jishu.service.UserService;
 import com.wanmoxing.jishu.util.CommUtil;
 
@@ -30,6 +33,8 @@ public class UserFanController {
 	private UserService userService;
 	@Resource
 	private UserFanService userFanService;
+	@Resource
+	private UserNotificationService userNotificationService;
 	
 	/**
 	 * 关注接口
@@ -53,6 +58,13 @@ public class UserFanController {
 			UserFan existingUserFan = userFanService.findByOwnerAndFan(userFan);
 			if (existingUserFan == null) {
 				userFanService.insert(userFan);
+				// 生成新粉丝通知
+				UserNotification addFanNotification = new UserNotification();
+				addFanNotification.setType(UserNotificationType.NEW_FAN.getType());
+				addFanNotification.setUserId(userFan.getOwnerId());
+				addFanNotification.setTitle("您有一位新粉丝！");
+				addFanNotification.setContent(userService.getUserDisplayName(userFan.getFanId())+" 关注了您");
+				userNotificationService.insert(addFanNotification);
 			} else {
 				result.setStatus(ResultDTOStatus.ERROR.getStatus());
 				result.setErrorMsg("Fan for this user already exist");

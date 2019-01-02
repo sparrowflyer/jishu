@@ -17,6 +17,7 @@ import com.wanmoxing.jishu.bean.CourseComment;
 import com.wanmoxing.jishu.bean.User;
 import com.wanmoxing.jishu.constant.CommonConstants;
 import com.wanmoxing.jishu.constant.enums.CourseStatus;
+import com.wanmoxing.jishu.constant.enums.CourseType;
 import com.wanmoxing.jishu.constant.enums.ResultDTOStatus;
 import com.wanmoxing.jishu.constant.enums.UserType;
 import com.wanmoxing.jishu.dto.AddCourseCommentDTO;
@@ -42,6 +43,24 @@ public class CourseController {
 	private PurchaseService purchaseService;
 	@Resource
 	private CourseCommentService courseCommentService;
+	
+	/**
+	 * 获取课程类型列表
+	 * @return
+	 */
+	@RequestMapping(value = "/getCourseTypes", method = RequestMethod.POST)
+	public ResultDTO getCourseTypes () {
+		ResultDTO result = new ResultDTO();
+		try {
+			result.setData(CourseType.getCourseTypes());
+			return result;
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus(ResultDTOStatus.ERROR.getStatus());
+			result.setErrorMsg("Exception occured!");
+			return result;
+		}
+	}
 	
 	/**
 	 * 添加课程

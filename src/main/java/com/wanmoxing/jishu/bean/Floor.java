@@ -14,6 +14,8 @@ public class Floor {
 	
 	private Timestamp createDate;
 	
+	private Timestamp updateDate;
+	
 	private User user;
 
 	public int getFid() {
@@ -54,6 +56,14 @@ public class Floor {
 
 	public void setCreateDate(Timestamp createDate) {
 		this.createDate = createDate;
+	}
+
+	public Timestamp getUpdateDate() {
+		return updateDate;
+	}
+
+	public void setUpdateDate(Timestamp updateDate) {
+		this.updateDate = updateDate;
 	}
 
 	public User getUser() {

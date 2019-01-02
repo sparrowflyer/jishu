@@ -10,33 +10,66 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.wanmoxing.jishu.bean.User;
+import com.wanmoxing.jishu.constant.CommonConstants;
 import com.wanmoxing.jishu.constant.enums.ResultDTOStatus;
 import com.wanmoxing.jishu.dto.ResultDTO;
 import com.wanmoxing.jishu.dto.UpdateUserHeadImageDTO;
 import com.wanmoxing.jishu.dto.UpdateUserNicknameDTO;
+import com.wanmoxing.jishu.dto.UserDTO;
+import com.wanmoxing.jishu.service.UserNotificationService;
 import com.wanmoxing.jishu.service.UserService;
 import com.wanmoxing.jishu.util.CommUtil;
 
 @RestController
 @RequestMapping("/jishu")
 public class UserController {
-	
-	//private static Logger logger = LoggerFactory.getLogger(UserController.class);
+
+	// private static Logger logger = LoggerFactory.getLogger(UserController.class);
 
 	@Resource
 	private UserService userService;
+	@Resource
+	private UserNotificationService userNotificationService;
 
-	
-	@RequestMapping(value="/user",method=RequestMethod.GET)
-	public User getUserById(@RequestParam("id") int id){
-		return userService.findById(id);
-	}
-	
-	@RequestMapping(value="/updateUserNickname",method=RequestMethod.POST)
-	public ResultDTO updateUserNickname(HttpSession session, @RequestBody UpdateUserNicknameDTO updateUserNicknameDTO){
+	/**
+	 * 获取User
+	 * @param session
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping(value = "/user", method = RequestMethod.GET)
+	public ResultDTO getUserById(HttpSession session, @RequestParam("id") int id) {
 		ResultDTO result = new ResultDTO();
 		try {
-			if (!CommUtil.isUserLogined(session)) {
+			if (!CommonConstants.DEV_MODE && !CommUtil.isUserLogined(session)) {
+				result.setStatus(ResultDTOStatus.ERROR.getStatus());
+				result.setErrorMsg("User not logined!");
+				return result;
+			}
+			User user = userService.findById(id);
+			UserDTO userDTO = new UserDTO(user);
+			result.setData(userDTO);
+			return result;
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus(ResultDTOStatus.ERROR.getStatus());
+			result.setErrorMsg("Exception occured!");
+			return result;
+		}
+	}
+
+	/**
+	 * 更新昵称 { "id":"1", "nickName":"testname" }
+	 * 
+	 * @param session
+	 * @param updateUserNicknameDTO
+	 * @return
+	 */
+	@RequestMapping(value = "/updateUserNickname", method = RequestMethod.POST)
+	public ResultDTO updateUserNickname(HttpSession session, @RequestBody UpdateUserNicknameDTO updateUserNicknameDTO) {
+		ResultDTO result = new ResultDTO();
+		try {
+			if (!CommonConstants.DEV_MODE && !CommUtil.isUserLogined(session)) {
 				result.setStatus(ResultDTOStatus.ERROR.getStatus());
 				result.setErrorMsg("User not logined!");
 				return result;
@@ -52,12 +85,20 @@ public class UserController {
 			return result;
 		}
 	}
-	
-	@RequestMapping(value="updateUserHeadImage",method=RequestMethod.POST)
-	public ResultDTO updateUserHeadImage(HttpSession session, @RequestBody UpdateUserHeadImageDTO updateUserHeadImageDTO){
+
+	/**
+	 * 更新头像 { "id":"1", "headImage":"newHeadImageURL" }
+	 * 
+	 * @param session
+	 * @param updateUserHeadImageDTO
+	 * @return
+	 */
+	@RequestMapping(value = "updateUserHeadImage", method = RequestMethod.POST)
+	public ResultDTO updateUserHeadImage(HttpSession session,
+			@RequestBody UpdateUserHeadImageDTO updateUserHeadImageDTO) {
 		ResultDTO result = new ResultDTO();
 		try {
-			if (!CommUtil.isUserLogined(session)) {
+			if (!CommonConstants.DEV_MODE && !CommUtil.isUserLogined(session)) {
 				result.setStatus(ResultDTOStatus.ERROR.getStatus());
 				result.setErrorMsg("User not logined!");
 				return result;
@@ -73,5 +114,5 @@ public class UserController {
 			return result;
 		}
 	}
-	
+
 }

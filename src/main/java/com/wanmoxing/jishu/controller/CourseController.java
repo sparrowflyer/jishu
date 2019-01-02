@@ -1,5 +1,6 @@
 package com.wanmoxing.jishu.controller;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.wanmoxing.jishu.bean.Course;
 import com.wanmoxing.jishu.bean.CourseComment;
 import com.wanmoxing.jishu.bean.User;
+import com.wanmoxing.jishu.constant.CommonConstants;
 import com.wanmoxing.jishu.constant.enums.CourseStatus;
 import com.wanmoxing.jishu.constant.enums.ResultDTOStatus;
 import com.wanmoxing.jishu.constant.enums.UserType;
@@ -43,6 +45,18 @@ public class CourseController {
 	
 	/**
 	 * 添加课程
+	 	{
+			"title": "我的课程1",
+			"detail": "这是我的第一个叽叔课程",
+			"coverImage": "xxx",
+			"price": "15.00",
+			"type": "overseas_life",
+			"courseCollectionStartTime": "2019-01-15 18:00:00",
+			"courseCollectionEndTime": "2019-01-16 19:00:00",
+			"courseStartTime": "2019-01-17 20:00:00",
+			"courseDurationTime": 120,
+			"targetStudentAmount": 100
+		}
 	 * @param session
 	 * @param addCourseDTO
 	 * @return
@@ -51,7 +65,7 @@ public class CourseController {
 	public ResultDTO addCourse (HttpSession session, @RequestBody AddCourseDTO addCourseDTO) {
 		ResultDTO result = new ResultDTO();
 		try {
-			if (!CommUtil.isUserLogined(session)) {
+			if (!CommonConstants.DEV_MODE && !CommUtil.isUserLogined(session)) {
 				result.setStatus(ResultDTOStatus.ERROR.getStatus());
 				result.setErrorMsg("User not logined!");
 				return result;
@@ -100,7 +114,10 @@ public class CourseController {
 	}
 	
 	/**
-	 * 获取课程的所有评论
+	 * 获取某个课程的所有评论
+	 	{
+			"courseId": "1"
+		}
 	 * @param session
 	 * @return
 	 */
@@ -121,6 +138,11 @@ public class CourseController {
 	
 	/**
 	 * 添加课程评论
+	 	{
+			"courseId": "1",
+			"userId": "1",
+			"content": "xxx"
+		}
 	 * @param session
 	 * @param addCourseCommentDTO
 	 * @return
@@ -129,7 +151,7 @@ public class CourseController {
 	public ResultDTO addCourseComment (HttpSession session, @RequestBody AddCourseCommentDTO addCourseCommentDTO) {
 		ResultDTO result = new ResultDTO();
 		try {
-			if (!CommUtil.isUserLogined(session)) {
+			if (!CommonConstants.DEV_MODE && !CommUtil.isUserLogined(session)) {
 				result.setStatus(ResultDTOStatus.ERROR.getStatus());
 				result.setErrorMsg("User not logined!");
 				return result;
@@ -145,6 +167,7 @@ public class CourseController {
 			courseComment.setCourseId(addCourseCommentDTO.getCourseId());
 			courseComment.setUserId(addCourseCommentDTO.getUserId());
 			courseComment.setContent(addCourseCommentDTO.getContent());
+			courseComment.setCreatedTime(new Timestamp(System.currentTimeMillis()));
 			courseCommentService.insert(courseComment);
 			return result;
 		} catch (Exception e) {
@@ -156,7 +179,10 @@ public class CourseController {
 	}
 	
 	/**
-	 * 删除课程评论
+	 * 删除课程评论，下面的id为课程评论id
+	 	{
+			"id": "1"
+		}
 	 * @param session
 	 * @param deleteCourseCommentDTO
 	 * @return
@@ -165,7 +191,7 @@ public class CourseController {
 	public ResultDTO deleteCourseComment (HttpSession session, @RequestBody DeleteCourseCommentDTO deleteCourseCommentDTO) {
 		ResultDTO result = new ResultDTO();
 		try {
-			if (!CommUtil.isUserLogined(session)) {
+			if (!CommonConstants.DEV_MODE && !CommUtil.isUserLogined(session)) {
 				result.setStatus(ResultDTOStatus.ERROR.getStatus());
 				result.setErrorMsg("User not logined!");
 				return result;
@@ -181,7 +207,10 @@ public class CourseController {
 	}
 	
 	/**
-	 * 个人开课记录
+	 * 个人开课记录，下面的id为用户id
+	 	{
+			"id": "1"
+		}
 	 * @param session
 	 * @param getCreatedCoursesDTO
 	 * @return
@@ -190,7 +219,7 @@ public class CourseController {
 	public ResultDTO getCreatedCourses (HttpSession session, @RequestBody User getCreatedCoursesDTO) {
 		ResultDTO result = new ResultDTO();
 		try {
-			if (!CommUtil.isUserLogined(session)) {
+			if (!CommonConstants.DEV_MODE && !CommUtil.isUserLogined(session)) {
 				result.setStatus(ResultDTOStatus.ERROR.getStatus());
 				result.setErrorMsg("User not logined!");
 				return result;

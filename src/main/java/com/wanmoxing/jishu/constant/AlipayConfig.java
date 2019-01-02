@@ -1,15 +1,25 @@
 package com.wanmoxing.jishu.constant;
 
+import javax.annotation.PostConstruct;
+
+import org.springframework.context.annotation.Configuration;
+
+import com.alipay.api.AlipayClient;
+import com.alipay.api.DefaultAlipayClient;
+
+@Configuration
 public class AlipayConfig {
 	
 	// sand box
-	//public final static String ALIPAY_APPID = "2016092300576565";
-	//public final static String ALIPAY_GATEWAY = "https://openapi.alipaydev.com/gateway.do";
-	//public final static String ALIPAY_PUBLIC_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA25pM+Py/WhwzpYJcj0DXKv/Pxyc/9dhATC3ZNCAxHaYmjph/gjAJKTSnUM5pBybvomRv191E182+z3uSFJ9RvIjESf7c9zhTvMBqs1saEWmKnlaT/L8yhmQZvThnlYrbifaXjolcMAiTQ4v2U52SGk5Sqla9KrUc1siZWUVtyHfOsbzITPbPjaqcugTyWFhYN/genLsAHOqqQ4/uUOBRsBv/CBModE+8ZxHfRdAYH8l13/Ddxv/qV98aV/E/7c6Io90hSgFsyH/LJXJmBRwIh8btChARuWaBM9ntXqHmu6IMxKFAqdM2KCrjlLeIv8vGrVpQHbGd8Votp1YZ/7TZwwIDAQAB";
+//	public final static String ALIPAY_APPID = "2016092300576565";
+//	public final static String ALIPAY_GATEWAY = "https://openapi.alipaydev.com/gateway.do";
+//	public final static String ALIPAY_PUBLIC_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA25pM+Py/WhwzpYJcj0DXKv/Pxyc/9dhATC3ZNCAxHaYmjph/gjAJKTSnUM5pBybvomRv191E182+z3uSFJ9RvIjESf7c9zhTvMBqs1saEWmKnlaT/L8yhmQZvThnlYrbifaXjolcMAiTQ4v2U52SGk5Sqla9KrUc1siZWUVtyHfOsbzITPbPjaqcugTyWFhYN/genLsAHOqqQ4/uUOBRsBv/CBModE+8ZxHfRdAYH8l13/Ddxv/qV98aV/E/7c6Io90hSgFsyH/LJXJmBRwIh8btChARuWaBM9ntXqHmu6IMxKFAqdM2KCrjlLeIv8vGrVpQHbGd8Votp1YZ/7TZwwIDAQAB";
+//	public final static String ALIPAY_SELLER_ID = "2088331912968141";
 	
 	public final static String ALIPAY_APPID = "2018121662598002";
 	public final static String ALIPAY_GATEWAY = "https://openapi.alipay.com/gateway.do";
 	public final static String ALIPAY_PUBLIC_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAoeCW1WvwL+iTQzxx7PjcM/R5KEfyVDyOS9U2AAHq+sudZ81S+tebBTY2fa3dKVwQZSc89z4x7kV5mInHZmyBtSXpjitW6Vc8XAKNizPwimgDLtLJW/eo4oz3a256Cb/AucpAmVo0t8C2ID3QpTTtfOrVsa+YgT5FOP6B1qnmjX0Q7+AwIdeqgwxReoTNHq+gEB7fd/kQbB56KR81zqSVwYv2sGJmVc6RT9OZcbeNjoXLLbiDQN9GFgesQsSL0RpZOMfDXct3Hxak91IVsJbyP/pUiGhI+Ns+YkyNh/Zs20wwbzdiAMwEClDx6v6h4jfWAIbHyNfE7k/nxnogBPJ2pwIDAQAB";
+	public final static String ALIPAY_SELLER_ID = "2088331912968141";
 	
 	public final static String ALIPAY_FORMAT = "json";
 	public final static String ALIPAY_CHARSET = "utf-8";
@@ -18,4 +28,18 @@ public class AlipayConfig {
 	public final static String ALIPAY_RETURN_URL = "http://unclejee.cn/jishu/purchaseReturn";
 	public final static String ALIPAY_NOTIFY_URL = "http://unclejee.cn/jishu/purchaseNotify";
 
+	
+	private static AlipayClient alipayClient;
+	
+	@PostConstruct
+    private void initAlipayClient(){
+		alipayClient = new DefaultAlipayClient(AlipayConfig.ALIPAY_GATEWAY, AlipayConfig.ALIPAY_APPID,
+				AlipayConfig.JISHU_PRIVATE_KEY, AlipayConfig.ALIPAY_FORMAT, AlipayConfig.ALIPAY_CHARSET,
+				AlipayConfig.ALIPAY_PUBLIC_KEY, AlipayConfig.ALIPAY_SIGN_TYPE);
+    }
+
+	public static AlipayClient getAlipayClient() {
+		return alipayClient;
+	}
+	
 }

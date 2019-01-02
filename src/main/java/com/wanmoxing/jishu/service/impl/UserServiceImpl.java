@@ -5,6 +5,7 @@ import javax.annotation.Resource;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Service;
 
+import com.github.pagehelper.util.StringUtil;
 import com.wanmoxing.jishu.bean.User;
 import com.wanmoxing.jishu.mapper.UserMapper;
 import com.wanmoxing.jishu.service.UserService;
@@ -47,6 +48,20 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void delete(int id) {
 		userMapper.delete(id);
+	}
+
+	@Override
+	public String getUserDisplayName(int userId) {
+		User user = userMapper.findById(userId);
+		if (StringUtil.isNotEmpty(user.getNickName())) {
+			return user.getNickName();
+		} else if (StringUtil.isNotEmpty(user.getEmail())) {
+			return user.getEmail();
+		} else if (StringUtil.isNotEmpty(user.getCellPhone())) {
+			return user.getCellPhone();
+		} else {
+			return "火星人";
+		}
 	}
 
 }

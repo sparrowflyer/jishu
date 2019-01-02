@@ -39,4 +39,9 @@ public class UserFanServiceImpl implements UserFanService {
 		return userFanMapper.findFansUsers(ownerId);
 	}
 
+	@Override
+	public UserFan findByOwnerAndFan(UserFan userFan) {
+		return userFanMapper.findByOwnerAndFan(userFan);
+	}
+
 }

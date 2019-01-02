@@ -1,6 +1,11 @@
 package com.wanmoxing.jishu.constant;
 
 public class CommonConstants {
+	
+	/**
+	 * 当前是否处于开发模式(开发模式下很多接口会取消验证用户是否登录)
+	 */
+	public static final boolean DEV_MODE = false;
 	/**
 	 * 默认头像地址
 	 */

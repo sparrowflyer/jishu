@@ -6,7 +6,7 @@ import { getVerifyCodeImage, postJson } from '../../utils/server.js'
 import { Header } from '../../components/common/Header.js';
 import { Footer } from '../../components/common/Footer.js';
 import { BreadCrumb } from '../../components/common/BreadCrumb.js';
-import { RememberMeInLogin, Social } from '../../components/login/ControlInLogin.js';
+import { RememberMeInLogin, Social } from '../../components/ControlInLogin.js';
 
 const legalImageInput = {
     maxWidth: "380px"

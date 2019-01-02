@@ -6,7 +6,7 @@ import { getEmailVerifyCode, getVerifyCodeImage, postJson } from '../../utils/se
 import { Header } from '../../components/common/Header.js';
 import { Footer } from '../../components/common/Footer.js';
 import { BreadCrumb } from '../../components/common/BreadCrumb.js';
-import { RememberMeInRegister, Social } from '../../components/login/ControlInLogin.js';
+import { RememberMeInRegister, Social } from '../../components/ControlInLogin.js';
 
 const legalEmailInput = {
     width: "60%"

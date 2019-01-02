@@ -6,9 +6,10 @@ import { Cart } from '../pages/home/Cart.js';
 import { About } from '../pages/other/About.js';
 import { Contact } from '../pages/other/Contact.js';
 import { FAQ } from '../pages/other/FAQ.js';
-import LoginWithRouter from '../pages/other/Login.js';
-import RegisterWithRouter from '../pages/other/Register.js';
-import { Blog } from '../pages/Blog.js';
+import LoginWithRouter from '../pages/login/Login.js';
+import RegisterWithRouter from '../pages/login/Register.js';
+import { SingleBlog } from '../pages/blog/Single.js';
+import { MultiBlog } from '../pages/blog/Multi.js';
 import { Course } from '../pages/Course.js';
 import { Me } from '../pages/Me.js';
 import { Error } from '../pages/other/Error.js';
@@ -26,7 +27,8 @@ export function Routers() {
                     <Route path='/faq' component={FAQ} />
                     <Route path='/login' component={ LoginWithRouter } />
                     <Route path='/register' component={ RegisterWithRouter } />
-                    <Route path='/blog' component={Blog} />
+                    <Route exact path="/blog" component={ MultiBlog } />
+                    <Route path='/blog/:blogID' component={ SingleBlog } />
                     <Route path='/course' component={Course} />
                     <Route path='/me' component={Me} />
                     <Route component={Error} />

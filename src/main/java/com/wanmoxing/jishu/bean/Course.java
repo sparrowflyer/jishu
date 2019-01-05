@@ -29,6 +29,11 @@ public class Course {
 	private int authorId;
 	
 	/**
+	 * 课程作者昵称
+	 */
+	private String authorName;
+	
+	/**
 	 * 课程价格
 	 */
 	private BigDecimal price;
@@ -205,6 +210,16 @@ public class Course {
 		this.type = type;
 	}
 	
+	public String getAuthorName() {
+		return authorName;
+	}
+
+	public void setAuthorName(String authorName) {
+		this.authorName = authorName;
+	}
+
+
+
 	/**
 	 * 仅前端展示用
 	 */

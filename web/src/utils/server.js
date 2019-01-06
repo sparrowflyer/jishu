@@ -10,6 +10,11 @@ async function getEmailVerifyCode(email) {
     return (await res.json());
 }
 
+async function getUserInfo(userID) {
+    let res = await fetch(_server + '/user?id=' + encodeURIComponent(userID));
+    return (await res.json());
+}
+
 async function postJson(url, body) {
     let res = await fetch(_server + url, {
         method: 'POST',
@@ -21,4 +26,4 @@ async function postJson(url, body) {
     return (await res.json());
 }
 
-export {getVerifyCodeImage, getEmailVerifyCode, postJson};
+export {getVerifyCodeImage, getEmailVerifyCode, getUserInfo, postJson};

@@ -6,10 +6,12 @@ import { Cart } from '../pages/home/Cart.js';
 import { About } from '../pages/other/About.js';
 import { Contact } from '../pages/other/Contact.js';
 import { FAQ } from '../pages/other/FAQ.js';
-import LoginWithRouter from '../pages/other/Login.js';
-import RegisterWithRouter from '../pages/other/Register.js';
-import { Blog } from '../pages/Blog.js';
-import { Course } from '../pages/Course.js';
+import LoginWithRouter from '../pages/login/Login.js';
+import RegisterWithRouter from '../pages/login/Register.js';
+import { SingleBlog } from '../pages/blog/SingleBlog.js';
+import { MultiBlog } from '../pages/blog/MultiBlog.js';
+import { SingleCourse } from '../pages/course/SingleCourse.js';
+import { MultiCourse } from '../pages/course/MultiCourse.js';
 import { Me } from '../pages/Me.js';
 import { Error } from '../pages/other/Error.js';
 
@@ -18,18 +20,20 @@ export function Routers() {
         <Router>
             <div>
                 <Switch>
-                    <Route exact path='/' component={Home} />
-                    <Route path='/checkout' component={Checkout} />
-                    <Route path='/cart' component={Cart} />
-                    <Route path='/about' component={About} />
-                    <Route path='/contact' component={Contact} />
-                    <Route path='/faq' component={FAQ} />
+                    <Route exact path='/' component={ Home } />
+                    <Route path='/checkout' component={ Checkout } />
+                    <Route path='/cart' component={ Cart } />
+                    <Route path='/about' component={ About } />
+                    <Route path='/contact' component={ Contact } />
+                    <Route path='/faq' component={ FAQ } />
                     <Route path='/login' component={ LoginWithRouter } />
                     <Route path='/register' component={ RegisterWithRouter } />
-                    <Route path='/blog' component={Blog} />
-                    <Route path='/course' component={Course} />
-                    <Route path='/me' component={Me} />
-                    <Route component={Error} />
+                    <Route exact path="/blog" component={ MultiBlog } />
+                    <Route path='/blog/:blogID' component={ SingleBlog } />
+                    <Route exact path='/course' component={ MultiCourse } />
+                    <Route path='/course/:courseID' component={ SingleCourse } />
+                    <Route path='/me' component={ Me } />
+                    <Route component={ Error } />
                 </Switch>
             </div>
         </Router>

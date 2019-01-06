@@ -2,49 +2,74 @@ import React from 'react';
 import { Header } from '../components/common/Header.js';
 import { BreadCrumb } from '../components/common/BreadCrumb.js';
 import { Footer } from '../components/common/Footer.js';
+import { getUserInfo } from '../utils/server.js';
 
-function MyInfo() {
-    return (
-        <section className="instructor-details">
-            <div className="section-padding">
-                <div className="container">
-                    <div className="row">
-                        <div className="col-md-4 pr-5">
-                            <div className="avatar text-center">
-                                <img src="../images/speakers/1.jpg" alt="Avatar Image" />
+class MyInfo extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            nickName: 'BossLee',
+            headImage: '../images/speakers/1.jpg'
+        };
+    }
+
+    componentDidMount() {
+        //getUserInfo(1)
+        //    .then((data) => {
+        //        if (data.status === 'success') {
+        //            this.setState(() => {
+        //                return {
+        //                    nickName: data.data.nickName,
+        //                    headImage: data.data.headImage
+        //                }
+        //            });
+        //        }
+        //    });
+    }
+
+    render() {
+        return (
+            <section className="instructor-details">
+                <div className="section-padding">
+                    <div className="container">
+                        <div className="row">
+                            <div className="col-md-4 pr-5">
+                                <div className="avatar text-center">
+                                    <img src={this.state.nickName} alt="Avatar Image" />
+                                </div>
+                                <div className="social text-center">
+                                    <a href="#"><i className="fab fa-twitter"></i></a>
+                                    <a href="#"><i className="fab fa-facebook-f"></i></a>
+                                    <a href="#"><i className="fab fa-pinterest"></i></a>
+                                    <a href="#"><i className="fab fa-linkedin"></i></a>
+                                </div>
                             </div>
-                            <div className="social text-center">
-                                <a href="#"><i className="fab fa-twitter"></i></a>
-                                <a href="#"><i className="fab fa-facebook-f"></i></a>
-                                <a href="#"><i className="fab fa-pinterest"></i></a>
-                                <a href="#"><i className="fab fa-linkedin"></i></a>
+                            <div className="col-md-8 pl-4">
+                                <div className="meta">
+                                    <ul>
+                                        <li><span className="meta-id">Students</span> 56,879</li>
+                                        <li><span className="meta-id">Courses</span> 39</li>
+                                        <li><span className="meta-id">Reviews</span> 9,201</li>
+                                    </ul>
+                                </div>
+                                <p>
+                                    <strong>
+                                        The first thing he wanted to do was to get up in peace without being disturbed, to get dressed, and most of all to have his breakfast
+                                    </strong>
+                                </p>
+                                <p>
+                                    Only then he consider what to do next, as well as he aware that he would not bring his thoughts to any conclusions by lying in bed. He remembered that he had often felt a slight pain in bed, perhaps caused by lying awkwardly, but that had always turned out to be pure imagination and he wondered how his imaginings
+                                </p>
+                                <p>
+                                    He did not have the slightest doubt that the change in his voice was nothing more than the first sign of a serious cold, which was an occupational hazard for travelling salesmen
+                                </p>
                             </div>
-                        </div>
-                        <div className="col-md-8 pl-4">
-                            <div className="meta">
-                                <ul>
-                                    <li><span className="meta-id">Students</span> 56,879</li>
-                                    <li><span className="meta-id">Courses</span> 39</li>
-                                    <li><span className="meta-id">Reviews</span> 9,201</li>
-                                </ul>
-                            </div>
-                            <p>
-                                <strong>
-                                    The first thing he wanted to do was to get up in peace without being disturbed, to get dressed, and most of all to have his breakfast
-                                </strong>
-                            </p>
-                            <p>
-                                Only then he consider what to do next, as well as he aware that he would not bring his thoughts to any conclusions by lying in bed. He remembered that he had often felt a slight pain in bed, perhaps caused by lying awkwardly, but that had always turned out to be pure imagination and he wondered how his imaginings
-                            </p>
-                            <p>
-                                He did not have the slightest doubt that the change in his voice was nothing more than the first sign of a serious cold, which was an occupational hazard for travelling salesmen
-                            </p>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
-    );
+            </section>
+        );
+    }
 }
 
 function OtherInfo() {

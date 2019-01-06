@@ -18,6 +18,9 @@ export function Navigator({activePage}) {
                     </a>
                 </li>
             </ul>
+            <p>
+                Showing 12 of 17
+            </p>
         </nav>
     );
 }

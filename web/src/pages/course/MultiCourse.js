@@ -78,43 +78,6 @@ export class MultiCourse extends React.Component {
                         <div className="container">
                             <div className="row">
                                 <div className="col-md-8">
-                                    <div className="filters">
-                                        <div className="row">
-                                            <div className="col-lg-6">
-                                                <select className="filter-select" name="text">
-                                                    <option value="">All price</option>
-                                                    <option value="20">Under $20</option>
-                                                    <option value="40">Under $40</option>
-                                                    <option value="60">Under $60</option>
-                                                </select>
-                                                <select className="filter-select" name="text">
-                                                    <option value="">All type</option>
-                                                    {
-                                                        this.state.courseTypes.map((courseType) => {
-                                                            return (
-                                                                <option key={courseType} value={courseType}>{courseType}</option>
-                                                            );
-                                                        })
-                                                    }
-                                                </select>
-                                            </div>
-                                            <div className="col-lg-6">
-                                                <span className="float-left">Sort by:</span>
-                                                <select className="filter-select" name="text">
-                                                    <option value="">Popularity</option>
-                                                    <option value="paid">Top paid</option>
-                                                    <option value="free">Top free</option>
-                                                </select>
-                                                <div className="layout-switcher">
-                                                    <span className="grid"><i className="fa fa-th"></i></span>
-                                                    <span className="list"><i className="fa fa-list"></i></span>
-                                                </div>
-                                                <p>
-                                                    Showing 12 of 17
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
                                     <div className="course-items">
                                         <div className="row">
                                             {
@@ -136,7 +99,7 @@ export class MultiCourse extends React.Component {
                                                                             <span className="price">{course.price}</span>
                                                                         </div>
                                                                         <div className="rating float-right">
-                                                                            <input type="hidden" className="rating-tooltip-manual" data-filled="fas fa-star" data-empty="far fa-star" value="4.5" data-fractions="5" />
+                                                                            Left:<span className="label label-default">{ course.targetStudentAmount - course.currentStudentAmount }</span>
                                                                         </div>
                                                                     </div>
                                                                 </div>

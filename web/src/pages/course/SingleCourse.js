@@ -2,18 +2,31 @@ import React from 'react';
 import { Header } from '../../components/common/Header.js';
 import { BreadCrumb } from '../../components/common/BreadCrumb.js';
 import { Footer } from '../../components/common/Footer.js';
-import { postJson } from '../../utils/server.js';
+import { getTimeOfNow } from '../../utils/time.js';
+import { postJson, getUserInfo } from '../../utils/server.js';
 
 const autoWidth = {
     width: 'auto'
 };
+
+function convertToChinese(status) {
+    const statusWords = {
+        'init': '等待募集',
+        'collecting': '募集中',
+        'collected': '等待讲课',
+        'teaching': '讲课中',
+        'ended': '讲课结束'
+    };
+    return statusWords[status] || '';
+}
 
 export class SingleCourse extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             course: this.props.location.state,
-            comments: []
+            comments: [],
+            authorInfo: {}
         };
     }
 
@@ -21,7 +34,8 @@ export class SingleCourse extends React.Component {
         this.setState((state) => {
            return {
                ...state,
-               comments: []
+               comments: [],
+               authorInfo: {}
            }
         });
         postJson('/getCourseComments', {
@@ -36,6 +50,17 @@ export class SingleCourse extends React.Component {
                 });
             }
         });
+        getUserInfo(this.state.course.authorId)
+            .then((data) => {
+                if (data.status === 'success') {
+                    this.setState((state) => {
+                       return {
+                           ...state,
+                           authorInfo: data.data
+                       }
+                    });
+                }
+            });
     }
 
     render() {
@@ -60,11 +85,8 @@ export class SingleCourse extends React.Component {
                                         <span>{this.state.course.type}</span>
                                     </span>
                                     <span className="meta-details">
-                                        <span className="meta-id">Reviews</span>
-                                        <span className="rating">
-                                            <input type="hidden" className="rating-tooltip-manual" data-filled="fas fa-star" data-empty="far fa-star" value="4.5" data-fractions="5"/>
-                                            <span>(2,543 Ratings)</span>
-                                        </span>
+                                        <span className="meta-id">Status</span>
+                                        <span className="rating">{convertToChinese(this.state.course.status)}</span>
                                     </span>
                                     </div>
                                     <img className="radius" src={this.state.course.coverImage} alt="Course Image" />
@@ -122,22 +144,17 @@ export class SingleCourse extends React.Component {
                                             </div>
                                             <div className="tab-pane fade" id="description" role="tabpanel" aria-labelledby="description">
                                                 <h4 className="title">Course Description</h4>
-                                                <p>
-                                                    { this.state.course.detail }
-                                                </p>
+                                                <p>{ this.state.course.detail }</p>
                                             </div>
                                             <div className="tab-pane fade" id="instructor" role="tabpanel" aria-labelledby="instructor">
                                                 <div className="author-bio">
                                                     <h3 className="title">About the Instructor</h3>
                                                     <div className="author-contents media">
-                                                        <div className="author-avatar float-left"><img className="radius" src="../images/au.jpg" alt="Avatar" /></div>
+                                                        <div className="author-avatar float-left"><img className="radius" src={this.state.authorInfo.headImage} alt="Avatar" /></div>
                                                         <div className="author-details media-body">
-                                                            <h3 className="name"><a href="#">Julia Adams</a></h3>
-                                                            <span>UX Consultant and Web Design Instructor</span>
-                                                            <p>
-                                                                There was a painful and uncontrollable squeaking mixed in with it, the words could be made out at first but then there was a sort of echo which made them unclear, leaving the hearer unsure whether he had heard properly or not.
-                                                            </p>
-                                                            <a href="#" className="load-more">Learn more <i className="fa fa-angle-double-right"></i></a>
+                                                            <h3 style={{position: "inherit"}} className="name"><a>{this.state.authorInfo.nickName}</a></h3>
+                                                            <p>{this.state.authorInfo.email}</p>
+                                                            <a className="load-more">Learn more <i className="fa fa-angle-double-right"></i></a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -156,17 +173,14 @@ export class SingleCourse extends React.Component {
                                                                                     <div className="media">
                                                                                         <img className="rounded-circle author-avatar" src="../images/comments/1.jpg" alt="RAvatar" />
                                                                                         <div className="author-details media-body">
-                                                                                            <span className="time">3 days ago</span>
-                                                                                            <h3 className="name"><a href="">{comment.username}</a></h3>
+                                                                                            <span className="time">{getTimeOfNow(comment.createdTime)}</span>
+                                                                                            <h3 className="name"><a href="">{comment.userName}</a></h3>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
                                                                                 <div className="col-md-7">
                                                                                     <div className="review-details">
-                                                                                        <h3 className="title">{comment.username} Comment</h3>
-                                                                                        <p>
-                                                                                            { comment.content }
-                                                                                        </p>
+                                                                                        <p>{ comment.content }</p>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
@@ -183,15 +197,15 @@ export class SingleCourse extends React.Component {
                                 </div>
                                 <div className="col-md-4">
                                     <aside className="sidebar">
-                                        <button className="btn btn-lg enroll-btn">Enroll now</button>
+                                        <button className="btn btn-lg enroll-btn">BUY</button>
                                         <div className="info">
                                             <ul className="info-list">
-                                                <li><span className="price">Free</span></li>
-                                                <li><span>13 Hours on-demand video</span></li>
-                                                <li><span>11 Lectures</span></li>
-                                                <li><span>3 Quizes</span></li>
-                                                <li><span>4,873 Students enrolled</span></li>
-                                                <li><span>Certificate on Completion</span></li>
+                                                <li><span className="price">Price: {this.state.course.price}</span></li>
+                                                <li>
+                                                    <p>Start Time</p>{this.state.course.courseStartTime}
+                                                </li>
+                                                <li><span>Duration Time: {this.state.course.courseDurationTime}</span></li>
+                                                <li><span>Student Amount: {`${this.state.course.currentStudentAmount}/${this.state.course.targetStudentAmount}`}</span></li>
                                             </ul>
                                         </div>
                                     </aside>

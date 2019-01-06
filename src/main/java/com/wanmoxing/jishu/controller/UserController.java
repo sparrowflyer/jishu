@@ -41,11 +41,6 @@ public class UserController {
 	public ResultDTO getUserById(HttpSession session, @RequestParam("id") int id) {
 		ResultDTO result = new ResultDTO();
 		try {
-			if (!CommonConstants.DEV_MODE && !CommUtil.isUserLogined(session)) {
-				result.setStatus(ResultDTOStatus.ERROR.getStatus());
-				result.setErrorMsg("User not logined!");
-				return result;
-			}
 			User user = userService.findById(id);
 			UserDTO userDTO = new UserDTO(user);
 			result.setData(userDTO);

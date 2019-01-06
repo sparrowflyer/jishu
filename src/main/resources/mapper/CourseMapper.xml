@@ -21,6 +21,26 @@
 		<result property="createdTime" column="CREATED_TIME"/>
 		<result property="updatedTime" column="UPDATED_TIME"/>
 	</resultMap>
+	
+	<resultMap id="courseWithAuthorNameResultMap" type="com.wanmoxing.jishu.bean.Course">
+		<id property="id" column="ID"/>
+		<result property="title" column="TITLE"/>
+		<result property="detail" column="DETAIL"/>
+		<result property="coverImage" column="COVER_IMAGE"/>
+		<result property="authorId" column="AUTHOR_ID"/>
+		<result property="authorName" column="AUTHOR_NAME"/>
+		<result property="price" column="PRICE"/>
+		<result property="courseCollectionStartTime" column="COURSE_COLLECTION_START_TIME"/>
+		<result property="courseCollectionEndTime" column="COURSE_COLLECTION_END_TIME"/>
+		<result property="courseStartTime" column="COURSE_START_TIME"/>
+		<result property="courseDurationTime" column="COURSE_DURATION_TIME"/>
+		<result property="targetStudentAmount" column="TARGET_STUDENT_AMOUNT"/>
+		<result property="currentStudentAmount" column="CURRENT_STUDENT_AMOUNT"/>
+		<result property="status" column="STATUS"/>
+		<result property="type" column="TYPE"/>
+		<result property="createdTime" column="CREATED_TIME"/>
+		<result property="updatedTime" column="UPDATED_TIME"/>
+	</resultMap>
 
     <insert id="insert" parameterType="com.wanmoxing.jishu.bean.Course" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO jishu.T_COURSE(TITLE,DETAIL,COVER_IMAGE,AUTHOR_ID,PRICE,COURSE_COLLECTION_START_TIME,COURSE_COLLECTION_END_TIME,COURSE_START_TIME,COURSE_DURATION_TIME,TARGET_STUDENT_AMOUNT,CURRENT_STUDENT_AMOUNT,STATUS,TYPE,CREATED_TIME,UPDATED_TIME) 
@@ -59,14 +79,17 @@
       	WHERE AUTHOR_ID=#{0}
     </select>
     
-    <select id="findByStatus" parameterType="java.util.List" resultMap="courseResultMap">
-        SELECT *
-      	FROM jishu.T_COURSE
-      	WHERE STATUS in
-      	<foreach collection="list" index="index" item="item"
-            open="(" separator="," close=")">
-            #{item}
-        </foreach>
+    <select id="findByStatus" parameterType="java.util.List" resultMap="courseWithAuthorNameResultMap">
+    	SELECT c.ID, c.TITLE, c.DETAIL, c.COVER_IMAGE, c.AUTHOR_ID, u.NICK_NAME as AUTHOR_NAME, c.PRICE, c.COURSE_COLLECTION_START_TIME,
+			c.COURSE_COLLECTION_END_TIME,c.COURSE_START_TIME,c.COURSE_DURATION_TIME,c.TARGET_STUDENT_AMOUNT,
+    		c.CURRENT_STUDENT_AMOUNT,c.STATUS,c.TYPE,c.CREATED_TIME,c.UPDATED_TIME
+		FROM jishu.T_COURSE c, jishu.T_USER u
+		WHERE c.AUTHOR_ID = u.ID
+      		and c.STATUS in
+	      	<foreach collection="list" index="index" item="item"
+	            open="(" separator="," close=")">
+	            #{item}
+	        </foreach>
     </select>
     
     <delete id="delete" parameterType="int">

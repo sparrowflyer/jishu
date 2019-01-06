@@ -10,62 +10,45 @@ export class MultiCourse extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            courses: [
-                {
-                    "id": 1,
-                    "title": "test title",
-                    "detail": "test detail",
-                    "coverImage": "../images/popular/2.jpg",
-                    "authorId": 1,
-                    "authorName": "BossLee",
-                    "price": 0.01,
-                    "courseCollectionStartTime": "2018-12-15 18:00:00",
-                    "courseCollectionEndTime": "2018-12-16 19:00:00",
-                    "courseStartTime": "2018-12-17 20:00:00",
-                    "courseDurationTime": 120,
-                    "targetStudentAmount": 100,
-                    "currentStudentAmount": 0,
-                    "status": "init",
-                    "type": "Design",
-                    "createdTime": "2018-12-12 23:02:40",
-                    "updatedTime": null,
-                    "comments": null
-                }
-            ],
-            courseTypes: ["general", "overseas_life"]
+            courses: [],
+            courseTypes: []
         };
     }
 
     componentDidMount() {
-        //this.setState((state) => {
-        //    return {
-        //        ...state,
-        //        courses: [],
-        //        courseTypes: []
-        //    };
-        //});
-        //postJson('/getAvailableCourses')
-        //    .then((data) => {
-        //        if (data.status === 'success') {
-        //            this.setState((state) => {
-        //                return {
-        //                    ...state,
-        //                    courses: data.data
-        //                };
-        //            });
-        //        }
-        //    });
-        //postJson('/getCourseTypes')
-        //    .then((data) => {
-        //        if (data.status === 'success') {
-        //            this.setState((state) => {
-        //                return {
-        //                    ...state,
-        //                    courseTypes: data.data
-        //                };
-        //            });
-        //        }
-        //    });
+        this.setState((state) => {
+            return {
+                ...state,
+                courses: [],
+                courseTypes: []
+            };
+        });
+        postJson('/getAvailableCourses', {
+            //"type": "",
+            "pageStart": 0,
+            "pageSize": 10,
+            "needAmount": false
+        }).then((data) => {
+            if (data.status === 'success') {
+                this.setState((state) => {
+                    return {
+                        ...state,
+                        courses: data.data.courses
+                    };
+                });
+            }
+        });
+        postJson('/getCourseTypes')
+            .then((data) => {
+                if (data.status === 'success') {
+                    this.setState((state) => {
+                        return {
+                            ...state,
+                            courseTypes: data.data
+                        };
+                    });
+                }
+            });
     }
 
     render() {
@@ -78,43 +61,6 @@ export class MultiCourse extends React.Component {
                         <div className="container">
                             <div className="row">
                                 <div className="col-md-8">
-                                    <div className="filters">
-                                        <div className="row">
-                                            <div className="col-lg-6">
-                                                <select className="filter-select" name="text">
-                                                    <option value="">All price</option>
-                                                    <option value="20">Under $20</option>
-                                                    <option value="40">Under $40</option>
-                                                    <option value="60">Under $60</option>
-                                                </select>
-                                                <select className="filter-select" name="text">
-                                                    <option value="">All type</option>
-                                                    {
-                                                        this.state.courseTypes.map((courseType) => {
-                                                            return (
-                                                                <option key={courseType} value={courseType}>{courseType}</option>
-                                                            );
-                                                        })
-                                                    }
-                                                </select>
-                                            </div>
-                                            <div className="col-lg-6">
-                                                <span className="float-left">Sort by:</span>
-                                                <select className="filter-select" name="text">
-                                                    <option value="">Popularity</option>
-                                                    <option value="paid">Top paid</option>
-                                                    <option value="free">Top free</option>
-                                                </select>
-                                                <div className="layout-switcher">
-                                                    <span className="grid"><i className="fa fa-th"></i></span>
-                                                    <span className="list"><i className="fa fa-list"></i></span>
-                                                </div>
-                                                <p>
-                                                    Showing 12 of 17
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
                                     <div className="course-items">
                                         <div className="row">
                                             {
@@ -128,7 +74,7 @@ export class MultiCourse extends React.Component {
                                                                         <Link to={{pathname: `/course/${course.id}`, state: course}}>{course.title}</Link>
                                                                     </h3>
                                                                     <span className="instructor">
-                                                                        <a href="#">{course.authorName}</a>
+                                                                        <a>{course.authorName}</a>
                                                                     </span>
                                                                     <div className="details-bottom">
                                                                         <div className="course-price float-left">
@@ -136,7 +82,7 @@ export class MultiCourse extends React.Component {
                                                                             <span className="price">{course.price}</span>
                                                                         </div>
                                                                         <div className="rating float-right">
-                                                                            <input type="hidden" className="rating-tooltip-manual" data-filled="fas fa-star" data-empty="far fa-star" value="4.5" data-fractions="5" />
+                                                                            Left:<span className="label label-default">{ course.targetStudentAmount - course.currentStudentAmount }</span>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -151,16 +97,17 @@ export class MultiCourse extends React.Component {
                                 </div>
                                 <div className="col-md-4">
                                     <aside className="sidebar">
+                                        <button className="btn btn-lg enroll-btn">Add Course</button>
                                         <div className="category-list">
                                             <ul>
-                                                <li className="active"><a href="#">All Courses</a></li>
-                                                <li><a href="#">IT & Software</a></li>
-                                                <li><a href="#">Development</a></li>
-                                                <li><a href="#">Design</a></li>
-                                                <li><a href="#">Business</a></li>
-                                                <li><a href="#">Photography</a></li>
-                                                <li><a href="#">Marketing</a></li>
-                                                <li><a href="#">Arts & Music</a></li>
+                                                <li className="active"><a>All Courses</a></li>
+                                                {
+                                                    this.state.courseTypes.map((courseType) => {
+                                                        return (
+                                                            <li key={courseType}><a>{courseType}</a></li>
+                                                        );
+                                                    })
+                                                }
                                             </ul>
                                         </div>
                                     </aside>

@@ -264,7 +264,7 @@ function Team() {
 export function About() {
     return (
         <div>
-            <Header activeTitle="other"/>
+            <Header activeTitle="us"/>
             <BreadCrumb title="关于我们" />
             <AboutUs />
             <Facts />

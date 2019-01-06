@@ -498,7 +498,7 @@ function FAQContent() {
 export function FAQ() {
     return (
         <div>
-            <Header activeTitle="other" />
+            <Header activeTitle="us" />
             <BreadCrumb hasSearchBox="true" />
             <FAQContent />
             <Footer />

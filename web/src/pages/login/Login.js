@@ -54,23 +54,27 @@ class Login extends React.Component {
             this.setState((state) => {
                 return {
                     ...state,
+                    imageCode: '',
                     isLoginLoading: false
                 }
             });
             if (data.status === 'success') {
                 console.log(data);
-                //sessionStorage.setItem('isLogin', )
-                //this.props.history.push('/home');
+                sessionStorage.setItem('jsUserID', "1");
+                this.props.history.push('/home');
             } else {
+                this.getImageCode();
                 this.props.alert.error(data.errorMsg || data.error);
             }
         }).catch((error) => {
             this.setState((state) => {
                 return {
                     ...state,
+                    imageCode: '',
                     isLoginLoading: false
                 }
             });
+            this.getImageCode();
             this.props.alert.error('登录失败。');
         });
     }
@@ -127,7 +131,7 @@ class Login extends React.Component {
                                                onChange={ this.handleInputChange } value={ this.state.password } required />
                                     </p>
                                     <p className="form-input">
-                                        <input type="text" name="imageCode" id="image_code" style={ legalImageInput }
+                                        <input type="text" name="imageCode" id="image_code" style={ legalImageInput } value={ this.state.imageCode }
                                                placeholder="Image Verification Code" onChange={ this.handleInputChange } required />
                                         <img src={ this.state.imageUrl } onClick={ () => { this.getImageCode(); } } />
                                     </p>

@@ -55,7 +55,7 @@ function ContactContent() {
 export function Contact() {
     return (
         <div>
-            <Header activeTitle="other"/>
+            <Header activeTitle="us"/>
             <BreadCrumb title="联系我们" subItem="关于我们" />
             <ContactContent />
             <Subscribe />

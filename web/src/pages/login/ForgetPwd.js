@@ -82,6 +82,7 @@ class ForgetPwd extends React.Component {
             this.setState((state) => {
                 return {
                     ...state,
+                    emailCode: "",
                     isLoading: false
                 }
             });
@@ -94,6 +95,7 @@ class ForgetPwd extends React.Component {
             this.setState((state) => {
                 return {
                     ...state,
+                    emailCode: "",
                     isLoading: false
                 }
             });

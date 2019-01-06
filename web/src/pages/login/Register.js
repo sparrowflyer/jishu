@@ -214,21 +214,27 @@ class Register extends React.Component {
             this.setState((state) => {
                 return {
                     ...state,
+                    imageCode: '',
+                    emailCode: '',
                     isRegisterLoading: false
                 }
             });
             if (data.status === 'success') {
                 this.props.history.push('/login');
             } else {
+                this.getImageCode();
                 this.props.alert.error(data.errorMsg || data.error);
             }
         }).catch((error) => {
             this.setState((state) => {
                 return {
                     ...state,
+                    imageCode: '',
+                    emailCode: '',
                     isRegisterLoading: false
                 }
             });
+            this.getImageCode();
             this.props.alert.error('注册失败。');
         });
     }
@@ -277,7 +283,7 @@ class Register extends React.Component {
                                         this.state.confirmPwdMsg ? <div className="alert alert-danger" role="alert">{this.state.confirmPwdMsg}</div> : null
                                     }
                                     <p className="form-input">
-                                        <input type="text" name="imageCode" id="image_code" style={ legalImageInput }
+                                        <input type="text" name="imageCode" id="image_code" style={ legalImageInput } value={ this.state.imageCode }
                                                placeholder="Image Verification Code" onChange={ this.handleInputChange } required />
                                         <img src={this.state.imageUrl} onClick={ () => { this.getImageCode(); } } />
                                     </p>

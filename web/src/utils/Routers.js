@@ -8,6 +8,7 @@ import { Contact } from '../pages/other/Contact.js';
 import { FAQ } from '../pages/other/FAQ.js';
 import LoginWithRouter from '../pages/login/Login.js';
 import RegisterWithRouter from '../pages/login/Register.js';
+import PwdWithRouter from '../pages/login/ForgetPwd.js';
 import { SingleBlog } from '../pages/blog/SingleBlog.js';
 import { MultiBlog } from '../pages/blog/MultiBlog.js';
 import { SingleCourse } from '../pages/course/SingleCourse.js';
@@ -28,6 +29,7 @@ export function Routers() {
                     <Route path='/faq' component={ FAQ } />
                     <Route path='/login' component={ LoginWithRouter } />
                     <Route path='/register' component={ RegisterWithRouter } />
+                    <Route path='/pwd' component={ PwdWithRouter } />
                     <Route exact path="/blog" component={ MultiBlog } />
                     <Route path='/blog/:blogID' component={ SingleBlog } />
                     <Route exact path='/course' component={ MultiCourse } />

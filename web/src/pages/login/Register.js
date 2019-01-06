@@ -159,16 +159,15 @@ class Register extends React.Component {
             });
     }
 
-    sendEmailCode(event) {
+    sendEmailCode() {
         this.setState((state) => {
            return {
                ...state,
                sendEmailLoading: true
            }
         });
-        getEmailVerifyCode(event.target.value)
-            .then(data => {
-                console.log(data);
+        getEmailVerifyCode(this.state.email[0])
+            .then((data) => {
                 this.setState((state) => {
                     return {
                         ...state,
@@ -176,7 +175,7 @@ class Register extends React.Component {
                     }
                 });
             })
-            .catch(error => {
+            .catch((error) => {
                 this.setState((state) => {
                     return {
                         ...state,
@@ -259,7 +258,7 @@ class Register extends React.Component {
                                     {
                                         this.state.isLegalEmail ?
                                             <p className="form-input">
-                                                <input type="text" name="emailCode" id="email_code" style={ legalEmailInput }
+                                                <input type="text" name="emailCode" id="email_code" style={ legalEmailInput } value={ this.state.emailCode }
                                                        placeholder="Email Verification Code" onChange={ this.handleInputChange } required />
                                                 <input type="button" style={ this.state.sendEmailLoading ? {} : legalEmailButton } value="Send"
                                                        disabled={ this.state.sendEmailLoading } onClick={ this.sendEmailCode } />

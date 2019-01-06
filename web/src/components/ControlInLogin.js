@@ -1,11 +1,12 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 export function RememberMeInLogin() {
     return (
         <p className="checkbox">
             <input name="rememberme" type="checkbox" className="rememberme float-left" value="Remember Me" />
             Remember Me
-            <a href="#" className="float-right" title="Recover Your Lost Password">Forgot password?</a>
+            <Link to="/pwd" className="float-right" title="Recover Your Lost Password">Forgot password?</Link>
         </p>
     );
 }

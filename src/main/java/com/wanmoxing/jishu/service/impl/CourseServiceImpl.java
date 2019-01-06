@@ -1,6 +1,8 @@
 package com.wanmoxing.jishu.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -29,8 +31,21 @@ public class CourseServiceImpl implements CourseService {
 	}
 	
 	@Override
-	public List<Course> findByStatus(List<String> statuses) {
-		return courseMapper.findByStatus(statuses);
+	public int findAmountByConditions(List<String> statuses, String type) {
+		Map<String, Object> conditions = new HashMap<String, Object>();
+		conditions.put("statuses", statuses);
+		conditions.put("type", type);
+		return courseMapper.findAmountByConditions(conditions);
+	}
+	
+	@Override
+	public List<Course> findByAuthorIdAndConditions(List<String> statuses, String type, int pageStart, int pageSize) {
+		Map<String, Object> conditions = new HashMap<String, Object>();
+		conditions.put("statuses", statuses);
+		conditions.put("type", type);
+		conditions.put("pageStart", pageStart);
+		conditions.put("pageSize", pageSize);
+		return courseMapper.findByAuthorIdAndConditions(conditions);
 	}
 
 	@Override

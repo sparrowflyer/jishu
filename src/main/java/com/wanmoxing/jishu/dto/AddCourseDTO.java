@@ -5,6 +5,7 @@ import java.sql.Timestamp;
 
 import com.wanmoxing.jishu.bean.Course;
 import com.wanmoxing.jishu.bean.User;
+import com.wanmoxing.jishu.constant.CommonConstants;
 import com.wanmoxing.jishu.constant.enums.CourseStatus;
 
 public class AddCourseDTO {
@@ -115,7 +116,11 @@ public class AddCourseDTO {
 		course.setTitle(title);
 		course.setDetail(detail);
 		course.setCoverImage(coverImage);
-		course.setAuthorId(courseAuthor.getId());
+		if (CommonConstants.DEV_MODE) {
+			course.setAuthorId(1);
+		} else {
+			course.setAuthorId(courseAuthor.getId());
+		}
 		course.setPrice(price);
 		course.setCourseCollectionStartTime(courseCollectionStartTime);
 		course.setCourseCollectionEndTime(courseCollectionEndTime);

@@ -84,11 +84,15 @@
     	SELECT count(1)
 		FROM jishu.T_COURSE c
 		WHERE 
+			<!-- 
 			c.STATUS in
 	      	<foreach collection="statuses" index="index" item="item"
 	            open="(" separator="," close=")">
 	            #{item}
 	        </foreach>
+	        -->
+	        c.COURSE_COLLECTION_START_TIME &lt;= current_timestamp()
+	        AND current_timestamp() &lt; TIMESTAMPADD(MINUTE,c.COURSE_DURATION_TIME,c.COURSE_START_TIME)
 	        <if test=" type != null and types != '' ">
 	        	AND c.TYPE == #{type}
 	        </if>
@@ -97,14 +101,26 @@
     <select id="findByAuthorIdAndConditions" parameterType="java.util.Map" resultMap="courseWithAuthorNameResultMap">
     	SELECT c.ID, c.TITLE, c.DETAIL, c.COVER_IMAGE, c.AUTHOR_ID, u.NICK_NAME as AUTHOR_NAME, c.PRICE, c.COURSE_COLLECTION_START_TIME,
 			c.COURSE_COLLECTION_END_TIME,c.COURSE_START_TIME,c.COURSE_DURATION_TIME,c.TARGET_STUDENT_AMOUNT,
-    		c.CURRENT_STUDENT_AMOUNT,c.STATUS,c.TYPE,c.CREATED_TIME,c.UPDATED_TIME
+    		c.CURRENT_STUDENT_AMOUNT,
+    		CASE 
+				WHEN current_timestamp() &lt; c.COURSE_COLLECTION_START_TIME THEN 'init'
+				WHEN c.COURSE_COLLECTION_START_TIME &lt;= current_timestamp() and current_timestamp() &lt; c.COURSE_COLLECTION_END_TIME THEN 'collecting'
+		        WHEN c.COURSE_COLLECTION_END_TIME &lt;= current_timestamp() and current_timestamp() &lt; c.COURSE_START_TIME THEN 'collected'
+		        WHEN c.COURSE_START_TIME &lt;= current_timestamp() and current_timestamp() &lt; TIMESTAMPADD(MINUTE,c.COURSE_DURATION_TIME,c.COURSE_START_TIME) THEN 'teaching'
+		        ELSE 'ended'
+	        END as STATUS,
+    		c.TYPE,c.CREATED_TIME,c.UPDATED_TIME
 		FROM jishu.T_COURSE c, jishu.T_USER u
 		WHERE c.AUTHOR_ID = u.ID
+			<!-- 
 			AND c.STATUS in
 	      	<foreach collection="statuses" index="index" item="item"
 	            open="(" separator="," close=")">
 	            #{item}
 	        </foreach>
+	        -->
+	        AND c.COURSE_COLLECTION_START_TIME &lt;= current_timestamp()
+	        AND current_timestamp() &lt; TIMESTAMPADD(MINUTE,c.COURSE_DURATION_TIME,c.COURSE_START_TIME)
 	        <if test=" type != null and types != '' ">
 	        	AND c.TYPE = #{type}
 	        </if>

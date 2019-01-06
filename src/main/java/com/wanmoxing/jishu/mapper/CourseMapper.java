@@ -1,6 +1,7 @@
 package com.wanmoxing.jishu.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -13,7 +14,9 @@ public interface CourseMapper {
 	
 	public List<Course> findByAuthorId(int authorId);
 	
-	public List<Course> findByStatus(List<String> statuses);
+	public int findAmountByConditions(Map<String, Object> conditions);
+	
+	public List<Course> findByAuthorIdAndConditions(Map<String, Object> conditions);
 
     public void insert(Course course);
 

@@ -2,7 +2,9 @@ package com.wanmoxing.jishu.controller;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.fastjson.JSONObject;
 import com.wanmoxing.jishu.bean.Course;
 import com.wanmoxing.jishu.bean.CourseComment;
 import com.wanmoxing.jishu.bean.User;
@@ -108,11 +111,17 @@ public class CourseController {
 	
 	/**
 	 * 获取所有课程
+	 	{
+	 		"type": xxx,				(可选)
+	 		"pageStart": 0,				(必选,不需要分页时可以填任意值)
+	 		"pageSize": 0,				(必选,不需要分页时填0)
+	 		"needAmount": true/false	(必选)
+	 	}
 	 * @param session
 	 * @return
 	 */
 	@RequestMapping(value = "/getAvailableCourses", method = RequestMethod.POST)
-	public ResultDTO getAvailableCourses (HttpSession session) {
+	public ResultDTO getAvailableCourses (@RequestBody JSONObject jsonParams) {
 		ResultDTO result = new ResultDTO();
 		try {
 			List<String> statuses = new ArrayList<String>();
@@ -121,9 +130,26 @@ public class CourseController {
 			statuses.add(CourseStatus.COLLECTED.getStatus());
 			statuses.add(CourseStatus.TEACHING.getStatus());
 			statuses.add(CourseStatus.ENDED.getStatus());
-			List<Course> courses = courseService.findByStatus(statuses);
-			result.setData(courses);
+			
+			String type = jsonParams.getString("type");
+			int pageStart = jsonParams.getIntValue("pageStart");
+			int pageSize = jsonParams.getIntValue("pageSize");
+			boolean needAmount = jsonParams.getBooleanValue("needAmount");
+			
+			List<Course> courses = courseService.findByAuthorIdAndConditions(statuses, type, pageStart, pageSize);
+			if (needAmount) {
+				int amount = courseService.findAmountByConditions(statuses, type);
+				Map<String, Object> coursesAndAmount = new HashMap<String, Object>();
+				coursesAndAmount.put("totalSize", amount);
+				coursesAndAmount.put("courses", courses);
+				result.setData(coursesAndAmount);
+			} else {
+				Map<String, Object> coursesMap = new HashMap<String, Object>();
+				coursesMap.put("courses", courses);
+				result.setData(coursesMap);
+			}
 			return result;
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			result.setStatus(ResultDTOStatus.ERROR.getStatus());

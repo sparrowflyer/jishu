@@ -10,7 +10,9 @@ public interface CourseService {
 	
 	public List<Course> findByAuthorId(int authorId);
 	
-	public List<Course> findByStatus(List<String> statuses);
+	public int findAmountByConditions(List<String> statuses, String type);
+	
+	public List<Course> findByAuthorIdAndConditions(List<String> statuses, String type, int pageStart, int pageSize);
 
     public void insert(Course course);
 

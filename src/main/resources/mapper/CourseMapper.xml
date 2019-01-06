@@ -73,23 +73,44 @@
       	WHERE ID=#{0}
     </select>
     
+    <!-- 此方法未来会被废弃，已被findByAuthorIdAndConditions取代 -->
     <select id="findByAuthorId" parameterType="int" resultMap="courseResultMap">
         SELECT *
       	FROM jishu.T_COURSE
       	WHERE AUTHOR_ID=#{0}
     </select>
     
-    <select id="findByStatus" parameterType="java.util.List" resultMap="courseWithAuthorNameResultMap">
+    <select id="findAmountByConditions" parameterType="java.util.Map" resultType="int">
+    	SELECT count(1)
+		FROM jishu.T_COURSE c
+		WHERE 
+			c.STATUS in
+	      	<foreach collection="statuses" index="index" item="item"
+	            open="(" separator="," close=")">
+	            #{item}
+	        </foreach>
+	        <if test=" type != null and types != '' ">
+	        	AND c.TYPE == #{type}
+	        </if>
+    </select>
+    
+    <select id="findByAuthorIdAndConditions" parameterType="java.util.Map" resultMap="courseWithAuthorNameResultMap">
     	SELECT c.ID, c.TITLE, c.DETAIL, c.COVER_IMAGE, c.AUTHOR_ID, u.NICK_NAME as AUTHOR_NAME, c.PRICE, c.COURSE_COLLECTION_START_TIME,
 			c.COURSE_COLLECTION_END_TIME,c.COURSE_START_TIME,c.COURSE_DURATION_TIME,c.TARGET_STUDENT_AMOUNT,
     		c.CURRENT_STUDENT_AMOUNT,c.STATUS,c.TYPE,c.CREATED_TIME,c.UPDATED_TIME
 		FROM jishu.T_COURSE c, jishu.T_USER u
 		WHERE c.AUTHOR_ID = u.ID
-      		and c.STATUS in
-	      	<foreach collection="list" index="index" item="item"
+			AND c.STATUS in
+	      	<foreach collection="statuses" index="index" item="item"
 	            open="(" separator="," close=")">
 	            #{item}
 	        </foreach>
+	        <if test=" type != null and types != '' ">
+	        	AND c.TYPE == #{type}
+	        </if>
+	        <if test=" pageSize != 0 ">
+	    		LIMIT #{pageStart}, #{pageSize}
+	    	</if>
     </select>
     
     <delete id="delete" parameterType="int">

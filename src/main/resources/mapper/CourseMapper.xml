@@ -106,7 +106,7 @@
 	            #{item}
 	        </foreach>
 	        <if test=" type != null and types != '' ">
-	        	AND c.TYPE == #{type}
+	        	AND c.TYPE = #{type}
 	        </if>
 	        <if test=" pageSize != 0 ">
 	    		LIMIT #{pageStart}, #{pageSize}

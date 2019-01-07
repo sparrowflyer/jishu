@@ -78,6 +78,7 @@ public class LoginController {
 		if (user!=null) {
 			logger.info("登录成功!");
 			resultDTO.setErrorMsg("登录成功");
+			resultDTO.setData(user);
 			resultDTO.setStatus(ResultDTOStatus.SUCCESS.getStatus());
 			session.setAttribute("user", user);
 			return resultDTO;

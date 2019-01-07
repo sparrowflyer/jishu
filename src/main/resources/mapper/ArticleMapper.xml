@@ -32,6 +32,14 @@
     <select id="getArticleById" parameterType="int" resultMap="articleResultMap">
         SELECT * from T_ARTICLE,T_USER where T_ARTICLE.uid=T_USER.ID and aid=#{aid}
     </select>
+    
+    <select id="getArticleListByUid" parameterType="int" resultMap="articleResultMap">
+        SELECT * from T_ARTICLE,T_USER where T_ARTICLE.uid=T_USER.ID and T_ARTICLE.uid=#{uid}
+    </select>
+    
+    <select id="getArticleCollectListByUid" parameterType="int" resultMap="articleResultMap">
+        SELECT * from T_ARTICLE,T_USER where T_ARTICLE.uid=T_USER.ID and T_ARTICLE.aid =T_COLLECTION_COUNT.aid and T_COLLECTION_COUNT.uid=#{uid}
+    </select>
 
 	<select id="searchArticleByTitle" resultMap="articleResultMap">
 		select * from T_ARTICLE where title like '%' #{key} '%' order by aid desc

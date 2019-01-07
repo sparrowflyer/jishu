@@ -15,6 +15,10 @@ public interface ArticleMapper {
 	
 	public Article getArticleById(int aid);
 	
+	public List<Article> getArticleListByUid(int uid);
+	
+	public List<Article> getArticleCollectListByUid(int uid);
+	
 	public Article searchArticleByTitle(String key);
 	
 	public List<ArticleType> getAllArticleType();

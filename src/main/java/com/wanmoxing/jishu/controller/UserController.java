@@ -16,6 +16,7 @@ import com.wanmoxing.jishu.dto.ResultDTO;
 import com.wanmoxing.jishu.dto.UpdateUserHeadImageDTO;
 import com.wanmoxing.jishu.dto.UpdateUserNicknameDTO;
 import com.wanmoxing.jishu.dto.UserDTO;
+import com.wanmoxing.jishu.service.ArticleService;
 import com.wanmoxing.jishu.service.UserNotificationService;
 import com.wanmoxing.jishu.service.UserService;
 import com.wanmoxing.jishu.util.CommUtil;
@@ -28,6 +29,8 @@ public class UserController {
 
 	@Resource
 	private UserService userService;
+	@Resource
+	private ArticleService articleservice;
 	@Resource
 	private UserNotificationService userNotificationService;
 
@@ -101,6 +104,62 @@ public class UserController {
 			User user = userService.findById(updateUserHeadImageDTO.getId());
 			user.setHeadImage(updateUserHeadImageDTO.getHeadImage());
 			userService.update(user);
+			return result;
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus(ResultDTOStatus.ERROR.getStatus());
+			result.setErrorMsg("Exception occured!");
+			return result;
+		}
+	}
+	
+	/** 
+	 * @param session
+	 * @param uid,page
+	 * @return
+	 */
+	@RequestMapping(value = "userAllArticles", method = RequestMethod.POST)
+	public ResultDTO userAllArticles(HttpSession session,
+			@RequestParam("uid") int uid,
+			@RequestParam("page") int page) {
+		ResultDTO result = new ResultDTO();
+		try {
+			if (!CommUtil.isUserLogined(session)) {
+				result.setStatus(ResultDTOStatus.ERROR.getStatus());
+				result.setErrorMsg("User not logined!");
+				return result;
+			}
+			result.setErrorMsg("获取该用户:" +uid + "所有帖子");
+			result.setStatus(ResultDTOStatus.SUCCESS.getStatus());
+			result.setData(articleservice.getArticleListByUid(uid, page));
+			return result;
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus(ResultDTOStatus.ERROR.getStatus());
+			result.setErrorMsg("Exception occured!");
+			return result;
+		}
+	}
+	
+	/** 
+	 * @param session
+	 * @param uid,page
+	 * @return
+	 */
+	@RequestMapping(value = "userAllCollectArticles", method = RequestMethod.POST)
+	public ResultDTO userAllCollectArticles(HttpSession session,
+			@RequestParam("uid") int uid,
+			@RequestParam("page") int page) {
+		ResultDTO result = new ResultDTO();
+		try {
+			if (!CommUtil.isUserLogined(session)) {
+				result.setStatus(ResultDTOStatus.ERROR.getStatus());
+				result.setErrorMsg("User not logined!");
+				return result;
+			}
+			result.setErrorMsg("获取该用户:" +uid + "所有帖子");
+			result.setStatus(ResultDTOStatus.SUCCESS.getStatus());
+			result.setData(articleservice.getArticleCollectListByUid(uid, page));
 			return result;
 		} catch (Exception e) {
 			e.printStackTrace();

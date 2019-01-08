@@ -68,10 +68,17 @@ public class ArticleController {
 		ResultDTO resultDTO = new ResultDTO();
 		
 		logger.info("获取所有帖子");
-		resultDTO.setErrorMsg("获取所有帖子");
-		resultDTO.setStatus(ResultDTOStatus.SUCCESS.getStatus());
-		resultDTO.setData(articleService.getArticleList(page));
-		return resultDTO;
+		try {
+			resultDTO.setErrorMsg("获取所有帖子");
+			resultDTO.setStatus(ResultDTOStatus.SUCCESS.getStatus());
+			resultDTO.setData(articleService.getArticleList(page));
+			return resultDTO;
+		} catch (Exception e) {
+			e.printStackTrace();
+			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+			resultDTO.setErrorMsg("Exception occured!");
+			return resultDTO;
+		}
 	}
 	
 	/**
@@ -89,22 +96,36 @@ public class ArticleController {
 			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
 			return resultDTO;
 		}
-		//帖子数据
-		Article article = articleService.getArticleById(aid);
-		//评论数据
-		List<Comment> commentList = commentService.getCommentList(aid);
-		//楼中楼评论数据
-		for(Comment comment:commentList) {
-			comment.setFloors(floorService.getFloorList(comment.getCid()));
+		
+		if(aid < 0) {
+			resultDTO.setErrorMsg("帖子不存在");
+			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+			return resultDTO;
 		}
 		
-		article.setComments(commentList);
-		
-		logger.info("获取帖子标题为:" + article.getTitle());
-		resultDTO.setErrorMsg("获取帖子标题为:" + article.getTitle());
-		resultDTO.setStatus(ResultDTOStatus.SUCCESS.getStatus());
-		resultDTO.setData(article);
-		return resultDTO;
+		try {
+			//帖子数据
+			Article article = articleService.getArticleById(aid);
+			//评论数据
+			List<Comment> commentList = commentService.getCommentList(aid);
+			//楼中楼评论数据
+			for(Comment comment:commentList) {
+				comment.setFloors(floorService.getFloorList(comment.getCid()));
+			}
+			
+			article.setComments(commentList);
+			
+			logger.info("获取帖子标题为:" + article.getTitle());
+			resultDTO.setErrorMsg("获取帖子标题为:" + article.getTitle());
+			resultDTO.setStatus(ResultDTOStatus.SUCCESS.getStatus());
+			resultDTO.setData(article);
+			return resultDTO;
+		} catch (Exception e) {
+			e.printStackTrace();
+			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+			resultDTO.setErrorMsg("Exception occured!");
+			return resultDTO;
+		}
 	}
 	
 	/** add article
@@ -124,7 +145,6 @@ public class ArticleController {
 		}
 		
 		User user = (User)session.getAttribute("user");
-		User userDateBase = userService.findByEmail(user.getEmail(),user.getPassword());
 		String title = article.getTitle();
 		String content = article.getContent();
 		String imagesrc= article.getImagesrc();
@@ -157,13 +177,20 @@ public class ArticleController {
 		article.setImagesrc(imagesrc);
 		article.setTitle(title);
 		article.setTypeId(typeId);
-		article.setUid(userDateBase.getId());
+		article.setUid(user.getId());
+		try {
+			articleService.insert(article);
+			resultDTO.setErrorMsg("发表成功");
+			resultDTO.setStatus(ResultDTOStatus.SUCCESS.getStatus());
+			resultDTO.setData(article);
+			return resultDTO;
+		} catch (Exception e) {
+			e.printStackTrace();
+			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+			resultDTO.setErrorMsg("Exception occured!");
+			return resultDTO;
+		}
 		
-		articleService.insert(article);
-		resultDTO.setErrorMsg("发表成功");
-		resultDTO.setStatus(ResultDTOStatus.SUCCESS.getStatus());
-		resultDTO.setData(article);
-		return resultDTO;
 	}
 	
 	/** update article
@@ -181,7 +208,6 @@ public class ArticleController {
 		}
 		
 		User user = (User)session.getAttribute("user");
-		User userDateBase = userService.findByEmail(user.getEmail(),user.getPassword());
 
 		int aid = article.getAid();
 		int uid = article.getUid();
@@ -215,21 +241,35 @@ public class ArticleController {
 			return resultDTO;
 		}
 			
-		if(userDateBase.getId() != uid) {
+		if(user.getId() != uid) {
 			resultDTO.setErrorMsg("只能对自己的帖子更新");
 			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
 			return resultDTO;
 		}
-		Article articleDatabase = articleService.getArticleById(aid);
-		articleDatabase.setTitle(title);
-		articleDatabase.setContent(content);
-		articleDatabase.setImagesrc(imagesrc);
-		articleDatabase.setTypeId(typeId);
-		articleService.update(articleDatabase);
-		resultDTO.setErrorMsg("更新帖子成功");
-		resultDTO.setStatus(ResultDTOStatus.SUCCESS.getStatus());
-		resultDTO.setData(article);
-		return resultDTO;
+		
+		try {
+			Article articleDatabase = articleService.getArticleById(aid);
+			if(articleDatabase !=null) {
+				articleDatabase.setTitle(title);
+				articleDatabase.setContent(content);
+				articleDatabase.setImagesrc(imagesrc);
+				articleDatabase.setTypeId(typeId);
+				articleService.update(articleDatabase);
+				resultDTO.setErrorMsg("更新帖子成功");
+				resultDTO.setStatus(ResultDTOStatus.SUCCESS.getStatus());
+				resultDTO.setData(article);
+				return resultDTO;
+			} else {
+				resultDTO.setErrorMsg("文章不存在");
+				resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+				return resultDTO;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+			resultDTO.setErrorMsg("Exception occured!");
+			return resultDTO;
+		}
 	}
 	
 	/**
@@ -249,43 +289,65 @@ public class ArticleController {
 		}
 		
 		User user = (User)session.getAttribute("user");
-		User userDateBase = userService.findByEmail(user.getEmail(),user.getPassword());
-		int uid = userDateBase.getId();
+		int uid = user.getId();
 		
 		GoodBad goodBad = goodBadService.getGoodByAidAndUid(aid, uid);
-		if(goodBad == null) {
-			Article article = articleService.getArticleById(aid);
-			article.setGoodCount(article.getGoodCount() + 1);
-			articleService.update(article);
-			
-			GoodBad goodBadDatabase = new GoodBad();
-			goodBadDatabase.setAid(aid);
-			goodBadDatabase.setUid(uid);
-			goodBadDatabase.setStatus(GoodBadStatus.GOOD.getValue());
-			goodBadService.insert(goodBadDatabase);		
-		} else {
-			if(goodBad.getStatus() == GoodBadStatus.GOOD.getValue()) {
-				//点过赞了，再点的话就是取消点赞
-				Article article = articleService.getArticleById(aid);
-				article.setGoodCount(article.getGoodCount() - 1);
-				articleService.update(article);
-				
-				goodBadService.delete(aid, uid);
-			} else {
-				//点踩变成点赞
-				Article article = articleService.getArticleById(aid);
-				article.setGoodCount(article.getGoodCount() + 1);
-				article.setBadCount(article.getBadCount() - 1);
-				articleService.update(article);
-				
-				goodBad.setStatus(GoodBadStatus.GOOD.getValue());
-				goodBadService.update(goodBad);
-			}
-		}
 		
-		resultDTO.setErrorMsg("点赞成功");
-		resultDTO.setStatus(ResultDTOStatus.SUCCESS.getStatus());
-		return resultDTO;
+		try {
+			if(goodBad == null) {
+				Article article = articleService.getArticleById(aid);
+				if(article == null) {
+					resultDTO.setErrorMsg("文章不存在");
+					resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+					return resultDTO;
+				}
+				article.setGoodCount(article.getGoodCount() + 1);
+				articleService.update(article);
+				
+				GoodBad goodBadDatabase = new GoodBad();
+				goodBadDatabase.setAid(aid);
+				goodBadDatabase.setUid(uid);
+				goodBadDatabase.setStatus(GoodBadStatus.GOOD.getValue());
+				goodBadService.insert(goodBadDatabase);		
+			} else {
+				if(goodBad.getStatus() == GoodBadStatus.GOOD.getValue()) {
+					//点过赞了，再点的话就是取消点赞
+					Article article = articleService.getArticleById(aid);
+					if(article == null) {
+						resultDTO.setErrorMsg("文章不存在");
+						resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+						return resultDTO;
+					}
+					article.setGoodCount(article.getGoodCount() - 1);
+					articleService.update(article);
+					
+					goodBadService.delete(aid, uid);
+				} else {
+					//点踩变成点赞
+					Article article = articleService.getArticleById(aid);
+					if(article == null) {
+						resultDTO.setErrorMsg("文章不存在");
+						resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+						return resultDTO;
+					}
+					article.setGoodCount(article.getGoodCount() + 1);
+					article.setBadCount(article.getBadCount() - 1);
+					articleService.update(article);
+					
+					goodBad.setStatus(GoodBadStatus.GOOD.getValue());
+					goodBadService.update(goodBad);
+				}
+			}
+			
+			resultDTO.setErrorMsg("点赞成功");
+			resultDTO.setStatus(ResultDTOStatus.SUCCESS.getStatus());
+			return resultDTO;
+		} catch (Exception e) {
+			e.printStackTrace();
+			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+			resultDTO.setErrorMsg("Exception occured!");
+			return resultDTO;		
+		}
 	}
 	
 	
@@ -306,43 +368,64 @@ public class ArticleController {
 		}
 		
 		User user = (User)session.getAttribute("user");
-		User userDateBase = userService.findByEmail(user.getEmail(),user.getPassword());
-		int uid = userDateBase.getId();
+		int uid = user.getId();
 		
-		GoodBad goodBad = goodBadService.getGoodByAidAndUid(aid, uid);
-		if(goodBad == null) {
-			Article article = articleService.getArticleById(aid);
-			article.setBadCount(article.getBadCount() + 1);
-			articleService.update(article);
-			
-			GoodBad goodBadDatabase = new GoodBad();
-			goodBadDatabase.setAid(aid);
-			goodBadDatabase.setUid(uid);
-			goodBadDatabase.setStatus(GoodBadStatus.BAD.getValue());
-			goodBadService.insert(goodBadDatabase);		
-		} else {
-			if(goodBad.getStatus() == GoodBadStatus.BAD.getValue()) {
-				//点过踩了，再点的话就是取消点踩
+		try {
+			GoodBad goodBad = goodBadService.getGoodByAidAndUid(aid, uid);
+			if(goodBad == null) {
 				Article article = articleService.getArticleById(aid);
-				article.setBadCount(article.getBadCount() - 1);
-				articleService.update(article);
-				
-				goodBadService.delete(aid, uid);
-			} else {
-				//点赞变成点踩
-				Article article = articleService.getArticleById(aid);
-				article.setGoodCount(article.getGoodCount() - 1);
+				if(article == null) {
+					resultDTO.setErrorMsg("文章不存在");
+					resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+					return resultDTO;
+				}
 				article.setBadCount(article.getBadCount() + 1);
 				articleService.update(article);
 				
-				goodBad.setStatus(GoodBadStatus.BAD.getValue());
-				goodBadService.update(goodBad);
+				GoodBad goodBadDatabase = new GoodBad();
+				goodBadDatabase.setAid(aid);
+				goodBadDatabase.setUid(uid);
+				goodBadDatabase.setStatus(GoodBadStatus.BAD.getValue());
+				goodBadService.insert(goodBadDatabase);		
+			} else {
+				if(goodBad.getStatus() == GoodBadStatus.BAD.getValue()) {
+					//点过踩了，再点的话就是取消点踩
+					Article article = articleService.getArticleById(aid);
+					if(article == null) {
+						resultDTO.setErrorMsg("文章不存在");
+						resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+						return resultDTO;
+					}
+					article.setBadCount(article.getBadCount() - 1);
+					articleService.update(article);
+					
+					goodBadService.delete(aid, uid);
+				} else {
+					//点赞变成点踩
+					Article article = articleService.getArticleById(aid);
+					if(article == null) {
+						resultDTO.setErrorMsg("文章不存在");
+						resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+						return resultDTO;
+					}
+					article.setGoodCount(article.getGoodCount() - 1);
+					article.setBadCount(article.getBadCount() + 1);
+					articleService.update(article);
+					
+					goodBad.setStatus(GoodBadStatus.BAD.getValue());
+					goodBadService.update(goodBad);
+				}
 			}
+			
+			resultDTO.setErrorMsg("点踩成功");
+			resultDTO.setStatus(ResultDTOStatus.SUCCESS.getStatus());
+			return resultDTO;
+		} catch (Exception e) {
+			e.printStackTrace();
+			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+			resultDTO.setErrorMsg("Exception occured!");
+			return resultDTO;	
 		}
-		
-		resultDTO.setErrorMsg("点踩成功");
-		resultDTO.setStatus(ResultDTOStatus.SUCCESS.getStatus());
-		return resultDTO;
 	}
 	
 	/**
@@ -362,32 +445,47 @@ public class ArticleController {
 		}
 		
 		User user = (User)session.getAttribute("user");
-		User userDateBase = userService.findByEmail(user.getEmail(),user.getPassword());
-		int uid = userDateBase.getId();
-		
-		CollectionCount collection = collectionCountService.getGoodByAidAndUid(aid, uid);
-		if(collection == null) {
-			//收藏
-			Article article = articleService.getArticleById(aid);
-			article.setCollectCount(article.getCollectCount() + 1);
-			articleService.update(article);
-			
-			CollectionCount collectionDataBase = new CollectionCount();
-			collectionDataBase.setAid(aid);
-			collectionDataBase.setUid(uid);
-			collectionCountService.insert(collectionDataBase);		
-		} else {
-			//取消收藏
-			Article article = articleService.getArticleById(aid);
-			article.setCollectCount(article.getCollectCount() - 1);
-			articleService.update(article);
+		int uid = user.getId();
+		try {
+			CollectionCount collection = collectionCountService.getGoodByAidAndUid(aid, uid);
+			if(collection == null) {
+				//收藏
+				Article article = articleService.getArticleById(aid);
+				if(article == null) {
+					resultDTO.setErrorMsg("文章不存在");
+					resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+					return resultDTO;
+				}
+				article.setCollectCount(article.getCollectCount() + 1);
+				articleService.update(article);
 				
-			collectionCountService.delete(aid, uid);	
+				CollectionCount collectionDataBase = new CollectionCount();
+				collectionDataBase.setAid(aid);
+				collectionDataBase.setUid(uid);
+				collectionCountService.insert(collectionDataBase);		
+			} else {
+				//取消收藏
+				Article article = articleService.getArticleById(aid);
+				if(article == null) {
+					resultDTO.setErrorMsg("文章不存在");
+					resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+					return resultDTO;
+				}
+				article.setCollectCount(article.getCollectCount() - 1);
+				articleService.update(article);
+					
+				collectionCountService.delete(aid, uid);	
+			}
+			
+			resultDTO.setErrorMsg("收藏成功");
+			resultDTO.setStatus(ResultDTOStatus.SUCCESS.getStatus());
+			return resultDTO;
+		} catch (Exception e) {
+			e.printStackTrace();
+			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+			resultDTO.setErrorMsg("Exception occured!");
+			return resultDTO;	
 		}
-		
-		resultDTO.setErrorMsg("收藏成功");
-		resultDTO.setStatus(ResultDTOStatus.SUCCESS.getStatus());
-		return resultDTO;
 	}
 	
 	/**

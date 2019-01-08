@@ -65,19 +65,24 @@ public class CommentController {
 		}
 		
 		User user = (User)session.getAttribute("user");
-		User userDateBase = userService.findByEmail(user.getEmail(),user.getPassword());
-		comment.setUid(userDateBase.getId());
+		comment.setUid(user.getId());
 		comment.setCreateDate(new Timestamp(new Date().getTime()));
-		comment.setUser(userDateBase);
+		comment.setUser(user);
 		comment.setFloorReply(0);
 		comment.setFloorNumber(commentService.getCommentCount(aid) + 1);
-		
-		commentService.insert(comment);
-		logger.info("评论成功");
-		resultDTO.setErrorMsg("评论成功");
-		resultDTO.setStatus(ResultDTOStatus.SUCCESS.getStatus());
-		resultDTO.setData(comment);
-		return resultDTO;
+		try {
+			commentService.insert(comment);
+			logger.info("评论成功");
+			resultDTO.setErrorMsg("评论成功");
+			resultDTO.setStatus(ResultDTOStatus.SUCCESS.getStatus());
+			resultDTO.setData(comment);
+			return resultDTO;
+		} catch (Exception e) {
+			e.printStackTrace();
+			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+			resultDTO.setErrorMsg("Exception occured!");
+			return resultDTO;
+		}
 	}
 	
 	/**
@@ -112,22 +117,27 @@ public class CommentController {
 		}
 		
 		User user = (User)session.getAttribute("user");
-		User userDatabase = userService.findByEmail(user.getEmail(), user.getPassword());
 
-		if(userDatabase.getId() != uid) {
+		if(user.getId() != uid) {
 			resultDTO.setErrorMsg("只能对自己的评论更新");
 			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
 			return resultDTO;
 		}
-		
-		Comment commentDatabase = commentService.getCommentById(cid);
-		commentDatabase.setContent(content);
-		commentService.update(commentDatabase);
-		logger.info("评论修改成功");
-		resultDTO.setErrorMsg("评论修改成功");
-		resultDTO.setStatus(ResultDTOStatus.SUCCESS.getStatus());
-		resultDTO.setData(comment);
-		return resultDTO;
+		try {
+			Comment commentDatabase = commentService.getCommentById(cid);
+			commentDatabase.setContent(content);
+			commentService.update(commentDatabase);
+			logger.info("评论修改成功");
+			resultDTO.setErrorMsg("评论修改成功");
+			resultDTO.setStatus(ResultDTOStatus.SUCCESS.getStatus());
+			resultDTO.setData(comment);
+			return resultDTO;
+		} catch (Exception e) {
+			e.printStackTrace();
+			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+			resultDTO.setErrorMsg("Exception occured!");
+			return resultDTO;
+		}
 	}
 	
 }

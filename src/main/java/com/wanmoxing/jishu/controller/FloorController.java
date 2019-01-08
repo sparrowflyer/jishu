@@ -66,16 +66,21 @@ public class FloorController {
 		}
 	
 		User user = (User)session.getAttribute("user");
-		User userDatabase = userService.findByEmail(user.getEmail(), user.getPassword());
-
-		floor.setUid(userDatabase.getId());
+		floor.setUid(user.getId());
 		floor.setCreateDate(new Timestamp(new Date().getTime()));
-		floorService.insert(floor);
-		logger.info("评论成功");
-		resultDTO.setErrorMsg("评论成功");
-		resultDTO.setStatus(ResultDTOStatus.SUCCESS.getStatus());
-		resultDTO.setData(floor);
-		return resultDTO;
+		try {
+			floorService.insert(floor);
+			logger.info("评论成功");
+			resultDTO.setErrorMsg("评论成功");
+			resultDTO.setStatus(ResultDTOStatus.SUCCESS.getStatus());
+			resultDTO.setData(floor);
+			return resultDTO;
+		} catch (Exception e) {
+			e.printStackTrace();
+			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+			resultDTO.setErrorMsg("Exception occured!");
+			return resultDTO;
+		}
 	}
 	
 	/**
@@ -110,22 +115,27 @@ public class FloorController {
 		}
 	
 		User user = (User)session.getAttribute("user");
-		User userDatabase = userService.findByEmail(user.getEmail(), user.getPassword());
-		if(userDatabase.getId() != uid) {
+		if(user.getId() != uid) {
 			resultDTO.setErrorMsg("只能对自己的评论更新");
 			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
 			return resultDTO;
 		}
-		
-		Floor floorDatabase = floorService.getFloorById(fid);
-		floorDatabase.setContent(content);
-		
-		floorService.update(floorDatabase);
-		logger.info("评论修改成功");
-		resultDTO.setErrorMsg("评论修改成功");
-		resultDTO.setStatus(ResultDTOStatus.SUCCESS.getStatus());
-		resultDTO.setData(floor);
-		return resultDTO;
+		try {
+			Floor floorDatabase = floorService.getFloorById(fid);
+			floorDatabase.setContent(content);
+			
+			floorService.update(floorDatabase);
+			logger.info("评论修改成功");
+			resultDTO.setErrorMsg("评论修改成功");
+			resultDTO.setStatus(ResultDTOStatus.SUCCESS.getStatus());
+			resultDTO.setData(floor);
+			return resultDTO;
+		} catch (Exception e) {
+			e.printStackTrace();
+			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+			resultDTO.setErrorMsg("Exception occured!");
+			return resultDTO;
+		}
 	}
 	
 }

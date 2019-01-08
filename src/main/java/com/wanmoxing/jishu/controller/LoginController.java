@@ -76,6 +76,7 @@ public class LoginController {
 
 		User user = userService.findByEmail(email, MD5Util.EncodeByMD5(password));
 		if (user!=null) {
+			user.setPassword(null);
 			logger.info("登录成功!");
 			resultDTO.setErrorMsg("登录成功");
 			resultDTO.setData(user);

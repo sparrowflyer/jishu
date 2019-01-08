@@ -191,6 +191,13 @@ export class SingleCourse extends React.Component {
                                                         </ol>
                                                     </div>
                                                 </div>
+                                                <div className="respond">
+                                                    <h3 className="title">Add Your Comment</h3>
+                                                    <form action="#" method="post" className="comment-form">
+                                                        <textarea id="comment" className="form-control" name="comment" placeholder="Comment" rows="8" required></textarea>
+                                                        <input className="btn" type="submit" value="Submit Comment" />
+                                                    </form>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

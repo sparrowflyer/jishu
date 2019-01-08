@@ -97,7 +97,7 @@ export class MultiCourse extends React.Component {
                                 </div>
                                 <div className="col-md-4">
                                     <aside className="sidebar">
-                                        <button className="btn btn-lg enroll-btn">Add Course</button>
+                                        <Link className="btn btn-lg enroll-btn" to="/addCourse">Add Course</Link>
                                         <div className="category-list">
                                             <ul>
                                                 <li className="active"><a>All Courses</a></li>

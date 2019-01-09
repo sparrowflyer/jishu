@@ -126,11 +126,6 @@ public class UserFanController {
 	public ResultDTO getFans (HttpSession session, @RequestBody GetFansDTO getFansDTO) {
 		ResultDTO result = new ResultDTO();
 		try {
-			if (!CommonConstants.DEV_MODE && !CommUtil.isUserLogined(session)) {
-				result.setStatus(ResultDTOStatus.ERROR.getStatus());
-				result.setErrorMsg("User not logined!");
-				return result;
-			}
 			List<User> fansUsers = userFanService.findFansUsers(getFansDTO.getOwnerId());
 			List<FansDTO> fansDTOs = new ArrayList<FansDTO>();
 			for (User user : fansUsers) {

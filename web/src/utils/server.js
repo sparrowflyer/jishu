@@ -15,6 +15,16 @@ async function getUserInfo(userID) {
     return (await res.json());
 }
 
+async function uploadImage(file) {
+    let fileData = new FormData();
+    fileData.append('file', file);
+    let res = await fetch(_server + '/upload', {
+        method: 'POST',
+        body: fileData
+    });
+    return (await res.json());
+}
+
 async function postJson(url, body) {
     let res = await fetch(_server + url, {
         method: 'POST',
@@ -26,4 +36,4 @@ async function postJson(url, body) {
     return (await res.json());
 }
 
-export {getVerifyCodeImage, getEmailVerifyCode, getUserInfo, postJson};
+export {getVerifyCodeImage, getEmailVerifyCode, getUserInfo, uploadImage, postJson};

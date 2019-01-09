@@ -59,9 +59,8 @@ class Login extends React.Component {
                 }
             });
             if (data.status === 'success') {
-                console.log(data);
-                sessionStorage.setItem('jsUserID', "1");
-                this.props.history.push('/home');
+                sessionStorage.setItem('jsUser', JSON.stringify(data.data));
+                this.props.history.push('/');
             } else {
                 this.getImageCode();
                 this.props.alert.error(data.errorMsg || data.error);
@@ -114,7 +113,7 @@ class Login extends React.Component {
     render() {
         return (
             <div>
-                <Header activeTitle="other" />
+                <Header activeTitle="me" />
                 <BreadCrumb title="登录" subItem="个人中心" currentItem="登录" />
                 <section className="login-register">
                     <div className="section-padding">

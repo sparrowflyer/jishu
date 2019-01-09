@@ -26,8 +26,56 @@ export class SingleCourse extends React.Component {
         this.state = {
             course: this.props.location.state,
             comments: [],
-            authorInfo: {}
+            authorInfo: {},
+            comment: ''
         };
+        this.handleCommentChange = this.handleCommentChange.bind(this);
+        this.submitCommentInfo = this.submitCommentInfo.bind(this);
+    }
+
+    handleCommentChange(event) {
+        this.setState((state) => {
+            return {
+                ...state,
+                comment: event.target.value
+            };
+        });
+    }
+
+    submitCommentInfo() {
+        let jsUserID = '';
+        try {
+            jsUserID = JSON.parse(sessionStorage.getItem('jsUser'))
+        } catch(e) {}
+        if (!jsUserID) {
+            this.props.alert.error('请登录再评价。');
+            sessionStorage.removeItem('jsUser');
+            return;
+        }
+        postJson('/addCourseComment', {
+            "courseId": this.state.course.id,
+            "userId": jsUserID,
+            "content": this.state.comment[0]
+        }).then((data) => {
+            if (data.status === 'success') {
+                postJson('/getCourseComments', {
+                    courseId: this.state.course.id
+                }).then((data) => {
+                    if (data.status === 'success') {
+                        this.setState((state) => {
+                            return {
+                                ...state,
+                                comments: data.data
+                            }
+                        });
+                    }
+                });
+            } else {
+                this.props.alert.error(data.errorMsg || data.error);
+            }
+        }).catch((error) => {
+            this.props.alert.error('评价失败。');
+        });
     }
 
     componentDidMount() {
@@ -191,13 +239,19 @@ export class SingleCourse extends React.Component {
                                                         </ol>
                                                     </div>
                                                 </div>
-                                                <div className="respond">
-                                                    <h3 className="title">Add Your Comment</h3>
-                                                    <form action="#" method="post" className="comment-form">
-                                                        <textarea id="comment" className="form-control" name="comment" placeholder="Comment" rows="8" required></textarea>
-                                                        <input className="btn" type="submit" value="Submit Comment" />
-                                                    </form>
-                                                </div>
+                                                {
+                                                    sessionStorage.getItem('jsUser') ?
+                                                        <div className="respond">
+                                                            <h3 className="title">Add Your Comment</h3>
+                                                            <form className="comment-form" onSubmit={ this.submitCommentInfo }>
+                                                                <textarea id="comment" className="form-control" name="comment" placeholder="Comment" rows="8"
+                                                                          onChange={ this.handleCommentChange } value={ this.state.comment } required>
+                                                                </textarea>
+                                                                <input className="btn" type="submit" value="Submit Comment" />
+                                                            </form>
+                                                        </div>
+                                                        : null
+                                                }
                                             </div>
                                         </div>
                                     </div>

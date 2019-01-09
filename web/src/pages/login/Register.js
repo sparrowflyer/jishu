@@ -242,7 +242,7 @@ class Register extends React.Component {
     render() {
         return (
             <div>
-                <Header activeTitle="other" />
+                <Header activeTitle="me" />
                 <BreadCrumb title="注册" subItem="个人中心" currentItem="注册" />
                 <section className="login-register">
                     <div className="section-padding">

@@ -18,3 +18,11 @@ export function getTimeOfNow(timeStr) {
     }
     return `${Math.floor(timeInterval / 86400000)}天前`;
 }
+
+function addZero(num) {
+    return num > 10 ? num : '0' + num;
+}
+
+export function formatDateTime(datetime) {
+    return `${datetime.getFullYear()}-${addZero(datetime.getMonth()+1)}-${addZero(datetime.getDate())} ${addZero(datetime.getHours())}:${addZero(datetime.getMinutes())}:${addZero(datetime.getSeconds())}`;
+}

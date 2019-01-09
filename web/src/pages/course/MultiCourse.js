@@ -97,7 +97,9 @@ export class MultiCourse extends React.Component {
                                 </div>
                                 <div className="col-md-4">
                                     <aside className="sidebar">
-                                        <Link className="btn btn-lg enroll-btn" to="/addCourse">Add Course</Link>
+                                        {
+                                            sessionStorage.getItem('jsUser') ? <Link className="btn btn-lg enroll-btn" to="/addCourse">Add Course</Link> : null
+                                        }
                                         <div className="category-list">
                                             <ul>
                                                 <li className="active"><a>All Courses</a></li>

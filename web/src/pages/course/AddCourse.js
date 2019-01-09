@@ -1,18 +1,21 @@
 import React from 'react';
+import { withAlert } from 'react-alert';
+import { withRouter } from 'react-router';
 import DatePicker from 'react-datepicker';
 import '../../assets/css/react-datepicker.min.css';
 import { Header } from '../../components/common/Header.js';
 import { Footer } from '../../components/common/Footer.js';
 import { BreadCrumb } from '../../components/common/BreadCrumb.js';
-import { postJson } from '../../utils/server.js';
+import { formatDateTime } from '../../utils/time.js';
+import { postJson, uploadImage } from '../../utils/server.js';
 
-export class AddCourse extends React.Component {
+class AddCourse extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             title: '',
             detail: '',
-            coverImage: '',
+            image: null,
             price: '',
             type: '',
             courseCollectionStartTime: null,
@@ -31,6 +34,7 @@ export class AddCourse extends React.Component {
         this.handleStartTimeChange = this.handleStartTimeChange.bind(this);
         this.handlePriceBlur = this.handlePriceBlur.bind(this);
         this.handleImageChange = this.handleImageChange.bind(this);
+        this.addCourse = this.addCourse.bind(this);
     }
 
     handleInputChange(event) {
@@ -80,7 +84,7 @@ export class AddCourse extends React.Component {
         });
         const value = event.target.value;
         if (!value) { return ; }
-        if (!/(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9](0-9)?$)/.test(value)) {
+        if (!/^(([1-9][0-9]*)|(([0]\.\d{1,2}|[1-9][0-9]*\.\d{1,2})))$/.test(value)) {
             this.setState((state) => {
                 return {
                     ...state,
@@ -91,11 +95,71 @@ export class AddCourse extends React.Component {
     }
 
     handleImageChange(event) {
-        console.log(event.target.value);
+        let image = event.target.files[0];
+        this.setState((state) => {
+            return {
+                ...state,
+                image
+            }
+        });
+    }
+
+    addCourse(image = '') {
+        let price = this.state.price[0] || 0;
+        postJson('/addCourse', {
+            'title': this.state.title[0],
+            'detail': this.state.detail[0],
+            'coverImage': image,
+            'price': price,
+            'type': this.state.type ? this.state.type[0] : '',
+            'courseCollectionStartTime': formatDateTime(this.state.courseCollectionStartTime),
+            'courseCollectionEndTime': formatDateTime(this.state.courseCollectionEndTime),
+            'courseStartTime': formatDateTime(this.state.courseStartTime),
+            'courseDurationTime': this.state.courseDurationTime[0],
+            'targetStudentAmount': this.state.targetStudentAmount[0]
+        }).then((data) => {
+            if (data.status === 'success') {
+                this.props.history.push('/course');
+            } else {
+                this.props.alert.error(data.errorMsg || data.error);
+            }
+        }).catch((error) => {
+            this.props.alert.error('添加课程失败。');
+        });
     }
 
     submitCourseInfo(event) {
-
+        event.preventDefault();
+        if (!this.state.courseCollectionStartTime) {
+            this.props.alert.error('Course Collection Start Time is required');
+            return;
+        }
+        if (!this.state.courseCollectionEndTime) {
+            this.props.alert.error('Course Collection End Time is required');
+            return;
+        }
+        if (this.state.courseCollectionEndTime - this.state.courseCollectionStartTime < 0) {
+            this.props.alert.error('Collection Time is wrong');
+            return;
+        }
+        if (!this.state.courseStartTime) {
+            this.props.alert.error('Course Start Time is required');
+            return;
+        }
+        if (this.state.image) {
+            uploadImage(this.state.image)
+                .then((data) => {
+                    if (data.status === 'success') {
+                        this.addCourse(data.data);
+                    } else {
+                        this.props.alert.error(data.errorMsg || data.error);
+                    }
+                }).catch((error) => {
+                    this.props.alert.error('上传图片失败。');
+                });
+        } else {
+            this.addCourse();
+        }
     }
 
     componentDidMount() {
@@ -129,7 +193,7 @@ export class AddCourse extends React.Component {
                                     </p>
                                     <p className="form-input">
                                         <input type="text" name="price" id="course_price" placeholder="Course Price" className="input"
-                                               onChange={ this.handleInputChange } value={ this.state.price } onBlur={ this.handlePriceBlur } required />
+                                               onChange={ this.handleInputChange } value={ this.state.price } onBlur={ this.handlePriceBlur } />
                                     </p>
                                     {
                                         this.state.priceMsg ? <div className="alert alert-danger" role="alert">{this.state.priceMsg}</div> : null
@@ -147,18 +211,18 @@ export class AddCourse extends React.Component {
                                             }
                                         </select>
                                     </p>
-                                    <p className="form-input">
+                                    <div className="form-input" style={{marginBottom: '20px'}}>
                                         <DatePicker placeholderText="Course Collection Start Time" showTimeSelect dateFormat="yyyy-MM-dd HH:mm:ss"
                                                     selected={this.state.courseCollectionStartTime} onChange={this.handleCollectionStartTimeChange} />
-                                    </p>
-                                    <p className="form-input">
+                                    </div>
+                                    <div className="form-input" style={{marginBottom: '20px'}}>
                                         <DatePicker placeholderText="Course Collection End Time" showTimeSelect dateFormat="yyyy-MM-dd HH:mm:ss"
                                                     selected={this.state.courseCollectionEndTime} onChange={this.handleCollectionEndTimeChange} />
-                                    </p>
-                                    <p className="form-input">
+                                    </div>
+                                    <div className="form-input" style={{marginBottom: '20px'}}>
                                         <DatePicker placeholderText="Course Start Time" showTimeSelect dateFormat="yyyy-MM-dd HH:mm:ss"
                                                     selected={this.state.courseStartTime} onChange={this.handleStartTimeChange} />
-                                    </p>
+                                    </div>
                                     <p className="form-input">
                                         <input type="number" name="courseDurationTime" id="course_duration_time" placeholder="Course Duration Time" className="input"
                                                onChange={ this.handleInputChange } value={ this.state.courseDurationTime } required />
@@ -168,7 +232,8 @@ export class AddCourse extends React.Component {
                                                onChange={ this.handleInputChange } value={ this.state.targetStudentAmount } required />
                                     </p>
                                     <p className="form-input">
-                                        <textarea id="course_detail" className="form-control" name="detail" placeholder="Course Detail" rows="8">
+                                        <textarea id="course_detail" className="form-control" name="detail" placeholder="Course Detail" rows="8"
+                                                  onChange={ this.handleInputChange } value={ this.state.detail }>
                                         </textarea>
                                     </p>
                                     <p className="form-input">
@@ -190,3 +255,6 @@ export class AddCourse extends React.Component {
         );
     }
 }
+
+const AddCourseWithRouter = withRouter(withAlert(AddCourse));
+export default AddCourseWithRouter;

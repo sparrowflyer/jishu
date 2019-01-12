@@ -94,7 +94,7 @@
 	        c.COURSE_COLLECTION_START_TIME &lt;= current_timestamp()
 	        AND current_timestamp() &lt; TIMESTAMPADD(MINUTE,c.COURSE_DURATION_TIME,c.COURSE_START_TIME)
 	        <if test=" type != null and types != '' ">
-	        	AND c.TYPE == #{type}
+	        	AND c.TYPE = #{type}
 	        </if>
     </select>
     

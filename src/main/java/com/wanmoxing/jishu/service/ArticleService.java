@@ -13,9 +13,9 @@ public interface ArticleService {
 	
 	public Article getArticleById(int aid);
 	
-	public PageInfo<Article> getArticleListByUid(int uid, int page);
+	public List<Article> getArticleListByUid(int uid);
 	
-	public PageInfo<Article> getArticleCollectListByUid(int uid, int page);
+	public List<Article> getArticleCollectListByUid(int uid);
 
 	public Article searchArticleByTitle(String key);
 	

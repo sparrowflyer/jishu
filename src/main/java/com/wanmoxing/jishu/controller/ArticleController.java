@@ -447,7 +447,7 @@ public class ArticleController {
 		User user = (User)session.getAttribute("user");
 		int uid = user.getId();
 		try {
-			CollectionCount collection = collectionCountService.getGoodByAidAndUid(aid, uid);
+			CollectionCount collection = collectionCountService.getCollectionByAidAndUid(aid, uid);
 			if(collection == null) {
 				//收藏
 				Article article = articleService.getArticleById(aid);

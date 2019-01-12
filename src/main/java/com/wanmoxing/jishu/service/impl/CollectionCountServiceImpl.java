@@ -18,7 +18,7 @@ public class CollectionCountServiceImpl implements CollectionCountService {
 
 
 	@Override
-	public CollectionCount getGoodByAidAndUid(int aid, int uid) {
+	public CollectionCount getCollectionByAidAndUid(int aid, int uid) {
 		return collectionCountMapper.getCollectionByAidAndUid(aid, uid);
 	}
 

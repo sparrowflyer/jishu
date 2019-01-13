@@ -1,42 +1,57 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { withRouter } from 'react-router';
-import PropTypes from 'prop-types';
+import { withAlert } from 'react-alert';
+import { postJson, setCommentRead } from '../../utils/server.js';
+
+const homeCommentNum = {
+    backgroundColor: '#0d47a1',
+    borderRadius: '5em',
+    color: '#fff',
+    fontSize: '11px',
+    fontWeight: '700',
+    height: '15px',
+    width: '15px',
+    right: 0,
+    top: '13px',
+    lineHeight: '15px',
+    position: 'absolute',
+    textAlign: 'center'
+};
 
 class HomeHeader extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            jsUser: null
+            jsUserID: '',
+            jsUser: null,
+            unreadComments: []
         };
+        this.getComments = this.getComments.bind(this);
         this.logout = this.logout.bind(this);
     }
 
     componentDidMount() {
-        if (sessionStorage.getItem('jsUser')) {
-            try {
-                this.setState((state) => {
-                    return {
-                        ...state,
-                        jsUser: JSON.parse(sessionStorage.getItem('jsUser'))
-                    }
-                });
-            } catch(e) {
-                this.setState((state) => {
-                    return {
-                        ...state,
-                        jsUser: null
-                    }
-                });
-                sessionStorage.removeItem('jsUser');
+        this.setState((state) => {
+            return {
+                ...state,
+                jsUserID: '',
+                jsUser: null
             }
-        } else {
+        });
+        let jsUser, jsUserID;
+        try {
+            jsUser = JSON.parse(sessionStorage.getItem('jsUser'));
+            jsUserID = jsUser.id;
+        } catch(e) {}
+        if (jsUser) {
             this.setState((state) => {
-                return {
-                    ...state,
-                    jsUser: null
-                }
+                return { ...state, jsUserID, jsUser }
             });
+            this.getComments(jsUserID);
+        } else {
+            sessionStorage.removeItem('jsUser');
         }
     }
 
@@ -44,6 +59,38 @@ class HomeHeader extends React.Component {
         sessionStorage.removeItem('jsUser');
         this.props.history.push('/');
         window.location.reload();
+    }
+
+    getComments(userID) {
+        postJson('/getUserNotificaitons', {
+            userId: userID
+        }).then((data) => {
+            if (data.status === 'success') {
+                let comments = data.data,
+                    unreadComments = comments.filter((comment) => {
+                        return comment.status === 'unread';
+                    });
+                this.setState((state) => {
+                    return {
+                        ...state,
+                        unreadComments
+                    }
+                });
+            }
+        });
+    }
+
+    setCommentRead(commentID) {
+        setCommentRead(commentID)
+            .then((data) => {
+                if (data.status === 'success') {
+                    this.getComments(this.state.jsUserID);
+                } else {
+                    this.props.alert.error(data.errorMsg || data.error);
+                }
+            }).catch((error) => {
+                this.props.alert.error('设置消息已读失败!');
+            });
     }
 
     render() {
@@ -75,66 +122,31 @@ class HomeHeader extends React.Component {
                                     </div>
                                 </div>
                                 <div className="menu-cart dropdown float-right">
-                                    <a className="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        Cart <i className="fas fa-shopping-cart"></i>
+                                    <a className="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i className="fas fa-comment-dots"></i>
+                                        {
+                                            this.state.unreadComments.length > 0 ?
+                                                <span style={homeCommentNum}>{this.state.unreadComments.length}</span> : null
+                                        }
                                     </a>
                                     <div className="dropdown-menu cart-menu">
                                         <div className="widget_shopping_cart_content">
                                             <div className="cart-top">
-                                                <div className="item media">
-                                                    <button className="btn close-btn"><i className="icons icon-close"></i></button>
-                                                    <div className="item-thumbnail">
-                                                        <img src="../images/shop/1.jpg" alt="Item Thimbnail" />
-                                                    </div>
-                                                    <div className="item-details media-body">
-                                                        <div className="rating"><input type="hidden" className="rating-tooltip-manual" data-filled="fas fa-star" data-empty="far fa-star" value="4.5" data-fractions="5"/></div>
-                                                        <h4 className="item-title"><a href="#">Product Name Here</a></h4>
-                                                        <div className="price">
-                                                            <span className="current-price">$15.99</span>
-                                                        </div>
-                                                        <span className="item-count">3</span>
-                                                    </div>
-                                                </div>
-                                                <div className="item media">
-                                                    <button className="btn close-btn"><i className="icons icon-close"></i></button>
-                                                    <div className="item-thumbnail">
-                                                        <img src="../images/shop/2.jpg" alt="Item Thimbnail" />
-                                                    </div>
-                                                    <div className="item-details media-body">
-                                                        <div className="rating"><input type="hidden" className="rating-tooltip-manual" data-filled="fas fa-star" data-empty="far fa-star" value="4.5" data-fractions="5" /></div>
-                                                        <h4 className="item-title"><a href="#">Product Name Here</a></h4>
-                                                        <div className="price">
-                                                            <span className="current-price">$15.99</span>
-                                                        </div>
-                                                        <span className="item-count">3</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="cart-middle">
-                                                <button className="btn float-left"><i className="ti-trash"></i> Empty Cart</button>
-                                                <div className="price-total float-right">
-                                                    <span>Sub total:</span>
-                                                    <div className="price">
-                                                        <span className="current-price">$1555.99</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="cart-bottom">
-                                                <span className="btn float-left"><i className="icons icon-basket-loaded"></i> View Cart</span>
-                                                <span className="btn float-right">Checkout</span>
+                                                {
+                                                    this.state.unreadComments.map((unreadComment) => {
+                                                        return (
+                                                            <div className="item media" key={unreadComment.id}>
+                                                                <button className="btn close-btn" onClick={this.setCommentRead.bind(this, unreadComment.id)}><i className="icons icon-close"></i></button>
+                                                                <div className="item-details media-body" style={{marginLeft: '5px'}}>
+                                                                    <h4 className="item-title">{unreadComment.title}</h4>
+                                                                    <div className="price">{unreadComment.content}</div>
+                                                                </div>
+                                                            </div>
+                                                        );
+                                                    })
+                                                }
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                                <div className="user-area dropdown float-right">
-                                    <a href="#" className="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        myCourseware
-                                    </a>
-                                    <div className="user-menu dropdown-menu">
-                                        <a className="nav-link" href="#"><i className="fa fa- user"></i>My Profile</a>
-                                        <a className="nav-link" href="#"><i className="fa fa- user"></i>Notifications <span className="count">13</span></a>
-                                        <a className="nav-link" href="#"><i className="fa fa -cog"></i>Settings</a>
-                                        <a className="nav-link" href="#"><i className="fa fa-power -off"></i>Logout</a>
                                     </div>
                                 </div>
                             </div>
@@ -202,36 +214,34 @@ class NormalHeader extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            jsUser: null
+            jsUserID: '',
+            jsUser: null,
+            unreadComments: []
         };
+        this.getComments = this.getComments.bind(this);
         this.logout = this.logout.bind(this);
     }
 
     componentDidMount() {
-        if (sessionStorage.getItem('jsUser')) {
-            try {
-                this.setState((state) => {
-                    return {
-                        ...state,
-                        jsUser: JSON.parse(sessionStorage.getItem('jsUser'))
-                    }
-                });
-            } catch(e) {
-                this.setState((state) => {
-                    return {
-                        ...state,
-                        jsUser: null
-                    }
-                });
-                sessionStorage.removeItem('jsUser');
+        this.setState((state) => {
+            return {
+                ...state,
+                jsUserID: '',
+                jsUser: null
             }
-        } else {
+        });
+        let jsUser, jsUserID;
+        try {
+            jsUser = JSON.parse(sessionStorage.getItem('jsUser'));
+            jsUserID = jsUser.id;
+        } catch(e) {}
+        if (jsUser) {
             this.setState((state) => {
-                return {
-                    ...state,
-                    jsUser: null
-                }
+                return { ...state, jsUserID, jsUser }
             });
+            this.getComments(jsUserID);
+        } else {
+            sessionStorage.removeItem('jsUser');
         }
     }
 
@@ -239,6 +249,38 @@ class NormalHeader extends React.Component {
         sessionStorage.removeItem('jsUser');
         this.props.history.push('/');
         window.location.reload();
+    }
+
+    getComments(userID) {
+        postJson('/getUserNotificaitons', {
+            userId: userID
+        }).then((data) => {
+            if (data.status === 'success') {
+                let comments = data.data,
+                    unreadComments = comments.filter((comment) => {
+                        return comment.status === 'unread';
+                    });
+                this.setState((state) => {
+                    return {
+                        ...state,
+                        unreadComments
+                    }
+                });
+            }
+        });
+    }
+
+    setCommentRead(commentID) {
+        setCommentRead(commentID)
+            .then((data) => {
+                if (data.status === 'success') {
+                    this.getComments(this.state.jsUserID);
+                } else {
+                    this.props.alert.error(data.errorMsg || data.error);
+                }
+            }).catch((error) => {
+                this.props.alert.error('设置消息已读失败!');
+            });
     }
 
     render() {
@@ -311,58 +353,28 @@ class NormalHeader extends React.Component {
                                 </div>
                             </div>
                             <div className="menu-cart dropdown float-right">
-                                <a className="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i className="fas fa-shopping-cart"></i>
-                                    <span className="count">2</span>
+                                <a className="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i className="fas fa-comment-dots"></i>
+                                    {
+                                        this.state.unreadComments.length > 0 ? <span className="count">{this.state.unreadComments.length}</span> : null
+                                    }
                                 </a>
                                 <div className="dropdown-menu cart-menu">
                                     <div className="widget_shopping_cart_content">
                                         <div className="cart-top">
-                                            <div className="item media">
-                                                <button className="btn close-btn"><i className="icons icon-close"></i></button>
-                                                <div className="item-thumbnail">
-                                                    <img src="../images/shop/1.jpg" alt="Item Thimbnail" />
-                                                </div>
-                                                <div className="item-details media-body">
-                                                    <div className="rating">
-                                                        <input type="hidden" className="rating-tooltip-manual" data-filled="fas fa-star" data-empty="far fa-star" value="4.5" data-fractions="5"/>
-                                                    </div>
-                                                    <h4 className="item-title"><a href="#">Product Name Here</a></h4>
-                                                    <div className="price">
-                                                        <span className="current-price">$15.99</span>
-                                                    </div>
-                                                    <span className="item-count">3</span>
-                                                </div>
-                                            </div>
-                                            <div className="item media">
-                                                <button className="btn close-btn"><i className="icons icon-close"></i></button>
-                                                <div className="item-thumbnail">
-                                                    <img src="../images/shop/2.jpg" alt="Item Thimbnail" />
-                                                </div>
-                                                <div className="item-details media-body">
-                                                    <div className="rating">
-                                                        <input type="hidden" className="rating-tooltip-manual" data-filled="fas fa-star" data-empty="far fa-star" value="4.5" data-fractions="5"/>
-                                                    </div>
-                                                    <h4 className="item-title"><a href="#">Product Name Here</a></h4>
-                                                    <div className="price">
-                                                        <span className="current-price">$15.99</span>
-                                                    </div>
-                                                    <span className="item-count">3</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="cart-middle">
-                                            <button className="btn float-left"><i className="ti-trash"></i> Empty Cart</button>
-                                            <div className="price-total float-right">
-                                                <span>Sub total:</span>
-                                                <div className="price">
-                                                    <span className="current-price">$1555.99</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="cart-bottom">
-                                            <a href="cart.html" className="btn float-left"><i className="icons icon-basket-loaded"></i> View Cart</a>
-                                            <a href="checkout.html" className="btn float-right">Checkout</a>
+                                            {
+                                                this.state.unreadComments.map((unreadComment) => {
+                                                    return (
+                                                        <div className="item media" key={unreadComment.id}>
+                                                            <button className="btn close-btn" onClick={this.setCommentRead.bind(this, unreadComment.id)}><i className="icons icon-close"></i></button>
+                                                            <div className="item-details media-body" style={{marginLeft: '5px'}}>
+                                                                <h4 className="item-title">{unreadComment.title}</h4>
+                                                                <div className="price">{unreadComment.content}</div>
+                                                            </div>
+                                                        </div>
+                                                    );
+                                                })
+                                            }
                                         </div>
                                     </div>
                                 </div>
@@ -375,8 +387,8 @@ class NormalHeader extends React.Component {
     }
 }
 
-const NormalHeaderWithRouter = withRouter(NormalHeader);
-const HomeHeaderWithRouter = withRouter(HomeHeader);
+const NormalHeaderWithRouter = withRouter(withAlert(NormalHeader));
+const HomeHeaderWithRouter = withRouter(withAlert(HomeHeader));
 
 
 export function Header({activeTitle}) {

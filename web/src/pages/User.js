@@ -30,6 +30,7 @@ class User extends React.Component {
             email: '',
             status: '',
             fans: [],
+            faneds: [],
             releaseCourses: [],
             ownArticles: [],
             collectedArticles: [],
@@ -117,7 +118,8 @@ class User extends React.Component {
                 this.setState((state) => {
                     return {
                         ...state,
-                        isEdit: false
+                        isEdit: false,
+                        nickName: state.tempNickName
                     }
                 });
             } else {
@@ -226,6 +228,18 @@ class User extends React.Component {
                 });
             }
         });
+        postJson('/getFaneds', {
+            fanId: userID
+        }).then((data) => {
+            if (data.status === 'success') {
+                this.setState((state) => {
+                    return {
+                        ...state,
+                        faneds: data.data
+                    }
+                })
+            }
+        });
         postJson('/getCreatedCourses', {
             id: userID
         }).then((data) => {
@@ -238,28 +252,30 @@ class User extends React.Component {
                 })
             }
         });
-        postJson(`/userAllArticles`,{id:userID})
-            .then((data) => {
-                if (data.status === 'success') {
-                    this.setState((state) => {
-                        return {
-                            ...state,
-                            ownArticles: data.data && data.data.list ? data.data.list : []
-                        }
-                    });
-                }
-            });
-        postJson(`/userAllCollectArticles?uid=${userID}`)
-            .then((data) => {
-                if (data.status === 'success') {
-                    this.setState((state) => {
-                        return {
-                            ...state,
-                            collectedArticles: data.data && data.data.list ? data.data.list : []
-                        }
-                    });
-                }
-            });
+        postJson('/userAllArticles', {
+            id: userID
+        }).then((data) => {
+            if (data.status === 'success') {
+                this.setState((state) => {
+                    return {
+                        ...state,
+                        ownArticles: data.data || []
+                    }
+                });
+            }
+        });
+        postJson('/userAllCollectArticles', {
+            uid: userID
+        }).then((data) => {
+            if (data.status === 'success') {
+                this.setState((state) => {
+                    return {
+                        ...state,
+                        collectedArticles: data.data || []
+                    }
+                });
+            }
+        });
     }
 
     render() {
@@ -350,6 +366,11 @@ class User extends React.Component {
                                             }
                                         </div>
                                         <div className="tab-pane fade" id="follow" role="tabpanel" aria-labelledby="follow">
+                                            {
+                                                this.state.faneds.map((fan) => {
+                                                    return <p key={fan.id}>{fan.nickName}</p>
+                                                })
+                                            }
                                         </div>
                                         <div className="tab-pane fade" id="releaseCourse" role="tabpanel" aria-labelledby="releaseCourse">
                                             {
@@ -357,7 +378,7 @@ class User extends React.Component {
                                                     return (
                                                         <div style={{width: '100%', borderBottom: '1px solid #cfd8dc', padding: '10px 0 15px'}} key={course.id}>
                                                             <h3 style={{color: '#37474f'}}>{course.title}</h3>
-                                                            <p>{ course.detail }</p>
+                                                            <p><strong>类型:</strong> {course.type}</p>
                                                         </div>
                                                     );
                                                 })
@@ -366,14 +387,38 @@ class User extends React.Component {
                                         <div className="tab-pane fade" id="post" role="tabpanel" aria-labelledby="post">
                                             {
                                                 this.state.ownArticles.map((article) => {
-
+                                                    return (
+                                                        <div style={{width: '100%', borderBottom: '1px solid #cfd8dc', padding: '10px 0 15px'}} key={article.aid}>
+                                                            <h3 style={{color: '#37474f'}}>{article.title}</h3>
+                                                            <p><strong>创建时间:</strong> {article.createDate}</p>
+                                                            <p><strong>修改时间:</strong> {article.updateDate}</p>
+                                                            <p>
+                                                                <strong>赞:</strong> {article.goodCount}
+                                                                <strong style={nickNameBtn}>吐槽:</strong> {article.badCount}
+                                                                <strong style={nickNameBtn}>收藏:</strong> {article.collectCount}
+                                                                <strong style={nickNameBtn}>评价:</strong> {article.commentCount}
+                                                            </p>
+                                                        </div>
+                                                    );
                                                 })
                                             }
                                         </div>
                                         <div className="tab-pane fade" id="collection" role="tabpanel" aria-labelledby="collection">
                                             {
                                                 this.state.collectedArticles.map((article) => {
-
+                                                    return (
+                                                        <div style={{width: '100%', borderBottom: '1px solid #cfd8dc', padding: '10px 0 15px'}} key={article.aid}>
+                                                            <h3 style={{color: '#37474f'}}>{article.title}</h3>
+                                                            <p><strong>创建时间:</strong> {article.createDate}</p>
+                                                            <p><strong>修改时间:</strong> {article.updateDate}</p>
+                                                            <p>
+                                                                <strong>赞:</strong> {article.goodCount}
+                                                                <strong style={nickNameBtn}>吐槽:</strong> {article.badCount}
+                                                                <strong style={nickNameBtn}>收藏:</strong> {article.collectCount}
+                                                                <strong style={nickNameBtn}>评价:</strong> {article.commentCount}
+                                                            </p>
+                                                        </div>
+                                                    );
                                                 })
                                             }
                                         </div>

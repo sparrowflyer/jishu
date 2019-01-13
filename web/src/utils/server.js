@@ -20,6 +20,11 @@ async function getArticles(page) {
     return (await res.json());
 }
 
+async function setCommentRead(commentID) {
+    let res = await fetch(_server + '/setUserNotificaitonAsRead?id=' + encodeURIComponent(commentID));
+    return (await res.json());
+}
+
 async function uploadImage(file) {
     let fileData = new FormData();
     fileData.append('file', file);
@@ -41,4 +46,4 @@ async function postJson(url, body) {
     return (await res.json());
 }
 
-export {getVerifyCodeImage, getEmailVerifyCode, getUserInfo, getArticles, uploadImage, postJson};
+export {getVerifyCodeImage, getEmailVerifyCode, getUserInfo, getArticles, uploadImage, postJson, setCommentRead};

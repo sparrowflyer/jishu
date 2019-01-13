@@ -23,6 +23,7 @@ import { Routers } from './utils/Routers.js';
 import { reducerApp } from './redux/reducer.js';
 import { Provider as AlertProvider } from "react-alert";
 import AlertTemplate from "react-alert-template-basic";
+import './assets/css/pagination.css';
 
 const store = createStore(reducerApp);
 const options = {

@@ -120,7 +120,7 @@ public class UserController {
 	 */
 	@RequestMapping(value = "userAllArticles", method = RequestMethod.POST)
 	public ResultDTO userAllArticles(HttpSession session,
-			@RequestParam("uid") int uid) {
+									 @RequestBody User user) {
 		ResultDTO result = new ResultDTO();
 		try {
 			if (!CommUtil.isUserLogined(session)) {
@@ -128,9 +128,9 @@ public class UserController {
 				result.setErrorMsg("User not logined!");
 				return result;
 			}
-			result.setErrorMsg("获取该用户:" +uid + "所有发布帖子");
+			result.setErrorMsg("获取该用户:" +user.getId() + "所有发布帖子");
 			result.setStatus(ResultDTOStatus.SUCCESS.getStatus());
-			result.setData(articleservice.getArticleListByUid(uid));
+			result.setData(articleservice.getArticleListByUid(user.getId()));
 			return result;
 		} catch (Exception e) {
 			e.printStackTrace();

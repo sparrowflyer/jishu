@@ -13,15 +13,17 @@ export class MultiCourse extends React.Component {
             courses: [],
             courseTypes: [],
             courseType: '',
-            currentPage: 1
+            currentPage: 1,
+            totalCourses: 0
         };
+        this.changePage = this.changePage.bind(this);
     }
 
-    getCourses(courseType) {
+    getCourses(courseType, currentPage) {
         let param = {
-            pageStart: (this.state.currentPage - 1) * 10,
+            pageStart: (currentPage - 1) * 10,
             pageSize: 10,
-            needAmount: false
+            needAmount: true
         };
         if (courseType) {
             param = { ...param, type: courseType }
@@ -31,11 +33,22 @@ export class MultiCourse extends React.Component {
                 this.setState((state) => {
                     return {
                         ...state,
-                        courses: data.data.courses
+                        courses: data.data.courses,
+                        totalCourses: data.data.totalSize
                     };
                 });
             }
         });
+    }
+
+    changePage(page) {
+        this.setState((state) => {
+            return {
+                ...state,
+                currentPage: page
+            }
+        });
+        this.getCourses(this.state.courseType, page);
     }
 
     changeCourseType(courseType) {
@@ -45,7 +58,7 @@ export class MultiCourse extends React.Component {
                courseType: courseType
            };
         });
-        this.getCourses(courseType);
+        this.getCourses(courseType, this.state.currentPage);
     }
 
     componentDidMount() {
@@ -57,20 +70,7 @@ export class MultiCourse extends React.Component {
                 currentPage: 1
             };
         });
-        postJson('/getAvailableCourses', {
-            'pageStart': 0,
-            'pageSize': 10,
-            'needAmount': false
-        }).then((data) => {
-            if (data.status === 'success') {
-                this.setState((state) => {
-                    return {
-                        ...state,
-                        courses: data.data.courses
-                    };
-                });
-            }
-        });
+        this.getCourses('', 1);
         postJson('/getCourseTypes')
             .then((data) => {
                 if (data.status === 'success') {
@@ -133,7 +133,9 @@ export class MultiCourse extends React.Component {
                                     </div>
                                     {
                                         this.state.courses && this.state.courses.length > 0 ?
-                                            <Pagination onChange={this.getCourses.bind(this.state.courseType)} />
+                                            <Pagination onChange={this.changePage}
+                                                        defaultPageSize={10} current={this.state.currentPage}
+                                                        total={this.state.totalCourses}/>
                                             : <p>暂无课程信息</p>
                                     }
                                 </div>

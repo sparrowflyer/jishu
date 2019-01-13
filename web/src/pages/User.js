@@ -238,7 +238,7 @@ class User extends React.Component {
                 })
             }
         });
-        postJson(`/userAllArticles?uid=${userID}`)
+        postJson(`/userAllArticles`,{id:userID})
             .then((data) => {
                 if (data.status === 'success') {
                     this.setState((state) => {

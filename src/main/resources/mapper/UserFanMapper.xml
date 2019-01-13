@@ -44,6 +44,12 @@
     	where id in (select fan_id from jishu.T_USER_FAN where owner_id = #{ownerId}); 
     </select>
     
+    <select id="findFanedUsers" parameterType="int" resultMap="userResultMap">
+    	select * 
+    	from jishu.T_USER
+    	where id in (select owner_id from jishu.T_USER_FAN where fan_id = #{fanId}); 
+    </select>
+    
     <delete id="delete" parameterType="com.wanmoxing.jishu.bean.UserFan">
         DELETE FROM jishu.T_USER_FAN WHERE OWNER_ID=#{ownerId} and FAN_ID=#{fanId}
     </delete>

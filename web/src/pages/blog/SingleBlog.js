@@ -4,13 +4,20 @@ import { Blog, InnerArticle } from '../../components/ControlInBlog.js';
 export class SingleBlog extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            course: this.props.location.state
+        };
+    }
+
+    componentDidMount() {
+
     }
 
     render() {
         return (
             <Blog>
                 <div className="col-md-8">
-                    <InnerArticle>
+                    <InnerArticle {...this.state.course}>
                         <div className="content-bottom">
                             <div className="tags float-left">
                                 <a href="">HTML5</a>

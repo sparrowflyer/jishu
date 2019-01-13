@@ -70,45 +70,47 @@ function StandardInnerArticle({imgUrl}) {
     );
 }
 
-const test = {
-    imgUrl: "../images/posts/6.jpg",
-    time: {
-        date: '12',
-        month: 'July'
-    },
-    blog: {
-        id: 1,
-        title: 'Blog Title',
-        author: 'Author',
-        commentNum: 13,
-        content: '<span>Hello World!</span>'
+function getMonth(dateStr) {
+    let date = new Date(dateStr);
+    if ('' + date === 'Invalid Date') {
+        return '';
     }
-};
+    return date.getMonth() + 1;
+}
+
+function getDate(dateStr) {
+    let date = new Date(dateStr);
+    if ('' + date === 'Invalid Date') {
+        return '';
+    }
+    return date.getDate();
+}
 
 export class InnerArticle extends React.Component {
     constructor(props) {
         super(props);
     }
+
     render() {
         return (
-            <article className={`post type-post ${test.imgUrl ? 'format-standard' : 'format-text-only'}`}>
+            <article className={`post type-post ${this.props.imagesrc ? 'format-standard' : 'format-text-only'}`}>
                 {
-                    test.imgUrl ? <StandardInnerArticle imgUrl={test.imgUrl}/> : null
+                    this.props.imagesrc ? <StandardInnerArticle imgUrl={'http://' + this.props.imagesrc}/> : null
                 }
                 <div className="entry-content media">
                     <div className="post-date">
-                        <span className="date">{test.time.date}</span> {test.time.month}
+                        <span className="date">{getDate(this.props.createDate)}</span> {getMonth(this.props.createDate)}
                     </div>
                     <div className="content-details media-body">
                         <h3 className="entry-title">
-                            <Link to={`/blog/${test.blog.id}`}>{test.blog.title}</Link>
+                            <Link to={`/blog/${this.props.aid}`}>{this.props.title}</Link>
                         </h3>
                         <div className="entry-meta">
-                            <span className="author"><i className="icon-user"></i> <a href="">{test.blog.author}</a></span>
+                            <span className="author"><i className="icon-user"></i> <Link to={`/user/${this.props.user.id}`}>{this.props.user.nickName}</Link></span>
                             <span className="tag"><i className="icon-tag"></i> <a href="">News</a></span>
-                            <span className="comments"><i className="icon-bubbles"></i> <a href="">{test.blog.commentNum} comments</a></span>
+                            <span className="comments"><i className="icon-bubbles"></i> <a href="">{this.props.commentCount} comments</a></span>
                         </div>
-                        <div dangerouslySetInnerHTML={{__html: test.blog.content}}></div>
+                        <div dangerouslySetInnerHTML={{__html: this.props.content}}></div>
                         { this.props.children }
                     </div>
                 </div>

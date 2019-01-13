@@ -160,7 +160,7 @@ export class SingleCourse extends React.Component {
                                         <span className="rating">{convertToChinese(this.state.course.status)}</span>
                                     </span>
                                     </div>
-                                    <img className="radius" src={this.state.course.coverImage} alt="Course Image" />
+                                    <img className="radius" src={this.state.course.coverImage ? 'http://' + this.state.course.coverImage : ''} alt="Course Image" />
                                     <div className="course-single-details">
                                         <div className="nav nav-tabs" id="nav-tab" role="tablist">
                                             <a className="nav-item nav-link active" id="nav-1" data-toggle="tab" href="#curriculum" role="tab" aria-controls="curriculum" aria-selected="true">Curriculum</a>
@@ -221,11 +221,13 @@ export class SingleCourse extends React.Component {
                                                 <div className="author-bio">
                                                     <h3 className="title">About the Instructor</h3>
                                                     <div className="author-contents media">
-                                                        <div className="author-avatar float-left"><img className="radius" src={this.state.authorInfo.headImage} alt="Avatar" /></div>
+                                                        <div className="author-avatar float-left">
+                                                            <img className="radius" src={this.state.authorInfo.headImage ? 'http://' + this.state.authorInfo.headImage : ''} alt="Avatar" />
+                                                        </div>
                                                         <div className="author-details media-body">
                                                             <h3 style={{position: "inherit"}} className="name"><a>{this.state.authorInfo.nickName}</a></h3>
                                                             <p>{this.state.authorInfo.email}</p>
-                                                            <a className="load-more">Learn more <i className="fa fa-angle-double-right"></i></a>
+                                                            <Link className="load-more" to={`/user/${this.state.authorInfo.id}`}>Learn more <i className="fa fa-angle-double-right"></i></Link>
                                                         </div>
                                                     </div>
                                                 </div>

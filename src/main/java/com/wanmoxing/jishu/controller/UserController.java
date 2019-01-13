@@ -120,8 +120,7 @@ public class UserController {
 	 */
 	@RequestMapping(value = "userAllArticles", method = RequestMethod.POST)
 	public ResultDTO userAllArticles(HttpSession session,
-			@RequestParam("uid") int uid,
-			@RequestParam("page") int page) {
+			@RequestParam("uid") int uid) {
 		ResultDTO result = new ResultDTO();
 		try {
 			if (!CommUtil.isUserLogined(session)) {
@@ -129,9 +128,9 @@ public class UserController {
 				result.setErrorMsg("User not logined!");
 				return result;
 			}
-			result.setErrorMsg("获取该用户:" +uid + "所有帖子");
+			result.setErrorMsg("获取该用户:" +uid + "所有发布帖子");
 			result.setStatus(ResultDTOStatus.SUCCESS.getStatus());
-			result.setData(articleservice.getArticleListByUid(uid, page));
+			result.setData(articleservice.getArticleListByUid(uid));
 			return result;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -148,8 +147,7 @@ public class UserController {
 	 */
 	@RequestMapping(value = "userAllCollectArticles", method = RequestMethod.POST)
 	public ResultDTO userAllCollectArticles(HttpSession session,
-			@RequestParam("uid") int uid,
-			@RequestParam("page") int page) {
+			@RequestParam("uid") int uid) {
 		ResultDTO result = new ResultDTO();
 		try {
 			if (!CommUtil.isUserLogined(session)) {
@@ -157,9 +155,9 @@ public class UserController {
 				result.setErrorMsg("User not logined!");
 				return result;
 			}
-			result.setErrorMsg("获取该用户:" +uid + "所有帖子");
+			result.setErrorMsg("获取该用户:" +uid + "所有收藏帖子");
 			result.setStatus(ResultDTOStatus.SUCCESS.getStatus());
-			result.setData(articleservice.getArticleCollectListByUid(uid, page));
+			result.setData(articleservice.getArticleCollectListByUid(uid));
 			return result;
 		} catch (Exception e) {
 			e.printStackTrace();

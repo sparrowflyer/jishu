@@ -36,19 +36,15 @@ public class ArticleServiceImpl implements ArticleService {
 	}
 	
 	@Override
-	public PageInfo<Article> getArticleListByUid(int uid, int page) {
-		PageHelper.startPage(page, CommonConstants.DEFAULT_PAGE_SIZE);
+	public List<Article> getArticleListByUid(int uid) {
 		List<Article> articles = articleMapper.getArticleListByUid(uid);
-		PageInfo<Article> pageInfo = new PageInfo<>(articles);
-		return pageInfo; 
+		return articles; 
 	}
 	
 	@Override
-	public PageInfo<Article> getArticleCollectListByUid(int uid, int page) {
-		PageHelper.startPage(page, CommonConstants.DEFAULT_PAGE_SIZE);
+	public List<Article> getArticleCollectListByUid(int uid) {
 		List<Article> articles = articleMapper.getArticleListByUid(uid);
-		PageInfo<Article> pageInfo = new PageInfo<>(articles);
-		return pageInfo; 
+		return articles; 
 	}
 
 	@Override

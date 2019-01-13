@@ -19,5 +19,7 @@ public interface UserFanMapper {
     public void delete(UserFan userFan);
     
     public List<User> findFansUsers(int ownerId);
+    
+    public List<User> findFanedUsers(int fanId);
 	
 }

@@ -1,4 +1,6 @@
 import React from 'react';
+import { withRouter } from 'react-router';
+import { withAlert } from 'react-alert';
 import { Header } from '../../components/common/Header.js';
 import { BreadCrumb } from '../../components/common/BreadCrumb.js';
 import { Footer } from '../../components/common/Footer.js';
@@ -27,10 +29,13 @@ export class SingleCourse extends React.Component {
             course: this.props.location.state,
             comments: [],
             authorInfo: {},
-            comment: ''
+            comment: '',
+            jsUserID: ''
         };
         this.handleCommentChange = this.handleCommentChange.bind(this);
         this.submitCommentInfo = this.submitCommentInfo.bind(this);
+        this.getComments = this.getComments.bind(this);
+        this.deleteComment = this.deleteComment.bind(this);
     }
 
     handleCommentChange(event) {
@@ -42,34 +47,54 @@ export class SingleCourse extends React.Component {
         });
     }
 
+    getComments() {
+        postJson('/getCourseComments', {
+            courseId: this.state.course.id
+        }).then((data) => {
+            if (data.status === 'success') {
+                this.setState((state) => {
+                    return {
+                        ...state,
+                        comments: data.data
+                    }
+                });
+            }
+        });
+    }
+
+    deleteComment() {
+        postJson('/deleteCourseComment', {
+            id: this.state.course.id
+        }).then((data) => {
+            if (data.status === 'success') {
+                this.getComments();
+            } else {
+                this.props.alert.error(data.errorMsg || data.error);
+            }
+        }).catch((error) => {
+            this.props.alert.error('删除评价失败。');
+        });
+    }
+
     submitCommentInfo() {
-        let jsUserID = '';
-        try {
-            jsUserID = JSON.parse(sessionStorage.getItem('jsUser'))
-        } catch(e) {}
-        if (!jsUserID) {
+        if (!this.state.jsUserID) {
             this.props.alert.error('请登录再评价。');
             sessionStorage.removeItem('jsUser');
+            this.setState((state) => {
+                return {
+                    ...state,
+                    jsUserID: ''
+                }
+            });
             return;
         }
         postJson('/addCourseComment', {
             "courseId": this.state.course.id,
-            "userId": jsUserID,
+            "userId": this.state.jsUserID,
             "content": this.state.comment[0]
         }).then((data) => {
             if (data.status === 'success') {
-                postJson('/getCourseComments', {
-                    courseId: this.state.course.id
-                }).then((data) => {
-                    if (data.status === 'success') {
-                        this.setState((state) => {
-                            return {
-                                ...state,
-                                comments: data.data
-                            }
-                        });
-                    }
-                });
+                this.getComments();
             } else {
                 this.props.alert.error(data.errorMsg || data.error);
             }
@@ -83,21 +108,19 @@ export class SingleCourse extends React.Component {
            return {
                ...state,
                comments: [],
-               authorInfo: {}
+               authorInfo: {},
+               jsUserID: ''
            }
         });
-        postJson('/getCourseComments', {
-            courseId: this.state.course.id
-        }).then((data) => {
-            if (data.status === 'success') {
-                this.setState((state) => {
-                    return {
-                        ...state,
-                        comments: data.data
-                    }
-                });
-            }
-        });
+        try {
+            this.setState((state) => {
+               return {
+                   ...state,
+                   jsUserID: JSON.parse(sessionStorage.getItem('jsUser'))
+               }
+            });
+        } catch(e) {}
+        this.getComments();
         getUserInfo(this.state.course.authorId)
             .then((data) => {
                 if (data.status === 'success') {
@@ -229,6 +252,12 @@ export class SingleCourse extends React.Component {
                                                                                 <div className="col-md-7">
                                                                                     <div className="review-details">
                                                                                         <p>{ comment.content }</p>
+                                                                                        {
+                                                                                            this.state.jsUserID === comment.userId ?
+                                                                                                <div className="entry-meta">
+                                                                                                    <span style={{float: 'right'}} className="author" onClick={this.deleteComment}>X 删除</span>
+                                                                                                </div> : null
+                                                                                        }
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
@@ -280,3 +309,6 @@ export class SingleCourse extends React.Component {
         );
     }
 }
+
+const SingleCourseWithRouter = withRouter(withAlert(SingleCourse));
+export default SingleCourseWithRouter;

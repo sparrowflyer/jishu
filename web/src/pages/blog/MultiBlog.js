@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import Pagination from 'rc-pagination';
 import { Blog, InnerArticle } from '../../components/ControlInBlog.js';
-import { Navigator } from '../../components/BlogAndCourse.js';
 
 const articles = [1, 2, 3];
 
@@ -19,7 +19,6 @@ export class MultiBlog extends React.Component {
                             );
                         })
                     }
-                    <Navigator />
                 </div>
             </Blog>
         );

@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import Pagination from 'rc-pagination';
 import { Header } from '../../components/common/Header.js';
 import { BreadCrumb } from '../../components/common/BreadCrumb.js';
 import { Footer } from '../../components/common/Footer.js';
-import { Navigator } from '../../components/BlogAndCourse.js';
 import { postJson } from '../../utils/server.js';
 
 export class MultiCourse extends React.Component {
@@ -11,23 +11,56 @@ export class MultiCourse extends React.Component {
         super(props);
         this.state = {
             courses: [],
-            courseTypes: []
+            courseTypes: [],
+            courseType: '',
+            currentPage: 1
         };
+    }
+
+    getCourses(courseType) {
+        let param = {
+            pageStart: (this.state.currentPage - 1) * 10,
+            pageSize: 10,
+            needAmount: false
+        };
+        if (courseType) {
+            param = { ...param, type: courseType }
+        }
+        postJson('/getAvailableCourses', param).then((data) => {
+            if (data.status === 'success') {
+                this.setState((state) => {
+                    return {
+                        ...state,
+                        courses: data.data.courses
+                    };
+                });
+            }
+        });
+    }
+
+    changeCourseType(courseType) {
+        this.setState((state) => {
+           return {
+               ...state,
+               courseType: courseType
+           };
+        });
+        this.getCourses(courseType);
     }
 
     componentDidMount() {
         this.setState((state) => {
             return {
-                ...state,
                 courses: [],
-                courseTypes: []
+                courseTypes: [],
+                courseType: '',
+                currentPage: 1
             };
         });
         postJson('/getAvailableCourses', {
-            //"type": "",
-            "pageStart": 0,
-            "pageSize": 10,
-            "needAmount": false
+            'pageStart': 0,
+            'pageSize': 10,
+            'needAmount': false
         }).then((data) => {
             if (data.status === 'success') {
                 this.setState((state) => {
@@ -61,7 +94,7 @@ export class MultiCourse extends React.Component {
                         <div className="container">
                             <div className="row">
                                 <div className="col-md-8">
-                                    <div className="course-items">
+                                    <div className="course-items" style={{marginBottom: '20px'}}>
                                         <div className="row">
                                             {
                                                 this.state.courses.map((course) => {
@@ -85,6 +118,9 @@ export class MultiCourse extends React.Component {
                                                                             Left:<span className="label label-default">{ course.targetStudentAmount - course.currentStudentAmount }</span>
                                                                         </div>
                                                                     </div>
+                                                                    <div style={{overflow: "hidden"}}>
+                                                                        <span style={{float: "right", color: "red", fontWeight: "bold"}}>Buy</span>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -92,8 +128,12 @@ export class MultiCourse extends React.Component {
                                                 })
                                             }
                                         </div>
-                                        <Navigator />
                                     </div>
+                                    {
+                                        this.state.courses && this.state.courses.length > 0 ?
+                                            <Pagination onChange={this.getCourses.bind(this.state.courseType)} />
+                                            : <p>暂无课程信息</p>
+                                    }
                                 </div>
                                 <div className="col-md-4">
                                     <aside className="sidebar">
@@ -102,11 +142,12 @@ export class MultiCourse extends React.Component {
                                         }
                                         <div className="category-list">
                                             <ul>
-                                                <li className="active"><a>All Courses</a></li>
+                                                <li className={`${this.state.courseType ? "" : "active"}`} onClick={this.changeCourseType.bind(this, '')}><a>All Courses</a></li>
                                                 {
                                                     this.state.courseTypes.map((courseType) => {
                                                         return (
-                                                            <li key={courseType}><a>{courseType}</a></li>
+                                                            <li key={courseType} className={`${this.state.courseType === courseType ? "active" : ""}`}
+                                                                onClick={this.changeCourseType.bind(this, courseType)}><a>{courseType}</a></li>
                                                         );
                                                     })
                                                 }

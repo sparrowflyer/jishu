@@ -101,13 +101,15 @@ export class MultiCourse extends React.Component {
                                                     return (
                                                         <div className="col-lg-4 col-md-6" key={course.id}>
                                                             <div className="item">
-                                                                <div className="item-thumb"><img src={course.coverImage} alt="Item Thumbnail" /></div>
+                                                                <div className="item-thumb"><img src={course.coverImage ? 'http://' + course.coverImage : ''} alt="Item Thumbnail" /></div>
                                                                 <div className="item-details">
                                                                     <h3 className="item-title">
                                                                         <Link to={{pathname: `/course/${course.id}`, state: course}}>{course.title}</Link>
                                                                     </h3>
                                                                     <span className="instructor">
-                                                                        <a>{course.authorName}</a>
+                                                                        <Link to={`/user/${course.authorId}`}>
+                                                                            {course.authorName}
+                                                                        </Link>
                                                                     </span>
                                                                     <div className="details-bottom">
                                                                         <div className="course-price float-left">

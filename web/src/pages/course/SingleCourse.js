@@ -1,5 +1,6 @@
 import React from 'react';
-import { withRouter } from 'react-router';
+import { withRouter} from 'react-router';
+import { Link } from 'react-router-dom';
 import { withAlert } from 'react-alert';
 import { Header } from '../../components/common/Header.js';
 import { BreadCrumb } from '../../components/common/BreadCrumb.js';
@@ -147,9 +148,8 @@ export class SingleCourse extends React.Component {
                                     <h2 className="course-title">{this.state.course.title}</h2>
                                     <div className="course-meta">
                                     <span className="meta-details">
-                                        <img className="rounded-circle float-left" src="../images/avatar/2.png" alt="Avatar" />
                                         <span className="meta-id">Instructor</span>
-                                        <a className="name" href="#">{this.state.course.authorName}</a>
+                                        <Link className="name" to={`/user/${this.state.course.authorId}`}>{this.state.course.authorName}</Link>
                                     </span>
                                     <span className="meta-details">
                                         <span className="meta-id">Category</span>

@@ -5,7 +5,6 @@ import { Header } from '../components/common/Header.js';
 import { Footer } from '../components/common/Footer.js';
 import { getUserInfo, postJson, uploadImage } from '../utils/server.js';
 
-const page = 1;
 
 const nickNameBtn = {
     marginLeft: "20px"
@@ -227,7 +226,19 @@ class User extends React.Component {
                 });
             }
         });
-        postJson(`/userAllArticles?uid=${userID}&page=${page}`)
+        postJson('/getCreatedCourses', {
+            id: userID
+        }).then((data) => {
+            if (data.status === 'success') {
+                this.setState((state) => {
+                    return {
+                        ...state,
+                        releaseCourses: data.data || []
+                    }
+                })
+            }
+        });
+        postJson(`/userAllArticles?uid=${userID}`)
             .then((data) => {
                 if (data.status === 'success') {
                     this.setState((state) => {
@@ -238,7 +249,7 @@ class User extends React.Component {
                     });
                 }
             });
-        postJson(`/userAllCollectArticles?uid=${userID}&page=${page}`)
+        postJson(`/userAllCollectArticles?uid=${userID}`)
             .then((data) => {
                 if (data.status === 'success') {
                     this.setState((state) => {
@@ -295,8 +306,7 @@ class User extends React.Component {
                                 <div className="meta">
                                     <ul>
                                         <li><span className="meta-id">Fans</span> {this.state.fans.length}</li>
-                                        <li><span className="meta-id">Courses</span> 39</li>
-                                        <li><span className="meta-id">Reviews</span> 9,201</li>
+                                        <li><span className="meta-id">Courses</span> {this.state.releaseCourses.length}</li>
                                     </ul>
                                 </div>
                                 <p>
@@ -344,7 +354,12 @@ class User extends React.Component {
                                         <div className="tab-pane fade" id="releaseCourse" role="tabpanel" aria-labelledby="releaseCourse">
                                             {
                                                 this.state.releaseCourses.map((course) => {
-
+                                                    return (
+                                                        <div style={{width: '100%', borderBottom: '1px solid #cfd8dc', padding: '10px 0 15px'}} key={course.id}>
+                                                            <h3 style={{color: '#37474f'}}>{course.title}</h3>
+                                                            <p>{ course.detail }</p>
+                                                        </div>
+                                                    );
                                                 })
                                             }
                                         </div>

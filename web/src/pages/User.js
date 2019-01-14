@@ -1,10 +1,18 @@
 import React from 'react';
 import { withRouter } from 'react-router';
+import { Link } from 'react-router-dom';
 import { withAlert } from 'react-alert';
 import { Header } from '../components/common/Header.js';
 import { Footer } from '../components/common/Footer.js';
 import { getUserInfo, postJson, uploadImage } from '../utils/server.js';
 
+const fanStyle = {
+    display: "block",
+    color: "#6d8591",
+    fontSize: "16px",
+    lineHeight: "26px",
+    margin: "0.5em 0"
+};
 
 const nickNameBtn = {
     marginLeft: "20px"
@@ -361,14 +369,14 @@ class User extends React.Component {
                                         <div className="tab-pane fade show active" id="fan" role="tabpanel" aria-labelledby="fan">
                                             {
                                                 this.state.fans.map((fan) => {
-                                                    return <p key={fan.id}>{fan.nickName}</p>
+                                                    return <Link style={fanStyle} key={fan.id} to={`/user/${fan.id}`}>{fan.nickName}</Link>
                                                 })
                                             }
                                         </div>
                                         <div className="tab-pane fade" id="follow" role="tabpanel" aria-labelledby="follow">
                                             {
                                                 this.state.faneds.map((fan) => {
-                                                    return <p key={fan.id}>{fan.nickName}</p>
+                                                    return <Link style={fanStyle} key={fan.id} to={`/user/${fan.id}`}>{fan.nickName}</Link>
                                                 })
                                             }
                                         </div>

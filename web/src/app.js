@@ -24,6 +24,7 @@ import { reducerApp } from './redux/reducer.js';
 import { Provider as AlertProvider } from "react-alert";
 import AlertTemplate from "react-alert-template-basic";
 import './assets/css/pagination.css';
+import './assets/css/mathquill.css';
 
 const store = createStore(reducerApp);
 const options = {

@@ -62,7 +62,7 @@ function VideoInnerArticle({imgUrl, videoUrl}) {
 }
 
 //format-standard
-function StandardInnerArticle({imgUrl}) {
+export function StandardInnerArticle({imgUrl}) {
     return (
         <div className="entry-thumbnail radius">
             <img src={imgUrl} alt="Post Thumbnail" />
@@ -70,7 +70,7 @@ function StandardInnerArticle({imgUrl}) {
     );
 }
 
-function getMonth(dateStr) {
+export function getMonth(dateStr) {
     let date = new Date(dateStr);
     if ('' + date === 'Invalid Date') {
         return '';
@@ -78,7 +78,7 @@ function getMonth(dateStr) {
     return date.getMonth() + 1;
 }
 
-function getDate(dateStr) {
+export function getDate(dateStr) {
     let date = new Date(dateStr);
     if ('' + date === 'Invalid Date') {
         return '';

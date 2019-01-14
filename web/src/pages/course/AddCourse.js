@@ -106,6 +106,12 @@ class AddCourse extends React.Component {
 
     addCourse(image = '') {
         let price = this.state.price[0] || 0;
+        this.setState((state) => {
+            return {
+                ...state,
+                isLoading: true
+            }
+        });
         postJson('/addCourse', {
             'title': this.state.title[0],
             'detail': this.state.detail[0],
@@ -118,12 +124,24 @@ class AddCourse extends React.Component {
             'courseDurationTime': this.state.courseDurationTime[0],
             'targetStudentAmount': this.state.targetStudentAmount[0]
         }).then((data) => {
+            this.setState((state) => {
+                return {
+                    ...state,
+                    isLoading: false
+                }
+            });
             if (data.status === 'success') {
                 this.props.history.push('/course');
             } else {
                 this.props.alert.error(data.errorMsg || data.error);
             }
         }).catch((error) => {
+            this.setState((state) => {
+                return {
+                    ...state,
+                    isLoading: false
+                }
+            });
             this.props.alert.error('添加课程失败。');
         });
     }
@@ -204,8 +222,9 @@ class AddCourse extends React.Component {
                                             <option value="">All</option>
                                             {
                                                 this.state.courseTypes.map((courseType) => {
+                                                    console.log(courseType);
                                                     return (
-                                                        <option key={courseType} value={courseType}>{courseType}</option>
+                                                        <option key={courseType.id} value={courseType.id}>{courseType.value}</option>
                                                     );
                                                 })
                                             }

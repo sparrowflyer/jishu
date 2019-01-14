@@ -111,6 +111,7 @@ export class MultiCourse extends React.Component {
                                                                             {course.authorName}
                                                                         </Link>
                                                                     </span>
+                                                                    <p><strong>开课时间:</strong> {course.courseStartTime}</p>
                                                                     <div className="details-bottom">
                                                                         <div className="course-price float-left">
                                                                             <span className="currency">¥</span>

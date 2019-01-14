@@ -1,8 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Pagination from 'rc-pagination';
-import { postJson, getArticles } from '../../utils/server.js';
-import { Blog, InnerArticle } from '../../components/ControlInBlog.js';
+import { postJson, getArticles, getArticleType } from '../../utils/server.js';
+import { Header } from '../../components/common/Header.js';
+import { BreadCrumb } from '../../components/common/BreadCrumb.js';
+import { Footer } from '../../components/common/Footer.js';
+import { StandardInnerArticle, getMonth, getDate } from '../../components/ControlInBlog.js';
 
 export class MultiBlog extends React.Component {
     constructor(props) {
@@ -10,10 +13,22 @@ export class MultiBlog extends React.Component {
         this.state = {
             currentPage: 1,
             total: 0,
-            articles: []
+            articleType: 0,
+            articles: [],
+            articleTypes: []
         };
         this.changePage = this.changePage.bind(this);
         this.getArticleList = this.getArticleList.bind(this);
+    }
+
+    changeArticleType(articleType) {
+        this.setState((state) => {
+            return {
+                ...state,
+                articleType
+            };
+        });
+        this.getArticleList(articleType, this.state.currentPage);
     }
 
     changePage(page) {
@@ -23,11 +38,11 @@ export class MultiBlog extends React.Component {
                currentPage: page
            }
         });
-        this.getArticleList(page);
+        this.getArticleList(this.state.articleType, page);
     }
 
-    getArticleList(currentPage) {
-        getArticles(currentPage)
+    getArticleList(articleType, currentPage) {
+        getArticles(articleType, currentPage)
             .then((data) => {
                 if (data.status === 'success') {
                     this.setState((state) => {
@@ -42,26 +57,88 @@ export class MultiBlog extends React.Component {
     }
 
     componentDidMount() {
-        this.getArticleList(this.state.currentPage);
+        this.getArticleList(this.state.articleType, this.state.currentPage);
+        getArticleType()
+            .then((data) => {
+                if (data.status === 'success') {
+                    this.setState((state) => {
+                        return {
+                            ...state,
+                            articleTypes: data.data || []
+                        }
+                    });
+                }
+            });
     }
 
     render() {
         return (
-            <Blog>
-                <div className="col-md-8">
-                    {
-                        this.state.articles.map((article) => {
-                            return (
-                                <InnerArticle key={article.aid} {...article}>
-                                    <Link to={{pathname: `/blog/${article.aid}`, state: article}} className="btn btn-lg">Read more</Link>
-                                </InnerArticle>
-                            );
-                        })
-                    }
-                    <Pagination onChange={this.changePage} defaultPageSize={8}
-                                current={this.state.currentPage} total={this.state.total}/>
+        <div>
+            <Header activeTitle="blog" />
+            <BreadCrumb title="学生贴吧" />
+            <section className="blog-posts">
+                <div className="section-padding">
+                    <div className="container">
+                        <div className="row">
+                            <div className="col-md-8">
+                                {
+                                    this.state.articles.map((article) => {
+                                        return (
+                                            <article key={article.aid} className={`post type-post ${article.imagesrc ? 'format-standard' : 'format-text-only'}`}>
+                                                {
+                                                    article.imagesrc ? <StandardInnerArticle imgUrl={'http://' + article.imagesrc}/> : null
+                                                }
+                                                <div className="entry-content media">
+                                                    <div className="post-date">
+                                                        <span className="date">{getDate(article.createDate)}</span> {getMonth(article.createDate)}
+                                                    </div>
+                                                    <div className="content-details media-body">
+                                                        <h3 className="entry-title">
+                                                            <Link to={{pathname: `/blog/${article.aid}`, state: article}}>{article.title}</Link>
+                                                        </h3>
+                                                        <div className="entry-meta">
+                                                            <span className="author"><i className="icon-user"></i> <Link to={`/user/${article.user.id}`}>{article.user.nickName}</Link></span>
+                                                            <span className="tag"><i className="icon-tag"></i> <a href="">News</a></span>
+                                                            <span className="comments"><i className="icon-bubbles"></i> <a href="">{article.commentCount} comments</a></span>
+                                                        </div>
+                                                        <div dangerouslySetInnerHTML={{__html: article.content}}></div>
+                                                        <Link to={{pathname: `/blog/${article.aid}`, state: article}} className="btn btn-lg">Read more</Link>
+                                                    </div>
+                                                </div>
+                                            </article>
+                                        );
+                                    })
+                                }
+                                <Pagination onChange={this.changePage} defaultPageSize={8}
+                                            current={this.state.currentPage} total={this.state.total}/>
+                            </div>
+                            <div className="col-md-4">
+                                <aside className="sidebar">
+                                    {
+                                        //sessionStorage.getItem('jsUser') ? <Link className="btn btn-lg enroll-btn" to="/addBlog">Add Article</Link> : null
+                                    }
+                                    <Link className="btn btn-lg enroll-btn" style={{width: "100%", marginBottom: "20px"}} to="/addBlog">Add Article</Link>
+                                    <div className="category-list">
+                                        <ul>
+                                            <li className={`${this.state.articleType ? "" : "active"}`} onClick={this.changeArticleType.bind(this, '')}><a>All Articles</a></li>
+                                            {
+                                                this.state.articleTypes.map((articleType) => {
+                                                    return (
+                                                        <li key={articleType.id} className={`${this.state.articleType === articleType.id ? "active" : ""}`}
+                                                            onClick={this.changeArticleType.bind(this, articleType.id)}><a>{articleType.value}</a></li>
+                                                    );
+                                                })
+                                            }
+                                        </ul>
+                                    </div>
+                                </aside>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </Blog>
+            </section>
+            <Footer />
+        </div>
         );
     }
 }

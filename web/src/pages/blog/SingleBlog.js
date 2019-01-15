@@ -5,12 +5,54 @@ import { BreadCrumb } from '../../components/common/BreadCrumb.js';
 import { Footer } from '../../components/common/Footer.js';
 import { StandardInnerArticle, getMonth, getDate } from '../../components/ControlInBlog.js';
 
+const marginRight10 = {
+    marginRight: '10px'
+};
+
 export class SingleBlog extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            blog: this.props.location.state
+            blog: this.props.location.state,
+            isGood: false,
+            isBad: false,
+            isCollected: false
         };
+        this.setGood = this.setGood.bind(this);
+        this.setBad = this.setBad.bind(this);
+        this.setCollect = this.setCollect.bind(this);
+        this.setTop = this.setTop.bind(this);
+        this.setBetter = this.setBetter.bind(this);
+        this.revert = this.revert.bind(this);
+        this.report = this.report.bind(this);
+    }
+
+    setGood() {
+
+    }
+
+    setBad() {
+
+    }
+
+    setCollect() {
+
+    }
+
+    setTop() {
+
+    }
+
+    setBetter() {
+
+    }
+
+    revert() {
+
+    }
+
+    report() {
+
     }
 
     componentDidMount() {
@@ -39,77 +81,54 @@ export class SingleBlog extends React.Component {
                                                 <h3 className="entry-title">
                                                     <Link to={`/blog/${this.state.blog.aid}`}>{this.state.blog.title}</Link>
                                                 </h3>
-                                                <div className="entry-meta">
-                                                    <span className="author"><i className="icon-user"></i> <Link to={`/user/${this.state.blog.user.id}`}>{this.state.blog.user.nickName}</Link></span>
-                                                    <span className="tag"><i className="icon-tag"></i> <a href="">News</a></span>
-                                                    <span className="comments"><i className="icon-bubbles"></i> <a href="">{this.state.blog.commentCount} comments</a></span>
+                                                <div className="entry-meta clearfix">
+                                                    <span className="author float-left">
+                                                        <i className="icon-user"></i>
+                                                        <Link to={`/user/${this.state.blog.user.id}`}>{this.state.blog.user.nickName}</Link>
+                                                    </span>
+                                                    {
+                                                        this.state.blog.articleType ?
+                                                            <span className="tag float-left">
+                                                                <i className="icon-tag"></i>
+                                                                <a>{this.state.blog.articleType.value}</a>
+                                                            </span> : null
+                                                    }
+                                                    <span className="author float-right">
+                                                        <i className="fas fa-trash"></i>
+                                                        <a>删除</a>
+                                                    </span>
+                                                    <span className="author float-right" style={{marginRight: '10px'}}>
+                                                        <i className="fas fa-edit"></i>
+                                                        <Link to={`/addBlog`}>编辑</Link>
+                                                    </span>
                                                 </div>
-                                                <div dangerouslySetInnerHTML={{__html: this.state.blog.content}}></div>
+                                                <div style={{marginTop: '20px'}} dangerouslySetInnerHTML={{__html: this.state.blog.content}}></div>
                                                 <div className="content-bottom">
                                                     <div className="tags float-left">
-                                                        <a href="">HTML5</a>
-                                                        <a href="">University</a>
-                                                        <a href="">Courses</a>
+                                                        <a onClick={this.setGood}><i></i>点赞</a>
+                                                        <a onClick={this.setBad}><i></i>点踩</a>
+                                                        <a onClick={this.setCollect}><i></i>收藏</a>
                                                     </div>
                                                     <div className="share dropdown float-right">
-                                                        <button className="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                            share <i className="fa fa-share-alt"></i>
+                                                        <button className="dropdown-toggle" style={marginRight10} type="button" onClick={this.setTop}>
+                                                            置顶 <i></i>
                                                         </button>
-                                                        <div className="dropdown-menu">
-                                                            <a href="" className="twitter"><i className="icons icon-social-twitter"></i></a>
-                                                            <a href="" className="facebook"><i className="icons icon-social-facebook"></i></a>
-                                                            <a href="" className="pinterest"><i className="icons icon-social-pinterest"></i></a>
-                                                        </div>
+                                                        <button className="dropdown-toggle" style={marginRight10} type="button" onClick={this.setBetter}>
+                                                            加精 <i></i>
+                                                        </button>
+                                                        <button className="dropdown-toggle" style={marginRight10} type="button" onClick={this.revert}>
+                                                            恢复 <i></i>
+                                                        </button>
+                                                        <button className="dropdown-toggle" type="button" onClick={this.report}>
+                                                            举报 <i></i>
+                                                        </button>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </article>
-                                    <div className="post-navigation">
-                                        <div className="row">
-                                            <div className="col-md-6">
-                                                <article className="post type-post">
-                                                    <div className="entry-thumbnail"><img src="../images/posts/12.jpg" alt="Thumbnail" /></div>
-                                                    <div className="entry-content">
-                                                        <h3 className="entry-title"><a href="single.html">WordPress Video Themes 2018 - Make Video Website Easily</a></h3>
-                                                        <div className="entry-meta">
-                                                            <span className="comment"><i className="icons icon-bubbles"></i> 13 comments</span>
-                                                        </div>
-                                                    </div>
-                                                </article>
-                                            </div>
-                                            <div className="col-md-6">
-                                                <article className="post type-post">
-                                                    <div className="entry-thumbnail"><img src="../images/posts/13.jpg" alt="Thumbnail" /></div>
-                                                    <div className="entry-content">
-                                                        <h3 className="entry-title"><a href="single.html">30+ Free WordPress Themes 2018 - Simple & Fast Loading</a></h3>
-                                                        <div className="entry-meta">
-                                                            <span className="comment"><i className="icons icon-bubbles"></i> 13 comments</span>
-                                                        </div>
-                                                    </div>
-                                                </article>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="author-bio">
-                                        <h3 className="title">About the author</h3>
-                                        <div className="author-contents media">
-                                            <div className="author-avatar float-left"><img className="radius" src="../images/au.jpg" alt="Avatar" /></div>
-                                            <div className="author-details media-body">
-                                                <h3 className="name"><a href="#">Julia Adams</a></h3>
-                                                <p>
-                                                    There was a painful and uncontrollable squeaking mixed in with it, the words could be made out at first but then there was a sort of echo which made them unclear, leaving the hearer unsure whether he had heard properly or not.
-                                                </p>
-                                                <div className="author-social">
-                                                    <a href="#"><i className="fab fa-facebook-f"></i></a>
-                                                    <a href="#"><i className="fab fa-twitter"></i></a>
-                                                    <a href="#"><i className="fab fa-pinterest"></i></a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
                                     <div className="comments">
-                                        <h2 className="title">25 Comments</h2>
+                                        <h2 className="title">Comments</h2>
                                         <ol className="comment-list">
                                             <li className="comment parent">
                                                 <div className="comment-body media">
@@ -133,7 +152,6 @@ export class SingleBlog extends React.Component {
                                                                 <p className="description">
                                                                     The change in Gregor’s voice probably could not be noticed outside through the wooden door, as his mother was satisfied with this explanation and shuffled away
                                                                 </p>
-                                                                <a href="#" className="btn reply-btn">Reply</a>
                                                             </div>
                                                         </div>
                                                     </li>
@@ -153,45 +171,19 @@ export class SingleBlog extends React.Component {
                                                 </div>
                                             </li>
                                         </ol>
-
                                         <div className="respond">
                                             <h2 className="title">Add Your Comment</h2>
                                             <form action="#" method="post" className="comment-form">
-                                                <input className="form-control" name="author" type="text" placeholder="Name *" required />
-                                                <input className="form-control" name="email" type="email" placeholder="Email *" required />
-                                                <input className="form-control" name="url" type="url" placeholder="URL" />
                                                 <textarea id="comment" className="form-control" name="comment" placeholder="Comment" rows="8" required></textarea>
                                                 <input className="btn" type="submit" value="Submit Comment" />
                                             </form>
                                         </div>
-
                                     </div>
                                 </div>
                                 <div className="col-md-4">
                                     <aside className="sidebar">
-                                        <div className="widget widget_search">
-                                            <div className="widget-details">
-                                                <form method="get" className="search-form" action="#">
-                                                    <input type="text" className="form-control" placeholder="Search ..." name="s" title="Search here" required />
-                                                    <input type="submit" className="form-control" />
-                                                </form>
-                                            </div>
-                                        </div>
-                                        <div className="widget widget_categories">
-                                            <h2 className="widget-title">Categories</h2>
-                                            <div className="widget-details">
-                                                <ul>
-                                                    <li><a href="#">News</a></li>
-                                                    <li><a href="#">Photography</a></li>
-                                                    <li><a href="#">WordPress</a></li>
-                                                    <li><a href="#">Learning Press</a></li>
-                                                    <li><a href="#">HTML5</a></li>
-                                                    <li><a href="#">Blog</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
                                         <div className="widget widget_popular_post">
-                                            <h2 className="widget-title">Popular Posts</h2>
+                                            <h2 className="widget-title">Related Blog</h2>
                                             <div className="widget-details">
                                                 <article className="post type-post media">
                                                     <div className="entry-thumbnail">
@@ -206,73 +198,6 @@ export class SingleBlog extends React.Component {
                                                         </div>
                                                     </div>
                                                 </article>
-                                                <article className="post type-post media">
-                                                    <div className="entry-thumbnail">
-                                                        <img src="../images/widget/2.jpg" alt="post"/>
-                                                    </div>
-                                                    <div className="entry-content media-body">
-                                                        <h3 className="entry-title"><a href="#">How To Tell If A Site Is WordPress Or Not</a></h3>
-                                                        <div className="entry-meta">
-                                                            <span className="time"><i className="icons icon-calendar"></i>28 July, 2018</span>
-                                                        </div>
-                                                    </div>
-                                                </article>
-                                                <article className="post type-post media">
-                                                    <div className="entry-thumbnail">
-                                                        <img src="../images/widget/3.jpg" alt="post"/>
-                                                    </div>
-                                                    <div className="entry-content media-body">
-                                                        <h3 className="entry-title"><a href="#">WordPress Themes 2018 : Responsive and Creative Design</a></h3>
-                                                        <div className="entry-meta">
-                                                            <span className="time"><i className="icons icon-calendar"></i>28 July, 2018</span>
-                                                        </div>
-                                                    </div>
-                                                </article>
-                                            </div>
-                                        </div>
-                                        <div className="widget widget_tag_cloud">
-                                            <h2 className="widget-title">Tags Cloud</h2>
-                                            <div className="widget-details">
-                                                <div className="tagcloud">
-                                                    <a href="#">Theme</a>
-                                                    <a href="#">Template</a>
-                                                    <a href="#">Learning Press</a>
-                                                    <a href="#">WordPress</a>
-                                                    <a href="#">News</a>
-                                                    <a href="#">Development</a>
-                                                    <a href="#">HTML5</a>
-                                                    <a href="#">University</a>
-                                                    <a href="#">Courses</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="widget widget_instagram">
-                                            <h2 className="widget-title">Instagram</h2>
-                                            <div className="widget-details">
-                                                <ul>
-                                                    <li><a href="#"><img src="../images/insta/1.jpg" alt="flicker" /></a></li>
-                                                    <li><a href="#"><img src="../images/insta/2.jpg" alt="flicker" /></a></li>
-                                                    <li><a href="#"><img src="../images/insta/3.jpg" alt="flicker" /></a></li>
-                                                    <li><a href="#"><img src="../images/insta/4.jpg" alt="flicker" /></a></li>
-                                                    <li><a href="#"><img src="../images/insta/5.jpg" alt="flicker" /></a></li>
-                                                    <li><a href="#"><img src="../images/insta/6.jpg" alt="flicker" /></a></li>
-                                                    <li><a href="#"><img src="../images/insta/7.jpg" alt="flicker" /></a></li>
-                                                    <li><a href="#"><img src="../images/insta/8.jpg" alt="flicker" /></a></li>
-                                                    <li><a href="#"><img src="../images/insta/9.jpg" alt="flicker" /></a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                        <div className="widget widget_archive">
-                                            <h2 className="widget-title">Archive</h2>
-                                            <div className="widget-details">
-                                                <ul>
-                                                    <li><a href="#">January 2018</a></li>
-                                                    <li><a href="#">February 2018</a></li>
-                                                    <li><a href="#">March 2018</a></li>
-                                                    <li><a href="#">April 2018</a></li>
-                                                    <li><a href="#">May 2018</a></li>
-                                                    <li><a href="#">June 2018</a></li>
-                                                </ul>
                                             </div>
                                         </div>
                                     </aside>

@@ -124,7 +124,7 @@ export class MultiBlog extends React.Component {
                                     }
                                     <div className="category-list">
                                         <ul>
-                                            <li className={`${this.state.articleType ? "" : "active"}`} onClick={this.changeArticleType.bind(this, '')}><a>All Articles</a></li>
+                                            <li className={`${this.state.articleType ? "" : "active"}`} onClick={this.changeArticleType.bind(this, 0)}><a>All Articles</a></li>
                                             {
                                                 this.state.articleTypes.map((articleType) => {
                                                     return (

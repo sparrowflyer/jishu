@@ -6,6 +6,7 @@
   "license": "ISC",
   "dependencies": {
     "prop-types": "^15.6.2",
+    "rc-pagination": "^1.17.8",
     "react": "^16.3.0",
     "react-alert": "^4.0.4",
     "react-alert-template-basic": "^1.0.0",
@@ -15,6 +16,7 @@
     "react-router-dom": "^4.3.1",
     "react-thunk": "^1.0.0",
     "react-transition-group": "^2.5.2",
+    "react-umeditor": "^1.0.14",
     "redux": "^4.0.1",
     "whatwg-fetch": "^3.0.0"
   },
@@ -29,6 +31,8 @@
     "babel-loader": "^8.0.4",
     "css-loader": "^1.0.1",
     "file-loader": "^2.0.0",
+    "less": "^3.9.0",
+    "less-loader": "^4.1.0",
     "style-loader": "^0.23.1",
     "url-loader": "^1.1.2",
     "webpack": "^4.26.0",

@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.util.StringUtil;
 import com.wanmoxing.jishu.bean.User;
 import com.wanmoxing.jishu.bean.UserFan;
 import com.wanmoxing.jishu.bean.UserNotification;
@@ -135,6 +137,43 @@ public class UserFanController {
 				fansDTOs.add(fansDTO);
 			}
 			result.setData(fansDTOs);
+			return result;
+		} catch (Exception e) {
+			e.printStackTrace(); 
+			result.setStatus(ResultDTOStatus.ERROR.getStatus());
+			result.setErrorMsg("Exception occured!");
+			return result;
+		}
+	}
+	
+	/**
+	 * 获取所有关注的人
+	 	{
+			"fanId":"1"
+		}
+	 * @param session
+	 * @param getFansDTO
+	 * @return
+	 */
+	@RequestMapping(value = "/getFaneds", method = RequestMethod.POST)
+	public ResultDTO getFans (HttpSession session, @RequestBody JSONObject jsonParams) {
+		ResultDTO result = new ResultDTO();
+		try {
+			String fanId = jsonParams.getString("fanId");
+			if (StringUtil.isEmpty(fanId)) {
+				result.setStatus(ResultDTOStatus.ERROR.getStatus());
+				result.setErrorMsg("fanId needed");
+				return result;
+			}
+			List<User> fanedUsers = userFanService.findFanedUsers(Integer.valueOf(fanId));
+			List<FansDTO> fanedUserDTOs = new ArrayList<FansDTO>();
+			for (User user : fanedUsers) {
+				FansDTO fansDTO = new FansDTO();
+				fansDTO.setId(user.getId());
+				fansDTO.setNickName(user.getNickName());
+				fanedUserDTOs.add(fansDTO);
+			}
+			result.setData(fanedUserDTOs);
 			return result;
 		} catch (Exception e) {
 			e.printStackTrace(); 

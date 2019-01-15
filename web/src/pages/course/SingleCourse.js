@@ -1,4 +1,7 @@
 import React from 'react';
+import { withRouter} from 'react-router';
+import { Link } from 'react-router-dom';
+import { withAlert } from 'react-alert';
 import { Header } from '../../components/common/Header.js';
 import { BreadCrumb } from '../../components/common/BreadCrumb.js';
 import { Footer } from '../../components/common/Footer.js';
@@ -27,10 +30,13 @@ export class SingleCourse extends React.Component {
             course: this.props.location.state,
             comments: [],
             authorInfo: {},
-            comment: ''
+            comment: '',
+            jsUserID: ''
         };
         this.handleCommentChange = this.handleCommentChange.bind(this);
         this.submitCommentInfo = this.submitCommentInfo.bind(this);
+        this.getComments = this.getComments.bind(this);
+        this.deleteComment = this.deleteComment.bind(this);
     }
 
     handleCommentChange(event) {
@@ -42,34 +48,54 @@ export class SingleCourse extends React.Component {
         });
     }
 
+    getComments() {
+        postJson('/getCourseComments', {
+            courseId: this.state.course.id
+        }).then((data) => {
+            if (data.status === 'success') {
+                this.setState((state) => {
+                    return {
+                        ...state,
+                        comments: data.data
+                    }
+                });
+            }
+        });
+    }
+
+    deleteComment() {
+        postJson('/deleteCourseComment', {
+            id: this.state.course.id
+        }).then((data) => {
+            if (data.status === 'success') {
+                this.getComments();
+            } else {
+                this.props.alert.error(data.errorMsg || data.error);
+            }
+        }).catch((error) => {
+            this.props.alert.error('删除评价失败。');
+        });
+    }
+
     submitCommentInfo() {
-        let jsUserID = '';
-        try {
-            jsUserID = JSON.parse(sessionStorage.getItem('jsUser'))
-        } catch(e) {}
-        if (!jsUserID) {
+        if (!this.state.jsUserID) {
             this.props.alert.error('请登录再评价。');
             sessionStorage.removeItem('jsUser');
+            this.setState((state) => {
+                return {
+                    ...state,
+                    jsUserID: ''
+                }
+            });
             return;
         }
         postJson('/addCourseComment', {
             "courseId": this.state.course.id,
-            "userId": jsUserID,
+            "userId": this.state.jsUserID,
             "content": this.state.comment[0]
         }).then((data) => {
             if (data.status === 'success') {
-                postJson('/getCourseComments', {
-                    courseId: this.state.course.id
-                }).then((data) => {
-                    if (data.status === 'success') {
-                        this.setState((state) => {
-                            return {
-                                ...state,
-                                comments: data.data
-                            }
-                        });
-                    }
-                });
+                this.getComments();
             } else {
                 this.props.alert.error(data.errorMsg || data.error);
             }
@@ -83,21 +109,19 @@ export class SingleCourse extends React.Component {
            return {
                ...state,
                comments: [],
-               authorInfo: {}
+               authorInfo: {},
+               jsUserID: ''
            }
         });
-        postJson('/getCourseComments', {
-            courseId: this.state.course.id
-        }).then((data) => {
-            if (data.status === 'success') {
-                this.setState((state) => {
-                    return {
-                        ...state,
-                        comments: data.data
-                    }
-                });
-            }
-        });
+        try {
+            this.setState((state) => {
+               return {
+                   ...state,
+                   jsUserID: JSON.parse(sessionStorage.getItem('jsUser'))
+               }
+            });
+        } catch(e) {}
+        this.getComments();
         getUserInfo(this.state.course.authorId)
             .then((data) => {
                 if (data.status === 'success') {
@@ -124,9 +148,8 @@ export class SingleCourse extends React.Component {
                                     <h2 className="course-title">{this.state.course.title}</h2>
                                     <div className="course-meta">
                                     <span className="meta-details">
-                                        <img className="rounded-circle float-left" src="../images/avatar/2.png" alt="Avatar" />
                                         <span className="meta-id">Instructor</span>
-                                        <a className="name" href="#">{this.state.course.authorName}</a>
+                                        <Link className="name" to={`/user/${this.state.course.authorId}`}>{this.state.course.authorName}</Link>
                                     </span>
                                     <span className="meta-details">
                                         <span className="meta-id">Category</span>
@@ -137,7 +160,7 @@ export class SingleCourse extends React.Component {
                                         <span className="rating">{convertToChinese(this.state.course.status)}</span>
                                     </span>
                                     </div>
-                                    <img className="radius" src={this.state.course.coverImage} alt="Course Image" />
+                                    <img className="radius" src={this.state.course.coverImage ? 'http://' + this.state.course.coverImage : ''} alt="Course Image" />
                                     <div className="course-single-details">
                                         <div className="nav nav-tabs" id="nav-tab" role="tablist">
                                             <a className="nav-item nav-link active" id="nav-1" data-toggle="tab" href="#curriculum" role="tab" aria-controls="curriculum" aria-selected="true">Curriculum</a>
@@ -198,11 +221,13 @@ export class SingleCourse extends React.Component {
                                                 <div className="author-bio">
                                                     <h3 className="title">About the Instructor</h3>
                                                     <div className="author-contents media">
-                                                        <div className="author-avatar float-left"><img className="radius" src={this.state.authorInfo.headImage} alt="Avatar" /></div>
+                                                        <div className="author-avatar float-left">
+                                                            <img className="radius" src={this.state.authorInfo.headImage ? 'http://' + this.state.authorInfo.headImage : ''} alt="Avatar" />
+                                                        </div>
                                                         <div className="author-details media-body">
                                                             <h3 style={{position: "inherit"}} className="name"><a>{this.state.authorInfo.nickName}</a></h3>
                                                             <p>{this.state.authorInfo.email}</p>
-                                                            <a className="load-more">Learn more <i className="fa fa-angle-double-right"></i></a>
+                                                            <Link className="load-more" to={`/user/${this.state.authorInfo.id}`}>Learn more <i className="fa fa-angle-double-right"></i></Link>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -229,6 +254,12 @@ export class SingleCourse extends React.Component {
                                                                                 <div className="col-md-7">
                                                                                     <div className="review-details">
                                                                                         <p>{ comment.content }</p>
+                                                                                        {
+                                                                                            this.state.jsUserID === comment.userId ?
+                                                                                                <div className="entry-meta">
+                                                                                                    <span style={{float: 'right'}} className="author" onClick={this.deleteComment}>X 删除</span>
+                                                                                                </div> : null
+                                                                                        }
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
@@ -280,3 +311,6 @@ export class SingleCourse extends React.Component {
         );
     }
 }
+
+const SingleCourseWithRouter = withRouter(withAlert(SingleCourse));
+export default SingleCourseWithRouter;

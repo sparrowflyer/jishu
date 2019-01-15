@@ -15,6 +15,21 @@ async function getUserInfo(userID) {
     return (await res.json());
 }
 
+async function getArticles(articleType, page) {
+    let res = await fetch(_server + '/tieba/article?page=' + encodeURIComponent(page) + '&typeId' + encodeURIComponent(articleType));
+    return (await res.json());
+}
+
+async function setCommentRead(commentID) {
+    let res = await fetch(_server + '/setUserNotificaitonAsRead?id=' + encodeURIComponent(commentID));
+    return (await res.json());
+}
+
+async function getArticleType() {
+    let res = await fetch(_server + '/tieba/articleType');
+    return (await res.json());
+}
+
 async function uploadImage(file) {
     let fileData = new FormData();
     fileData.append('file', file);
@@ -36,4 +51,4 @@ async function postJson(url, body) {
     return (await res.json());
 }
 
-export {getVerifyCodeImage, getEmailVerifyCode, getUserInfo, uploadImage, postJson};
+export {getVerifyCodeImage, getEmailVerifyCode, getUserInfo, getArticles, getArticleType, uploadImage, postJson, setCommentRead};

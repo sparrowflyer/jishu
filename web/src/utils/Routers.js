@@ -11,10 +11,11 @@ import RegisterWithRouter from '../pages/login/Register.js';
 import PwdWithRouter from '../pages/login/ForgetPwd.js';
 import { SingleBlog } from '../pages/blog/SingleBlog.js';
 import { MultiBlog } from '../pages/blog/MultiBlog.js';
-import { SingleCourse } from '../pages/course/SingleCourse.js';
+import AddBlogWithRouter from '../pages/blog/AddBlog.js';
+import SingleCourseWithRouter from '../pages/course/SingleCourse.js';
 import { MultiCourse } from '../pages/course/MultiCourse.js';
 import AddCourseWithRouter from '../pages/course/AddCourse.js';
-import { User } from '../pages/User.js';
+import UserWithRouter from '../pages/User.js';
 import { Error } from '../pages/other/Error.js';
 
 export function Routers() {
@@ -33,10 +34,13 @@ export function Routers() {
                     <Route path='/pwd' component={ PwdWithRouter } />
                     <Route exact path="/blog" component={ MultiBlog } />
                     <Route path='/blog/:blogID' component={ SingleBlog } />
+                    <Route path='/addBlog' component={ AddBlogWithRouter } />
                     <Route exact path='/course' component={ MultiCourse } />
                     <Route path='/addCourse' component={ AddCourseWithRouter } />
-                    <Route path='/course/:courseID' component={ SingleCourse } />
-                    <Route path='/user/:userID' component={ User } />
+                    <Route path='/course/:courseID' component={ SingleCourseWithRouter } />
+                    <Route path='/user/:userID' render={
+                        (props) => (<UserWithRouter key={props.match.params.userID} {...props} />)
+                    } />
                     <Route component={ Error } />
                 </Switch>
             </div>

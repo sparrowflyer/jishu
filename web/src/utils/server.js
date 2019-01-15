@@ -16,7 +16,7 @@ async function getUserInfo(userID) {
 }
 
 async function getArticles(articleType, page) {
-    let res = await fetch(_server + '/tieba/article?page=' + encodeURIComponent(page) + '&typeId' + encodeURIComponent(articleType));
+    let res = await fetch(_server + '/tieba/article?page=' + encodeURIComponent(page) + '&typeId=' + encodeURIComponent(articleType));
     return (await res.json());
 }
 

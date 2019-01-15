@@ -42,7 +42,6 @@ class AddBlog extends React.Component {
     handleInputChange(event) {
         const name = event.target.name;
         const value = event.target.value;
-        console.log(name, value);
         this.setState((state) => {
             return {
                 ...state,
@@ -71,6 +70,14 @@ class AddBlog extends React.Component {
     }
 
     submitArticleInfo(event) {
+        if (!(this.state.title && this.state.title[0])) {
+            this.props.alert.error('Article Title is required.');
+            return ;
+        }
+        if (!this.state.content) {
+            this.props.alert.error('Article Content is required.');
+            return ;
+        }
         if (this.state.image) {
             uploadImage(this.state.image)
                 .then((data) => {

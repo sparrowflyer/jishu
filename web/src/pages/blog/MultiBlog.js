@@ -97,11 +97,16 @@ export class MultiBlog extends React.Component {
                                                             <Link to={{pathname: `/blog/${article.aid}`, state: article}}>{article.title}</Link>
                                                         </h3>
                                                         <div className="entry-meta">
-                                                            <span className="author"><i className="icon-user"></i> <Link to={`/user/${article.user.id}`}>{article.user.nickName}</Link></span>
-                                                            <span className="tag"><i className="icon-tag"></i> <a href="">News</a></span>
-                                                            <span className="comments"><i className="icon-bubbles"></i> <a href="">{article.commentCount} comments</a></span>
+                                                            <span className="author"><i className="icon-user"></i> <Link to={`/user/${article.user.id}`}>作者:{article.user.nickName}</Link></span>
+                                                            {
+                                                                article.articleType ? <span className="tag"><i className="icon-tag"></i> <a>类型:{article.articleType.value}</a></span> : null
+                                                            }
                                                         </div>
-                                                        <div dangerouslySetInnerHTML={{__html: article.content}}></div>
+                                                        <div className="entry-meta">
+                                                            <span className="comments"><i className="far fa-heart"></i> <a>赞:{article.goodCount}</a></span>
+                                                            <span className="comments"><i className="far fa-save"></i> <a>收藏:{article.collectCount}</a></span>
+                                                            <span className="comments"><i className="icon-bubbles"></i> <a>评论:{article.commentCount}</a></span>
+                                                        </div>
                                                         <Link to={{pathname: `/blog/${article.aid}`, state: article}} className="btn btn-lg">Read more</Link>
                                                     </div>
                                                 </div>
@@ -115,9 +120,8 @@ export class MultiBlog extends React.Component {
                             <div className="col-md-4">
                                 <aside className="sidebar">
                                     {
-                                        //sessionStorage.getItem('jsUser') ? <Link className="btn btn-lg enroll-btn" to="/addBlog">Add Article</Link> : null
+                                        sessionStorage.getItem('jsUser') ? <Link className="btn btn-lg enroll-btn" style={{width: "100%", marginBottom: "20px"}} to="/addBlog">Add Article</Link> : null
                                     }
-                                    <Link className="btn btn-lg enroll-btn" style={{width: "100%", marginBottom: "20px"}} to="/addBlog">Add Article</Link>
                                     <div className="category-list">
                                         <ul>
                                             <li className={`${this.state.articleType ? "" : "active"}`} onClick={this.changeArticleType.bind(this, '')}><a>All Articles</a></li>

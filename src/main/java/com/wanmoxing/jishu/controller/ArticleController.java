@@ -63,15 +63,27 @@ public class ArticleController {
 	 * @return
 	 */
 	@RequestMapping(value="/tieba/article", method = RequestMethod.GET)
-	public ResultDTO getArticleList(HttpSession session,@RequestParam("page") int page) {
+	public ResultDTO getArticleList(HttpSession session,@RequestParam("page") int page,
+			@RequestParam("typeId") int typeId) {
 		
 		ResultDTO resultDTO = new ResultDTO();
 		
-		logger.info("获取所有帖子");
+		if(page <= 0 || typeId < 0) {
+			resultDTO.setErrorMsg("参数出错");
+			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+			return resultDTO;
+		}
 		try {
-			resultDTO.setErrorMsg("获取所有帖子");
-			resultDTO.setStatus(ResultDTOStatus.SUCCESS.getStatus());
-			resultDTO.setData(articleService.getArticleList(page));
+			
+			if(typeId == 0) {
+				resultDTO.setErrorMsg("获取所有帖子");
+				resultDTO.setStatus(ResultDTOStatus.SUCCESS.getStatus());
+				resultDTO.setData(articleService.getArticleList(page));
+			} else {
+				resultDTO.setErrorMsg("根据TypeId获取所有帖子");
+				resultDTO.setStatus(ResultDTOStatus.SUCCESS.getStatus());
+				resultDTO.setData(articleService.getArticleListByTypeId(page,typeId));
+			}
 			return resultDTO;
 		} catch (Exception e) {
 			e.printStackTrace();

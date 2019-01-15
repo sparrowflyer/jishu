@@ -33,6 +33,8 @@ public class Article {
 	
 	private User user;
 	
+	private ArticleType articleType;
+	
 	private List<Comment> comments;
 
 	public int getAid() {
@@ -145,6 +147,14 @@ public class Article {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public ArticleType getArticleType() {
+		return articleType;
+	}
+
+	public void setArticleType(ArticleType articleType) {
+		this.articleType = articleType;
 	}
 
 	public List<Comment> getComments() {

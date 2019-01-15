@@ -18,6 +18,7 @@
 		<result property="commentCount" column="comment_count"/>
 		<result property="imagesrc" column="image_src"/>
 		<association property="user" column="uid" select="com.wanmoxing.jishu.mapper.UserMapper.findById"></association>
+		<association property="articleType" column="typeid" select="getArticleTypeById"></association>
 	</resultMap>
 	
 	<resultMap id="articleTypeResultMap" type="com.wanmoxing.jishu.bean.ArticleType">
@@ -27,6 +28,10 @@
     
     <select id="getArticleList" resultMap="articleResultMap">
         select * from T_ARTICLE,T_USER where T_ARTICLE.uid=T_USER.ID and T_ARTICLE.status !=4 order by aid desc
+    </select>
+    
+    <select id="getArticleListByTypeId" parameterType="int" resultMap="articleResultMap">
+        select * from T_ARTICLE,T_USER,T_ARTICLE_TYPE where T_ARTICLE.uid=T_USER.ID and T_ARTICLE.typeid=T_ARTICLE_TYPE.id and T_ARTICLE_TYPE.id=#{typeId} and T_ARTICLE.status !=4 order by aid desc
     </select>
 
     <select id="getArticleById" parameterType="int" resultMap="articleResultMap">
@@ -47,6 +52,10 @@
 	
 	<select id="getAllArticleType" resultMap="articleTypeResultMap">
 		select * from T_ARTICLE_TYPE  order by id asc
+	</select>
+	
+	<select id="getArticleTypeById" resultMap="articleTypeResultMap">
+		select * from T_ARTICLE_TYPE where id=#{typeId} order by id asc
 	</select>
 	
     <delete id="delete" parameterType="int">

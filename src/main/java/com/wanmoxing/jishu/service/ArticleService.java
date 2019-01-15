@@ -11,6 +11,8 @@ public interface ArticleService {
 	
 	public PageInfo<Article> getArticleList(int page);
 	
+	public PageInfo<Article> getArticleListByTypeId(int page, int typeId);
+	
 	public Article getArticleById(int aid);
 	
 	public List<Article> getArticleListByUid(int uid);

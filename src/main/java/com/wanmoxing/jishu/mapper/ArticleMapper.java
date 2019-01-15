@@ -13,6 +13,8 @@ public interface ArticleMapper {
 	
 	public List<Article> getArticleList();
 	
+	public List<Article> getArticleListByTypeId(int typeId);
+	
 	public Article getArticleById(int aid);
 	
 	public List<Article> getArticleListByUid(int uid);

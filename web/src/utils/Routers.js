@@ -9,7 +9,7 @@ import { FAQ } from '../pages/other/FAQ.js';
 import LoginWithRouter from '../pages/login/Login.js';
 import RegisterWithRouter from '../pages/login/Register.js';
 import PwdWithRouter from '../pages/login/ForgetPwd.js';
-import { SingleBlog } from '../pages/blog/SingleBlog.js';
+import SingleBlogWithRouter from '../pages/blog/SingleBlog.js';
 import { MultiBlog } from '../pages/blog/MultiBlog.js';
 import AddBlogWithRouter from '../pages/blog/AddBlog.js';
 import SingleCourseWithRouter from '../pages/course/SingleCourse.js';
@@ -33,7 +33,7 @@ export function Routers() {
                     <Route path='/register' component={ RegisterWithRouter } />
                     <Route path='/pwd' component={ PwdWithRouter } />
                     <Route exact path="/blog" component={ MultiBlog } />
-                    <Route path='/blog/:blogID' component={ SingleBlog } />
+                    <Route path='/blog/:blogID' component={ SingleBlogWithRouter } />
                     <Route path='/addBlog' component={ AddBlogWithRouter } />
                     <Route exact path='/course' component={ MultiCourse } />
                     <Route path='/addCourse' component={ AddCourseWithRouter } />

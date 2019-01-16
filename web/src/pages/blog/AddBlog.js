@@ -10,11 +10,15 @@ import { postJson, getArticleType, uploadImage } from '../../utils/server.js';
 class AddBlog extends React.Component {
     constructor(props) {
         super(props);
+        let blogInfo = this.props.location.state;
         this.state = {
-            title: '',
-            content: '',
-            typeId: 0,
+            blog: blogInfo,
+            blogTitle: blogInfo ? 'Edit Article' : 'Add Article',
+            title: blogInfo ? blogInfo.title : '',
+            content: blogInfo ? blogInfo.content : '',
+            typeId: blogInfo ? blogInfo.typeId : 0,
             image: '',
+            showImage: blogInfo ? blogInfo.imagesrc : '',
             articleTypes: [],
             isLoading: false
         };
@@ -82,7 +86,7 @@ class AddBlog extends React.Component {
             uploadImage(this.state.image)
                 .then((data) => {
                     if (data.status === 'success') {
-                        this.addArticle(data.data);
+                        this.state.blog ? this.editArticle(data.data) : this.addArticle(data.data);
                     } else {
                         this.props.alert.error(data.errorMsg || data.error);
                     }
@@ -90,7 +94,7 @@ class AddBlog extends React.Component {
                     this.props.alert.error('上传图片失败。');
                 });
         } else {
-            this.addArticle();
+            this.state.blog ? this.editArticle() : this.addArticle();
         }
     }
 
@@ -129,6 +133,43 @@ class AddBlog extends React.Component {
         });
     }
 
+    editArticle(image = '') {
+        this.setState((state) => {
+            return {
+                ...state,
+                isLoading: true
+            }
+        });
+        postJson('/tieba/updateArticle', {
+            "aid": this.state.blog.aid,
+            "uid": this.state.blog.uid,
+            "title": this.state.title[0],
+            "content": this.state.content,
+            "imagesrc": image,
+            "typeId": Array.isArray(this.state.typeId) ? this.state.typeId[0] : (this.state.typeId || 0)
+        }).then((data) => {
+            this.setState((state) => {
+                return {
+                    ...state,
+                    isLoading: false
+                }
+            });
+            if (data.status === 'success') {
+                this.props.history.push('/blog');
+            } else {
+                this.props.alert.error(data.errorMsg || data.error);
+            }
+        }).catch((error) => {
+            this.setState((state) => {
+                return {
+                    ...state,
+                    isLoading: false
+                }
+            });
+            this.props.alert.error('编辑博客失败。');
+        });
+    }
+
     render() {
         return (
             <div>
@@ -138,7 +179,7 @@ class AddBlog extends React.Component {
                     <div className="section-padding">
                         <div className="container">
                             <div className="contents text-center">
-                                <h2 className="section-title">Add Article</h2>
+                                <h2 className="section-title">{this.state.blogTitle}</h2>
                                 <form className="sign-in-form" id="sign-in-form">
                                     <p className="form-input">
                                         <input type="text" name="title" id="blog_title" placeholder="Article Title" className="input"
@@ -158,6 +199,9 @@ class AddBlog extends React.Component {
                                         </select>
                                     </p>
                                     <p className="form-input">
+                                        {
+                                            this.state.showImage ? <img src={'http://' + this.state.showImage} /> : null
+                                        }
                                         <input id="img" name="img" type="file"
                                                accept="image/jpeg,image/x-png,image/gif"
                                                onChange={ this.handleImageChange } />
@@ -166,7 +210,7 @@ class AddBlog extends React.Component {
                                 <Editor value={ this.state.content } onChange={ this.handleContentChange } />
                                 <p className="form-input" style={{marginTop: '20px'}}>
                                     <input type="submit" name="wp-submit" id="wp-submit" className="btn"
-                                           value={this.state.isLoading ? "Loading..." : "Add Article"}
+                                           value={this.state.isLoading ? "Loading..." : this.state.blogTitle}
                                            disabled={this.state.isLoading} onClick={this.submitArticleInfo} />
                                 </p>
                             </div>

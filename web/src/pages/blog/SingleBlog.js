@@ -1,19 +1,24 @@
 import React from 'react';
+import { withAlert } from 'react-alert';
+import { withRouter } from 'react-router';
 import { Link } from 'react-router-dom';
 import { Header } from '../../components/common/Header.js';
 import { BreadCrumb } from '../../components/common/BreadCrumb.js';
 import { Footer } from '../../components/common/Footer.js';
 import { StandardInnerArticle, getMonth, getDate } from '../../components/ControlInBlog.js';
+import { postJson } from '../../utils/server.js';
 
 const marginRight10 = {
     marginRight: '10px'
 };
 
-export class SingleBlog extends React.Component {
+class SingleBlog extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             blog: this.props.location.state,
+            releaseCourses: [],
+            isMyBlog: false,
             isGood: false,
             isBad: false,
             isCollected: false
@@ -21,42 +26,85 @@ export class SingleBlog extends React.Component {
         this.setGood = this.setGood.bind(this);
         this.setBad = this.setBad.bind(this);
         this.setCollect = this.setCollect.bind(this);
-        this.setTop = this.setTop.bind(this);
-        this.setBetter = this.setBetter.bind(this);
-        this.revert = this.revert.bind(this);
         this.report = this.report.bind(this);
     }
 
     setGood() {
-
+        postJson(`/tieba/clickGood?aid=${this.state.blog.aid}`)
+            .then((data) => {
+                if (data.status === 'success') {
+                    this.props.alert.success('点赞成功!');
+                } else {
+                    this.props.alert.error(data.errorMsg || data.error);
+                }
+            }).catch((error) => {
+                this.props.alert.success('点赞失败!');
+            });
     }
 
     setBad() {
-
+        postJson(`/tieba/clickBad?aid=${this.state.blog.aid}`)
+            .then((data) => {
+                if (data.status === 'success') {
+                    this.props.alert.success('点踩成功!');
+                } else {
+                    this.props.alert.error(data.errorMsg || data.error);
+                }
+            }).catch((error) => {
+                this.props.alert.success('点踩失败!');
+            });
     }
 
     setCollect() {
-
-    }
-
-    setTop() {
-
-    }
-
-    setBetter() {
-
-    }
-
-    revert() {
-
+        postJson(`/tieba/topArticle?aid=${this.state.blog.aid}`)
+            .then((data) => {
+                if (data.status === 'success') {
+                    this.props.alert.success('收藏成功!');
+                } else {
+                    this.props.alert.error(data.errorMsg || data.error);
+                }
+            }).catch((error) => {
+                this.props.alert.success('收藏失败!');
+            });
     }
 
     report() {
-
+        postJson(`/tieba/clickCollection?aid=${this.state.blog.aid}`)
+            .then((data) => {
+                if (data.status === 'success') {
+                    this.props.alert.success('举报成功!');
+                } else {
+                    this.props.alert.error(data.errorMsg || data.error);
+                }
+            }).catch((error) => {
+                this.props.alert.success('举报失败!');
+            });
     }
 
     componentDidMount() {
-
+        let loginUserId;
+        try {
+            loginUserId = JSON.parse(sessionStorage.getItem('jsUser')).id;
+        } catch (e) {
+        }
+        this.setState((state) => {
+           return {
+               ...state,
+               isMyBlog: loginUserId === this.state.blog.uid
+           }
+        });
+        postJson('/getCreatedCourses', {
+            id: this.state.blog.uid
+        }).then((data) => {
+            if (data.status === 'success') {
+                this.setState((state) => {
+                    return {
+                        ...state,
+                        releaseCourses: data.data || []
+                    }
+                })
+            }
+        });
     }
 
     render() {
@@ -93,33 +141,23 @@ export class SingleBlog extends React.Component {
                                                                 <a>{this.state.blog.articleType.value}</a>
                                                             </span> : null
                                                     }
-                                                    <span className="author float-right">
-                                                        <i className="fas fa-trash"></i>
-                                                        <a>删除</a>
-                                                    </span>
-                                                    <span className="author float-right" style={{marginRight: '10px'}}>
-                                                        <i className="fas fa-edit"></i>
-                                                        <Link to={`/addBlog`}>编辑</Link>
-                                                    </span>
+                                                    {
+                                                        this.state.isMyBlog ?
+                                                            <span className="author float-right" style={{marginRight: '10px'}}>
+                                                                <i className="fas fa-edit"></i>
+                                                                <Link to={{pathname: `/addBlog`, state: this.state.blog}}>编辑</Link>
+                                                            </span> : null
+                                                    }
                                                 </div>
                                                 <div style={{marginTop: '20px'}} dangerouslySetInnerHTML={{__html: this.state.blog.content}}></div>
                                                 <div className="content-bottom">
                                                     <div className="tags float-left">
-                                                        <a onClick={this.setGood}><i></i>点赞</a>
-                                                        <a onClick={this.setBad}><i></i>点踩</a>
-                                                        <a onClick={this.setCollect}><i></i>收藏</a>
+                                                        <a onClick={ this.setGood }><i></i>点赞</a>
+                                                        <a onClick={ this.setBad }><i></i>点踩</a>
+                                                        <a onClick={ this.setCollect }><i></i>收藏</a>
                                                     </div>
                                                     <div className="share dropdown float-right">
-                                                        <button className="dropdown-toggle" style={marginRight10} type="button" onClick={this.setTop}>
-                                                            置顶 <i></i>
-                                                        </button>
-                                                        <button className="dropdown-toggle" style={marginRight10} type="button" onClick={this.setBetter}>
-                                                            加精 <i></i>
-                                                        </button>
-                                                        <button className="dropdown-toggle" style={marginRight10} type="button" onClick={this.revert}>
-                                                            恢复 <i></i>
-                                                        </button>
-                                                        <button className="dropdown-toggle" type="button" onClick={this.report}>
+                                                        <button className="dropdown-toggle" type="button" onClick={ this.report }>
                                                             举报 <i></i>
                                                         </button>
                                                     </div>
@@ -185,19 +223,25 @@ export class SingleBlog extends React.Component {
                                         <div className="widget widget_popular_post">
                                             <h2 className="widget-title">Related Blog</h2>
                                             <div className="widget-details">
-                                                <article className="post type-post media">
-                                                    <div className="entry-thumbnail">
-                                                        <img src="../images/widget/1.jpg" alt="post"/>
-                                                    </div>
-                                                    <div className="entry-content media-body">
-                                                        <h3 className="entry-title"><a href="#">WordPress Theme Development Resources</a></h3>
-                                                        <div className="entry-meta">
-                                                        <span className="time">
-                                                            <i className="icons icon-calendar"></i>28 July, 2018
-                                                        </span>
-                                                        </div>
-                                                    </div>
-                                                </article>
+                                                {
+                                                    this.state.releaseCourses.map((course) => {
+                                                        return (
+                                                            <article className="post type-post media" key={course.id}>
+                                                                <div className="entry-thumbnail">
+                                                                    <img src={'http://' + course.imagesrc} alt="post"/>
+                                                                </div>
+                                                                <div className="entry-content media-body">
+                                                                    <h3 className="entry-title"><a>{course.title}</a></h3>
+                                                                    <div className="entry-meta">
+                                                                    <span className="time">
+                                                                        <i className="icons icon-calendar"></i>{course.createdTime}
+                                                                    </span>
+                                                                    </div>
+                                                                </div>
+                                                            </article>
+                                                        );
+                                                    })
+                                                }
                                             </div>
                                         </div>
                                     </aside>
@@ -211,3 +255,6 @@ export class SingleBlog extends React.Component {
         );
     }
 }
+
+const SingleBlogWithRouter = withRouter(withAlert(SingleBlog));
+export default SingleBlogWithRouter;

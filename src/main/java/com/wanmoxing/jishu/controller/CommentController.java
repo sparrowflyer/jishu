@@ -13,11 +13,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.wanmoxing.jishu.bean.Article;
 import com.wanmoxing.jishu.bean.Comment;
 import com.wanmoxing.jishu.bean.User;
+import com.wanmoxing.jishu.bean.UserNotification;
 import com.wanmoxing.jishu.constant.enums.ResultDTOStatus;
+import com.wanmoxing.jishu.constant.enums.UserNotificationType;
 import com.wanmoxing.jishu.dto.ResultDTO;
+import com.wanmoxing.jishu.service.ArticleService;
 import com.wanmoxing.jishu.service.CommentService;
+import com.wanmoxing.jishu.service.UserNotificationService;
 import com.wanmoxing.jishu.service.UserService;
 import com.wanmoxing.jishu.util.CommUtil;
 
@@ -28,11 +33,16 @@ public class CommentController {
 	private static Logger logger = LoggerFactory.getLogger(CommentController.class);
 	
 	@Resource
+	private ArticleService articleService;
+	
+	@Resource
 	private CommentService commentService;
 	
 	@Resource
 	private UserService userService;
 
+	@Resource
+	private UserNotificationService userNotificationService;
 	
 	/**
 	 *  添加评论
@@ -70,12 +80,30 @@ public class CommentController {
 		comment.setUser(user);
 		comment.setFloorReply(0);
 		comment.setFloorNumber(commentService.getCommentCount(aid) + 1);
+		
 		try {
+			
+			Article articleDatabase = articleService.getArticleById(aid);
+			if(articleDatabase == null) {
+				resultDTO.setErrorMsg("帖子不存在，无法评论");
+				resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+				return resultDTO;
+			}
+			int userId = articleDatabase.getUid();
+			
 			commentService.insert(comment);
 			logger.info("评论成功");
 			resultDTO.setErrorMsg("评论成功");
 			resultDTO.setStatus(ResultDTOStatus.SUCCESS.getStatus());
 			resultDTO.setData(comment);
+			
+			// 生成新评论通知
+			UserNotification addFanNotification = new UserNotification();
+			addFanNotification.setType(UserNotificationType.ARTICLE_REPLY.getType());
+			addFanNotification.setUserId(userId);
+			addFanNotification.setTitle("您有一位新评论！");
+			addFanNotification.setContent(content);
+			userNotificationService.insert(addFanNotification);
 			return resultDTO;
 		} catch (Exception e) {
 			e.printStackTrace();

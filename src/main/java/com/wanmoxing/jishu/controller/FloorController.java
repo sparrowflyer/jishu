@@ -13,10 +13,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.wanmoxing.jishu.bean.Comment;
 import com.wanmoxing.jishu.bean.Floor;
 import com.wanmoxing.jishu.bean.User;
 import com.wanmoxing.jishu.constant.enums.ResultDTOStatus;
 import com.wanmoxing.jishu.dto.ResultDTO;
+import com.wanmoxing.jishu.service.CommentService;
 import com.wanmoxing.jishu.service.FloorService;
 import com.wanmoxing.jishu.service.UserService;
 import com.wanmoxing.jishu.util.CommUtil;
@@ -33,7 +35,8 @@ public class FloorController {
 	@Resource
 	private UserService userService;
 
-	
+	@Resource
+	private CommentService commentService;
 
 	/**
 	 *  添加楼中楼评论
@@ -69,6 +72,12 @@ public class FloorController {
 		floor.setUid(user.getId());
 		floor.setCreateDate(new Timestamp(new Date().getTime()));
 		try {
+			Comment commentDatabase = commentService.getCommentById(cid);
+			if(commentDatabase == null) {
+				resultDTO.setErrorMsg("评论不存在，无法添加楼中楼评论");
+				resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+				return resultDTO;
+			}
 			floorService.insert(floor);
 			logger.info("评论成功");
 			resultDTO.setErrorMsg("评论成功");

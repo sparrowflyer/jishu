@@ -20,6 +20,11 @@ async function getArticles(articleType, page) {
     return (await res.json());
 }
 
+async function getArticleDetail(articleID) {
+    let res = await fetch(_server + '/tieba/articleDetail?aid=' + encodeURIComponent(articleID));
+    return (await res.json());
+}
+
 async function setCommentRead(commentID) {
     let res = await fetch(_server + '/setUserNotificaitonAsRead?id=' + encodeURIComponent(commentID));
     return (await res.json());
@@ -51,4 +56,4 @@ async function postJson(url, body) {
     return (await res.json());
 }
 
-export {getVerifyCodeImage, getEmailVerifyCode, getUserInfo, getArticles, getArticleType, uploadImage, postJson, setCommentRead};
+export {getVerifyCodeImage, getEmailVerifyCode, getUserInfo, getArticles, getArticleDetail, getArticleType, uploadImage, postJson, setCommentRead};

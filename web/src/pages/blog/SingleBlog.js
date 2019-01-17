@@ -6,17 +6,52 @@ import { Header } from '../../components/common/Header.js';
 import { BreadCrumb } from '../../components/common/BreadCrumb.js';
 import { Footer } from '../../components/common/Footer.js';
 import { StandardInnerArticle, getMonth, getDate } from '../../components/ControlInBlog.js';
-import { postJson } from '../../utils/server.js';
+import { postJson, getArticleDetail } from '../../utils/server.js';
 
 const marginRight10 = {
     marginRight: '10px'
 };
+
+let floorComment = [];
+
+function ChildBlogContent(floors) {
+    return (
+        <ol className="children">
+            {
+                floors.map((floor) => {
+                    return (
+                        <li className="comment" key={floor.fid}>
+                            <div className="comment-body media">
+                                <img className="rounded-circle author-avatar" src={'https://' + floor.user.headImage} alt="Comment Authors" />
+                                <div className="comment-content media-body">
+                                    <span className="time">{floor.createDate}</span>
+                                    <span className="name"><Link to={`/user/${floor.user.id}`}>{floor.user.nickName}</Link></span>
+                                    <p className="description">{floor.content}</p>
+                                </div>
+                            </div>
+                        </li>
+                    );
+                })
+            }
+        </ol>
+    );
+}
+
+function ChildBlog({floors}) {
+    let res = null;
+    if (Array.isArray(floors) && floors.length > 0) {
+        res = ChildBlogContent(floors);
+    }
+    return res;
+}
 
 class SingleBlog extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             blog: this.props.location.state,
+            addedComment: '',
+            comments: [],
             releaseCourses: [],
             isMyBlog: false,
             isGood: false,
@@ -27,6 +62,10 @@ class SingleBlog extends React.Component {
         this.setBad = this.setBad.bind(this);
         this.setCollect = this.setCollect.bind(this);
         this.report = this.report.bind(this);
+        this.getArticleDetail = this.getArticleDetail.bind(this);
+        this.addComment = this.addComment.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this);
+        this.handleReply = this.handleReply.bind(this);
     }
 
     setGood() {
@@ -81,6 +120,78 @@ class SingleBlog extends React.Component {
             });
     }
 
+    getArticleDetail() {
+        if (sessionStorage.getItem('jsUser')) {
+            getArticleDetail(this.state.blog.aid)
+                .then((data) => {
+                    if (data.status === 'success') {
+                        this.setState((state) => {
+                            return {
+                                ...state,
+                                comments: data.data.comments
+                            }
+                        });
+                        floorComment = data.data.comments;
+                    }
+                });
+        }
+    }
+
+    addComment() {
+        event.preventDefault();
+        postJson('/tieba/addComment', {
+            aid: this.state.blog.aid,
+            content: this.state.addedComment[0]
+        }).then((data) => {
+            if (data.status === 'success') {
+                this.getArticleDetail();
+            } else {
+                this.props.alert.error(data.errorMsg || data.error);
+            }
+        }).catch((error) => {
+            this.props.alert.error('添加评论失败!');
+        });
+    }
+
+    addFloorComment(cid, index) {
+        if (!floorComment[index]) {
+            this.props.alert.error('异常: 回复内容不能为空。');
+            return ;
+        }
+        if (!floorComment[index].replyContent) {
+            this.props.alert.error('回复内容不能为空!');
+            return ;
+        }
+        event.preventDefault();
+        postJson('/tieba/addFloorComment', {
+            cid: cid,
+            content: floorComment[index].replyContent
+        }).then((data) => {
+            if (data.status === 'success') {
+                this.getArticleDetail();
+            } else {
+                this.props.alert.error(data.errorMsg || data.error);
+            }
+        }).catch((error) => {
+            this.props.alert.error('评论失败!');
+        });
+    }
+
+    handleInputChange(event) {
+        const name = event.target.name;
+        const value = event.target.value;
+        this.setState((state) => {
+            return {
+                ...state,
+                [name]: [value]
+            };
+        });
+    }
+
+    handleReply(event, index) {
+        floorComment[index].replyContent = event.target.value;
+    }
+
     componentDidMount() {
         let loginUserId;
         try {
@@ -105,6 +216,7 @@ class SingleBlog extends React.Component {
                 })
             }
         });
+        this.getArticleDetail();
     }
 
     render() {
@@ -165,58 +277,43 @@ class SingleBlog extends React.Component {
                                             </div>
                                         </div>
                                     </article>
-                                    <div className="comments">
-                                        <h2 className="title">Comments</h2>
-                                        <ol className="comment-list">
-                                            <li className="comment parent">
-                                                <div className="comment-body media">
-                                                    <img className="rounded-circle author-avatar" src="../images/comments/1.jpg" alt="Comment Authors" />
-                                                    <div className="comment-content media-body">
-                                                        <span className="time">20-02-2016 at 21:37</span>
-                                                        <span className="name"><a href="#">Anthony Doe</a></span>
-                                                        <p className="description">
-                                                            Gregor had wanted to give a full answer and explain everything but in the circumstances contented himself with saying- I’m getting up now.
-                                                        </p>
-                                                        <a href="#" className="btn reply-btn">Reply</a>
-                                                    </div>
-                                                </div>
-                                                <ol className="children">
-                                                    <li className="comment">
-                                                        <div className="comment-body media">
-                                                            <img className="rounded-circle author-avatar" src="../images/comments/2.jpg" alt="Comment Authors" />
-                                                            <div className="comment-content media-body">
-                                                                <span className="time">20-02-2016 at 21:37</span>
-                                                                <span className="name"><a href="#">Anthony Doe</a></span>
-                                                                <p className="description">
-                                                                    The change in Gregor’s voice probably could not be noticed outside through the wooden door, as his mother was satisfied with this explanation and shuffled away
-                                                                </p>
-                                                            </div>
-                                                        </div>
-                                                    </li>
+                                    {
+                                        sessionStorage.getItem('jsUser') ?
+                                            <div className="comments">
+                                                <h2 className="title">Comments</h2>
+                                                <ol className="comment-list">
+                                                {
+                                                    this.state.comments.map((comment, index) => {
+                                                        return (
+                                                            <li className="comment parent" key={comment.cid}>
+                                                                <div className="comment-body media">
+                                                                    <img className="rounded-circle author-avatar" src={'https://' + comment.user.headImage} alt="Comment Authors" />
+                                                                    <div className="comment-content media-body">
+                                                                        <span className="time">{comment.createDate}</span>
+                                                                        <span className="name"><Link to={`/user/${comment.user.id}`}>{comment.user.nickName}</Link></span>
+                                                                        <p className="description">{comment.content}</p>
+                                                                    </div>
+                                                                    <form className="form-inline" method="post">
+                                                                        <input type="text" className="form-control" placeholder="Comment" onChange={e => this.handleReply(e, index)} />
+                                                                        <button type="submit" className="btn reply-btn" onClick={this.addFloorComment.bind(this, comment.cid, index)}>Reply</button>
+                                                                    </form>
+                                                                </div>
+                                                                <ChildBlog floors={comment.floors} />
+                                                            </li>
+                                                        );
+                                                    })
+                                                }
                                                 </ol>
-                                            </li>
-                                            <li className="comment parent">
-                                                <div className="comment-body media">
-                                                    <img className="rounded-circle author-avatar" src="../images/comments/4.jpg" alt="Comment Authors" />
-                                                    <div className="comment-content media-body">
-                                                        <span className="time">20-02-2016 at 21:37</span>
-                                                        <span className="name"><a href="#">Anthony Doe</a></span>
-                                                        <p className="description">
-                                                            And yet, once in a while, he renders a head with such character, or a movement with such ease that we wonder whether he had not in him, after all, the making of a real artist.
-                                                        </p>
-                                                        <a href="#" className="btn reply-btn">Reply</a>
-                                                    </div>
+                                                <div className="respond">
+                                                    <h2 className="title">Add Your Comment</h2>
+                                                    <form method="post" className="comment-form">
+                                                        <textarea id="addedComment" className="form-control" name="addedComment" placeholder="Comment"
+                                                                  rows="8" required onChange={ this.handleInputChange } value={ this.state.addedComment }></textarea>
+                                                        <input className="btn" type="submit" value="Submit Comment" onClick={this.addComment} />
+                                                    </form>
                                                 </div>
-                                            </li>
-                                        </ol>
-                                        <div className="respond">
-                                            <h2 className="title">Add Your Comment</h2>
-                                            <form action="#" method="post" className="comment-form">
-                                                <textarea id="comment" className="form-control" name="comment" placeholder="Comment" rows="8" required></textarea>
-                                                <input className="btn" type="submit" value="Submit Comment" />
-                                            </form>
-                                        </div>
-                                    </div>
+                                            </div> : <Link to='/login'>登录查看评价</Link>
+                                    }
                                 </div>
                                 <div className="col-md-4">
                                     <aside className="sidebar">

@@ -140,7 +140,7 @@ public class PurchaseController {
 				signVerified = AlipaySignature.rsaCheckV1(params, AlipayConfig.ALIPAY_PUBLIC_KEY, AlipayConfig.ALIPAY_CHARSET, AlipayConfig.ALIPAY_SIGN_TYPE); //调用SDK验证签名
 			} catch (Exception signException) {
 				signException.printStackTrace();
-				response.sendRedirect("some-url"); 	//验签异常，请求非法
+				response.sendRedirect("www.baidu.com"); 	//验签异常，请求非法
 			}
 			if(signVerified) {
 				//商户订单号
@@ -149,13 +149,13 @@ public class PurchaseController {
 				//String trade_no = new String(request.getParameter("trade_no").getBytes("ISO-8859-1"),"UTF-8");
 				//付款金额
 				String total_amount = new String(request.getParameter("total_amount").getBytes("ISO-8859-1"),"UTF-8");
-				response.sendRedirect("some-url");	//支付成功，"您已成功支付" + total_amount + "元！"
+				response.sendRedirect("www.baidu.com");	//支付成功，"您已成功支付" + total_amount + "元！"
 			} else {
-				response.sendRedirect("some-url");	//验签失败，支付失败
+				response.sendRedirect("www.baidu.com");	//验签失败，支付失败
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			response.sendRedirect("some-url");		//代码抛出异常，支付失败
+			response.sendRedirect("www.baidu.com");		//代码抛出异常，支付失败
 		}
 	}
 

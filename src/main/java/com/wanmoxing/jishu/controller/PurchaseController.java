@@ -1,5 +1,6 @@
 package com.wanmoxing.jishu.controller;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.HashMap;
@@ -59,7 +60,7 @@ public class PurchaseController {
 	 * @param response
 	 * @param purchaseCourseDTO
 	 */
-	@RequestMapping(value = "/purchaseCourse", method = RequestMethod.POST)
+	@RequestMapping(value = "/purchaseCourse", method = RequestMethod.GET)
 	public void purchaseCourse(HttpSession session, HttpServletResponse response, @RequestBody PurchaseCourseDTO purchaseCourseDTO) {
 		try {
 			if (!CommonConstants.DEV_MODE && !CommUtil.isUserLogined(session)) {
@@ -114,10 +115,10 @@ public class PurchaseController {
 	 * @param session
 	 * @param addCourseVO
 	 * @return
+	 * @throws IOException 
 	 */
 	@RequestMapping(value = "/purchaseReturn", method = RequestMethod.GET)
-	public ResultDTO alipayPurchaseReturn(HttpServletRequest request, HttpServletResponse response) {
-		ResultDTO result = new ResultDTO();
+	public void alipayPurchaseReturn(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		try {
 			// 获取支付宝GET过来反馈信息
 			Map<String,String> params = new HashMap<String,String>();
@@ -139,9 +140,7 @@ public class PurchaseController {
 				signVerified = AlipaySignature.rsaCheckV1(params, AlipayConfig.ALIPAY_PUBLIC_KEY, AlipayConfig.ALIPAY_CHARSET, AlipayConfig.ALIPAY_SIGN_TYPE); //调用SDK验证签名
 			} catch (Exception signException) {
 				signException.printStackTrace();
-				//验签异常
-				result.setStatus(ResultDTOStatus.ERROR.getStatus());
-				result.setErrorMsg("请求非法");
+				response.sendRedirect("some-url"); 	//验签异常，请求非法
 			}
 			if(signVerified) {
 				//商户订单号
@@ -150,20 +149,13 @@ public class PurchaseController {
 				//String trade_no = new String(request.getParameter("trade_no").getBytes("ISO-8859-1"),"UTF-8");
 				//付款金额
 				String total_amount = new String(request.getParameter("total_amount").getBytes("ISO-8859-1"),"UTF-8");
-				
-				result.setData("您已成功支付" + total_amount + "元！");
-				//跳转到支付成功页面
+				response.sendRedirect("some-url");	//支付成功，"您已成功支付" + total_amount + "元！"
 			} else {
-				result.setStatus(ResultDTOStatus.ERROR.getStatus());
-				result.setErrorMsg("请求失败");
+				response.sendRedirect("some-url");	//验签失败，支付失败
 			}
-			
-			return result;
 		} catch (Exception e) {
 			e.printStackTrace();
-			result.setStatus(ResultDTOStatus.ERROR.getStatus());
-			result.setErrorMsg("Exception occured!");
-			return result;
+			response.sendRedirect("some-url");		//代码抛出异常，支付失败
 		}
 	}
 

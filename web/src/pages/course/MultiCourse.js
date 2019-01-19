@@ -1,12 +1,14 @@
 import React from 'react';
+import { withRouter} from 'react-router';
 import { Link } from 'react-router-dom';
+import { withAlert } from 'react-alert';
 import Pagination from 'rc-pagination';
 import { Header } from '../../components/common/Header.js';
 import { BreadCrumb } from '../../components/common/BreadCrumb.js';
 import { Footer } from '../../components/common/Footer.js';
-import { postJson } from '../../utils/server.js';
+import { postJson, goAlipay } from '../../utils/server.js';
 
-export class MultiCourse extends React.Component {
+class MultiCourse extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -59,6 +61,23 @@ export class MultiCourse extends React.Component {
            };
         });
         this.getCourses(courseType, this.state.currentPage);
+    }
+
+    buyCourse(courseID) {
+        let userID = '';
+        try {
+            userID = JSON.parse(sessionStorage.getItem('jsUser')).id;
+        } catch(e) {}
+        if (!userID) {
+            this.props.alert.error('请先登录。');
+            return ;
+        }
+        goAlipay(courseID, userID)
+            .then((data) => {
+                console.log(data);
+            }).catch((error) => {
+                this.props.alert.error('支付失败。');
+            });
     }
 
     componentDidMount() {
@@ -121,9 +140,9 @@ export class MultiCourse extends React.Component {
                                                                             Left:<span className="label label-default">{ course.targetStudentAmount - course.currentStudentAmount }</span>
                                                                         </div>
                                                                     </div>
-                                                                    <div style={{overflow: "hidden"}}>
-                                                                        <span style={{float: "right", color: "red", fontWeight: "bold"}}>Buy</span>
-                                                                    </div>
+                                                                    <form style={{overflow: "hidden"}}>
+                                                                        <input style={{float: "right", color: "red", fontWeight: "bold"}} onClick={ this.buyCourse.bind(this, course.id) }>Buy</input>
+                                                                    </form>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -169,3 +188,6 @@ export class MultiCourse extends React.Component {
         );
     }
 }
+
+const MultiCourseWithRouter = withRouter(withAlert(MultiCourse));
+export default MultiCourseWithRouter;

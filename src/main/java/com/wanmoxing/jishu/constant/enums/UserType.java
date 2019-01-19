@@ -2,7 +2,7 @@ package com.wanmoxing.jishu.constant.enums;
 
 public enum UserType {
 	
-	USER("user"), TEACHER("teacher");
+	USER("user"), TEACHER("teacher"), SYSADMIN("sysadmin");
 	
 	private String type;
 	

@@ -2,7 +2,7 @@ package com.wanmoxing.jishu.constant.enums;
 
 public enum UserNotificationType {
 	
-	GENERAL("general"), NEW_FAN("new_fan"), ARTICLE_REPLY("article_reply"), COURSE_REPLY("course_reply");
+	GENERAL("general"), NEW_FAN("new_fan"), ARTICLE_REPLY("article_reply"), COURSE_REPLY("course_reply"), REPORT_ARTICLE("report_article");
 	
 	private String type;
 	

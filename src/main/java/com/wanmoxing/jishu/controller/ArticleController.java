@@ -21,15 +21,19 @@ import com.wanmoxing.jishu.bean.CollectionCount;
 import com.wanmoxing.jishu.bean.Comment;
 import com.wanmoxing.jishu.bean.GoodBad;
 import com.wanmoxing.jishu.bean.User;
+import com.wanmoxing.jishu.bean.UserNotification;
 import com.wanmoxing.jishu.constant.enums.ArticleStatus;
 import com.wanmoxing.jishu.constant.enums.GoodBadStatus;
 import com.wanmoxing.jishu.constant.enums.ResultDTOStatus;
+import com.wanmoxing.jishu.constant.enums.UserNotificationType;
+import com.wanmoxing.jishu.constant.enums.UserType;
 import com.wanmoxing.jishu.dto.ResultDTO;
 import com.wanmoxing.jishu.service.ArticleService;
 import com.wanmoxing.jishu.service.CollectionCountService;
 import com.wanmoxing.jishu.service.CommentService;
 import com.wanmoxing.jishu.service.FloorService;
 import com.wanmoxing.jishu.service.GoodBadService;
+import com.wanmoxing.jishu.service.UserNotificationService;
 import com.wanmoxing.jishu.service.UserService;
 import com.wanmoxing.jishu.util.CommUtil;
 
@@ -56,6 +60,9 @@ public class ArticleController {
 	
 	@Resource
 	private CollectionCountService collectionCountService;
+	
+	@Resource
+	private UserNotificationService userNotificationService;
 	
 	/**
 	 * 显示所有帖子
@@ -531,12 +538,20 @@ public class ArticleController {
 	public ResultDTO topArticle(HttpSession session,@RequestParam("aid") int aid) {
 		ResultDTO resultDTO = new ResultDTO();
 		try {
+			Article articleDatabase = articleService.getArticleById(aid);
+			if(articleDatabase == null) {
+				resultDTO.setErrorMsg("帖子不存在,无法置顶");
+				resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+				return resultDTO;
+			}
 			articleService.updateArticleStatus(ArticleStatus.TOP.getValue(), aid);
 			resultDTO.setErrorMsg("置顶帖子成功");
 			resultDTO.setStatus(ResultDTOStatus.SUCCESS.getStatus());
 		} catch (Exception e) {
-			resultDTO.setErrorMsg("置顶帖子时发生异常");
+			e.printStackTrace();
 			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+			resultDTO.setErrorMsg("Exception occured!");
+			return resultDTO;
 		}
 		
 		return resultDTO;
@@ -552,12 +567,20 @@ public class ArticleController {
 	public ResultDTO bestArticle(HttpSession session,@RequestParam("aid") int aid) {
 		ResultDTO resultDTO = new ResultDTO();
 		try {
+			Article articleDatabase = articleService.getArticleById(aid);
+			if(articleDatabase == null) {
+				resultDTO.setErrorMsg("帖子不存在,无法加精");
+				resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+				return resultDTO;
+			}
 			articleService.updateArticleStatus(ArticleStatus.BEST.getValue(), aid);
 			resultDTO.setErrorMsg("帖子加精成功");
 			resultDTO.setStatus(ResultDTOStatus.SUCCESS.getStatus());
 		} catch (Exception e) {
-			resultDTO.setErrorMsg("加精帖子时发生异常");
+			e.printStackTrace();
 			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+			resultDTO.setErrorMsg("Exception occured!");
+			return resultDTO;
 		}
 		
 		return resultDTO;
@@ -573,12 +596,20 @@ public class ArticleController {
 	public ResultDTO topAndBestArticle(HttpSession session,@RequestParam("aid") int aid) {
 		ResultDTO resultDTO = new ResultDTO();
 		try {
+			Article articleDatabase = articleService.getArticleById(aid);
+			if(articleDatabase == null) {
+				resultDTO.setErrorMsg("帖子不存在,无法置顶加精");
+				resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+				return resultDTO;
+			}
 			articleService.updateArticleStatus(ArticleStatus.TOPANDBEST.getValue(), aid);
 			resultDTO.setErrorMsg("置顶加精帖子成功");
 			resultDTO.setStatus(ResultDTOStatus.SUCCESS.getStatus());
 		} catch (Exception e) {
-			resultDTO.setErrorMsg("置顶加精帖子时发生异常");
+			e.printStackTrace();
 			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+			resultDTO.setErrorMsg("Exception occured!");
+			return resultDTO;
 		}
 		
 		return resultDTO;
@@ -593,13 +624,22 @@ public class ArticleController {
 	@RequestMapping(value="tieba/illegalArticle",method=RequestMethod.POST)
 	public ResultDTO illegalArticle(HttpSession session,@RequestParam("aid") int aid) {
 		ResultDTO resultDTO = new ResultDTO();
-		try {
+		try {	
+			Article articleDatabase = articleService.getArticleById(aid);
+			if(articleDatabase == null) {
+				resultDTO.setErrorMsg("帖子不存在,无法设为违规");
+				resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+				return resultDTO;
+			}
+			
 			articleService.updateArticleStatus(ArticleStatus.Illegal.getValue(), aid);
 			resultDTO.setErrorMsg("成功设该帖违规");
 			resultDTO.setStatus(ResultDTOStatus.SUCCESS.getStatus());
 		} catch (Exception e) {
-			resultDTO.setErrorMsg("设置帖子违规时发生异常");
+			e.printStackTrace();
 			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+			resultDTO.setErrorMsg("Exception occured!");
+			return resultDTO;
 		}
 		
 		return resultDTO;
@@ -615,11 +655,59 @@ public class ArticleController {
 	public ResultDTO generalArticle(HttpSession session,@RequestParam("aid") int aid) {
 		ResultDTO resultDTO = new ResultDTO();
 		try {
+			Article articleDatabase = articleService.getArticleById(aid);
+			if(articleDatabase == null) {
+				resultDTO.setErrorMsg("帖子不存在");
+				resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+				return resultDTO;
+			}
+			
 			articleService.updateArticleStatus(ArticleStatus.GENERAL.getValue(), aid);
 			resultDTO.setErrorMsg("设为普通帖子成功");
 			resultDTO.setStatus(ResultDTOStatus.SUCCESS.getStatus());
 		} catch (Exception e) {
-			resultDTO.setErrorMsg("设置普通帖子发生异常");
+			e.printStackTrace();
+			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+			resultDTO.setErrorMsg("Exception occured!");
+			return resultDTO;
+		}
+		
+		return resultDTO;
+	}
+	
+	
+	/**
+	 *  举报
+	 * @param aid
+	 * @return 
+	 *
+	 */
+	@RequestMapping(value="tieba/reportArticle",method=RequestMethod.POST)
+	public ResultDTO reportArticle(HttpSession session,@RequestParam("aid") int aid) {
+		ResultDTO resultDTO = new ResultDTO();
+		try {
+			Article articleDatabase = articleService.getArticleById(aid);
+			if(articleDatabase == null) {
+				resultDTO.setErrorMsg("帖子不存在,无法举报");
+				resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+				return resultDTO;
+			}
+			
+			// 通知sysadmin，有人举报该帖子
+			for(User user: userService.findByType(UserType.SYSADMIN)) {
+				UserNotification addFanNotification = new UserNotification();
+				addFanNotification.setType(UserNotificationType.REPORT_ARTICLE.getType());
+				addFanNotification.setUserId(user.getId());
+				addFanNotification.setTitle("您有一个举报需要处理");
+				addFanNotification.setContent(articleDatabase.getTitle() +"被举报，请及时处理");
+				userNotificationService.insert(addFanNotification);
+			}
+			
+			resultDTO.setErrorMsg("举报成功");
+			resultDTO.setStatus(ResultDTOStatus.SUCCESS.getStatus());
+			
+		} catch (Exception e) {
+			resultDTO.setErrorMsg("举报发生异常");
 			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
 		}
 		

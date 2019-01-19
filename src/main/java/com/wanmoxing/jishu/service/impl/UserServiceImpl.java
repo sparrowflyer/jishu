@@ -1,5 +1,7 @@
 package com.wanmoxing.jishu.service.impl;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.context.annotation.ComponentScan;
@@ -7,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.github.pagehelper.util.StringUtil;
 import com.wanmoxing.jishu.bean.User;
+import com.wanmoxing.jishu.constant.enums.UserType;
 import com.wanmoxing.jishu.mapper.UserMapper;
 import com.wanmoxing.jishu.service.UserService;
 
@@ -31,6 +34,12 @@ public class UserServiceImpl implements UserService {
 	public User findByEmail(String email, String password) {
 		return userMapper.findByEmail(email, password);
 	}
+	
+	@Override
+	public List<User> findByType(UserType type) {
+		return userMapper.findByType(type);
+	}
+	
 	@Override
 	public User existenceByEmail(String email) {
 		return userMapper.existenceByEmail(email);

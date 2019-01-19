@@ -102,7 +102,7 @@ public class CommentController {
 			addFanNotification.setType(UserNotificationType.ARTICLE_REPLY.getType());
 			addFanNotification.setUserId(userId);
 			addFanNotification.setTitle("您有一位新评论！");
-			addFanNotification.setContent(articleDatabase.getUser().getNickName() + "评论了您的帖子");
+			addFanNotification.setContent(user.getNickName() + "评论了您的帖子: "+articleDatabase.getTitle());
 			userNotificationService.insert(addFanNotification);
 			return resultDTO;
 		} catch (Exception e) {

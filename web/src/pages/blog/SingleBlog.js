@@ -12,8 +12,6 @@ const marginRight10 = {
     marginRight: '10px'
 };
 
-let floorComment = [];
-
 function ChildBlogContent(floors) {
     return (
         <ol className="children">
@@ -22,7 +20,7 @@ function ChildBlogContent(floors) {
                     return (
                         <li className="comment" key={floor.fid}>
                             <div className="comment-body media">
-                                <img className="rounded-circle author-avatar" src={'https://' + floor.user.headImage} alt="Comment Authors" />
+                                <img className="rounded-circle author-avatar" src={'http://' + floor.user.headImage} alt="Comment Authors" />
                                 <div className="comment-content media-body">
                                     <span className="time">{floor.createDate}</span>
                                     <span className="name"><Link to={`/user/${floor.user.id}`}>{floor.user.nickName}</Link></span>
@@ -44,6 +42,8 @@ function ChildBlog({floors}) {
     }
     return res;
 }
+
+let floorComment = [];
 
 class SingleBlog extends React.Component {
     constructor(props) {
@@ -95,7 +95,7 @@ class SingleBlog extends React.Component {
     }
 
     setCollect() {
-        postJson(`/tieba/topArticle?aid=${this.state.blog.aid}`)
+        postJson(`/tieba/clickCollection?aid=${this.state.blog.aid}`)
             .then((data) => {
                 if (data.status === 'success') {
                     this.props.alert.success('收藏成功!');
@@ -108,7 +108,7 @@ class SingleBlog extends React.Component {
     }
 
     report() {
-        postJson(`/tieba/clickCollection?aid=${this.state.blog.aid}`)
+        postJson(`/tieba/topArticle?aid=${this.state.blog.aid}`)
             .then((data) => {
                 if (data.status === 'success') {
                     this.props.alert.success('举报成功!');
@@ -130,8 +130,9 @@ class SingleBlog extends React.Component {
                                 ...state,
                                 comments: data.data.comments
                             }
+                        }, () => {
+                            floorComment = this.state.comments;
                         });
-                        floorComment = data.data.comments;
                     }
                 });
         }
@@ -286,16 +287,20 @@ class SingleBlog extends React.Component {
                                                     this.state.comments.map((comment, index) => {
                                                         return (
                                                             <li className="comment parent" key={comment.cid}>
-                                                                <div className="comment-body media">
-                                                                    <img className="rounded-circle author-avatar" src={'https://' + comment.user.headImage} alt="Comment Authors" />
+                                                                <div className="comment-body media" style={{marginBottom: '1.5em'}}>
+                                                                    <img className="rounded-circle author-avatar" src={'http://' + comment.user.headImage} alt="Comment Authors" />
                                                                     <div className="comment-content media-body">
                                                                         <span className="time">{comment.createDate}</span>
                                                                         <span className="name"><Link to={`/user/${comment.user.id}`}>{comment.user.nickName}</Link></span>
                                                                         <p className="description">{comment.content}</p>
                                                                     </div>
-                                                                    <form className="form-inline" method="post">
-                                                                        <input type="text" className="form-control" placeholder="Comment" onChange={e => this.handleReply(e, index)} />
-                                                                        <button type="submit" className="btn reply-btn" onClick={this.addFloorComment.bind(this, comment.cid, index)}>Reply</button>
+                                                                </div>
+                                                                <div className="respond" style={{marginTop: '0'}}>
+                                                                    <h6 className="title">Reply to {comment.user.nickName}</h6>
+                                                                    <form method="post" className="comment-form" style={{marginTop: '1em'}}>
+                                                                        <textarea className="form-control" placeholder="Comment" rows="3" required
+                                                                                  onChange={e => this.handleReply(e, index)}></textarea>
+                                                                        <input className="btn reply-btn" type="submit" value="Reply" onClick={this.addFloorComment.bind(this, comment.cid, index)} />
                                                                     </form>
                                                                 </div>
                                                                 <ChildBlog floors={comment.floors} />

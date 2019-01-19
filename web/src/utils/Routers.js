@@ -13,10 +13,10 @@ import SingleBlogWithRouter from '../pages/blog/SingleBlog.js';
 import { MultiBlog } from '../pages/blog/MultiBlog.js';
 import AddBlogWithRouter from '../pages/blog/AddBlog.js';
 import SingleCourseWithRouter from '../pages/course/SingleCourse.js';
-import { MultiCourse } from '../pages/course/MultiCourse.js';
+import MultiCourseWithRouter from '../pages/course/MultiCourse.js';
 import AddCourseWithRouter from '../pages/course/AddCourse.js';
 import UserWithRouter from '../pages/User.js';
-import { Error } from '../pages/other/Error.js';
+import { PageError, PayError } from '../pages/other/Error.js';
 
 export function Routers() {
     return (
@@ -35,13 +35,14 @@ export function Routers() {
                     <Route exact path="/blog" component={ MultiBlog } />
                     <Route path='/blog/:blogID' component={ SingleBlogWithRouter } />
                     <Route path='/addBlog' component={ AddBlogWithRouter } />
-                    <Route exact path='/course' component={ MultiCourse } />
+                    <Route exact path='/course' component={ MultiCourseWithRouter } />
                     <Route path='/addCourse' component={ AddCourseWithRouter } />
                     <Route path='/course/:courseID' component={ SingleCourseWithRouter } />
                     <Route path='/user/:userID' render={
                         (props) => (<UserWithRouter key={props.match.params.userID} {...props} />)
                     } />
-                    <Route component={ Error } />
+                    <Route path="/payResult/:result_status/:total_amount" component={ PayError } />
+                    <Route component={ PageError } />
                 </Switch>
             </div>
         </Router>

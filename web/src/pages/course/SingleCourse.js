@@ -6,7 +6,7 @@ import { Header } from '../../components/common/Header.js';
 import { BreadCrumb } from '../../components/common/BreadCrumb.js';
 import { Footer } from '../../components/common/Footer.js';
 import { getTimeOfNow } from '../../utils/time.js';
-import { postJson, getUserInfo } from '../../utils/server.js';
+import { postJson, getUserInfo, goAlipay } from '../../utils/server.js';
 
 const autoWidth = {
     width: 'auto'
@@ -132,6 +132,23 @@ export class SingleCourse extends React.Component {
                        }
                     });
                 }
+            });
+    }
+
+    buyCourse(courseID) {
+        let userID = '';
+        try {
+            userID = JSON.parse(sessionStorage.getItem('jsUser')).id;
+        } catch(e) {}
+        if (!userID) {
+            this.props.alert.error('请先登录。');
+            return ;
+        }
+        goAlipay(courseID, userID)
+            .then((data) => {
+                console.log(data);
+            }).catch((error) => {
+                this.props.alert.error('支付失败。');
             });
     }
 
@@ -289,7 +306,7 @@ export class SingleCourse extends React.Component {
                                 </div>
                                 <div className="col-md-4">
                                     <aside className="sidebar">
-                                        <button className="btn btn-lg enroll-btn">BUY</button>
+                                        <button className="btn btn-lg enroll-btn" onClick={ this.buyCourse.bind(this, this.state.course.id) }>BUY</button>
                                         <div className="info">
                                             <ul className="info-list">
                                                 <li><span className="price">Price: {this.state.course.price}</span></li>

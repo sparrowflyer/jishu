@@ -16,6 +16,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alipay.api.AlipayApiException;
@@ -30,7 +31,6 @@ import com.wanmoxing.jishu.constant.CommonConstants;
 import com.wanmoxing.jishu.constant.enums.PurchasePayment;
 import com.wanmoxing.jishu.constant.enums.PurchaseStatus;
 import com.wanmoxing.jishu.constant.enums.ResultDTOStatus;
-import com.wanmoxing.jishu.dto.PurchaseCourseDTO;
 import com.wanmoxing.jishu.dto.ResultDTO;
 import com.wanmoxing.jishu.service.CourseService;
 import com.wanmoxing.jishu.service.PurchaseService;
@@ -51,33 +51,38 @@ public class PurchaseController {
 
 	/**
 	 * 购买课程
-	 	{
-			"courseId":"1",
-			"buyerId":"1",
-			"payment":"alipay"
-		}
+	 * 
+	 * /purchaseCourse?courseId=1&buyerId=1
+	 * 
 	 * @param session
 	 * @param response
 	 * @param purchaseCourseDTO
 	 */
 	@RequestMapping(value = "/purchaseCourse", method = RequestMethod.GET)
-	public void purchaseCourse(HttpSession session, HttpServletResponse response, @RequestBody PurchaseCourseDTO purchaseCourseDTO) {
+	public void purchaseCourse(HttpSession session, HttpServletResponse response, 
+			@RequestParam String courseId, 
+			@RequestParam String buyerId) {
 		try {
 			if (!CommonConstants.DEV_MODE && !CommUtil.isUserLogined(session)) {
 				System.out.println("用户未登录!购买失败！");
 				return;
 			}
 			
-			Course course = courseService.find(1);
+			Course course = courseService.find(Integer.valueOf(courseId));
+			User user = userService.findById(Integer.valueOf(buyerId));
 			if (course == null) {
-				System.out.println("课程(id:" + purchaseCourseDTO.getCourseId() + ")不存在！！！购买失败");
+				System.out.println("课程(id:" + courseId + ")不存在！！！购买失败");
+				return;
+			}
+			if (user == null) {
+				System.out.println("购买者(id:" + buyerId + ")不存在！！！购买失败");
 				return;
 			}
 
 			Purchase purchase = new Purchase();
 			purchase.setId(IdGenerator.newId());
-			purchase.setCourseId(purchaseCourseDTO.getCourseId());
-			purchase.setBuyerId(purchaseCourseDTO.getBuyerId());
+			purchase.setCourseId(Integer.valueOf(courseId));
+			purchase.setBuyerId(Integer.valueOf(buyerId));
 			purchase.setPayment(PurchasePayment.ALIPAY.getPayment());
 			purchase.setPaymentAmount(course.getPrice());
 			purchaseService.insert(purchase);

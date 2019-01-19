@@ -9,7 +9,7 @@ public class CommonConstants {
 	/**
 	 * 默认头像地址
 	 */
-	public static final String DEFAULT_HEADIMG_ADDRESS = "/resources/imgs/head.png";
+	public static final String DEFAULT_HEADIMG_ADDRESS = "http://cdn.unclejee.cn/20190118215849_614.jpg";
 	
 	/**
 	 * 默认文件上传地址

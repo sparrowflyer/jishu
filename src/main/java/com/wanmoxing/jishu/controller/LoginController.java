@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.wanmoxing.jishu.bean.User;
+import com.wanmoxing.jishu.constant.CommonConstants;
 import com.wanmoxing.jishu.constant.enums.ResultDTOStatus;
 import com.wanmoxing.jishu.constant.enums.UserStatus;
 import com.wanmoxing.jishu.constant.enums.UserType;
@@ -73,15 +74,21 @@ public class LoginController {
 			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
 			return resultDTO;
 		}
-
-		User user = userService.findByEmail(email, MD5Util.EncodeByMD5(password));
-		if (user!=null) {
-			user.setPassword(null);
-			logger.info("登录成功!");
-			resultDTO.setErrorMsg("登录成功");
-			resultDTO.setData(user);
-			resultDTO.setStatus(ResultDTOStatus.SUCCESS.getStatus());
-			session.setAttribute("user", user);
+		try {
+			User user = userService.findByEmail(email, MD5Util.EncodeByMD5(password));
+			if (user!=null) {
+				user.setPassword(null);
+				logger.info("登录成功!");
+				resultDTO.setErrorMsg("登录成功");
+				resultDTO.setData(user);
+				resultDTO.setStatus(ResultDTOStatus.SUCCESS.getStatus());
+				session.setAttribute("user", user);
+				return resultDTO;
+			} 
+		}catch (Exception e) {
+			e.printStackTrace();
+			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+			resultDTO.setErrorMsg("Exception occured!");
 			return resultDTO;
 		}
 		logger.info("登录失败!");
@@ -140,35 +147,43 @@ public class LoginController {
 		}
 
 
-		//验证码和账户判断
-		User user=userService.existenceByEmail(email);
-		if(user!=null){
-			resultDTO.setErrorMsg("邮箱已经存在！");
+		try {
+			//验证码和账户判断
+			User user=userService.existenceByEmail(email);
+			if(user!=null){
+				resultDTO.setErrorMsg("邮箱已经存在！");
+				resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+				return resultDTO;
+			}
+			if (!"success".equalsIgnoreCase(checkEmailVerifyCode(emailVercode,session))){
+				resultDTO.setErrorMsg("邮箱验证码错误！");
+				resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+				return resultDTO;
+			}
+			if (!"success".equalsIgnoreCase(checkImageVerifyCode(imageVercode,session))){
+				resultDTO.setErrorMsg("图形验证码错误！");
+				resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+				return resultDTO;
+			}
+	
+			User userNew = new User();
+			userNew.setNickName(nickName);
+			userNew.setPassword(MD5Util.EncodeByMD5(password));
+			userNew.setEmail(email);
+			userNew.setType(UserType.USER.getType());
+			userNew.setStatus(UserStatus.ACTIVE.getStatus());
+			userNew.setHeadImage(CommonConstants.DEFAULT_HEADIMG_ADDRESS);
+			userService.insert(userNew);
+			logger.info("注册成功！用户名:{}", nickName);
+			resultDTO.setErrorMsg("注册成功,请重新登录！");
+			resultDTO.setStatus(ResultDTOStatus.SUCCESS.getStatus());
+			return resultDTO;
+		} catch (Exception e) {
+			e.printStackTrace();
 			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+			resultDTO.setErrorMsg("Exception occured!");
 			return resultDTO;
 		}
-		if (!"success".equalsIgnoreCase(checkEmailVerifyCode(emailVercode,session))){
-			resultDTO.setErrorMsg("邮箱验证码错误！");
-			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
-			return resultDTO;
-		}
-		if (!"success".equalsIgnoreCase(checkImageVerifyCode(imageVercode,session))){
-			resultDTO.setErrorMsg("图形验证码错误！");
-			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
-			return resultDTO;
-		}
-
-		User userNew = new User();
-		userNew.setNickName(nickName);
-		userNew.setPassword(MD5Util.EncodeByMD5(password));
-		userNew.setEmail(email);
-		userNew.setType(UserType.USER.getType());
-		userNew.setStatus(UserStatus.ACTIVE.getStatus());
-		userService.insert(userNew);
-		logger.info("注册成功！用户名:{}", nickName);
-		resultDTO.setErrorMsg("注册成功,请重新登录！");
-		resultDTO.setStatus(ResultDTOStatus.SUCCESS.getStatus());
-		return resultDTO;
 	}
 	
 	/**
@@ -205,29 +220,35 @@ public class LoginController {
 			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
 			return resultDTO;
 		} 
-		
-		User user = userService.existenceByEmail(email); // 检测用户存不存在
-		if (user == null) {
-			resultDTO.setErrorMsg("用户不存在，请注册！");
+		try {
+			User user = userService.existenceByEmail(email); // 检测用户存不存在
+			if (user == null) {
+				resultDTO.setErrorMsg("用户不存在，请注册！");
+				resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+				return resultDTO;
+			}
+			
+			// 身份检测
+			if (!"success".equalsIgnoreCase(checkEmailVerifyCode(emailVercode, session))) {
+				resultDTO.setErrorMsg("邮箱验证码错误！");
+				resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+				return resultDTO;
+			}
+			
+			// 更新用户密码
+			user.setPassword(MD5Util.EncodeByMD5(password));
+			userService.update(user);
+			logger.info("成功更新用户密码!");
+	
+			resultDTO.setErrorMsg("密码修改成功！");
+			resultDTO.setStatus(ResultDTOStatus.SUCCESS.getStatus());
+			return resultDTO;
+		} catch (Exception e) {
+			e.printStackTrace();
 			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+			resultDTO.setErrorMsg("Exception occured!");
 			return resultDTO;
 		}
-		
-		// 身份检测
-		if (!"success".equalsIgnoreCase(checkEmailVerifyCode(emailVercode, session))) {
-			resultDTO.setErrorMsg("邮箱验证码错误！");
-			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
-			return resultDTO;
-		}
-		
-		// 更新用户密码
-		user.setPassword(MD5Util.EncodeByMD5(password));
-		userService.update(user);
-		logger.info("成功更新用户密码!");
-
-		resultDTO.setErrorMsg("密码修改成功！");
-		resultDTO.setStatus(ResultDTOStatus.SUCCESS.getStatus());
-		return resultDTO;
 	}
 	
 	/**
@@ -247,16 +268,23 @@ public class LoginController {
 			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
 			return resultDTO;
 		} 
-		// 检测邮箱是否存在
-		User user = userService.existenceByEmail(email);
-		if (user != null) {
-			resultDTO.setErrorMsg("邮箱已经存在");
-			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+		try {
+			// 检测邮箱是否存在
+			User user = userService.existenceByEmail(email);
+			if (user != null) {
+				resultDTO.setErrorMsg("邮箱已经存在");
+				resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+				return resultDTO;
+			} 
+			resultDTO.setErrorMsg("邮箱可以注册");
+			resultDTO.setStatus(ResultDTOStatus.SUCCESS.getStatus());
 			return resultDTO;
-		} 
-		resultDTO.setErrorMsg("邮箱可以注册");
-		resultDTO.setStatus(ResultDTOStatus.SUCCESS.getStatus());
-		return resultDTO;
+		} catch (Exception e) {
+			e.printStackTrace();
+			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+			resultDTO.setErrorMsg("Exception occured!");
+			return resultDTO;
+		}
 	}
 
 	private String checkEmailVerifyCode(String emailCode, HttpSession session) {

@@ -309,10 +309,8 @@ public class ArticleController {
 		
 		User user = (User)session.getAttribute("user");
 		int uid = user.getId();
-		
-		GoodBad goodBad = goodBadService.getGoodByAidAndUid(aid, uid);
-		
 		try {
+			GoodBad goodBad = goodBadService.getGoodByAidAndUid(aid, uid);
 			if(goodBad == null) {
 				Article article = articleService.getArticleById(aid);
 				if(article == null) {
@@ -360,6 +358,41 @@ public class ArticleController {
 			
 			resultDTO.setErrorMsg("点赞成功");
 			resultDTO.setStatus(ResultDTOStatus.SUCCESS.getStatus());
+			return resultDTO;
+		} catch (Exception e) {
+			e.printStackTrace();
+			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+			resultDTO.setErrorMsg("Exception occured!");
+			return resultDTO;		
+		}
+	}
+	
+	/**
+	 * 是否已经点赞
+	 * @param aid
+	 * @return
+	 */
+	@RequestMapping(value="/tieba/isClickedGood", method = RequestMethod.POST)
+	public ResultDTO isClickedGood(HttpSession session,@RequestParam("aid") int aid) {
+		
+		ResultDTO resultDTO = new ResultDTO();
+		
+		User user = (User)session.getAttribute("user");
+		int uid = user.getId();
+		
+		try {
+			GoodBad goodBad = goodBadService.getGoodByAidAndUid(aid, uid);
+			if(goodBad != null) {
+				if(goodBad.getStatus() == GoodBadStatus.GOOD.getValue()) {
+					resultDTO.setErrorMsg("点过赞");
+					resultDTO.setStatus(ResultDTOStatus.SUCCESS.getStatus());
+					resultDTO.setData(true);
+					return resultDTO;
+				}
+			}
+			resultDTO.setErrorMsg("没有点过赞");
+			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+			resultDTO.setData(false);
 			return resultDTO;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -448,6 +481,42 @@ public class ArticleController {
 	}
 	
 	/**
+	 * 是否已经点踩
+	 * @param aid
+	 * @return
+	 */
+	@RequestMapping(value="/tieba/isClickedBad", method = RequestMethod.POST)
+	public ResultDTO isClickedBad(HttpSession session,@RequestParam("aid") int aid) {
+		
+		ResultDTO resultDTO = new ResultDTO();
+		
+		User user = (User)session.getAttribute("user");
+		int uid = user.getId();
+		
+		try {
+			GoodBad goodBad = goodBadService.getGoodByAidAndUid(aid, uid);
+			if(goodBad != null) {
+				if(goodBad.getStatus() == GoodBadStatus.BAD.getValue()) {
+					resultDTO.setErrorMsg("点过踩");
+					resultDTO.setStatus(ResultDTOStatus.SUCCESS.getStatus());
+					resultDTO.setData(true);
+					return resultDTO;
+				}
+			}
+			resultDTO.setErrorMsg("没有点过踩");
+			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+			resultDTO.setData(false);
+			return resultDTO;
+		} catch (Exception e) {
+			e.printStackTrace();
+			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+			resultDTO.setErrorMsg("Exception occured!");
+			return resultDTO;		
+		}
+	}
+	
+	
+	/**
 	 * 收藏
 	 * @param aid
 	 * @return
@@ -481,7 +550,9 @@ public class ArticleController {
 				CollectionCount collectionDataBase = new CollectionCount();
 				collectionDataBase.setAid(aid);
 				collectionDataBase.setUid(uid);
-				collectionCountService.insert(collectionDataBase);		
+				collectionCountService.insert(collectionDataBase);
+				resultDTO.setErrorMsg("收藏成功");
+				resultDTO.setStatus(ResultDTOStatus.SUCCESS.getStatus());
 			} else {
 				//取消收藏
 				Article article = articleService.getArticleById(aid);
@@ -493,11 +564,46 @@ public class ArticleController {
 				article.setCollectCount(article.getCollectCount() - 1);
 				articleService.update(article);
 					
-				collectionCountService.delete(aid, uid);	
+				collectionCountService.delete(aid, uid);
+				resultDTO.setErrorMsg("取消收藏成功");
+				resultDTO.setStatus(ResultDTOStatus.SUCCESS.getStatus());
 			}
 			
-			resultDTO.setErrorMsg("收藏成功");
-			resultDTO.setStatus(ResultDTOStatus.SUCCESS.getStatus());
+			
+			return resultDTO;
+		} catch (Exception e) {
+			e.printStackTrace();
+			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+			resultDTO.setErrorMsg("Exception occured!");
+			return resultDTO;	
+		}
+	}
+	
+	
+	/**
+	 * 是否已经收藏
+	 * @param aid
+	 * @return
+	 */
+	@RequestMapping(value="/tieba/isClickedCollection", method = RequestMethod.POST)
+	public ResultDTO isClickedCollection(HttpSession session,@RequestParam("aid") int aid) {
+		
+		ResultDTO resultDTO = new ResultDTO();
+		
+		User user = (User)session.getAttribute("user");
+		int uid = user.getId();
+		try {
+			CollectionCount collection = collectionCountService.getCollectionByAidAndUid(aid, uid);
+			if(collection != null) {
+				resultDTO.setErrorMsg("已经收藏");
+				resultDTO.setStatus(ResultDTOStatus.SUCCESS.getStatus());
+				resultDTO.setData(true);
+				return resultDTO;
+			}
+			
+			resultDTO.setErrorMsg("还未收藏");
+			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+			resultDTO.setData(false);
 			return resultDTO;
 		} catch (Exception e) {
 			e.printStackTrace();

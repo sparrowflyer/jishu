@@ -3,13 +3,13 @@
   
 <mapper namespace="com.wanmoxing.jishu.mapper.CollectionCountMapper">  
 
-	<resultMap id="articleResultMap" type="com.wanmoxing.jishu.bean.CollectionCount">
+	<resultMap id="collectionCountResultMap" type="com.wanmoxing.jishu.bean.CollectionCount">
 		<id property="id" column="id"/>
 		<result property="aid" column="aid"/>
 		<result property="uid" column="uid"/>
 	</resultMap>
     
-    <select id="getCollectionByAidAndUid" resultMap="articleResultMap">
+    <select id="getCollectionByAidAndUid" resultMap="collectionCountResultMap">
         select * from jishu.T_COLLECTION_COUNT where aid=#{aid} and uid=#{uid}
     </select>
 	

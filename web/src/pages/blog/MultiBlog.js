@@ -114,8 +114,12 @@ export class MultiBlog extends React.Component {
                                         );
                                     })
                                 }
-                                <Pagination onChange={this.changePage} defaultPageSize={8}
-                                            current={this.state.currentPage} total={this.state.total}/>
+                                {
+                                    this.state.articles && this.state.articles.length > 0 ?
+                                        <Pagination onChange={this.changePage} defaultPageSize={8}
+                                                    current={this.state.currentPage} total={this.state.total}/>
+                                        : <p>暂无博客信息</p>
+                                }
                             </div>
                             <div className="col-md-4">
                                 <aside className="sidebar">

@@ -39,7 +39,7 @@ export function Routers() {
                     <Route path='/user/:userID' render={
                         (props) => (<UserWithRouter key={props.match.params.userID} {...props} />)
                     } />
-                    <Route path="/payResult/:result_status/:total_amount" component={ PayError } />
+                    <Route path="/jishu/payResult/:result_status/:total_amount" component={ PayError } />
                     <Route component={ PageError } />
                 </Switch>
             </div>

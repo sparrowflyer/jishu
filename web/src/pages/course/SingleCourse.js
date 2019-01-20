@@ -6,7 +6,7 @@ import { Header } from '../../components/common/Header.js';
 import { BreadCrumb } from '../../components/common/BreadCrumb.js';
 import { Footer } from '../../components/common/Footer.js';
 import { getTimeOfNow } from '../../utils/time.js';
-import { postJson, getUserInfo, goAlipay } from '../../utils/server.js';
+import { postJson, getUserInfo } from '../../utils/server.js';
 
 const autoWidth = {
     width: 'auto'
@@ -144,12 +144,7 @@ export class SingleCourse extends React.Component {
             this.props.alert.error('请先登录。');
             return ;
         }
-        goAlipay(courseID, userID)
-            .then((data) => {
-                console.log(data);
-            }).catch((error) => {
-                this.props.alert.error('支付失败。');
-            });
+        window.location.href = `/jishu/purchaseCourse?courseId=${courseID}&buyerId=${userID}`;
     }
 
     render() {
@@ -169,7 +164,7 @@ export class SingleCourse extends React.Component {
                                         <Link className="name" to={`/user/${this.state.course.authorId}`}>{this.state.course.authorName}</Link>
                                     </span>
                                     <span className="meta-details">
-                                        <span className="meta-id">Category</span>
+                                        <span className="meta-id">Type</span>
                                         <span>{this.state.course.type}</span>
                                     </span>
                                     <span className="meta-details">

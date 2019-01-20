@@ -24,8 +24,6 @@ export function Routers() {
             <div>
                 <Switch>
                     <Route exact path='/' component={ Home } />
-                    <Route path='/checkout' component={ Checkout } />
-                    <Route path='/cart' component={ Cart } />
                     <Route path='/about' component={ About } />
                     <Route path='/contact' component={ Contact } />
                     <Route path='/faq' component={ FAQ } />

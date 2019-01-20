@@ -35,21 +35,6 @@ async function getArticleType() {
     return (await res.json());
 }
 
-async function goAlipay(courseId, buyerId) {
-    let res = await fetch(_server + '/purchaseCourse', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            courseId: courseId,
-            buyerId: buyerId,
-            payment: "alipay"
-        })
-    });
-    return (await res.text());
-}
-
 async function uploadImage(file) {
     let fileData = new FormData();
     fileData.append('file', file);
@@ -71,4 +56,4 @@ async function postJson(url, body) {
     return (await res.json());
 }
 
-export {getVerifyCodeImage, getEmailVerifyCode, getUserInfo, getArticles, getArticleDetail, getArticleType, uploadImage, postJson, setCommentRead, goAlipay};
+export {getVerifyCodeImage, getEmailVerifyCode, getUserInfo, getArticles, getArticleDetail, getArticleType, uploadImage, postJson, setCommentRead};

@@ -6,7 +6,7 @@ import Pagination from 'rc-pagination';
 import { Header } from '../../components/common/Header.js';
 import { BreadCrumb } from '../../components/common/BreadCrumb.js';
 import { Footer } from '../../components/common/Footer.js';
-import { postJson, goAlipay } from '../../utils/server.js';
+import { postJson } from '../../utils/server.js';
 
 class MultiCourse extends React.Component {
     constructor(props) {
@@ -72,12 +72,7 @@ class MultiCourse extends React.Component {
             this.props.alert.error('请先登录。');
             return ;
         }
-        goAlipay(courseID, userID)
-            .then((data) => {
-                console.log(data);
-            }).catch((error) => {
-                this.props.alert.error('支付失败。');
-            });
+        window.location.href = `/jishu/purchaseCourse?courseId=${courseID}&buyerId=${userID}`;
     }
 
     componentDidMount() {
@@ -140,9 +135,9 @@ class MultiCourse extends React.Component {
                                                                             Left:<span className="label label-default">{ course.targetStudentAmount - course.currentStudentAmount }</span>
                                                                         </div>
                                                                     </div>
-                                                                    <form style={{overflow: "hidden"}}>
-                                                                        <input style={{float: "right", color: "red", fontWeight: "bold"}} onClick={ this.buyCourse.bind(this, course.id) }>Buy</input>
-                                                                    </form>
+                                                                    <div style={{overflow: "hidden"}}>
+                                                                        <span style={{float: "right", color: "red", fontWeight: "bold"}} onClick={ this.buyCourse.bind(this, course.id) }>Buy</span>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>

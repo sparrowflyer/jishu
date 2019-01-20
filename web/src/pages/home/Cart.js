@@ -28,7 +28,7 @@ function Shop() {
                                             <a href="#?remove_item=aab3238922bcc25a6f606eb525ffdc56&amp;_wpnonce=9737b4789f" className="remove" aria-label="Remove this item" data-product_id="14" data-product_sku="">×</a>
                                         </td>
                                         <td className="product-thumbnail">
-                                            <a href="#"><img src="../images/shop/3.jpg" alt="Placeholder" className="woocommerce-placeholder wp-post-image" width="324" height="324" /></a>
+                                            <a href="#"><img src="/images/shop/3.jpg" alt="Placeholder" className="woocommerce-placeholder wp-post-image" width="324" height="324" /></a>
                                         </td>
                                         <td className="product-name" data-title="Product">
                                             <a href="#">Product Name</a>
@@ -51,7 +51,7 @@ function Shop() {
                                             <a href="#?remove_item=aab3238922bcc25a6f606eb525ffdc56&amp;_wpnonce=9737b478lo" className="remove" aria-label="Remove this item" data-product_id="15" data-product_sku="">×</a>
                                         </td>
                                         <td className="product-thumbnail">
-                                            <a href="#"><img src="../images/shop/5.jpg" alt="Placeholder" className="woocommerce-placeholder wp-post-image" width="324" height="324" /></a>
+                                            <a href="#"><img src="/images/shop/5.jpg" alt="Placeholder" className="woocommerce-placeholder wp-post-image" width="324" height="324" /></a>
                                         </td>
                                         <td className="product-name" data-title="Product">
                                             <a href="#">Product Name</a>

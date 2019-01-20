@@ -23,7 +23,7 @@ function AboutUs() {
                     <p>
                         Something’sfallen down in there,said the chief clerk in the room on the left. Gregor tried to imagine whether something of the sort that had happened to him today could ever happen to the chief clerk too, you had to concede that it was possible. But as if in gruff reply to this question, the chief clerk’s firm footsteps in his highly polished boots could now be heard in the adjoining room. From the room on his right, Gregor’s sister whispered to him to let him know- Gregor, the chief clerk is here. Yes, I know said Gregor to himself but without daring to raise his voice loud enough for his sister to hear him.
                     </p>
-                    <img src="../images/about.jpg" alt="About Image" />
+                    <img src="/images/about.jpg" alt="About Image" />
                     <div className="row">
                         <div className="col-md-6">
                             <h2 className="section-title">Our mission</h2>
@@ -120,7 +120,7 @@ function Team() {
                         <div className="col-md-3">
                             <div className="member">
                                 <div className="member-avatar">
-                                    <img src="../images/member/1.png" alt="Member Avatar" />
+                                    <img src="/images/member/1.png" alt="Member Avatar" />
                                     <div className="member-social">
                                         <a href="#"><i className="fab fa-facebook-f"></i></a>
                                         <a href="#"><i className="fab fa-twitter"></i></a>
@@ -137,7 +137,7 @@ function Team() {
                         <div className="col-md-3">
                             <div className="member">
                                 <div className="member-avatar">
-                                    <img src="../images/member/2.png" alt="Member Avatar" />
+                                    <img src="/images/member/2.png" alt="Member Avatar" />
                                     <div className="member-social">
                                         <a href="#"><i className="fab fa-facebook-f"></i></a>
                                         <a href="#"><i className="fab fa-twitter"></i></a>
@@ -154,7 +154,7 @@ function Team() {
                         <div className="col-md-3">
                             <div className="member">
                                 <div className="member-avatar">
-                                    <img src="../images/member/3.png" alt="Member Avatar" />
+                                    <img src="/images/member/3.png" alt="Member Avatar" />
                                     <div className="member-social">
                                         <a href="#"><i className="fab fa-facebook-f"></i></a>
                                         <a href="#"><i className="fab fa-twitter"></i></a>
@@ -171,7 +171,7 @@ function Team() {
                         <div className="col-md-3">
                             <div className="member">
                                 <div className="member-avatar">
-                                    <img src="../images/member/4.png" alt="Member Avatar" />
+                                    <img src="/images/member/4.png" alt="Member Avatar" />
                                     <div className="member-social">
                                         <a href="#"><i className="fab fa-facebook-f"></i></a>
                                         <a href="#"><i className="fab fa-twitter"></i></a>
@@ -188,7 +188,7 @@ function Team() {
                         <div className="col-md-3">
                             <div className="member">
                                 <div className="member-avatar">
-                                    <img src="../images/member/5.png" alt="Member Avatar" />
+                                    <img src="/images/member/5.png" alt="Member Avatar" />
                                     <div className="member-social">
                                         <a href="#"><i className="fab fa-facebook-f"></i></a>
                                         <a href="#"><i className="fab fa-twitter"></i></a>
@@ -205,7 +205,7 @@ function Team() {
                         <div className="col-md-3">
                             <div className="member">
                                 <div className="member-avatar">
-                                    <img src="../images/member/6.png" alt="Member Avatar" />
+                                    <img src="/images/member/6.png" alt="Member Avatar" />
                                     <div className="member-social">
                                         <a href="#"><i className="fab fa-facebook-f"></i></a>
                                         <a href="#"><i className="fab fa-twitter"></i></a>
@@ -222,7 +222,7 @@ function Team() {
                         <div className="col-md-3">
                             <div className="member">
                                 <div className="member-avatar">
-                                <img src="../images/member/7.png" alt="Member Avatar" />
+                                <img src="/images/member/7.png" alt="Member Avatar" />
                                     <div className="member-social">
                                         <a href="#"><i className="fab fa-facebook-f"></i></a>
                                         <a href="#"><i className="fab fa-twitter"></i></a>
@@ -239,7 +239,7 @@ function Team() {
                         <div className="col-md-3">
                             <div className="member">
                                 <div className="member-avatar">
-                                <img src="../images/member/8.png" alt="Member Avatar" />
+                                <img src="/images/member/8.png" alt="Member Avatar" />
                                     <div className="member-social">
                                         <a href="#"><i className="fab fa-facebook-f"></i></a>
                                         <a href="#"><i className="fab fa-twitter"></i></a>

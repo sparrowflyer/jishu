@@ -58,6 +58,9 @@ class SingleBlog extends React.Component {
             isBad: false,
             isCollected: false
         };
+        this.getGoodOrNot = this.getGoodOrNot.bind(this);
+        this.getBadOrNot = this.getBadOrNot.bind(this);
+        this.getCollectedOrNot = this.getCollectedOrNot.bind(this);
         this.setGood = this.setGood.bind(this);
         this.setBad = this.setBad.bind(this);
         this.setCollect = this.setCollect.bind(this);
@@ -72,7 +75,7 @@ class SingleBlog extends React.Component {
         postJson(`/tieba/clickGood?aid=${this.state.blog.aid}`)
             .then((data) => {
                 if (data.status === 'success') {
-                    this.props.alert.success('点赞成功!');
+                    this.getGoodOrNot();
                 } else {
                     this.props.alert.error(data.errorMsg || data.error);
                 }
@@ -85,7 +88,7 @@ class SingleBlog extends React.Component {
         postJson(`/tieba/clickBad?aid=${this.state.blog.aid}`)
             .then((data) => {
                 if (data.status === 'success') {
-                    this.props.alert.success('点踩成功!');
+                    this.getBadOrNot();
                 } else {
                     this.props.alert.error(data.errorMsg || data.error);
                 }
@@ -98,7 +101,7 @@ class SingleBlog extends React.Component {
         postJson(`/tieba/clickCollection?aid=${this.state.blog.aid}`)
             .then((data) => {
                 if (data.status === 'success') {
-                    this.props.alert.success('收藏成功!');
+                    this.getCollectedOrNot();
                 } else {
                     this.props.alert.error(data.errorMsg || data.error);
                 }
@@ -108,7 +111,7 @@ class SingleBlog extends React.Component {
     }
 
     report() {
-        postJson(`/tieba/topArticle?aid=${this.state.blog.aid}`)
+        postJson(`/tieba/reportArticle?aid=${this.state.blog.aid}`)
             .then((data) => {
                 if (data.status === 'success') {
                     this.props.alert.success('举报成功!');
@@ -193,6 +196,48 @@ class SingleBlog extends React.Component {
         floorComment[index].replyContent = event.target.value;
     }
 
+    getGoodOrNot () {
+        postJson(`/tieba/isClickedGood?aid=${this.state.blog.aid}`)
+            .then((data) => {
+                if (data.status === 'success') {
+                    this.setState((state) => {
+                        return {
+                            ...state,
+                            isGood: data.data
+                        };
+                    });
+                }
+            });
+    }
+
+    getBadOrNot () {
+        postJson(`/tieba/isClickedBad?aid=${this.state.blog.aid}`)
+            .then((data) => {
+                if (data.status === 'success') {
+                    this.setState((state) => {
+                        return {
+                            ...state,
+                            isBad: data.data
+                        };
+                    });
+                }
+            });
+    }
+
+    getCollectedOrNot () {
+        postJson(`/tieba/isClickedCollection?aid=${this.state.blog.aid}`)
+            .then((data) => {
+                if (data.status === 'success') {
+                    this.setState((state) => {
+                        return {
+                            ...state,
+                            isCollected: data.data
+                        };
+                    });
+                }
+            });
+    }
+
     componentDidMount() {
         let loginUserId;
         try {
@@ -218,6 +263,9 @@ class SingleBlog extends React.Component {
             }
         });
         this.getArticleDetail();
+        this.getGoodOrNot();
+        this.getBadOrNot();
+        this.getCollectedOrNot();
     }
 
     render() {
@@ -265,9 +313,15 @@ class SingleBlog extends React.Component {
                                                 <div style={{marginTop: '20px'}} dangerouslySetInnerHTML={{__html: this.state.blog.content}}></div>
                                                 <div className="content-bottom">
                                                     <div className="tags float-left">
-                                                        <a onClick={ this.setGood }><i></i>点赞</a>
-                                                        <a onClick={ this.setBad }><i></i>点踩</a>
-                                                        <a onClick={ this.setCollect }><i></i>收藏</a>
+                                                        {
+                                                            this.state.isGood ? <a><i></i>已赞</a> : <a onClick={ this.setGood }><i></i>点赞</a>
+                                                        }
+                                                        {
+                                                            this.state.isBad ? <a><i></i>已踩</a> : <a onClick={ this.setBad }><i></i>点踩</a>
+                                                        }
+                                                        {
+                                                            this.state.isCollected ? <a><i></i>已收藏</a> : <a onClick={ this.setCollect }><i></i>收藏</a>
+                                                        }
                                                     </div>
                                                     <div className="share dropdown float-right">
                                                         <button className="dropdown-toggle" type="button" onClick={ this.report }>

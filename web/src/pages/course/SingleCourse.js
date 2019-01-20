@@ -256,7 +256,7 @@ export class SingleCourse extends React.Component {
                                                                             <div className="row">
                                                                                 <div className="col-md-5">
                                                                                     <div className="media">
-                                                                                        <img className="rounded-circle author-avatar" src="../images/comments/1.jpg" alt="RAvatar" />
+                                                                                        <img className="rounded-circle author-avatar" src="/images/comments/1.jpg" alt="RAvatar" />
                                                                                         <div className="author-details media-body">
                                                                                             <span className="time">{getTimeOfNow(comment.createdTime)}</span>
                                                                                             <h3 className="name"><a href="">{comment.userName}</a></h3>

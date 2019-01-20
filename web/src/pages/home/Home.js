@@ -5,7 +5,7 @@ import { Footer } from '../../components/common/Footer.js';
 
 function Banner() {
     return (
-        <section className="banner-section banner-01 background-bg" data-image-src="../images/banner/1.jpg">
+        <section className="banner-section banner-01 background-bg" data-image-src="/images/banner/1.jpg">
             <div className="overlay">
                 <div className="section-padding">
                     <div className="container">
@@ -37,9 +37,9 @@ function PopularCourses() {
                         <div id="course-slider" className="course-slider owl-carousel">
                             <div className="item">
                                 <div className="item-thumb">
-                                    <img src="../images/popular/1.jpg" alt="Item Thumbnail" />
+                                    <img src="/images/popular/1.jpg" alt="Item Thumbnail" />
                                     <div className="avatar">
-                                        <img className="rounded-circle" src="../images/avatar/1.png" alt="Avatar Image" />
+                                        <img className="rounded-circle" src="/images/avatar/1.png" alt="Avatar Image" />
                                     </div>
                                 </div>
                                 <div className="item-details">
@@ -60,8 +60,8 @@ function PopularCourses() {
                             </div>
                             <div className="item">
                                 <div className="item-thumb">
-                                    <img src="../images/popular/2.jpg" alt="Item Thumbnail" />
-                                    <div className="avatar"><img className="rounded-circle" src="../images/avatar/2.png" alt="Avatar Image" /></div>
+                                    <img src="/images/popular/2.jpg" alt="Item Thumbnail" />
+                                    <div className="avatar"><img className="rounded-circle" src="/images/avatar/2.png" alt="Avatar Image" /></div>
                                 </div>
                                 <div className="item-details">
                                     <h3 className="item-title"><a href="course-single-01.html">The Complete Web Developer Bootcamp</a></h3>
@@ -81,8 +81,8 @@ function PopularCourses() {
                             </div>
                             <div className="item">
                                 <div className="item-thumb">
-                                    <img src="../images/popular/3.jpg" alt="Item Thumbnail" />
-                                    <div className="avatar"><img className="rounded-circle" src="../images/avatar/3.png" alt="Avatar Image" /></div>
+                                    <img src="/images/popular/3.jpg" alt="Item Thumbnail" />
+                                    <div className="avatar"><img className="rounded-circle" src="/images/avatar/3.png" alt="Avatar Image" /></div>
                                 </div>
                                 <div className="item-details">
                                     <h3 className="item-title"><a href="course-single-01.html">Complete Web Developer in 2018: Zero to Mastery</a></h3>
@@ -102,8 +102,8 @@ function PopularCourses() {
                             </div>
                             <div className="item">
                                 <div className="item-thumb">
-                                    <img src="../images/popular/4.jpg" alt="Item Thumbnail" />
-                                    <div className="avatar"><img className="rounded-circle" src="../images/avatar/4.png" alt="Avatar Image" /></div>
+                                    <img src="/images/popular/4.jpg" alt="Item Thumbnail" />
+                                    <div className="avatar"><img className="rounded-circle" src="/images/avatar/4.png" alt="Avatar Image" /></div>
                                 </div>
                                 <div className="item-details">
                                     <h3 className="item-title"><a href="course-single-01.html">Course On: Complete Java Masterclass</a></h3>
@@ -123,8 +123,8 @@ function PopularCourses() {
                             </div>
                             <div className="item">
                                 <div className="item-thumb">
-                                    <img src="../images/popular/7.jpg" alt="Item Thumbnail" />
-                                    <div className="avatar"><img className="rounded-circle" src="../images/avatar/1.png" alt="Avatar Image" /></div>
+                                    <img src="/images/popular/7.jpg" alt="Item Thumbnail" />
+                                    <div className="avatar"><img className="rounded-circle" src="/images/avatar/1.png" alt="Avatar Image" /></div>
                                 </div>
                                 <div className="item-details">
                                     <h3 className="item-title"><a href="course-single-01.html">Complete JavaScript Course 2018: Build Real Projects!</a></h3>
@@ -182,7 +182,7 @@ function CourseCategory() {
                     </div>
                     <div className="category-items">
                         <div className="item radius text-center">
-                            <div className="item-thumb"><img className="radius" src="../images/category/1.jpg" alt="Item Thumbnail" /></div>
+                            <div className="item-thumb"><img className="radius" src="/images/category/1.jpg" alt="Item Thumbnail" /></div>
                             <div className="item-details">
                                 <a href="#">
                                     <div className="item-texts">
@@ -192,7 +192,7 @@ function CourseCategory() {
                             </div>
                         </div>
                         <div className="item radius text-center">
-                            <div className="item-thumb"><img className="radius" src="../images/category/2.jpg" alt="Item Thumbnail" /></div>
+                            <div className="item-thumb"><img className="radius" src="/images/category/2.jpg" alt="Item Thumbnail" /></div>
                             <div className="item-details">
                                 <a href="#">
                                     <div className="item-texts">
@@ -202,7 +202,7 @@ function CourseCategory() {
                             </div>
                         </div>
                         <div className="item radius text-center">
-                            <div className="item-thumb"><img className="radius" src="../images/category/3.jpg" alt="Item Thumbnail" /></div>
+                            <div className="item-thumb"><img className="radius" src="/images/category/3.jpg" alt="Item Thumbnail" /></div>
                             <div className="item-details">
                                 <a href="#">
                                     <div className="item-texts">
@@ -212,7 +212,7 @@ function CourseCategory() {
                             </div>
                         </div>
                         <div className="item radius text-center">
-                            <div className="item-thumb"><img className="radius" src="../images/category/4.jpg" alt="Item Thumbnail" /></div>
+                            <div className="item-thumb"><img className="radius" src="/images/category/4.jpg" alt="Item Thumbnail" /></div>
                             <div className="item-details">
                                 <a href="#">
                                     <div className="item-texts">
@@ -222,7 +222,7 @@ function CourseCategory() {
                             </div>
                         </div>
                         <div className="item radius text-center">
-                            <div className="item-thumb"><img className="radius" src="../images/category/5.jpg" alt="Item Thumbnail" /></div>
+                            <div className="item-thumb"><img className="radius" src="/images/category/5.jpg" alt="Item Thumbnail" /></div>
                             <div className="item-details">
                                 <a href="#">
                                     <div className="item-texts">
@@ -232,7 +232,7 @@ function CourseCategory() {
                             </div>
                         </div>
                         <div className="item radius text-center">
-                            <div className="item-thumb"><img className="radius" src="../images/category/6.jpg" alt="Item Thumbnail" /></div>
+                            <div className="item-thumb"><img className="radius" src="/images/category/6.jpg" alt="Item Thumbnail" /></div>
                             <div className="item-details">
                                 <a href="#">
                                     <div className="item-texts">
@@ -242,7 +242,7 @@ function CourseCategory() {
                             </div>
                         </div>
                         <div className="item radius text-center">
-                            <div className="item-thumb"><img className="radius" src="../images/category/7.jpg" alt="Item Thumbnail" /></div>
+                            <div className="item-thumb"><img className="radius" src="/images/category/7.jpg" alt="Item Thumbnail" /></div>
                             <div className="item-details">
                                 <a href="#">
                                     <div className="item-texts">
@@ -252,7 +252,7 @@ function CourseCategory() {
                             </div>
                         </div>
                         <div className="item radius text-center">
-                            <div className="item-thumb"><img className="radius" src="../images/category/8.jpg" alt="Item Thumbnail" /></div>
+                            <div className="item-thumb"><img className="radius" src="/images/category/8.jpg" alt="Item Thumbnail" /></div>
                             <div className="item-details">
                                 <a href="#">
                                     <div className="item-texts">
@@ -262,7 +262,7 @@ function CourseCategory() {
                             </div>
                         </div>
                         <div className="item radius text-center">
-                            <div className="item-thumb"><img className="radius" src="../images/category/9.jpg" alt="Item Thumbnail" /></div>
+                            <div className="item-thumb"><img className="radius" src="/images/category/9.jpg" alt="Item Thumbnail" /></div>
                             <div className="item-details">
                                 <a href="#">
                                     <div className="item-texts">
@@ -272,7 +272,7 @@ function CourseCategory() {
                             </div>
                         </div>
                         <div className="item radius text-center">
-                            <div className="item-thumb"><img className="radius" src="../images/category/10.jpg" alt="Item Thumbnail" /></div>
+                            <div className="item-thumb"><img className="radius" src="/images/category/10.jpg" alt="Item Thumbnail" /></div>
                             <div className="item-details">
                                 <a href="#">
                                     <div className="item-texts">
@@ -306,7 +306,7 @@ function RecentPosts() {
                     <div id="post-slider" className="post-slider owl-carousel">
                         <div className="item">
                             <article className="post">
-                                <div className="entry-thumbnail radius"><img src="../images/posts/1.jpg" alt="Post Thumbnail" /></div>
+                                <div className="entry-thumbnail radius"><img src="/images/posts/1.jpg" alt="Post Thumbnail" /></div>
                                 <div className="entry-content">
                                     <h3 className="entry-title"><a href="single.html">WordPress Theme Development Resources</a></h3>
                                     <div className="entry-meta">
@@ -318,7 +318,7 @@ function RecentPosts() {
                         </div>
                         <div className="item">
                             <article className="post">
-                                <div className="entry-thumbnail radius"><img src="../images/posts/2.jpg" alt="Post Thumbnail" /></div>
+                                <div className="entry-thumbnail radius"><img src="/images/posts/2.jpg" alt="Post Thumbnail" /></div>
                                 <div className="entry-content">
                                     <h3 className="entry-title"><a href="single.html">ow To Create A Local Business Directory Site In WordPress</a></h3>
                                     <div className="entry-meta">
@@ -330,7 +330,7 @@ function RecentPosts() {
                         </div>
                         <div className="item">
                             <article className="post">
-                                <div className="entry-thumbnail radius"><img src="../images/posts/3.jpg" alt="Post Thumbnail" /></div>
+                                <div className="entry-thumbnail radius"><img src="/images/posts/3.jpg" alt="Post Thumbnail" /></div>
                                 <div className="entry-content">
                                     <h3 className="entry-title"><a href="single.html">How To Tell If A Site Is WordPress Or Not</a></h3>
                                     <div className="entry-meta">
@@ -361,7 +361,7 @@ function Testimonial() {
                         <div className="carousel-inner">
                             <div className="carousel-item active">
                                 <div className="media">
-                                    <img className="rounded-circle mr-3" src="../images/avatar/5.png" alt="Avatar Image" />
+                                    <img className="rounded-circle mr-3" src="/images/avatar/5.png" alt="Avatar Image" />
                                     <div className="media-body">
                                         <h4 className="name"><a href="#">Julia Warren</a></h4>
                                         <span className="designation">Student</span>
@@ -376,7 +376,7 @@ function Testimonial() {
                             </div>
                             <div className="carousel-item">
                                 <div className="media">
-                                    <img className="rounded-circle mr-3" src="../images/avatar/6.png" alt="Avatar Image" />
+                                    <img className="rounded-circle mr-3" src="/images/avatar/6.png" alt="Avatar Image" />
                                     <div className="media-body">
                                         <h4 className="name"><a href="#">Arthur Watson</a></h4>
                                         <span className="designation">Photographer</span>
@@ -391,7 +391,7 @@ function Testimonial() {
                             </div>
                             <div className="carousel-item">
                                 <div className="media">
-                                    <img className="rounded-circle mr-3" src="../images/avatar/7.png" alt="Avatar Image" />
+                                    <img className="rounded-circle mr-3" src="/images/avatar/7.png" alt="Avatar Image" />
                                     <div className="media-body">
                                         <h4 className="name"><a href="#">Janet Alvarado</a></h4>
                                         <span className="designation">Student</span>

@@ -9,7 +9,7 @@ export function Footer() {
                         <div className="row">
                             <div className="col-lg-3 col-md-6">
                                 <div className="widget widget_about_us">
-                                    <img className="footer-logo" src="../images/logo2.png" alt="Site Logo" />
+                                    <img className="footer-logo" src="/images/logo2.png" alt="Site Logo" />
                                         <div className="widget-details">
                                             <p>
                                                 Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
@@ -47,21 +47,21 @@ export function Footer() {
                                         <h4>News</h4>
                                         <div className="widget-details">
                                             <article className="post type-post media">
-                                                <div className="entry-thumbnail float-left"><img src="../images/footer/1.jpg" alt="Entry Thumbnail" /></div>
+                                                <div className="entry-thumbnail float-left"><img src="/images/footer/1.jpg" alt="Entry Thumbnail" /></div>
                                                 <div className="entry-content media-body">
                                                     <h3 className="entry-title"><a href="#">Guide to WordPress Custom Post Type</a></h3>
                                                     <div className="entry-meta"><span><i className="icon-bubble"></i> 23 Comments</span></div>
                                                 </div>
                                             </article>
                                             <article className="post type-post media">
-                                                <div className="entry-thumbnail float-left"><img src="../images/footer/2.jpg" alt="Entry Thumbnail" /></div>
+                                                <div className="entry-thumbnail float-left"><img src="/images/footer/2.jpg" alt="Entry Thumbnail" /></div>
                                                 <div className="entry-content media-body">
                                                     <h3 className="entry-title"><a href="#">SEO friendly WordPress and Squarespace</a></h3>
                                                     <div className="entry-meta"><span><i className="icon-bubble"></i> 23 Comments</span></div>
                                                 </div>
                                             </article>
                                             <article className="post type-post media">
-                                                <div className="entry-thumbnail float-left"><img src="../images/footer/3.jpg" alt="Entry Thumbnail" /></div>
+                                                <div className="entry-thumbnail float-left"><img src="/images/footer/3.jpg" alt="Entry Thumbnail" /></div>
                                                 <div className="entry-content media-body">
                                                     <h3 className="entry-title"><a href="#">David Braun: Chief Monster of Web Design</a></h3>
                                                     <div className="entry-meta"><span><i className="icon-bubble"></i> 23 Comments</span></div>

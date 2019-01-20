@@ -156,7 +156,7 @@ class HomeHeader extends React.Component {
                 <div className="header-bottom">
                     <div className="container">
                         <nav className="navbar navbar-expand-md m-0">
-                            <Link className="navbar-brand" to="/"><img src="../images/logo.png" alt="Logo" /></Link>
+                            <Link className="navbar-brand" to="/"><img src="/images/logo.png" alt="Logo" /></Link>
                             <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-menu" aria-controls="main-menu" aria-expanded="false" aria-label="Toggle navigation">
                                 <span className="navbar-toggler-icon"><i className="fas fa-bars"></i></span>
                             </button>
@@ -291,7 +291,7 @@ class NormalHeader extends React.Component {
                         <div className="col-md-10">
                             <nav className="navbar navbar-expand-md">
                                 <Link className="navbar-brand" to="/">
-                                    <img src="../images/logo.png" alt="Logo" />
+                                    <img src="images/logo.png" alt="Logo" />
                                 </Link>
                                 <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-menu" aria-controls="main-menu" aria-expanded="false" aria-label="Toggle navigation">
                                     <span className="navbar-toggler-icon"><i className="fas fa-bars"></i></span>

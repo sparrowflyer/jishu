@@ -115,7 +115,7 @@ class MultiCourse extends React.Component {
                                                     return (
                                                         <div className="col-lg-4 col-md-6" key={course.id}>
                                                             <div className="item">
-                                                                <div className="item-thumb"><img src={course.coverImage ? 'http://' + course.coverImage : ''} alt="Item Thumbnail" /></div>
+                                                                <div className="item-thumb"><img style={{width: '247px', height: '228px'}} src={course.coverImage ? 'http://' + course.coverImage : ''} alt="Item Thumbnail" /></div>
                                                                 <div className="item-details">
                                                                     <h3 className="item-title">
                                                                         <Link to={{pathname: `/course/${course.id}`, state: course}}>{course.title}</Link>

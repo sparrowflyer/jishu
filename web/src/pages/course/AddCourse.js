@@ -2,7 +2,6 @@ import React from 'react';
 import { withAlert } from 'react-alert';
 import { withRouter } from 'react-router';
 import DatePicker from 'react-datepicker';
-import '../../assets/css/react-datepicker.min.css';
 import { Header } from '../../components/common/Header.js';
 import { Footer } from '../../components/common/Footer.js';
 import { BreadCrumb } from '../../components/common/BreadCrumb.js';

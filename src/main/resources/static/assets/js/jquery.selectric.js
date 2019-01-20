@@ -2,7 +2,7 @@
   /* global define */
   /* istanbul ignore next */
   if ( typeof define === 'function' && define.amd ) {
-    define(['jquery.selectric'], factory);
+    define(['jquery.selectric.js'], factory);
   } else if ( typeof module === 'object' && module.exports ) {
     // Node/CommonJS
     module.exports = function( root, jQuery ) {

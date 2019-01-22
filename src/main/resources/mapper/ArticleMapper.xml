@@ -63,7 +63,7 @@
     </delete>
     
     <insert id="insert" parameterType="com.wanmoxing.jishu.bean.Article" useGeneratedKeys="true" keyProperty="aid">
-        INSERT INTO jishu.T_ARTICLE(title,uid,content,create_date,typeid,status,good_count,bad_count,collect_count,comment_count,image_src) VALUES(#{title},#{uid},#{content},current_timestamp,#{typeId},#{status},#{goodCount},#{badCount},#{collectCount},#{commentCount},#{imagesrc})
+        INSERT INTO jishu.T_ARTICLE(title,uid,content,create_date,update_date,typeid,status,good_count,bad_count,collect_count,comment_count,image_src) VALUES(#{title},#{uid},#{content},current_timestamp,current_timestamp,#{typeId},#{status},#{goodCount},#{badCount},#{collectCount},#{commentCount},#{imagesrc})
     </insert>
     
     <update id="update" parameterType="com.wanmoxing.jishu.bean.Article">

@@ -1,5 +1,8 @@
 package com.wanmoxing.jishu.service.impl;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -26,6 +29,13 @@ public class ArticleServiceImpl implements ArticleService {
 	public PageInfo<Article> getArticleList(int page) {
 		PageHelper.startPage(page, CommonConstants.DEFAULT_PAGE_SIZE);
 		List<Article> articles = articleMapper.getArticleList();
+		Collections.sort(articles, new Comparator<Article>() {
+
+			@Override
+			public int compare(Article o1, Article o2) {
+				return o2.getUpdateDate().compareTo(o1.getUpdateDate());
+			}
+		});
 		PageInfo<Article> pageInfo = new PageInfo<>(articles);
 		return pageInfo;
 	}

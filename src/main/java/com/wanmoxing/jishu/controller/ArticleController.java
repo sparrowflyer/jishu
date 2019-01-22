@@ -192,7 +192,6 @@ public class ArticleController {
 		article.setCollectCount(0);
 		article.setCommentCount(0);
 		article.setContent(content);
-		article.setCreateDate(new Timestamp(new Date().getTime()));
 		article.setImagesrc(imagesrc);
 		article.setTitle(title);
 		article.setTypeId(typeId);

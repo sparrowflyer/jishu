@@ -25,11 +25,11 @@
     </delete>
     
     <insert id="insert" parameterType="com.wanmoxing.jishu.bean.Floor" useGeneratedKeys="true" keyProperty="fid">
-        INSERT INTO jishu.T_FLOOR(cid,uid,content,create_date) VALUES(#{cid},#{uid},#{content},current_timestamp)
+        INSERT INTO jishu.T_FLOOR(cid,uid,content,create_date,update_date) VALUES(#{cid},#{uid},#{content},current_timestamp,current_timestamp)
     </insert>
     
     <update id="update" parameterType="com.wanmoxing.jishu.bean.Floor">
-        UPDATE jishu.T_FLOOR SET content=#{content} WHERE fid=#{fid}
+        UPDATE jishu.T_FLOOR SET content=#{content},update_date=current_timestamp WHERE fid=#{fid}
     </update>
     
 </mapper>

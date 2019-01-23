@@ -88,7 +88,10 @@ public class CommentController {
 			}
 			int userId = articleDatabase.getUid();
 			
+			articleDatabase.setCommentCount(articleDatabase.getCommentCount() + 1);
 			commentService.insert(comment);
+			//评论成功之后，相应的评论数+1
+			articleService.update(articleDatabase);
 			logger.info("评论成功");
 			resultDTO.setErrorMsg("评论成功");
 			resultDTO.setStatus(ResultDTOStatus.SUCCESS.getStatus());

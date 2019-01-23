@@ -36,7 +36,7 @@
     </insert>
     
     <update id="update" parameterType="com.wanmoxing.jishu.bean.Comment">
-        UPDATE jishu.T_COMMENT SET content=#{content} WHERE cid=#{cid}
+        UPDATE jishu.T_COMMENT SET content=#{content},floor_reply=#{floorReply} WHERE cid=#{cid}
     </update>
     
 </mapper>

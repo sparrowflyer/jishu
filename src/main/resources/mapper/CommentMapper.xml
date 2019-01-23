@@ -9,6 +9,7 @@
 		<result property="uid" column="uid"/>
 		<result property="content" column="content"/>
 		<result property="createDate" column="create_date"/>
+		<result property="updateDate" column="update_date"/>
 		<result property="floorNumber" column="floor_number"/>
 		<result property="floorReply" column="floor_reply"/>
 		<association property="user" column="uid" select="com.wanmoxing.jishu.mapper.UserMapper.findById"></association>
@@ -31,11 +32,11 @@
     </delete>
     
     <insert id="insert" parameterType="com.wanmoxing.jishu.bean.Comment" useGeneratedKeys="true" keyProperty="cid">
-        INSERT INTO jishu.T_COMMENT(aid,uid,content,create_date,update_date,floor_number,floor_reply) VALUES(#{aid},#{uid},#{content},current_timestamp,current_timestamp,#{floorNumber},#{floorReply})
+        INSERT INTO jishu.T_COMMENT(aid,uid,content,floor_number,floor_reply) VALUES(#{aid},#{uid},#{content},#{floorNumber},#{floorReply})
     </insert>
     
     <update id="update" parameterType="com.wanmoxing.jishu.bean.Comment">
-        UPDATE jishu.T_COMMENT SET content=#{content},update_date=current_timestamp WHERE cid=#{cid}
+        UPDATE jishu.T_COMMENT SET content=#{content} WHERE cid=#{cid}
     </update>
     
 </mapper>

@@ -70,7 +70,6 @@ public class FloorController {
 	
 		User user = (User)session.getAttribute("user");
 		floor.setUid(user.getId());
-		floor.setCreateDate(new Timestamp(new Date().getTime()));
 		try {
 			Comment commentDatabase = commentService.getCommentById(cid);
 			if(commentDatabase == null) {

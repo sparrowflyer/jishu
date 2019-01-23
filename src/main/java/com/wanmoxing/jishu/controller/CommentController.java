@@ -1,7 +1,5 @@
 package com.wanmoxing.jishu.controller;
 
-import java.sql.Timestamp;
-import java.util.Date;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
@@ -75,13 +73,12 @@ public class CommentController {
 		}
 		
 		User user = (User)session.getAttribute("user");
-		comment.setUid(user.getId());
-		comment.setCreateDate(new Timestamp(new Date().getTime()));
-		comment.setUser(user);
-		comment.setFloorReply(0);
-		comment.setFloorNumber(commentService.getCommentCount(aid) + 1);
 		
 		try {
+			comment.setUid(user.getId());
+			comment.setUser(user);
+			comment.setFloorReply(0);
+			comment.setFloorNumber(commentService.getCommentCount(aid) + 1);
 			
 			Article articleDatabase = articleService.getArticleById(aid);
 			if(articleDatabase == null) {

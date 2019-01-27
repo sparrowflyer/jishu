@@ -235,6 +235,10 @@ public class PurchaseController {
 					purchase.setStatus(PurchaseStatus.ENDED.getStatus());
 					purchase.setUpdatedTime(new Timestamp(System.currentTimeMillis()));
 					purchaseService.update(purchase);
+					
+					Course course = courseService.find(purchase.getCourseId());
+					course.setCurrentStudentAmount(course.getCurrentStudentAmount() + 1);
+					courseService.update(course);
 				} 
 				// 付款完成后，支付宝系统发送该交易状态通知
 				else if (trade_status.equals("TRADE_SUCCESS")) {

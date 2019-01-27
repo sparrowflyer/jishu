@@ -5,11 +5,11 @@ public class CommonConstants {
 	/**
 	 * 当前是否处于开发模式(开发模式下接口会取消验证用户是否登录)
 	 */
-	public static final boolean DEV_MODE = false;
+	public static final boolean DEV_MODE = true;
 	/**
 	 * 默认头像地址
 	 */
-	public static final String DEFAULT_HEADIMG_ADDRESS = "http://cdn.unclejee.cn/20190118215849_614.jpg";
+	public static final String DEFAULT_HEADIMG_ADDRESS = "cdn.unclejee.cn/20190118215849_614.jpg";
 	
 	/**
 	 * 默认文件上传地址

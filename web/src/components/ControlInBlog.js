@@ -65,7 +65,7 @@ function VideoInnerArticle({imgUrl, videoUrl}) {
 export function StandardInnerArticle({imgUrl}) {
     return (
         <div className="entry-thumbnail radius">
-            <img src={imgUrl} alt="Post Thumbnail" />
+            <img width="70%" src={imgUrl} alt="Post Thumbnail" />
         </div>
     );
 }

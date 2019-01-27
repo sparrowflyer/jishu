@@ -61,7 +61,7 @@ public class ArticleServiceImpl implements ArticleService {
 	
 	@Override
 	public List<Article> getArticleCollectListByUid(int uid) {
-		List<Article> articles = articleMapper.getArticleListByUid(uid);
+		List<Article> articles = articleMapper.getArticleCollectListByUid(uid);
 		return articles; 
 	}
 

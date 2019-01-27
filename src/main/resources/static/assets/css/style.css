@@ -2381,9 +2381,47 @@ img {
   margin: 0 10px 14px 0;
   padding: 10px 15px;
   text-transform: capitalize; }
-.blog-posts .tags a:hover {
+
+.blog-posts .tags a{
+  background: #eceff1;
+  color: #90a4ae;
+  float: left;
+  font-size: .875em;
+  margin: 0 10px 14px 0;
+  padding: 10px 15px;
+  text-transform: capitalize; }
+
+.blog-posts .tags #default:hover {
   background-color: #0d47a1;
   color: #fff; }
+
+#default{
+  background: #eceff1;
+  color: #90a4ae;
+  float: left;
+  font-size: .875em;
+  margin: 0 10px 14px 0;
+  padding: 10px 15px;
+  text-transform: capitalize;
+}
+#good{
+  background: #3d56f1;
+  color: #310dae;
+  float: left;
+  font-size: .875em;
+  margin: 0 10px 14px 0;
+  padding: 10px 15px;
+  text-transform: capitalize;
+}
+#bad{
+  background: #f18f60;
+  color: #de261d;
+  float: left;
+  font-size: .875em;
+  margin: 0 10px 14px 0;
+  padding: 10px 15px;
+  text-transform: capitalize;
+}
 .blog-posts .content-bottom {
   display: inline-block;
   margin: 1.875em 0;

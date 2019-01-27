@@ -169,7 +169,7 @@ class HomeHeader extends React.Component {
                                         <Link className="nav-link" to="/course">课程信息</Link>
                                     </li>
                                     <li className="nav-item menu-item-has-children dropdown">
-                                        <Link className="nav-link" to="/blog">学生贴吧</Link>
+                                        <Link className="nav-link" to="/blog">学生博客</Link>
                                     </li>
                                     <li className="nav-item menu-item-has-children dropdown">
                                         <Link to="/about" className="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -305,7 +305,7 @@ class NormalHeader extends React.Component {
                                             <Link className="nav-link" to="/course">课程信息</Link>
                                         </li>
                                         <li className={`nav-item menu-item-has-children dropdown ${this.props.activeTitle === 'blog' ? "active" : null}`}>
-                                            <Link className="nav-link" to="/blog">学生贴吧</Link>
+                                            <Link className="nav-link" to="/blog">学生博客</Link>
                                         </li>
                                         <li className={`nav-item menu-item-has-children dropdown ${this.props.activeTitle === 'us' ? "active" : null}`}>
                                             <Link to="/about" className="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

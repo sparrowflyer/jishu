@@ -7,7 +7,13 @@ import { BreadCrumb } from '../../components/common/BreadCrumb.js';
 import { Footer } from '../../components/common/Footer.js';
 import { StandardInnerArticle, getMonth, getDate } from '../../components/ControlInBlog.js';
 import { postJson, getArticleDetail } from '../../utils/server.js';
-
+const fanStyle = {
+    display: "block",
+    color: "#6d8591",
+    fontSize: "16px",
+    lineHeight: "26px",
+    margin: "0.5em 0"
+};
 const marginRight10 = {
     marginRight: '10px'
 };
@@ -53,6 +59,7 @@ class SingleBlog extends React.Component {
             addedComment: '',
             comments: [],
             releaseCourses: [],
+            releasePosts:[],
             isMyBlog: false,
             isGood: false,
             isBad: false,
@@ -80,8 +87,8 @@ class SingleBlog extends React.Component {
                     this.props.alert.error(data.errorMsg || data.error);
                 }
             }).catch((error) => {
-                this.props.alert.success('点赞失败!');
-            });
+            this.props.alert.success('点赞失败!');
+        });
     }
 
     setBad() {
@@ -93,8 +100,8 @@ class SingleBlog extends React.Component {
                     this.props.alert.error(data.errorMsg || data.error);
                 }
             }).catch((error) => {
-                this.props.alert.success('点踩失败!');
-            });
+            this.props.alert.success('点踩失败!');
+        });
     }
 
     setCollect() {
@@ -106,8 +113,8 @@ class SingleBlog extends React.Component {
                     this.props.alert.error(data.errorMsg || data.error);
                 }
             }).catch((error) => {
-                this.props.alert.success('收藏失败!');
-            });
+            this.props.alert.success('收藏失败!');
+        });
     }
 
     report() {
@@ -119,8 +126,8 @@ class SingleBlog extends React.Component {
                     this.props.alert.error(data.errorMsg || data.error);
                 }
             }).catch((error) => {
-                this.props.alert.success('举报失败!');
-            });
+            this.props.alert.success('举报失败!');
+        });
     }
 
     getArticleDetail() {
@@ -245,10 +252,10 @@ class SingleBlog extends React.Component {
         } catch (e) {
         }
         this.setState((state) => {
-           return {
-               ...state,
-               isMyBlog: loginUserId === this.state.blog.uid
-           }
+            return {
+                ...state,
+                isMyBlog: loginUserId === this.state.blog.uid
+            }
         });
         postJson('/getCreatedCourses', {
             id: this.state.blog.uid
@@ -262,17 +269,33 @@ class SingleBlog extends React.Component {
                 })
             }
         });
+        postJson('/userAllArticles', {
+            id: this.state.blog.uid
+        }).then((data) => {
+            if (data.status === 'success') {
+
+                this.setState((state) => {
+                    return {
+                        ...state,
+
+                        releasePosts: data.data || []
+                    }
+                })
+            }
+        });
         this.getArticleDetail();
         this.getGoodOrNot();
         this.getBadOrNot();
         this.getCollectedOrNot();
     }
 
+
+
     render() {
         return (
             <div>
                 <Header activeTitle="blog" />
-                <BreadCrumb title="学生贴吧" />
+                <BreadCrumb title="学生博客" />
                 <section className="blog-posts">
                     <div className="section-padding">
                         <div className="container">
@@ -284,7 +307,7 @@ class SingleBlog extends React.Component {
                                         }
                                         <div className="entry-content media">
                                             <div className="post-date">
-                                                <span className="date">{getDate(this.state.blog.createDate)}</span> {getMonth(this.state.blog.createDate)}
+                                                <span className="date">{getMonth(this.state.blog.createDate)}-{getDate(this.state.blog.createDate)}</span>
                                             </div>
                                             <div className="content-details media-body">
                                                 <h3 className="entry-title">
@@ -313,14 +336,15 @@ class SingleBlog extends React.Component {
                                                 <div style={{marginTop: '20px'}} dangerouslySetInnerHTML={{__html: this.state.blog.content}}></div>
                                                 <div className="content-bottom">
                                                     <div className="tags float-left">
+
                                                         {
-                                                            this.state.isGood ? <a><i></i>已赞</a> : <a onClick={ this.setGood }><i></i>点赞</a>
+                                                            this.state.isGood ? <a id="good"><i></i>已赞</a> : <a id="default" onClick={ this.setGood }><i></i>点赞</a>
                                                         }
                                                         {
-                                                            this.state.isBad ? <a><i></i>已踩</a> : <a onClick={ this.setBad }><i></i>点踩</a>
+                                                            this.state.isBad ? <a id="bad"><i></i>已踩</a> : <a id="default" onClick={ this.setBad }><i></i>点踩</a>
                                                         }
                                                         {
-                                                            this.state.isCollected ? <a><i></i>已收藏</a> : <a onClick={ this.setCollect }><i></i>收藏</a>
+                                                            this.state.isCollected ? <a id="good"><i></i>已收藏</a> : <a id="default" onClick={ this.setCollect }><i></i>收藏</a>
                                                         }
                                                     </div>
                                                     <div className="share dropdown float-right">
@@ -335,40 +359,40 @@ class SingleBlog extends React.Component {
                                     {
                                         sessionStorage.getItem('jsUser') ?
                                             <div className="comments">
-                                                <h2 className="title">Comments</h2>
+                                                <h2 className="title">跟帖</h2>
                                                 <ol className="comment-list">
-                                                {
-                                                    this.state.comments.map((comment, index) => {
-                                                        return (
-                                                            <li className="comment parent" key={comment.cid}>
-                                                                <div className="comment-body media" style={{marginBottom: '1.5em'}}>
-                                                                    <img className="rounded-circle author-avatar" src={'http://' + comment.user.headImage} alt="Comment Authors" />
-                                                                    <div className="comment-content media-body">
-                                                                        <span className="time">{comment.createDate}</span>
-                                                                        <span className="name"><Link to={`/user/${comment.user.id}`}>{comment.user.nickName}</Link></span>
-                                                                        <p className="description">{comment.content}</p>
+                                                    {
+                                                        this.state.comments.map((comment, index) => {
+                                                            return (
+                                                                <li className="comment parent" key={comment.cid}>
+                                                                    <div className="comment-body media" style={{marginBottom: '1.5em'}}>
+                                                                        <img className="rounded-circle author-avatar" src={'http://' + comment.user.headImage} alt="Comment Authors" />
+                                                                        <div className="comment-content media-body">
+                                                                            <span className="time">{comment.createDate}</span>
+                                                                            <span className="name"><Link to={`/user/${comment.user.id}`}>{comment.user.nickName}</Link></span>
+                                                                            <p className="description">{comment.content}</p>
+                                                                        </div>
                                                                     </div>
-                                                                </div>
-                                                                <div className="respond" style={{marginTop: '0'}}>
-                                                                    <h6 className="title">Reply to {comment.user.nickName}</h6>
-                                                                    <form method="post" className="comment-form" style={{marginTop: '1em'}}>
+                                                                    <div className="respond" style={{marginTop: '0'}}>
+                                                                        {/*<h6 className="title">reply {comment.user.nickName}</h6>*/}
+                                                                        <form method="post" className="comment-form" style={{marginTop: '1em'}}>
                                                                         <textarea className="form-control" placeholder="Comment" rows="3" required
                                                                                   onChange={e => this.handleReply(e, index)}></textarea>
-                                                                        <input className="btn reply-btn" type="submit" value="Reply" onClick={this.addFloorComment.bind(this, comment.cid, index)} />
-                                                                    </form>
-                                                                </div>
-                                                                <ChildBlog floors={comment.floors} />
-                                                            </li>
-                                                        );
-                                                    })
-                                                }
+                                                                            <input className="btn reply-btn" type="submit" value="回复" onClick={this.addFloorComment.bind(this, comment.cid, index)} />
+                                                                        </form>
+                                                                    </div>
+                                                                    <ChildBlog floors={comment.floors} />
+                                                                </li>
+                                                            );
+                                                        })
+                                                    }
                                                 </ol>
                                                 <div className="respond">
-                                                    <h2 className="title">Add Your Comment</h2>
+                                                    <h2 className="title">添加你的观点</h2>
                                                     <form method="post" className="comment-form">
                                                         <textarea id="addedComment" className="form-control" name="addedComment" placeholder="Comment"
                                                                   rows="8" required onChange={ this.handleInputChange } value={ this.state.addedComment }></textarea>
-                                                        <input className="btn" type="submit" value="Submit Comment" onClick={this.addComment} />
+                                                        <input className="btn" type="submit" value="提交观点" onClick={this.addComment} />
                                                     </form>
                                                 </div>
                                             </div> : <Link to='/login'>登录查看评价</Link>
@@ -377,21 +401,30 @@ class SingleBlog extends React.Component {
                                 <div className="col-md-4">
                                     <aside className="sidebar">
                                         <div className="widget widget_popular_post">
-                                            <h2 className="widget-title">Related Blog</h2>
+                                            <h2 className="widget-title">可能感兴趣博客</h2>
                                             <div className="widget-details">
                                                 {
-                                                    this.state.releaseCourses.map((course) => {
+                                                    this.state.releasePosts.map((post) => {
+                                                        {/*alert(course);*/}
+                                                        console.log(post)
                                                         return (
-                                                            <article className="post type-post media" key={course.id}>
+
+
+                                                            <article className="post type-post media" key={post.aid}>
                                                                 <div className="entry-thumbnail">
-                                                                    <img src={'http://' + course.imagesrc} alt="post"/>
+                                                                    <img src={'http://' + post.imagesrc} alt="post"/>
                                                                 </div>
                                                                 <div className="entry-content media-body">
-                                                                    <h3 className="entry-title"><a>{course.title}</a></h3>
+                                                                    <h3 className="entry-title"><Link to={`/blog/${post.aid}`}><a>{post.title}</a></Link></h3>
                                                                     <div className="entry-meta">
-                                                                    <span className="time">
-                                                                        <i className="icons icon-calendar"></i>{course.createdTime}
+
+                                                                        {/*<span >课程价格：{comment.price}</span>*/}
+                                                                        <span className="time">
+                                                                          <Link style={fanStyle} key={post.user.id} to={`/user/${post.user.id}`}> <img width="10%" className="rounded-circle mr-3" src={`http://${post.user.headImage}`}  alt="Avatar Image" />{post.user.nickName}</Link>博客创建时间：{post.createDate}
                                                                     </span>
+
+
+
                                                                     </div>
                                                                 </div>
                                                             </article>
@@ -400,7 +433,45 @@ class SingleBlog extends React.Component {
                                                 }
                                             </div>
                                         </div>
+                                        <div className="widget widget_popular_post">
+                                            <h2 className="widget-title">可能感兴趣课程</h2>
+                                            <div className="widget-details">
+                                                {
+
+                                                    this.state.releaseCourses.map((course) => {
+
+                                                        return (
+
+                                                            <article className="post type-post media" key={course.id}>
+                                                                <div className="entry-thumbnail">
+                                                                    <img src={'http://' + course.coverImage} alt="post"/>
+                                                                </div>
+                                                                <div className="entry-content media-body">
+                                                                    <h3 className="entry-title"><Link to={`/course/${course.id}`}><a>{course.title}</a></Link></h3>
+                                                                    <div className="entry-meta">
+
+                                                                    {/*<span >课程价格：{comment.price}</span>*/}
+                                                                        <span className="time">
+                                                                        课程价格：{course.price}元<br />
+
+                                                                    </span>
+
+                                                                    <span className="time">
+
+                                                                        开课时间：{course.courseStartTime}
+                                                                    </span>
+
+                                                                    </div>
+                                                                </div>
+                                                            </article>
+                                                        );
+                                                    })
+                                                }
+                                            </div>
+                                        </div>
+
                                     </aside>
+
                                 </div>
                             </div>
                         </div>

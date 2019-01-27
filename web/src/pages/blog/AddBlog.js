@@ -174,7 +174,7 @@ class AddBlog extends React.Component {
         return (
             <div>
                 <Header activeTitle="blog" />
-                <BreadCrumb title="学生贴吧" />
+                <BreadCrumb title="学生博客" />
                 <section className="login-register">
                     <div className="section-padding">
                         <div className="container">

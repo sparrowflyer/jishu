@@ -6,6 +6,8 @@ public class FansDTO {
 	
 	private String nickName;
 
+	private String headImage;
+
 	public int getId() {
 		return id;
 	}
@@ -21,7 +23,12 @@ public class FansDTO {
 	public void setNickName(String nickName) {
 		this.nickName = nickName;
 	}
-	
-	
-	
+
+	public String getHeadImage() {
+		return headImage;
+	}
+
+	public void setHeadImage(String headImage) {
+		this.headImage = headImage;
+	}
 }

@@ -273,7 +273,7 @@ class User extends React.Component {
             }
         });
         postJson('/userAllCollectArticles', {
-            uid: userID
+            id: userID
         }).then((data) => {
             if (data.status === 'success') {
                 this.setState((state) => {
@@ -369,14 +369,16 @@ class User extends React.Component {
                                         <div className="tab-pane fade show active" id="fan" role="tabpanel" aria-labelledby="fan">
                                             {
                                                 this.state.fans.map((fan) => {
-                                                    return <Link style={fanStyle} key={fan.id} to={`/user/${fan.id}`}>{fan.nickName}</Link>
+                                                    var headImage="http://"+fan.headImage;
+                                                    return <Link style={fanStyle} key={fan.id} to={`/user/${fan.id}`}> <img width="5%" className="rounded-circle mr-3" src={headImage}  alt="Avatar Image" />{fan.nickName}</Link>
                                                 })
                                             }
                                         </div>
                                         <div className="tab-pane fade" id="follow" role="tabpanel" aria-labelledby="follow">
                                             {
                                                 this.state.faneds.map((fan) => {
-                                                    return <Link style={fanStyle} key={fan.id} to={`/user/${fan.id}`}>{fan.nickName}</Link>
+                                                    var headImage="http://"+fan.headImage;
+                                                    return <Link style={fanStyle} key={fan.id} to={`/user/${fan.id}`}><img width="5%" className="rounded-circle mr-3" src={headImage}  alt="Avatar Image" />{fan.nickName}</Link>
                                                 })
                                             }
                                         </div>
@@ -385,8 +387,19 @@ class User extends React.Component {
                                                 this.state.releaseCourses.map((course) => {
                                                     return (
                                                         <div style={{width: '100%', borderBottom: '1px solid #cfd8dc', padding: '10px 0 15px'}} key={course.id}>
-                                                            <h3 style={{color: '#37474f'}}>{course.title}</h3>
-                                                            <p><strong>类型:</strong> {course.type}</p>
+                                                            <div className="entry-thumbnail">
+                                                                <img width="30%" src={'http://' + course.coverImage} alt="post"/>
+                                                            </div>
+                                                            <h3 className="entry-title"><Link to={`/course/${course.id}`}><a>{course.title}</a></Link></h3>
+
+                                                            <p>
+                                                                <strong>类型:</strong> {course.type}&nbsp;&nbsp;&nbsp;
+                                                                <strong>课程价格:</strong>{course.price}元&nbsp;&nbsp;&nbsp;
+                                                                <strong>开课时间:</strong>{course.courseStartTime}&nbsp;&nbsp;&nbsp;
+
+                                                            </p>
+
+
                                                         </div>
                                                     );
                                                 })
@@ -395,9 +408,13 @@ class User extends React.Component {
                                         <div className="tab-pane fade" id="post" role="tabpanel" aria-labelledby="post">
                                             {
                                                 this.state.ownArticles.map((article) => {
+                                                    var headImage="http://"+article.imagesrc;
                                                     return (
+
                                                         <div style={{width: '100%', borderBottom: '1px solid #cfd8dc', padding: '10px 0 15px'}} key={article.aid}>
-                                                            <h3 style={{color: '#37474f'}}>{article.title}</h3>
+                                                            <img width="30%" src={headImage} alt=" Image" />
+                                                            <h3 className="entry-title"><Link to={`/blog/${article.aid}`}><a>博客主题：{article.title}</a></Link></h3>
+
                                                             <p><strong>创建时间:</strong> {article.createDate}</p>
                                                             <p><strong>修改时间:</strong> {article.updateDate}</p>
                                                             <p>
@@ -414,9 +431,12 @@ class User extends React.Component {
                                         <div className="tab-pane fade" id="collection" role="tabpanel" aria-labelledby="collection">
                                             {
                                                 this.state.collectedArticles.map((article) => {
+                                                    var headImage="http://"+article.imagesrc;
                                                     return (
                                                         <div style={{width: '100%', borderBottom: '1px solid #cfd8dc', padding: '10px 0 15px'}} key={article.aid}>
-                                                            <h3 style={{color: '#37474f'}}>{article.title}</h3>
+                                                            <img width="30%" src={headImage} alt=" Image" />
+                                                            <h3 className="entry-title"><Link to={`/blog/${article.aid}`}><a>博客主题：{article.title}</a></Link></h3>
+
                                                             <p><strong>创建时间:</strong> {article.createDate}</p>
                                                             <p><strong>修改时间:</strong> {article.updateDate}</p>
                                                             <p>

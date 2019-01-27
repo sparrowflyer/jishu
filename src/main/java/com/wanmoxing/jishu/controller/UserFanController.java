@@ -134,6 +134,7 @@ public class UserFanController {
 				FansDTO fansDTO = new FansDTO();
 				fansDTO.setId(user.getId());
 				fansDTO.setNickName(user.getNickName());
+				fansDTO.setHeadImage(user.getHeadImage());
 				fansDTOs.add(fansDTO);
 			}
 			result.setData(fansDTOs);
@@ -171,6 +172,7 @@ public class UserFanController {
 				FansDTO fansDTO = new FansDTO();
 				fansDTO.setId(user.getId());
 				fansDTO.setNickName(user.getNickName());
+				fansDTO.setHeadImage(user.getHeadImage());
 				fanedUserDTOs.add(fansDTO);
 			}
 			result.setData(fanedUserDTOs);

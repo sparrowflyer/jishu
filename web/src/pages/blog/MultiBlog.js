@@ -75,7 +75,7 @@ export class MultiBlog extends React.Component {
         return (
         <div>
             <Header activeTitle="blog" />
-            <BreadCrumb title="学生贴吧" />
+            <BreadCrumb title="学生博客" />
             <section className="blog-posts">
                 <div className="section-padding">
                     <div className="container">
@@ -90,7 +90,7 @@ export class MultiBlog extends React.Component {
                                                 }
                                                 <div className="entry-content media">
                                                     <div className="post-date">
-                                                        <span className="date">{getDate(article.createDate)}</span> {getMonth(article.createDate)}
+                                                        <span className="date">{getMonth(article.createDate)}-{getDate(article.createDate)}</span>
                                                     </div>
                                                     <div className="content-details media-body">
                                                         <h3 className="entry-title">
@@ -107,7 +107,7 @@ export class MultiBlog extends React.Component {
                                                             <span className="comments"><i className="far fa-save"></i> <a>收藏:{article.collectCount}</a></span>
                                                             <span className="comments"><i className="icon-bubbles"></i> <a>评论:{article.commentCount}</a></span>
                                                         </div>
-                                                        <Link to={{pathname: `/blog/${article.aid}`, state: article}} className="btn btn-lg">Read more</Link>
+                                                        <Link to={{pathname: `/blog/${article.aid}`, state: article}} className="btn btn-lg">阅读全文</Link>
                                                     </div>
                                                 </div>
                                             </article>
@@ -128,7 +128,7 @@ export class MultiBlog extends React.Component {
                                     }
                                     <div className="category-list">
                                         <ul>
-                                            <li className={`${this.state.articleType ? "" : "active"}`} onClick={this.changeArticleType.bind(this, 0)}><a>All Articles</a></li>
+                                            <li className={`${this.state.articleType ? "" : "active"}`} onClick={this.changeArticleType.bind(this, 0)}><a>所有类型</a></li>
                                             {
                                                 this.state.articleTypes.map((articleType) => {
                                                     return (

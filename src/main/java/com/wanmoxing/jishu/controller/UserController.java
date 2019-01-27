@@ -123,11 +123,11 @@ public class UserController {
 									 @RequestBody User user) {
 		ResultDTO result = new ResultDTO();
 		try {
-			if (!CommUtil.isUserLogined(session)) {
-				result.setStatus(ResultDTOStatus.ERROR.getStatus());
-				result.setErrorMsg("User not logined!");
-				return result;
-			}
+//			if (!CommUtil.isUserLogined(session)) {
+//				result.setStatus(ResultDTOStatus.ERROR.getStatus());
+//				result.setErrorMsg("User not logined!");
+//				return result;
+//			}
 			result.setErrorMsg("获取该用户:" +user.getId() + "所有发布帖子");
 			result.setStatus(ResultDTOStatus.SUCCESS.getStatus());
 			result.setData(articleservice.getArticleListByUid(user.getId()));
@@ -150,11 +150,11 @@ public class UserController {
 											@RequestBody User user) {
 		ResultDTO result = new ResultDTO();
 		try {
-			if (!CommUtil.isUserLogined(session)) {
-				result.setStatus(ResultDTOStatus.ERROR.getStatus());
-				result.setErrorMsg("User not logined!");
-				return result;
-			}
+//			if (!CommUtil.isUserLogined(session)) {
+//				result.setStatus(ResultDTOStatus.ERROR.getStatus());
+//				result.setErrorMsg("User not logined!");
+//				return result;
+//			}
 			result.setErrorMsg("获取该用户:" +user.getId() + "所有收藏帖子");
 			result.setStatus(ResultDTOStatus.SUCCESS.getStatus());
 			result.setData(articleservice.getArticleCollectListByUid(user.getId()));

@@ -12,79 +12,77 @@ export function Footer() {
                                     <img className="footer-logo" src="/images/logo2.png" alt="Site Logo" />
                                         <div className="widget-details">
                                             <p>
-                                                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
-                                            </p>
+                                              我们希望通过叽叔让更多人了解到客观真实的海外情况，帮助出国意向人群制定科学合理的出行方案，让海外出行更安全、更轻松。                                            </p>
                                             <ul>
-                                                <li> <i className="fa fa-phone-square"></i> 088 12345 67890</li>
-                                                <li> <i className="fa fa-envelope-square"></i><a href="#"> info@courseware.com</a></li>
+                                                <li> <i className="fa fa-phone-square"></i>+86 137 7713 3446</li>
+                                                <li> <i className="fa fa-envelope-square"></i><a href="mailto:jishugo@unclejee.cn"> jishugo@unclejee.cn</a></li>
                                             </ul>
                                             <div className="widget-social text-center">
-                                                <a href="#"><i className="fab fa-facebook-f"></i></a>
-                                                <a href="#"><i className="fab fa-twitter"></i></a>
-                                                <a href="#"><i className="fab fa-google-plus-square"></i></a>
-                                                <a href="#"><i className="fab fa-youtube"></i></a>
+                                                <a href=""><i className="fab fa-facebook-f"></i></a>
+                                                <a href=""><i className="fab fa-twitter"></i></a>
+                                                <a href=""><i className="fab fa-google-plus-square"></i></a>
+                                                <a href=""><i className="fab fa-youtube"></i></a>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="col-lg-3 col-md-6">
+                                <div className="widget widget_recnt_news">
+                                    <h4>叽叔大事件</h4>
+                                    <div className="widget-details">
+                                        <article className="post type-post media">
+                                            <div className="entry-thumbnail float-left"><img src="/images/footer/1.jpg" alt="Entry Thumbnail" /></div>
+                                            <div className="entry-content media-body">
+                                                <h3 className="entry-title"><a >叽叔线官方论坛上线：海内外留学生互动平台，使得学生无缝对接</a></h3>
+                                                <div className="entry-meta"><span><i className="icon-bubble"></i> 2019-03-01</span></div>
+                                            </div>
+                                        </article>
+                                        <article className="post type-post media">
+                                            <div className="entry-thumbnail float-left"><img src="/images/footer/2.jpg" alt="Entry Thumbnail" /></div>
+                                            <div className="entry-content media-body">
+                                                <h3 className="entry-title"><a >叽叔线下路演：学校包括浙江大学，河南工业大学，北京大学一系列学校</a></h3>
+                                                <div className="entry-meta"><span><i className="icon-bubble"></i> 2018-9-7  2018-11-7</span></div>
+                                            </div>
+                                        </article>
+                                        <article className="post type-post media">
+                                            <div className="entry-thumbnail float-left"><img src="/images/footer/3.jpg" alt="Entry Thumbnail" /></div>
+                                            <div className="entry-content media-body">
+                                                <h3 className="entry-title"><a >叽叔团队成立：直击海外教育痛点</a></h3>
+                                                <div className="entry-meta"><span><i className="icon-bubble"></i> 2018-6-7</span></div>
+                                            </div>
+                                        </article>
+                                    </div>
+                                </div>
+                            </div>
+                                <div className="col-lg-3 col-md-6">
                                     <div className="widget widget_nav_menu">
-                                        <h4>Quick Links</h4>
+                                        <h4>产品介绍</h4>
                                         <div className="widget-details">
                                             <ul className="menu">
-                                                <li className="menu-item"><a href="#"><i className="fa fa-angle-double-right"></i> Courses</a></li>
-                                                <li className="menu-item"><a href="#"><i className="fa fa-angle-double-right"></i> Events</a></li>
-                                                <li className="menu-item"><a href="#"><i className="fa fa-angle-double-right"></i> About Us</a></li>
-                                                <li className="menu-item"><a href="#"><i className="fa fa-angle-double-right"></i> Gallery</a></li>
-                                                <li className="menu-item"><a href="#"><i className="fa fa-angle-double-right"></i> Become a Teacher</a></li>
-                                                <li className="menu-item"><a href="#"><i className="fa fa-angle-double-right"></i> Contact</a></li>
+                                                <li className="menu-item"><a href="faq"><i className="fa fa-angle-double-right"></i> 平台介绍</a></li>
+                                                <li className="menu-item"><a href="faq"><i className="fa fa-angle-double-right"></i> 疑惑解答</a></li>
+                                                <li className="menu-item"><a href="faq"><i className="fa fa-angle-double-right"></i> 开课申请</a></li>
+                                                <li className="menu-item"><a href="faq"><i className="fa fa-angle-double-right"></i> 博客规则</a></li>
+                                                <li className="menu-item"><a href="faq"><i className="fa fa-angle-double-right"></i> 内容规则</a></li>
                                             </ul>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="col-lg-3 col-md-6">
-                                    <div className="widget widget_recnt_news">
-                                        <h4>News</h4>
-                                        <div className="widget-details">
-                                            <article className="post type-post media">
-                                                <div className="entry-thumbnail float-left"><img src="/images/footer/1.jpg" alt="Entry Thumbnail" /></div>
-                                                <div className="entry-content media-body">
-                                                    <h3 className="entry-title"><a href="#">Guide to WordPress Custom Post Type</a></h3>
-                                                    <div className="entry-meta"><span><i className="icon-bubble"></i> 23 Comments</span></div>
-                                                </div>
-                                            </article>
-                                            <article className="post type-post media">
-                                                <div className="entry-thumbnail float-left"><img src="/images/footer/2.jpg" alt="Entry Thumbnail" /></div>
-                                                <div className="entry-content media-body">
-                                                    <h3 className="entry-title"><a href="#">SEO friendly WordPress and Squarespace</a></h3>
-                                                    <div className="entry-meta"><span><i className="icon-bubble"></i> 23 Comments</span></div>
-                                                </div>
-                                            </article>
-                                            <article className="post type-post media">
-                                                <div className="entry-thumbnail float-left"><img src="/images/footer/3.jpg" alt="Entry Thumbnail" /></div>
-                                                <div className="entry-content media-body">
-                                                    <h3 className="entry-title"><a href="#">David Braun: Chief Monster of Web Design</a></h3>
-                                                    <div className="entry-meta"><span><i className="icon-bubble"></i> 23 Comments</span></div>
-                                                </div>
-                                            </article>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="col-lg-3 col-md-6">
                                     <div className="widget widget_nav_menu">
-                                        <h4>Support</h4>
+                                        <h4>快速导航</h4>
                                         <div className="widget-details">
                                             <ul className="menu">
-                                                <li className="menu-item"><a href="#"><i className="fa fa-angle-double-right"></i> FAQ</a></li>
-                                                <li className="menu-item"><a href="#"><i className="fa fa-angle-double-right"></i> Documentation</a></li>
-                                                <li className="menu-item"><a href="#"><i className="fa fa-angle-double-right"></i> Forums</a></li>
-                                                <li className="menu-item"><a href="#"><i className="fa fa-angle-double-right"></i> Career</a></li>
-                                                <li className="menu-item"><a href="#"><i className="fa fa-angle-double-right"></i> Community</a></li>
-                                                <li className="menu-item"><a href="#"><i className="fa fa-angle-double-right"></i> Management</a></li>
+                                                <li className="menu-item"><a href="course"><i className="fa fa-angle-double-right"></i> 募集课程</a></li>
+                                                <li className="menu-item"><a href="blog"><i className="fa fa-angle-double-right"></i> 最新博客</a></li>
+                                                <li className="menu-item"><a href="about"><i className="fa fa-angle-double-right"></i> 关于我们</a></li>
+                                                <li className="menu-item"><a href="contact"><i className="fa fa-angle-double-right"></i> 联系我们</a></li>
                                             </ul>
                                         </div>
                                     </div>
                                 </div>
+
+
                             </div>
                         </div>
                     </div>
@@ -95,7 +93,7 @@ export function Footer() {
                             <div className="row">
                                 <div className="col-md-8">
                                     <div className="copy-right float-left">
-                                        <span> Copyright © 2018 <a href="http://www.bootstrapmb.com" target="_blank" rel="nofollow">Courseware</a>, All rights reservs  </span>
+                                        <span> Copyright © 2018 <a href="http://www.unclejee.cn" target="_blank" rel="nofollow">Courseware</a>, All rights reservs  </span>
                                     </div>
                                 </div>
                                 <div className="col-md-4">

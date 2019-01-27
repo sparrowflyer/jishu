@@ -10,10 +10,207 @@ function Banner() {
                 <div className="section-padding">
                     <div className="container">
                         <div className="banner-texts text-center">
-                            <h6 className="sub-title mb-2">Take the World’s Best Courses</h6>
-                            <h2 className="banner-title mb-5">Learn With Us</h2>
-                            <a href="#" className="btn btn-lg mt-2 banner-btn">Get started</a>
+                            <h6 className="sub-title mb-2">叽叔 unclejee</h6>
+                            <h2 className="banner-title mb-5">海内外留学生互动平台</h2>
+                            <a href="login" className="btn btn-lg mt-2 banner-btn">立即加入！</a>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    );
+}
+
+function RecentPosts() {
+    return (
+        <section className="popular-courses">
+            <div className="section-padding">
+                <div className="container">
+                    <div className="top-content">
+                        <div className="left-content float-left">
+                            <h2 className="section-title">最近更新的博客论坛</h2>
+                            <p>你与大咖近在咫尺</p>
+                        </div>
+                        <div className="owl-controls float-right"></div>
+                    </div>
+                    <div id="post-slider" className="post-slider owl-carousel">
+                        <div className="item">
+                            <article className="post">
+                                <div className="entry-thumbnail radius"><img src="/images/posts/1.jpg" alt="Post Thumbnail" /></div>
+                                <div className="entry-content">
+                                    <h3 className="entry-title"><a href="single.html">WordPress Theme Development Resources</a></h3>
+                                    <div className="entry-meta">
+                                        <span className="author"><i className="icon-user"></i> <a href="#">Anthony Doe</a></span>
+                                        <span className="time"><i className="icon-calendar"></i> 26/05/2018</span>
+                                    </div>
+                                </div>
+                            </article>
+                        </div>
+                        <div className="item">
+                            <article className="post">
+                                <div className="entry-thumbnail radius"><img src="/images/posts/2.jpg" alt="Post Thumbnail" /></div>
+                                <div className="entry-content">
+                                    <h3 className="entry-title"><a href="single.html">ow To Create A Local Business Directory Site In WordPress</a></h3>
+                                    <div className="entry-meta">
+                                        <span className="author"><i className="icon-user"></i> <a href="#">Anthony Doe</a></span>
+                                        <span className="time"><i className="icon-calendar"></i> 26/05/2018</span>
+                                    </div>
+                                </div>
+                            </article>
+                        </div>
+                        <div className="item">
+                            <article className="post">
+                                <div className="entry-thumbnail radius"><img src="/images/posts/3.jpg" alt="Post Thumbnail" /></div>
+                                <div className="entry-content">
+                                    <h3 className="entry-title"><a href="single.html">How To Tell If A Site Is WordPress Or Not</a></h3>
+                                    <div className="entry-meta">
+                                        <span className="author"><i className="icon-user"></i> <a href="#">Anthony Doe</a></span>
+                                        <span className="time"><i className="icon-calendar"></i> 26/05/2018</span>
+                                    </div>
+                                </div>
+                            </article>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    );
+}
+
+function Promotion() {
+    return (
+        <section className="promotion background-bg text-center" data-image-src="../images/bg1.jpg">
+            <div className="overlay">
+                <div className="section-padding">
+                    <div className="container">
+                        <h2 className="title">Tons of Courses just <span>$10</span></h2>
+                        <h3 className="sub-title">Teacher Appreciation Month</h3>
+                        <div id="countdown"></div>
+                        <form action="#" className="enrole-form">
+                            <input type="text" name="name" className="form-control" placeholder="Name*" required />
+                            <input type="email" name="email" className="form-control" placeholder="Email*" required />
+                            <input type="submit" name="submit" id="enrole-submit" className="form-control" value="Get Started Now" />
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    );
+}
+
+function CourseCategory() {
+    return (
+        <section className="course-category">
+            <div className="section-padding">
+                <div className="container">
+                    <div className="top-content text-center">
+                        <h2 className="section-title">课程模块</h2>
+                        <p>正在开设的课程模块</p>
+                    </div>
+                    <div className="category-items">
+                        <div className="item radius text-center">
+                            <div className="item-thumb"><img className="radius" src="/images/category/1.jpg" alt="Item Thumbnail" /></div>
+                            <div className="item-details">
+                                <a href="#">
+                                    <div className="item-texts">
+                                        <i className="icon-layers"></i><span className="item-title">技能</span>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        {/*<div className="item radius text-center">*/}
+                            {/*<div className="item-thumb"><img className="radius" src="/images/category/2.jpg" alt="Item Thumbnail" /></div>*/}
+                            {/*<div className="item-details">*/}
+                                {/*<a href="#">*/}
+                                    {/*<div className="item-texts">*/}
+                                        {/*<i className="icon-chemistry"></i><span className="item-title">Development</span>*/}
+                                    {/*</div>*/}
+                                {/*</a>*/}
+                            {/*</div>*/}
+                        {/*</div>*/}
+                        {/*<div className="item radius text-center">*/}
+                            {/*<div className="item-thumb"><img className="radius" src="/images/category/3.jpg" alt="Item Thumbnail" /></div>*/}
+                            {/*<div className="item-details">*/}
+                                {/*<a href="#">*/}
+                                    {/*<div className="item-texts">*/}
+                                        {/*<i className="icon-puzzle"></i><span className="item-title">IT & Software</span>*/}
+                                    {/*</div>*/}
+                                {/*</a>*/}
+                            {/*</div>*/}
+                        {/*</div>*/}
+                        {/*<div className="item radius text-center">*/}
+                            {/*<div className="item-thumb"><img className="radius" src="/images/category/4.jpg" alt="Item Thumbnail" /></div>*/}
+                            {/*<div className="item-details">*/}
+                                {/*<a href="#">*/}
+                                    {/*<div className="item-texts">*/}
+                                        {/*<i className="icon-briefcase"></i><span className="item-title">商业</span>*/}
+                                    {/*</div>*/}
+                                {/*</a>*/}
+                            {/*</div>*/}
+                        {/*</div>*/}
+                        {/*<div className="item radius text-center">*/}
+                            {/*<div className="item-thumb"><img className="radius" src="/images/category/5.jpg" alt="Item Thumbnail" /></div>*/}
+                            {/*<div className="item-details">*/}
+                                {/*<a href="#">*/}
+                                    {/*<div className="item-texts">*/}
+                                        {/*<i className="icon-handbag"></i><span className="item-title">Marketing</span>*/}
+                                    {/*</div>*/}
+                                {/*</a>*/}
+                            {/*</div>*/}
+                        {/*</div>*/}
+                        <div className="item radius text-center">
+                            <div className="item-thumb"><img className="radius" src="/images/category/6.jpg" alt="Item Thumbnail" /></div>
+                            <div className="item-details">
+                                <a href="#">
+                                    <div className="item-texts">
+                                        <i className="icon-layers"></i><span className="item-title">生活</span>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div className="item radius text-center">
+                            <div className="item-thumb"><img className="radius" src="/images/category/7.jpg" alt="Item Thumbnail" /></div>
+                            <div className="item-details">
+                                <a href="#">
+                                    <div className="item-texts">
+                                        <i className="icon-chemistry"></i><span className="item-title">摄影</span>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div className="item radius text-center">
+                            <div className="item-thumb"><img className="radius" src="/images/category/8.jpg" alt="Item Thumbnail" /></div>
+                            <div className="item-details">
+                                <a href="#">
+                                    <div className="item-texts">
+                                        <i className="icon-puzzle"></i><span className="item-title">音乐</span>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        {/*<div className="item radius text-center">*/}
+                            {/*<div className="item-thumb"><img className="radius" src="/images/category/9.jpg" alt="Item Thumbnail" /></div>*/}
+                            {/*<div className="item-details">*/}
+                                {/*<a href="#">*/}
+                                    {/*<div className="item-texts">*/}
+                                        {/*<i className="icon-briefcase"></i><span className="item-title">Academics</span>*/}
+                                    {/*</div>*/}
+                                {/*</a>*/}
+                            {/*</div>*/}
+                        {/*</div>*/}
+                        <div className="item radius text-center">
+                            <div className="item-thumb"><img className="radius" src="/images/category/10.jpg" alt="Item Thumbnail" /></div>
+                            <div className="item-details">
+                                <a href="#">
+                                    <div className="item-texts">
+                                        <i className="icon-handbag"></i><span className="item-title">语言</span>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="btn-container text-center bm8">
+                        <a href="course" className="btn btn-lg section-btn">查看全部课程</a>
                     </div>
                 </div>
             </div>
@@ -23,13 +220,13 @@ function Banner() {
 
 function PopularCourses() {
     return (
-        <section className="popular-courses">
+        <section className="recent-posts black-bg">
             <div className="section-padding">
                 <div className="container">
                     <div className="top-content">
                         <div className="left-content float-left">
-                            <h2 className="section-title">Popular courses</h2>
-                            <p>Donec rutrum congue leo eget malesuada</p>
+                            <h2 className="section-title">最新课程</h2>
+                            <p>正在进行中。。。</p>
                         </div>
                         <div className="owl-controls float-right"></div>
                     </div>
@@ -150,203 +347,6 @@ function PopularCourses() {
     );
 }
 
-function Promotion() {
-    return (
-        <section className="promotion background-bg text-center" data-image-src="../images/bg1.jpg">
-            <div className="overlay">
-                <div className="section-padding">
-                    <div className="container">
-                        <h2 className="title">Tons of Courses just <span>$10</span></h2>
-                        <h3 className="sub-title">Teacher Appreciation Month</h3>
-                        <div id="countdown"></div>
-                        <form action="#" className="enrole-form">
-                            <input type="text" name="name" className="form-control" placeholder="Name*" required />
-                            <input type="email" name="email" className="form-control" placeholder="Email*" required />
-                            <input type="submit" name="submit" id="enrole-submit" className="form-control" value="Get Started Now" />
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </section>
-    );
-}
-
-function CourseCategory() {
-    return (
-        <section className="course-category">
-            <div className="section-padding">
-                <div className="container">
-                    <div className="top-content text-center">
-                        <h2 className="section-title">Best categories</h2>
-                        <p>Donec rutrum congue leo eget malesuada</p>
-                    </div>
-                    <div className="category-items">
-                        <div className="item radius text-center">
-                            <div className="item-thumb"><img className="radius" src="/images/category/1.jpg" alt="Item Thumbnail" /></div>
-                            <div className="item-details">
-                                <a href="#">
-                                    <div className="item-texts">
-                                        <i className="icon-layers"></i><span className="item-title">Design</span>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                        <div className="item radius text-center">
-                            <div className="item-thumb"><img className="radius" src="/images/category/2.jpg" alt="Item Thumbnail" /></div>
-                            <div className="item-details">
-                                <a href="#">
-                                    <div className="item-texts">
-                                        <i className="icon-chemistry"></i><span className="item-title">Development</span>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                        <div className="item radius text-center">
-                            <div className="item-thumb"><img className="radius" src="/images/category/3.jpg" alt="Item Thumbnail" /></div>
-                            <div className="item-details">
-                                <a href="#">
-                                    <div className="item-texts">
-                                        <i className="icon-puzzle"></i><span className="item-title">IT & Software</span>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                        <div className="item radius text-center">
-                            <div className="item-thumb"><img className="radius" src="/images/category/4.jpg" alt="Item Thumbnail" /></div>
-                            <div className="item-details">
-                                <a href="#">
-                                    <div className="item-texts">
-                                        <i className="icon-briefcase"></i><span className="item-title">Business</span>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                        <div className="item radius text-center">
-                            <div className="item-thumb"><img className="radius" src="/images/category/5.jpg" alt="Item Thumbnail" /></div>
-                            <div className="item-details">
-                                <a href="#">
-                                    <div className="item-texts">
-                                        <i className="icon-handbag"></i><span className="item-title">Marketing</span>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                        <div className="item radius text-center">
-                            <div className="item-thumb"><img className="radius" src="/images/category/6.jpg" alt="Item Thumbnail" /></div>
-                            <div className="item-details">
-                                <a href="#">
-                                    <div className="item-texts">
-                                        <i className="icon-layers"></i><span className="item-title">Lifestyle</span>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                        <div className="item radius text-center">
-                            <div className="item-thumb"><img className="radius" src="/images/category/7.jpg" alt="Item Thumbnail" /></div>
-                            <div className="item-details">
-                                <a href="#">
-                                    <div className="item-texts">
-                                        <i className="icon-chemistry"></i><span className="item-title">Photography</span>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                        <div className="item radius text-center">
-                            <div className="item-thumb"><img className="radius" src="/images/category/8.jpg" alt="Item Thumbnail" /></div>
-                            <div className="item-details">
-                                <a href="#">
-                                    <div className="item-texts">
-                                        <i className="icon-puzzle"></i><span className="item-title">Music</span>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                        <div className="item radius text-center">
-                            <div className="item-thumb"><img className="radius" src="/images/category/9.jpg" alt="Item Thumbnail" /></div>
-                            <div className="item-details">
-                                <a href="#">
-                                    <div className="item-texts">
-                                        <i className="icon-briefcase"></i><span className="item-title">Academics</span>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                        <div className="item radius text-center">
-                            <div className="item-thumb"><img className="radius" src="/images/category/10.jpg" alt="Item Thumbnail" /></div>
-                            <div className="item-details">
-                                <a href="#">
-                                    <div className="item-texts">
-                                        <i className="icon-handbag"></i><span className="item-title">Language</span>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="btn-container text-center bm8">
-                        <a href="#" className="btn btn-lg section-btn">Browse all</a>
-                    </div>
-                </div>
-            </div>
-        </section>
-    );
-}
-
-function RecentPosts() {
-    return (
-        <section className="recent-posts black-bg">
-            <div className="section-padding">
-                <div className="container">
-                    <div className="top-content">
-                        <div className="left-content float-left">
-                            <h2 className="section-title">Recent Blog Posts</h2>
-                            <p>Donec rutrum congue leo eget malesuada</p>
-                        </div>
-                        <div className="owl-controls float-right"></div>
-                    </div>
-                    <div id="post-slider" className="post-slider owl-carousel">
-                        <div className="item">
-                            <article className="post">
-                                <div className="entry-thumbnail radius"><img src="/images/posts/1.jpg" alt="Post Thumbnail" /></div>
-                                <div className="entry-content">
-                                    <h3 className="entry-title"><a href="single.html">WordPress Theme Development Resources</a></h3>
-                                    <div className="entry-meta">
-                                        <span className="author"><i className="icon-user"></i> <a href="#">Anthony Doe</a></span>
-                                        <span className="time"><i className="icon-calendar"></i> 26/05/2018</span>
-                                    </div>
-                                </div>
-                            </article>
-                        </div>
-                        <div className="item">
-                            <article className="post">
-                                <div className="entry-thumbnail radius"><img src="/images/posts/2.jpg" alt="Post Thumbnail" /></div>
-                                <div className="entry-content">
-                                    <h3 className="entry-title"><a href="single.html">ow To Create A Local Business Directory Site In WordPress</a></h3>
-                                    <div className="entry-meta">
-                                        <span className="author"><i className="icon-user"></i> <a href="#">Anthony Doe</a></span>
-                                        <span className="time"><i className="icon-calendar"></i> 26/05/2018</span>
-                                    </div>
-                                </div>
-                            </article>
-                        </div>
-                        <div className="item">
-                            <article className="post">
-                                <div className="entry-thumbnail radius"><img src="/images/posts/3.jpg" alt="Post Thumbnail" /></div>
-                                <div className="entry-content">
-                                    <h3 className="entry-title"><a href="single.html">How To Tell If A Site Is WordPress Or Not</a></h3>
-                                    <div className="entry-meta">
-                                        <span className="author"><i className="icon-user"></i> <a href="#">Anthony Doe</a></span>
-                                        <span className="time"><i className="icon-calendar"></i> 26/05/2018</span>
-                                    </div>
-                                </div>
-                            </article>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    );
-}
-
 function Testimonial() {
     return (
         <section className="testimonial text-center">
@@ -363,14 +363,14 @@ function Testimonial() {
                                 <div className="media">
                                     <img className="rounded-circle mr-3" src="/images/avatar/5.png" alt="Avatar Image" />
                                     <div className="media-body">
-                                        <h4 className="name"><a href="#">Julia Warren</a></h4>
-                                        <span className="designation">Student</span>
+                                        <h4 className="name"><a href="#">笑看风清</a></h4>
+                                        <span className="designation">学生</span>
                                     </div>
                                 </div>
                                 <div className="bottom-content">
-                                    <span className="title">Awesome Learning Site</span>
+                                    <span className="title">完美的学习论坛</span>
                                     <p>
-                                        The bedding was hardly able to cover it and seemed ready to slide off any moment. His many legs, pitifully thin compared with the size of the rest of him, waved about helplessly as he looked.
+                                       叽叔论坛，给予了海外留学生一个展示自己海外生活的一个窗口，也给国内想要出国的学生了解到真实的海外生活的一个社区。
                                     </p>
                                 </div>
                             </div>
@@ -379,28 +379,27 @@ function Testimonial() {
                                     <img className="rounded-circle mr-3" src="/images/avatar/6.png" alt="Avatar Image" />
                                     <div className="media-body">
                                         <h4 className="name"><a href="#">Arthur Watson</a></h4>
-                                        <span className="designation">Photographer</span>
+                                        <span className="designation">老师</span>
                                     </div>
                                 </div>
                                 <div className="bottom-content">
-                                    <span className="title">Awesome Learning Site</span>
+                                    <span className="title">Efficient interaction</span>
                                     <p>
-                                        What’s happened to me?” he thought. It wasn’t a dream. His room, a proper human room although a little too small, lay peacefully between its four familiar walls.
-                                    </p>
+                                        As an overseas teacher, I can discuss and share with many students in the platform. Guiding students and imparting their own learning experience and methods                                    </p>
                                 </div>
                             </div>
                             <div className="carousel-item">
                                 <div className="media">
                                     <img className="rounded-circle mr-3" src="/images/avatar/7.png" alt="Avatar Image" />
                                     <div className="media-body">
-                                        <h4 className="name"><a href="#">Janet Alvarado</a></h4>
-                                        <span className="designation">Student</span>
+                                        <h4 className="name"><a href="#">艾胜</a></h4>
+                                        <span className="designation">学生</span>
                                     </div>
                                 </div>
                                 <div className="bottom-content">
-                                    <span className="title">Awesome Learning Site</span>
+                                    <span className="title">透明化社交</span>
                                     <p>
-                                        A collection of textile samples lay spread out on the table. Samsa was a travelling salesman and above it there hung a picture that he had recently cut out of an illustrated magazine and housed in a nice, gilded frame.
+                                        我们可以随时随地分享我们的生活，就算在海外，因为有了这个平台，我们也能感受到生活的充实。
                                     </p>
                                 </div>
                             </div>
@@ -423,11 +422,11 @@ export function Home() {
         <div>
             <Header />
             <Banner />
-            <PopularCourses />
-            <Promotion />
-            <CourseCategory />
             <RecentPosts />
             <Testimonial />
+            {/*<Promotion />*/}
+            <PopularCourses />
+            <CourseCategory />
             <Footer />
         </div>
     );

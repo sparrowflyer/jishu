@@ -1,7 +1,5 @@
 package com.wanmoxing.jishu.controller;
 
-import java.sql.Timestamp;
-import java.util.Date;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
@@ -75,13 +73,12 @@ public class CommentController {
 		}
 		
 		User user = (User)session.getAttribute("user");
-		comment.setUid(user.getId());
-		comment.setCreateDate(new Timestamp(new Date().getTime()));
-		comment.setUser(user);
-		comment.setFloorReply(0);
-		comment.setFloorNumber(commentService.getCommentCount(aid) + 1);
 		
 		try {
+			comment.setUid(user.getId());
+			comment.setUser(user);
+			comment.setFloorReply(0);
+			comment.setFloorNumber(commentService.getCommentCount(aid) + 1);
 			
 			Article articleDatabase = articleService.getArticleById(aid);
 			if(articleDatabase == null) {
@@ -91,7 +88,10 @@ public class CommentController {
 			}
 			int userId = articleDatabase.getUid();
 			
+			articleDatabase.setCommentCount(articleDatabase.getCommentCount() + 1);
 			commentService.insert(comment);
+			//评论成功之后，相应的评论数+1
+			articleService.update(articleDatabase);
 			logger.info("评论成功");
 			resultDTO.setErrorMsg("评论成功");
 			resultDTO.setStatus(ResultDTOStatus.SUCCESS.getStatus());

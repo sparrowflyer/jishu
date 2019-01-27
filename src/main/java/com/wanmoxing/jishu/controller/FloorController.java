@@ -70,7 +70,6 @@ public class FloorController {
 	
 		User user = (User)session.getAttribute("user");
 		floor.setUid(user.getId());
-		floor.setCreateDate(new Timestamp(new Date().getTime()));
 		try {
 			Comment commentDatabase = commentService.getCommentById(cid);
 			if(commentDatabase == null) {
@@ -78,7 +77,13 @@ public class FloorController {
 				resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
 				return resultDTO;
 			}
+			
+			commentDatabase.setFloorReply(commentDatabase.getFloorReply() + 1);
+			
 			floorService.insert(floor);
+			//楼中楼评论后，相应的评论数+1
+			commentService.update(commentDatabase);
+
 			logger.info("评论成功");
 			resultDTO.setErrorMsg("评论成功");
 			resultDTO.setStatus(ResultDTOStatus.SUCCESS.getStatus());

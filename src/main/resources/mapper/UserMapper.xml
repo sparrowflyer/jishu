@@ -21,7 +21,7 @@
     </insert>
     
     <update id="update" parameterType="com.wanmoxing.jishu.bean.User">
-        UPDATE jishu.T_USER SET NICK_NAME=#{nickName},EMAIL=#{email},CELL_PHONE=#{cellPhone},PASSWORD=#{password},HEAD_IMAGE=#{headImage},TYPE=#{type},STATUS=#{status},UPDATED_TIME=current_timestamp WHERE ID=#{id}
+        UPDATE jishu.T_USER SET NICK_NAME=#{nickName},EMAIL=#{email},CELL_PHONE=#{cellPhone},PASSWORD=#{password},HEAD_IMAGE=#{headImage},TYPE=#{type},STATUS=#{status} WHERE ID=#{id}
     </update>
     
     <select id="findById" parameterType="int" resultMap="userResultMap">

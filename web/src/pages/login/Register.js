@@ -295,7 +295,7 @@ class Register extends React.Component {
                                 </form>
                                 <Social title="Or Sign up using" />
                                 <p className="register">
-                                    Already have an account? <Link to="/login">Sign in now</Link>
+                                    已经有账号? <Link to="/login">立即登录</Link>
                                 </p>
                             </div>
                         </div>

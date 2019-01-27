@@ -387,10 +387,11 @@ class User extends React.Component {
                                                 this.state.releaseCourses.map((course) => {
                                                     return (
                                                         <div style={{width: '100%', borderBottom: '1px solid #cfd8dc', padding: '10px 0 15px'}} key={course.id}>
+                                                            <h3 className="entry-title"><Link to={`/course/${course.id}`}><a>课程名称：{course.title}</a></Link></h3>
+
                                                             <div className="entry-thumbnail">
                                                                 <img width="30%" src={'http://' + course.coverImage} alt="post"/>
                                                             </div>
-                                                            <h3 className="entry-title"><Link to={`/course/${course.id}`}><a>{course.title}</a></Link></h3>
 
                                                             <p>
                                                                 <strong>类型:</strong> {course.type}&nbsp;&nbsp;&nbsp;
@@ -412,8 +413,9 @@ class User extends React.Component {
                                                     return (
 
                                                         <div style={{width: '100%', borderBottom: '1px solid #cfd8dc', padding: '10px 0 15px'}} key={article.aid}>
-                                                            <img width="30%" src={headImage} alt=" Image" />
                                                             <h3 className="entry-title"><Link to={`/blog/${article.aid}`}><a>博客主题：{article.title}</a></Link></h3>
+
+                                                            <img width="30%" src={headImage} alt=" Image" />
 
                                                             <p><strong>创建时间:</strong> {article.createDate}</p>
                                                             <p><strong>修改时间:</strong> {article.updateDate}</p>
@@ -434,8 +436,9 @@ class User extends React.Component {
                                                     var headImage="http://"+article.imagesrc;
                                                     return (
                                                         <div style={{width: '100%', borderBottom: '1px solid #cfd8dc', padding: '10px 0 15px'}} key={article.aid}>
-                                                            <img width="30%" src={headImage} alt=" Image" />
                                                             <h3 className="entry-title"><Link to={`/blog/${article.aid}`}><a>博客主题：{article.title}</a></Link></h3>
+
+                                                            <img width="30%" src={headImage} alt=" Image" />
 
                                                             <p><strong>创建时间:</strong> {article.createDate}</p>
                                                             <p><strong>修改时间:</strong> {article.updateDate}</p>

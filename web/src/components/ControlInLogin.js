@@ -5,8 +5,8 @@ export function RememberMeInLogin() {
     return (
         <p className="checkbox">
             <input name="rememberme" type="checkbox" className="rememberme float-left" value="Remember Me" />
-            Remember Me
-            <Link to="/pwd" className="float-right" title="Recover Your Lost Password">Forgot password?</Link>
+            记住密码
+            <Link to="/pwd" className="float-right" title="Recover Your Lost Password">忘记密码?</Link>
         </p>
     );
 }
@@ -15,7 +15,7 @@ export function RememberMeInRegister() {
     return (
         <p className="checkbox">
             <input name="rememberme" type="checkbox" className="rememberme float-left" value="Remember Me" />
-            By clicking I agree to the <a href="#" title="Terms And Conditions">Terms & Conditions</a>
+           点击确认协议 <a title="Terms And Conditions">论坛 & 开课规范</a>
         </p>
     );
 }

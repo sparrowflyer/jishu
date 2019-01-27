@@ -188,7 +188,7 @@ class AddBlog extends React.Component {
                                     <p className="form-input" style={{paddingLeft: '20px', paddingRight: '20px'}}>
                                         <span style={{fontWeight: '600'}}>Article Type:</span>
                                         <select style={{float: 'right'}} className="filter-select" name="typeId" value={ this.state.typeId } onChange={ this.handleInputChange }>
-                                            <option value={0}>All</option>
+                                            <option value={0}> </option>
                                             {
                                                 this.state.articleTypes.map((articleType) => {
                                                     return (

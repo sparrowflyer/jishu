@@ -134,10 +134,10 @@ class ForgetPwd extends React.Component {
                                     </p>
                                 </form>
                                 <p className="register">
-                                    Sign in again? <Link to="/login">Sign in now</Link>
+                                    再次尝试? <Link to="/login">立即登录</Link>
                                 </p>
                                 <p className="register">
-                                    Register a new account? <Link to="/register">Register now</Link>
+                                    没有账号? <Link to="/register">立即注册</Link>
                                 </p>
                             </div>
                         </div>

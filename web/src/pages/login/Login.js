@@ -119,7 +119,7 @@ class Login extends React.Component {
                     <div className="section-padding">
                         <div className="container">
                             <div className="contents text-center">
-                                <h2 className="section-title">LOG IN TO YOUR ACCOUNT</h2>
+                                <h2 className="section-title">登录叽叔 UncleJee</h2>
                                 <form className="sign-in-form" id="sign-in-form" onSubmit={ this.submitLoginInfo }>
                                     <p className="form-input">
                                         <input type="text" name="username" id="user_login" placeholder="Username / Email" className="input"
@@ -137,12 +137,12 @@ class Login extends React.Component {
                                     <RememberMeInLogin />
                                     <p className="form-input">
                                         <input type="submit" name="wp-submit" id="wp-submit" className="btn"
-                                               value={this.state.isLoginLoading ? "Loading..." : "Sign In"} disabled={this.state.isLoginLoading} />
+                                               value={this.state.isLoginLoading ? "Loading..." : "登录"} disabled={this.state.isLoginLoading} />
                                     </p>
                                 </form>
                                 <Social title="Or login using" />
                                 <p className="register">
-                                    Don’t have an account? <Link to="/register">Register now</Link>
+                                    没有账号? <Link to="/register">立即注册</Link>
                                 </p>
                             </div>
                         </div>

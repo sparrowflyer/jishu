@@ -21,13 +21,14 @@ public class EmailUtil {
 	private static final String host = "smtp.163.com";
 	
 	public static void sendEmail(String to, String subject, String content) {
-		Thread sendEmailThread = new Thread(new Runnable() {
-			@Override
-			public void run() {
-				sendEmailSync(to, subject, content);
-			}
-		});
-		sendEmailThread.start();
+		sendEmailSync(to, subject, content);
+//		Thread sendEmailThread = new Thread(new Runnable() {
+//			@Override
+//			public void run() {
+//				sendEmailSync(to, subject, content);
+//			}
+//		});
+//		sendEmailThread.start();
 	}
 
 	/**

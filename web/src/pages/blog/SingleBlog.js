@@ -26,7 +26,7 @@ function ChildBlogContent(floors) {
                     return (
                         <li className="comment" key={floor.fid}>
                             <div className="comment-body media">
-                                <img className="rounded-circle author-avatar" src={'http://' + floor.user.headImage} alt="Comment Authors" />
+                                <img className="rounded-circle author-avatar" style={{maxWidth: '50px'}} src={'http://' + floor.user.headImage} alt="Comment Authors" />
                                 <div className="comment-content media-body">
                                     <span className="time">{floor.createDate}</span>
                                     <span className="name"><Link to={`/user/${floor.user.id}`}>{floor.user.nickName}</Link></span>

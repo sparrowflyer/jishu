@@ -56,7 +56,7 @@ function AboutUs() {
 
 function Facts() {
     return (
-        <section className="facts facts-02 background-bg" data-image-src="../images/ab-bg.jpg">
+        <section className="facts facts-02 background-bg" style={{backgroundImage: 'url(../images/ab-bg.jpg)'}}>
             <div className="overlay">
                 <div className="section-padding">
                     <div className="container">

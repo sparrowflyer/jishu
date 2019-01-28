@@ -264,10 +264,10 @@
 
  
 		// Background Img 
-		$(".background-bg").css('background-image', function () {
-			var bg = ('url(' + $(this).data("image-src") + ')');
-			return bg;
-		});
+		// $(".background-bg").css('background-image', function () {
+		// 	var bg = ('url(' + $(this).data("image-src") + ')');
+		// 	return bg;
+		// });
 
 
 		// var navheight = $('.top-content').height();

@@ -71,7 +71,7 @@ export function StandardInnerArticle({imgUrl}) {
 }
 
 export function getMonth(dateStr) {
-    let date = new Date(dateStr);
+    let date = new Date(('' + dateStr).replace(/-/g,'/'));
     if ('' + date === 'Invalid Date') {
         return '';
     }
@@ -79,7 +79,7 @@ export function getMonth(dateStr) {
 }
 
 export function getDate(dateStr) {
-    let date = new Date(dateStr);
+    let date = new Date(('' + dateStr).replace(/-/g,'/'));
     if ('' + date === 'Invalid Date') {
         return '';
     }

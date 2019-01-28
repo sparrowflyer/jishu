@@ -1,21 +1,16 @@
 package com.wanmoxing.jishu.util;
 
-import com.sun.mail.util.MailSSLSocketFactory;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-import javax.mail.Authenticator;
 import javax.mail.Message;
-import javax.mail.Message.RecipientType;
-import javax.mail.MessagingException;
-import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
-import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+
+import com.sun.mail.util.MailSSLSocketFactory;
 
 public class EmailUtil {
 
@@ -45,6 +40,8 @@ public class EmailUtil {
 
 
 		Properties props = new Properties();
+		
+		System.out.println("To: "+to+"\n"+"Subject: "+subject+"\n"+"Content: "+content+"\n");
 
 		// 开启debug调试
 		props.setProperty("mail.debug", "true");

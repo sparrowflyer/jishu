@@ -109,6 +109,8 @@ public class LoginController {
 	@RequestMapping(value = "/regist", method = RequestMethod.POST)
 	public ResultDTO regist(HttpSession session,
 						   @RequestBody LoginInfoVo loginInfoVo) {
+		
+		System.out.println("emailVercode: "+loginInfoVo.getEmailVercode());
 
 		ResultDTO resultDTO = new ResultDTO();
 

@@ -107,13 +107,13 @@ public class ArticleController {
 	public ResultDTO getArticleListById(HttpSession session, @RequestParam("aid") int aid) {
 		
 		ResultDTO resultDTO = new ResultDTO();
-		
-		if(!CommUtil.isUserLogined(session)) {
-			resultDTO.setErrorMsg("还未登录，请先登录");
-			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
-			return resultDTO;
-		}
-		
+//
+//		if(!CommUtil.isUserLogined(session)) {
+//			resultDTO.setErrorMsg("还未登录，请先登录");
+//			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+//			return resultDTO;
+//		}
+//
 		if(aid < 0) {
 			resultDTO.setErrorMsg("帖子不存在");
 			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());

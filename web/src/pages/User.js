@@ -290,7 +290,7 @@ class User extends React.Component {
         return (
         <div>
             <Header activeTitle="me" />
-            <section className="page-name background-bg" data-image-src="../images/breadcrumb.jpg">
+            <section className="page-name background-bg" style={{backgroundImage: 'url(../images/breadcrumb.jpg)'}}>
                 <div className="overlay">
                     <div className="section-padding">
                         <div className="container">
@@ -307,7 +307,7 @@ class User extends React.Component {
                             <div className="col-md-4 pr-5">
                                 <div className="avatar text-center">
                                     {
-                                        this.state.isStartUpload ?
+                                        this.props.match.params.userID == loginUserID && this.state.isStartUpload ?
                                             <div className="text-center">
                                                 <input id="img" name="img" type="file"
                                                        accept="image/jpeg,image/x-png,image/gif"
@@ -336,16 +336,18 @@ class User extends React.Component {
                                 <p>
                                     <strong>UserName: </strong>
                                     {
-                                        this.state.isEdit ?
-                                            <span>
-                                                <input className="form-control" style={{display: 'inline-block', width: 'auto'}} onChange={this.changeNickName} value={this.state.tempNickName} />
-                                                <input type="button" className="btn btn-default btn-xs" style={nickNameBtn} onClick={this.saveUserName} value="Save" />
-                                                <input type="button" className="btn btn-default btn-xs" style={{marginLeft: "10px"}} onClick={this.changeUserState} value="Cancel" />
-                                            </span> :
-                                            <span>
-                                                {this.state.nickName}
-                                                <input type="button" className="btn btn-default btn-xs" style={nickNameBtn} onClick={this.changeUserState} value="Edit" />
-                                            </span>
+                                        this.props.match.params.userID == loginUserID ? (
+                                            this.state.isEdit ?
+                                                <span>
+                                                    <input className="form-control" style={{display: 'inline-block', width: 'auto'}} onChange={this.changeNickName} value={this.state.tempNickName} />
+                                                    <input type="button" className="btn btn-default btn-xs" style={nickNameBtn} onClick={this.saveUserName} value="Save" />
+                                                    <input type="button" className="btn btn-default btn-xs" style={{marginLeft: "10px"}} onClick={this.changeUserState} value="Cancel" />
+                                                </span> :
+                                                <span>
+                                                    {this.state.nickName}
+                                                    <input type="button" className="btn btn-default btn-xs" style={nickNameBtn} onClick={this.changeUserState} value="Edit" />
+                                                </span>
+                                        ) : <span>{this.state.nickName}</span>
                                     }
                                 </p>
                                 <p>
@@ -387,7 +389,7 @@ class User extends React.Component {
                                                 this.state.releaseCourses.map((course) => {
                                                     return (
                                                         <div style={{width: '100%', borderBottom: '1px solid #cfd8dc', padding: '10px 0 15px'}} key={course.id}>
-                                                            <h3 className="entry-title"><Link to={`/course/${course.id}`}><a>课程名称：{course.title}</a></Link></h3>
+                                                            <h3 className="entry-title"><Link to={{pathname: `/course/${course.id}`, state: course}}>课程名称：{course.title}</Link></h3>
 
                                                             <div className="entry-thumbnail">
                                                                 <img width="30%" src={'http://' + course.coverImage} alt="post"/>

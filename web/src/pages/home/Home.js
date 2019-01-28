@@ -5,7 +5,7 @@ import { Footer } from '../../components/common/Footer.js';
 
 function Banner() {
     return (
-        <section className="banner-section banner-01 background-bg" data-image-src="/images/banner/1.jpg">
+        <section className="banner-section banner-01 background-bg" style={{backgroundImage: 'url(/images/banner/1.jpg)'}}>
             <div className="overlay">
                 <div className="section-padding">
                     <div className="container">
@@ -79,7 +79,7 @@ function RecentPosts() {
 
 function Promotion() {
     return (
-        <section className="promotion background-bg text-center" data-image-src="../images/bg1.jpg">
+        <section className="promotion background-bg text-center" style={{backgroundImage: 'url(../images/bg1.jpg)'}}>
             <div className="overlay">
                 <div className="section-padding">
                     <div className="container">

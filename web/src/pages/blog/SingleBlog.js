@@ -156,6 +156,7 @@ class SingleBlog extends React.Component {
         }).then((data) => {
             if (data.status === 'success') {
                 this.getArticleDetail();
+                this.props.alert.success('添加评价成功!');
             } else {
                 this.props.alert.error(data.errorMsg || data.error);
             }
@@ -180,6 +181,7 @@ class SingleBlog extends React.Component {
         }).then((data) => {
             if (data.status === 'success') {
                 this.getArticleDetail();
+                this.props.alert.success('添加评价成功!');
             } else {
                 this.props.alert.error(data.errorMsg || data.error);
             }
@@ -405,8 +407,6 @@ class SingleBlog extends React.Component {
                                             <div className="widget-details">
                                                 {
                                                     this.state.releasePosts.map((post) => {
-                                                        {/*alert(course);*/}
-                                                        console.log(post)
                                                         return (
 
 
@@ -447,7 +447,7 @@ class SingleBlog extends React.Component {
                                                                     <img src={'http://' + course.coverImage} alt="post"/>
                                                                 </div>
                                                                 <div className="entry-content media-body">
-                                                                    <h3 className="entry-title"><Link to={`/course/${course.id}`}><a>{course.title}</a></Link></h3>
+                                                                    <h3 className="entry-title"><Link to={{pathname: `/course/${course.id}`, state: course}}>{course.title}</Link></h3>
                                                                     <div className="entry-meta">
 
                                                                     {/*<span >课程价格：{comment.price}</span>*/}

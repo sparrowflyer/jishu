@@ -32,7 +32,7 @@ function NormalContainer({title, subItem, currentItem}) {
 
 export function BreadCrumb({hasSearchBox, title, subItem, currentItem}) {
     return (
-        <section className="page-name background-bg" data-image-src="../images/breadcrumb.jpg">
+        <section className="page-name background-bg" style={{backgroundImage: 'url(../images/breadcrumb.jpg)'}}>
             <div className="overlay">
                 <div className="section-padding">
                     { hasSearchBox ? <SearchContainer /> : <NormalContainer title={title} subItem={subItem} currentItem={currentItem} /> }

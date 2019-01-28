@@ -2,6 +2,7 @@ package com.wanmoxing.jishu.mapper;
 
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.wanmoxing.jishu.bean.GoodBad;
 
@@ -9,12 +10,12 @@ import com.wanmoxing.jishu.bean.GoodBad;
 public interface GoodBadMapper {
 	
 	
-	public GoodBad getGoodByAidAndUid(int aid, int uid);
+	public GoodBad getGoodByAidAndUid(@Param("aid")int aid, @Param("uid")int uid);
 	
     public void insert(GoodBad goodBad);
 
     public void update(GoodBad goodBad);
     
-    public void delete(int aid, int uid);
+    public void delete(@Param("aid")int aid, @Param("uid")int uid);
 	
 }

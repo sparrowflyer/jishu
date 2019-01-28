@@ -83,6 +83,7 @@ class SingleBlog extends React.Component {
             .then((data) => {
                 if (data.status === 'success') {
                     this.getGoodOrNot();
+                    this.getBadOrNot();
                 } else {
                     this.props.alert.error(data.errorMsg || data.error);
                 }
@@ -95,6 +96,7 @@ class SingleBlog extends React.Component {
         postJson(`/tieba/clickBad?aid=${this.state.blog.aid}`)
             .then((data) => {
                 if (data.status === 'success') {
+                    this.getGoodOrNot();
                     this.getBadOrNot();
                 } else {
                     this.props.alert.error(data.errorMsg || data.error);

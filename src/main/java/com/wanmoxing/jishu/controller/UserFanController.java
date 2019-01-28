@@ -66,6 +66,7 @@ public class UserFanController {
 				addFanNotification.setUserId(userFan.getOwnerId());
 				addFanNotification.setTitle("您有一位新粉丝！");
 				addFanNotification.setContent(userService.getUserDisplayName(userFan.getFanId())+" 关注了您");
+				addFanNotification.setClickUrl("/user/" + userFan.getFanId());
 				userNotificationService.insert(addFanNotification);
 			} else {
 				result.setStatus(ResultDTOStatus.ERROR.getStatus());

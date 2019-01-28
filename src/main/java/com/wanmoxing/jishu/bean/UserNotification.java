@@ -14,6 +14,8 @@ public class UserNotification {
 	
 	private String content;
 	
+	private String clickUrl;
+	
 	private String type;
 	
 	private String status = UserNotificationStatus.UNREAD.getStatus();
@@ -84,6 +86,14 @@ public class UserNotification {
 
 	public void setUpdatedTime(Timestamp updatedTime) {
 		this.updatedTime = updatedTime;
+	}
+
+	public String getClickUrl() {
+		return clickUrl;
+	}
+
+	public void setClickUrl(String clickUrl) {
+		this.clickUrl = clickUrl;
 	}
 	
 }

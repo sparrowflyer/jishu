@@ -1,7 +1,5 @@
 package com.wanmoxing.jishu.controller;
 
-import java.sql.Timestamp;
-import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -376,6 +374,12 @@ public class ArticleController {
 		
 		ResultDTO resultDTO = new ResultDTO();
 		
+		if(!CommUtil.isUserLogined(session)) {
+			resultDTO.setErrorMsg("还未登录，请先登录");
+			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+			return resultDTO;
+		}
+		
 		User user = (User)session.getAttribute("user");
 		int uid = user.getId();
 		
@@ -411,6 +415,7 @@ public class ArticleController {
 	public ResultDTO clickBad(HttpSession session,@RequestParam("aid") int aid) {
 		
 		ResultDTO resultDTO = new ResultDTO();
+		
 		
 		if(!CommUtil.isUserLogined(session)) {
 			resultDTO.setErrorMsg("还未登录，请先登录");
@@ -488,6 +493,12 @@ public class ArticleController {
 	public ResultDTO isClickedBad(HttpSession session,@RequestParam("aid") int aid) {
 		
 		ResultDTO resultDTO = new ResultDTO();
+		
+		if(!CommUtil.isUserLogined(session)) {
+			resultDTO.setErrorMsg("还未登录，请先登录");
+			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+			return resultDTO;
+		}
 		
 		User user = (User)session.getAttribute("user");
 		int uid = user.getId();
@@ -588,6 +599,12 @@ public class ArticleController {
 	public ResultDTO isClickedCollection(HttpSession session,@RequestParam("aid") int aid) {
 		
 		ResultDTO resultDTO = new ResultDTO();
+		
+		if(!CommUtil.isUserLogined(session)) {
+			resultDTO.setErrorMsg("还未登录，请先登录");
+			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+			return resultDTO;
+		}
 		
 		User user = (User)session.getAttribute("user");
 		int uid = user.getId();

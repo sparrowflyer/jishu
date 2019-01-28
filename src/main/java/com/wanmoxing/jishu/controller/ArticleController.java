@@ -394,7 +394,7 @@ public class ArticleController {
 				}
 			}
 			resultDTO.setErrorMsg("没有点过赞");
-			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+			resultDTO.setStatus(ResultDTOStatus.SUCCESS.getStatus());
 			resultDTO.setData(false);
 			return resultDTO;
 		} catch (Exception e) {
@@ -514,7 +514,7 @@ public class ArticleController {
 				}
 			}
 			resultDTO.setErrorMsg("没有点过踩");
-			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+			resultDTO.setStatus(ResultDTOStatus.SUCCESS.getStatus());
 			resultDTO.setData(false);
 			return resultDTO;
 		} catch (Exception e) {

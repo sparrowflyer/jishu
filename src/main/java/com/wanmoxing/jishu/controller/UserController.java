@@ -72,6 +72,12 @@ public class UserController {
 				result.setErrorMsg("User not logined!");
 				return result;
 			}
+			User userInSession = (User) session.getAttribute("user");
+			if (userInSession.getId() != updateUserNicknameDTO.getId()) {
+				result.setStatus(ResultDTOStatus.ERROR.getStatus());
+				result.setErrorMsg("Can't update other user's nickname!");
+				return result;
+			}
 			User user = userService.findById(updateUserNicknameDTO.getId());
 			user.setNickName(updateUserNicknameDTO.getNickName());
 			userService.update(user);
@@ -99,6 +105,12 @@ public class UserController {
 			if (!CommonConstants.DEV_MODE && !CommUtil.isUserLogined(session)) {
 				result.setStatus(ResultDTOStatus.ERROR.getStatus());
 				result.setErrorMsg("User not logined!");
+				return result;
+			}
+			User userInSession = (User) session.getAttribute("user");
+			if (userInSession.getId() != updateUserHeadImageDTO.getId()) {
+				result.setStatus(ResultDTOStatus.ERROR.getStatus());
+				result.setErrorMsg("Can't update other user's headImage!");
 				return result;
 			}
 			User user = userService.findById(updateUserHeadImageDTO.getId());

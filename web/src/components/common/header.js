@@ -138,8 +138,9 @@ class HomeHeader extends React.Component {
                                                             <div className="item media" key={unreadComment.id}>
                                                                 <button className="btn close-btn" onClick={this.setCommentRead.bind(this, unreadComment.id)}><i className="icons icon-close"></i></button>
                                                                 <div className="item-details media-body" style={{marginLeft: '5px'}}>
+
                                                                     <h4 className="item-title">{unreadComment.title}</h4>
-                                                                    <div className="price">{unreadComment.content}</div>
+                                                                    <Link to={`${unreadComment.clickUrl}`}>{unreadComment.content}</Link>
                                                                 </div>
                                                             </div>
                                                         );
@@ -369,7 +370,7 @@ class NormalHeader extends React.Component {
                                                             <button className="btn close-btn" onClick={this.setCommentRead.bind(this, unreadComment.id)}><i className="icons icon-close"></i></button>
                                                             <div className="item-details media-body" style={{marginLeft: '5px'}}>
                                                                 <h4 className="item-title">{unreadComment.title}</h4>
-                                                                <div className="price">{unreadComment.content}</div>
+                                                                <Link to={`${unreadComment.clickUrl}`}>{unreadComment.content}</Link>
                                                             </div>
                                                         </div>
                                                     );

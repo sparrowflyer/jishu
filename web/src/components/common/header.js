@@ -104,25 +104,15 @@ class HomeHeader extends React.Component {
                                     <div className="trggericon"><i className="fas fa-at"></i></div>
                                     <div className="close"><i className="far fa-times-circle"></i></div>
                                     <div className="contacts">
-                                        <span><i className="fas fa-phone"></i> <a href="">(+61) 38376 6284</a></span>
-                                        <span><i className="fas fa-envelope"></i> <a href="#">support@courseware.com</a></span>
+                                        <span><i className="fas fa-phone"></i> <a href="">+86 137 7713 3446</a></span>
+                                        <span><i className="fas fa-envelope"></i> <a href="mailto:jishugo@unclejee.cn"> jishugo@unclejee.cn</a></span>
                                     </div>
                                 </div>
                             </div>
                             <div className="col-md-6">
-                                <div className="menu-search-form dropdown float-right">
-                                    <a className="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <span>Search</span> <i className="fas fa-search"></i>
-                                    </a>
-                                    <div className="dropdown-menu">
-                                        <form action="#" className="menu-search">
-                                            <input type="text" className="form-control" placeholder="Search ..." name="s" title="Search here" required />
-                                            <input type="submit" className="form-control" />
-                                        </form>
-                                    </div>
-                                </div>
+
                                 <div className="menu-cart dropdown float-right">
-                                    <a className="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <a className="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <i className="fas fa-comment-dots"></i>
                                         {
                                             this.state.unreadComments.length > 0 ?
@@ -172,11 +162,14 @@ class HomeHeader extends React.Component {
                                     <li className="nav-item menu-item-has-children dropdown">
                                         <Link className="nav-link" to="/blog">学生博客</Link>
                                     </li>
+
                                     <li className="nav-item menu-item-has-children dropdown">
-                                        <Link to="/about" className="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <a className="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             关于我们
-                                        </Link>
+                                        </a>
+
                                         <div className="dropdown-menu">
+                                            <Link className="dropdown-item" to="/about">关于叽叔</Link>
                                             <Link className="dropdown-item" to="/contact">联系我们</Link>
                                             <Link className="dropdown-item" to="/faq">疑问解答</Link>
                                         </div>
@@ -192,8 +185,8 @@ class HomeHeader extends React.Component {
                                                 </div>
                                             </li> :
                                             <li className="nav-item menu-item-has-children dropdown">
-                                                <a className="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                    个人中心
+                                                <a className="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    登录/注册
                                                 </a>
                                                 <div className="dropdown-menu">
                                                     <Link className="dropdown-item" to="/login">登录</Link>
@@ -309,10 +302,11 @@ class NormalHeader extends React.Component {
                                             <Link className="nav-link" to="/blog">学生博客</Link>
                                         </li>
                                         <li className={`nav-item menu-item-has-children dropdown ${this.props.activeTitle === 'us' ? "active" : null}`}>
-                                            <Link to="/about" className="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <a className="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                 关于我们
-                                            </Link>
+                                            </a>
                                             <div className="dropdown-menu">
+                                                <Link className="dropdown-item" to="/about">关于叽叔</Link>
                                                 <Link className="dropdown-item" to="/contact">联系我们</Link>
                                                 <Link className="dropdown-item" to="/faq">疑问解答</Link>
                                             </div>
@@ -328,8 +322,8 @@ class NormalHeader extends React.Component {
                                                     </div>
                                                 </li> :
                                                 <li className="nav-item menu-item-has-children dropdown">
-                                                    <a className="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                        个人中心
+                                                    <a className="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        登录/注册
                                                     </a>
                                                     <div className="dropdown-menu">
                                                         <Link className="dropdown-item" to="/login">登录</Link>
@@ -342,17 +336,7 @@ class NormalHeader extends React.Component {
                             </nav>
                         </div>
                         <div className="col-md-2">
-                            <div className="menu-search-form dropdown float-right">
-                                <a className="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i className="fas fa-search"></i>
-                                </a>
-                                <div className="dropdown-menu">
-                                    <form action="#" className="menu-search">
-                                        <input type="text" className="form-control" placeholder="Search ..." name="s" title="Search here" required />
-                                        <input type="submit" className="form-control" />
-                                    </form>
-                                </div>
-                            </div>
+
                             <div className="menu-cart dropdown float-right">
                                 <a className="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <i className="fas fa-comment-dots"></i>

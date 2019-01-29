@@ -110,6 +110,35 @@ public class CourseController {
 	}
 	
 	/**
+	 * 获取单个课程
+	 	{
+	 		"courseId": xxx
+	 	}
+	 * @param session
+	 * @return
+	 */
+	@RequestMapping(value = "/getSingleCourse", method = RequestMethod.POST)
+	public ResultDTO getCourse (@RequestBody JSONObject jsonParams) {
+		ResultDTO result = new ResultDTO();
+		try {
+			int courseId = jsonParams.getInteger("courseId");
+			Course course = courseService.find(courseId);
+			if (course != null) {
+				result.setData(course);
+			} else {
+				result.setStatus(ResultDTOStatus.ERROR.getStatus());
+				result.setErrorMsg("Course ID unavailable!");
+			}
+			return result;
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus(ResultDTOStatus.ERROR.getStatus());
+			result.setErrorMsg("Exception occured!");
+			return result;
+		}
+	}
+	
+	/**
 	 * 获取所有课程
 	 	{
 	 		"type": xxx,				(可选)

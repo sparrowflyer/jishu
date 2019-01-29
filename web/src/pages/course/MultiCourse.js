@@ -115,13 +115,16 @@ class MultiCourse extends React.Component {
                                                     return (
                                                         <div className="col-lg-4 col-md-6" key={course.id}>
                                                             <div className="item">
-                                                                <div className="item-thumb"><img style={{width: '247px', height: '228px'}} src={course.coverImage ? 'http://' + course.coverImage : ''} alt="Item Thumbnail" /></div>
+                                                                <div className="item-thumb">
+                                                                    <img style={{width: '100%', height: '228px'}} src={course.coverImage ? 'http://' + course.coverImage : ''} alt="Item Thumbnail" />
+                                                                </div>
                                                                 <div className="item-details">
                                                                     <h3 className="item-title">
                                                                         <Link to={{pathname: `/course/${course.id}`, state: course}}>{course.title}</Link>
                                                                     </h3>
                                                                     <span className="instructor">
                                                                         <Link to={`/user/${course.authorId}`}>
+                                                                            <img width="30" className="rounded-circle" src={course.authorHead ? 'http://' + course.authorHead : ''} alt="Avatar Image" />
                                                                             {course.authorName}
                                                                         </Link>
                                                                     </span>
@@ -132,11 +135,12 @@ class MultiCourse extends React.Component {
                                                                             <span className="price">{course.price}</span>
                                                                         </div>
                                                                         <div className="rating float-right">
-                                                                            Left:<span className="label label-default">{ course.targetStudentAmount - course.currentStudentAmount }</span>
+                                                                            目标人数:<span className="label label-default">{ course.targetStudentAmount - course.currentStudentAmount }</span>
                                                                         </div>
                                                                     </div>
                                                                     <div style={{overflow: "hidden"}}>
-                                                                        <span style={{float: "right", color: "red", fontWeight: "bold"}} onClick={ this.buyCourse.bind(this, course.id) }>Buy</span>
+                                                                        <span onClick={ this.buyCourse.bind(this, course.id)}  className="btn btn-sm">购买</span>
+
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -161,7 +165,7 @@ class MultiCourse extends React.Component {
                                         }
                                         <div className="category-list">
                                             <ul>
-                                                <li className={`${this.state.courseType ? "" : "active"}`} onClick={this.changeCourseType.bind(this, '')}><a>All Courses</a></li>
+                                                <li className={`${this.state.courseType ? "" : "active"}`} onClick={this.changeCourseType.bind(this, '')}><a>所有课程</a></li>
                                                 {
                                                     this.state.courseTypes.map((courseType) => {
                                                         return (

@@ -2422,6 +2422,42 @@ img {
   padding: 10px 15px;
   text-transform: capitalize;
 }
+#imgSize
+{
+  position: relative;
+  display: block;
+  background-repeat: no-repeat;
+  background-color: red;
+  background-size: cover;
+  background-position: center center;
+  width: 75%;
+  height: 265px;
+}
+
+#imgSize:before
+{
+  content: "";
+  display: block;
+  padding-top: 70%;
+}
+#imgSizeSingle
+{
+  position: relative;
+  display: block;
+  background-repeat: no-repeat;
+  background-color: red;
+  background-size: cover;
+  background-position: center center;
+  width: 75%;
+  height: 80%;
+}
+
+#imgSizeSingle:before
+{
+  content: "";
+  display: block;
+  padding-top: 70%;
+}
 .blog-posts .content-bottom {
   display: inline-block;
   margin: 1.875em 0;

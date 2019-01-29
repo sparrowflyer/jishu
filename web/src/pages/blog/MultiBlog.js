@@ -72,6 +72,7 @@ export class MultiBlog extends React.Component {
     }
 
     render() {
+
         return (
         <div>
             <Header activeTitle="blog" />
@@ -83,11 +84,16 @@ export class MultiBlog extends React.Component {
                             <div className="col-md-8">
                                 {
                                     this.state.articles.map((article) => {
+                                        var headImage="http://"+article.user.headImage;
+                                        var imgUrl='http://' + article.imagesrc;
+                                        console.log(imgUrl)
                                         return (
                                             <article key={article.aid} className={`post type-post ${article.imagesrc ? 'format-standard' : 'format-text-only'}`}>
+
                                                 {
-                                                    article.imagesrc ? <StandardInnerArticle imgUrl={'http://' + article.imagesrc}/> : null
+                                                article.imagesrc ? <StandardInnerArticle imgUrl={'http://' + article.imagesrc}/> : null
                                                 }
+
                                                 <div className="entry-content media">
                                                     <div className="post-date">
                                                         <span className="date">{getMonth(article.createDate)}-{getDate(article.createDate)}</span>
@@ -97,7 +103,7 @@ export class MultiBlog extends React.Component {
                                                             <Link to={{pathname: `/blog/${article.aid}`, state: article}}>{article.title}</Link>
                                                         </h3>
                                                         <div className="entry-meta">
-                                                            <span className="author"><i className="icon-user"></i> <Link to={`/user/${article.user.id}`}>作者:{article.user.nickName}</Link></span>
+                                                            <span className="author"><img width="5%" className="rounded-circle mr-3" src={headImage}  alt="Avatar Image" /><Link to={`/user/${article.user.id}`}>作者:{article.user.nickName}</Link></span>
                                                             {
                                                                 article.articleType ? <span className="tag"><i className="icon-tag"></i> <a>类型:{article.articleType.value}</a></span> : null
                                                             }

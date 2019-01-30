@@ -150,8 +150,7 @@ class MultiCourse extends React.Component {
                                                                         </div>
                                                                     </div>
                                                                     <div style={{overflow: "hidden"}}>
-                                                                        <span onClick={ this.buyCourse.bind(this, course.id)}  className="btn btn-sm">购买</span>
-
+                                                                        <span onClick={ this.buyCourse.bind(this, course.id)} className="btn btn-sm">购买</span>
                                                                     </div>
                                                                 </div>
                                                             </div>

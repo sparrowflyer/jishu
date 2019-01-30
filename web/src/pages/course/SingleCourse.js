@@ -36,14 +36,14 @@ export class SingleCourse extends React.Component {
         this.handleCommentChange = this.handleCommentChange.bind(this);
         this.submitCommentInfo = this.submitCommentInfo.bind(this);
         this.getComments = this.getComments.bind(this);
-        this.deleteComment = this.deleteComment.bind(this);
     }
 
     handleCommentChange(event) {
+        const value = event.target.value;
         this.setState((state) => {
             return {
                 ...state,
-                comment: event.target.value
+                comment: [value]
             };
         });
     }
@@ -63,9 +63,9 @@ export class SingleCourse extends React.Component {
         });
     }
 
-    deleteComment() {
+    deleteComment(commentID) {
         postJson('/deleteCourseComment', {
-            id: this.state.course.id
+            id: commentID
         }).then((data) => {
             if (data.status === 'success') {
                 this.getComments();
@@ -78,6 +78,7 @@ export class SingleCourse extends React.Component {
     }
 
     submitCommentInfo() {
+        event.preventDefault();
         if (!this.state.jsUserID) {
             this.props.alert.error('请登录再评价。');
             sessionStorage.removeItem('jsUser');
@@ -96,6 +97,13 @@ export class SingleCourse extends React.Component {
         }).then((data) => {
             if (data.status === 'success') {
                 this.getComments();
+                this.setState((state) => {
+                    return {
+                        ...state,
+                        comment: ''
+                    }
+                });
+                this.props.alert.success('添加评价成功!');
             } else {
                 this.props.alert.error(data.errorMsg || data.error);
             }
@@ -117,7 +125,7 @@ export class SingleCourse extends React.Component {
             this.setState((state) => {
                return {
                    ...state,
-                   jsUserID: JSON.parse(sessionStorage.getItem('jsUser'))
+                   jsUserID: JSON.parse(sessionStorage.getItem('jsUser')).id
                }
             });
         } catch(e) {}
@@ -159,12 +167,8 @@ export class SingleCourse extends React.Component {
     }
 
     render() {
-        var headImg="http://"+this.state.course.authorHead
-
         return (
-
             <div>
-
                 <Header activeTitle="course" />
                 <BreadCrumb hasSearchBox="true" />
                 <section className="courses">
@@ -176,7 +180,10 @@ export class SingleCourse extends React.Component {
                                     <div className="course-meta">
                                     <span className="meta-details">
                                         <span className="meta-id">指导教师</span>
-                                        <Link className="name" to={`/user/${this.state.course.authorId}`}><img width="15%" className="rounded-circle mr-3" src={headImg} />{this.state.course.authorName}</Link>
+                                        <Link className="name" to={`/user/${this.state.course.authorId}`}>
+                                            <img width="15%" className="rounded-circle mr-3" src={"http://" + this.state.course.authorHead} />
+                                            {this.state.course.authorName}
+                                        </Link>
                                     </span>
                                     <span className="meta-details">
                                         <span className="meta-id">课程类型</span>
@@ -283,8 +290,8 @@ export class SingleCourse extends React.Component {
                                                                                         <p>{ comment.content }</p>
                                                                                         {
                                                                                             this.state.jsUserID === comment.userId ?
-                                                                                                <div className="entry-meta">
-                                                                                                    <span style={{float: 'right'}} className="author" onClick={this.deleteComment}>X 删除</span>
+                                                                                                <div className="entry-meta" style={{textAlign: 'right'}}>
+                                                                                                    <span className="btn btn-sm" onClick={this.deleteComment.bind(this, comment.id)}>删除</span>
                                                                                                 </div> : null
                                                                                         }
                                                                                     </div>

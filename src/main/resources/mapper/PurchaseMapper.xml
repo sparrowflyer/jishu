@@ -51,6 +51,12 @@
       	WHERE BUYER_ID=#{0} and STATUS in ('payed')
     </select>
     
+    <select id="findPayedNumPurchaseByBuyerIdAndCourseId" parameterType="java.util.Map" resultType="int">
+        SELECT count(1)
+      	FROM jishu.T_PURCHASE
+      	WHERE BUYER_ID=#{buyerId} and COURSE_ID=#{courseId} and STATUS in ('payed')
+    </select>
+    
     <delete id="delete" parameterType="java.lang.String">
         DELETE FROM jishu.T_PURCHASE WHERE ID=#{0}
     </delete>

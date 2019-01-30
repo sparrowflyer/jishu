@@ -11,6 +11,8 @@ public interface PurchaseService {
 	public List<Purchase> findByBuyerId(int buyerId);
 	
 	public int findPayedNumPurchaseByBuyerId(int buyerId);
+	
+	public int findPayedNumPurchaseByBuyerIdAndCourseId(int courseId, int buyerId);
 
     public void insert(Purchase purchase);
 

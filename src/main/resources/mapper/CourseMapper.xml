@@ -29,6 +29,7 @@
 		<result property="coverImage" column="COVER_IMAGE"/>
 		<result property="authorId" column="AUTHOR_ID"/>
 		<result property="authorName" column="AUTHOR_NAME"/>
+		<result property="authorHead" column="AUTHOR_HEAD"/>
 		<result property="price" column="PRICE"/>
 		<result property="courseCollectionStartTime" column="COURSE_COLLECTION_START_TIME"/>
 		<result property="courseCollectionEndTime" column="COURSE_COLLECTION_END_TIME"/>
@@ -99,7 +100,7 @@
     </select>
     
     <select id="findByAuthorIdAndConditions" parameterType="java.util.Map" resultMap="courseWithAuthorNameResultMap">
-    	SELECT c.ID, c.TITLE, c.DETAIL, c.COVER_IMAGE, c.AUTHOR_ID, u.NICK_NAME as AUTHOR_NAME, c.PRICE, c.COURSE_COLLECTION_START_TIME,
+    	SELECT c.ID, c.TITLE, c.DETAIL, c.COVER_IMAGE, c.AUTHOR_ID, u.NICK_NAME AS AUTHOR_NAME,u.HEAD_IMAGE AS AUTHOR_HEAD , c.PRICE, c.COURSE_COLLECTION_START_TIME,
 			c.COURSE_COLLECTION_END_TIME,c.COURSE_START_TIME,c.COURSE_DURATION_TIME,c.TARGET_STUDENT_AMOUNT,
     		c.CURRENT_STUDENT_AMOUNT,
     		CASE 

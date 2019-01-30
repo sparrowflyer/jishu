@@ -5,11 +5,11 @@ import java.util.List;
 
 public enum CourseType {
 	
-	SKILL("skill"), 
-	LIFE("life"),
-	PHOTOGRAPHY("photography"),
-	MUSIC("music"),
-	LANGUAGE("language");
+	SKILL("技能"),
+	LIFE("生活"),
+	PHOTOGRAPHY("摄影"),
+	MUSIC("音乐"),
+	LANGUAGE("语言");
 	
 	private String type;
 	

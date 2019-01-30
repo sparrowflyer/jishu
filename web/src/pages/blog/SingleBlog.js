@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { Header } from '../../components/common/Header.js';
 import { BreadCrumb } from '../../components/common/BreadCrumb.js';
 import { Footer } from '../../components/common/Footer.js';
-import { StandardInnerArticle, getMonth, getDate } from '../../components/ControlInBlog.js';
+import { StandardInnerArticleSingle, getMonth, getDate } from '../../components/ControlInBlog.js';
 import { postJson, getArticleDetail } from '../../utils/server.js';
 const fanStyle = {
     display: "block",
@@ -26,7 +26,7 @@ function ChildBlogContent(floors) {
                     return (
                         <li className="comment" key={floor.fid}>
                             <div className="comment-body media">
-                                <img className="rounded-circle author-avatar" style={{maxWidth: '50px'}} src={'http://' + floor.user.headImage} alt="Comment Authors" />
+                                <img className="rounded-circle author-avatar" style={{maxWidth: '32px'}} src={'http://' + floor.user.headImage} alt="Comment Authors" />
                                 <div className="comment-content media-body">
                                     <span className="time">{floor.createDate}</span>
                                     <span className="name"><Link to={`/user/${floor.user.id}`}>{floor.user.nickName}</Link></span>
@@ -307,7 +307,7 @@ class SingleBlog extends React.Component {
                                 <div className="col-md-8">
                                     <article className={`post type-post ${this.state.blog.imagesrc ? 'format-standard' : 'format-text-only'}`}>
                                         {
-                                            this.state.blog.imagesrc ? <StandardInnerArticle imgUrl={'http://' + this.state.blog.imagesrc}/> : null
+                                            this.state.blog.imagesrc ? <StandardInnerArticleSingle imgUrl={'http://' + this.state.blog.imagesrc}/> : null
                                         }
                                         <div className="entry-content media">
                                             <div className="post-date">

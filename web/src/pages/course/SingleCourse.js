@@ -148,8 +148,12 @@ export class SingleCourse extends React.Component {
     }
 
     render() {
+        var headImg="http://"+this.state.course.authorHead
+
         return (
+
             <div>
+
                 <Header activeTitle="course" />
                 <BreadCrumb hasSearchBox="true" />
                 <section className="courses">
@@ -160,65 +164,65 @@ export class SingleCourse extends React.Component {
                                     <h2 className="course-title">{this.state.course.title}</h2>
                                     <div className="course-meta">
                                     <span className="meta-details">
-                                        <span className="meta-id">Instructor</span>
-                                        <Link className="name" to={`/user/${this.state.course.authorId}`}>{this.state.course.authorName}</Link>
+                                        <span className="meta-id">指导教师</span>
+                                        <Link className="name" to={`/user/${this.state.course.authorId}`}><img width="15%" className="rounded-circle mr-3" src={headImg} />{this.state.course.authorName}</Link>
                                     </span>
                                     <span className="meta-details">
-                                        <span className="meta-id">Type</span>
+                                        <span className="meta-id">课程类型</span>
                                         <span>{this.state.course.type}</span>
                                     </span>
                                     <span className="meta-details">
-                                        <span className="meta-id">Status</span>
+                                        <span className="meta-id">当前状态</span>
                                         <span className="rating">{convertToChinese(this.state.course.status)}</span>
                                     </span>
                                     </div>
                                     <img className="radius" src={this.state.course.coverImage ? 'http://' + this.state.course.coverImage : ''} alt="Course Image" />
                                     <div className="course-single-details">
                                         <div className="nav nav-tabs" id="nav-tab" role="tablist">
-                                            <a className="nav-item nav-link active" id="nav-1" data-toggle="tab" href="#curriculum" role="tab" aria-controls="curriculum" aria-selected="true">Curriculum</a>
-                                            <a className="nav-item nav-link" id="nav-2" data-toggle="tab" href="#description" role="tab" aria-controls="description" aria-selected="false">Description</a>
-                                            <a className="nav-item nav-link" id="nav-3" data-toggle="tab" href="#instructor" role="tab" aria-controls="instructor" aria-selected="false">Instructor</a>
-                                            <a className="nav-item nav-link" id="nav-4" data-toggle="tab" href="#reviews" role="tab" aria-controls="reviews" aria-selected="false">Reviews</a>
+                                            <a className="nav-item nav-link active" id="nav-1" data-toggle="tab" href="#curriculum" role="tab" aria-controls="curriculum" aria-selected="true">开课流程</a>
+                                            <a className="nav-item nav-link" id="nav-2" data-toggle="tab" href="#description" role="tab" aria-controls="description" aria-selected="false">课程详情</a>
+                                            <a className="nav-item nav-link" id="nav-3" data-toggle="tab" href="#instructor" role="tab" aria-controls="instructor" aria-selected="false">指导老师</a>
+                                            <a className="nav-item nav-link" id="nav-4" data-toggle="tab" href="#reviews" role="tab" aria-controls="reviews" aria-selected="false">学生评价</a>
                                         </div>
                                         <div className="tab-content" id="nav-tabContent">
                                             <div className="tab-pane fade show active" id="curriculum" role="tabpanel" aria-labelledby="curriculum">
-                                                <h4 className="title">Curriculum for this Course</h4>
+                                                <h4 className="title">该课程的募集情况</h4>
                                                 <div className="curriculum-details">
                                                     <div className="content-table">
-                                                        <span className="title">Course Collection Time</span>
+                                                        <span className="title">课程募集时间段</span>
                                                         <ul className="content-list">
                                                             <li>
-                                                                <span className="float-left" style={ autoWidth }><a href=""><i className="far fa-file"></i> Course Collection Start Time</a></span>
+                                                                <span className="float-left" style={ autoWidth }><a href=""><i className="far fa-file"></i> 课程开始募集时间</a></span>
                                                                 <span className="float-right">{ this.state.course.courseCollectionStartTime }</span>
                                                             </li>
                                                             <li>
-                                                                <span className="float-left" style={ autoWidth }><a href=""><i className="fa fa-play-circle"></i> Course Collection End Time</a></span>
+                                                                <span className="float-left" style={ autoWidth }><a href=""><i className="fa fa-play-circle"></i> 课程结束募集时间</a></span>
                                                                 <span className="float-right">{ this.state.course.courseCollectionEndTime }</span>
                                                             </li>
                                                         </ul>
                                                     </div>
                                                     <div className="content-table">
-                                                        <span className="title">Course Time</span>
+                                                        <span className="title">开课时间</span>
                                                         <ul className="content-list">
                                                             <li>
-                                                                <span className="float-left" style={ autoWidth }><a href=""><i className="far fa-file"></i> Course Start Time</a></span>
+                                                                <span className="float-left" style={ autoWidth }><a href=""><i className="far fa-file"></i> 课程开始时间</a></span>
                                                                 <span className="float-right">{ this.state.course.courseStartTime }</span>
                                                             </li>
                                                             <li>
-                                                                <span className="float-left" style={ autoWidth }><a href=""><i className="fa fa-play-circle"></i> Course Duration Time</a></span>
-                                                                <span className="float-right">{ this.state.course.courseDurationTime } min</span>
+                                                                <span className="float-left" style={ autoWidth }><a href=""><i className="fa fa-play-circle"></i> 课程授课时长</a></span>
+                                                                <span className="float-right">{ this.state.course.courseDurationTime } 分钟</span>
                                                             </li>
                                                         </ul>
                                                     </div>
                                                     <div className="content-table">
-                                                        <span className="title">Student Amount</span>
+                                                        <span className="title">募集进度</span>
                                                         <ul className="content-list">
                                                             <li>
-                                                                <span className="float-left" style={ autoWidth }><a href=""><i className="far fa-file"></i> Target Student Amount</a></span>
+                                                                <span className="float-left" style={ autoWidth }><a href=""><i className="far fa-file"></i> 目标学生数量</a></span>
                                                                 <span className="float-right">{ this.state.course.targetStudentAmount }</span>
                                                             </li>
                                                             <li>
-                                                                <span className="float-left" style={ autoWidth }><a href=""><i className="fa fa-play-circle"></i> Current Student Amount</a></span>
+                                                                <span className="float-left" style={ autoWidth }><a href=""><i className="fa fa-play-circle"></i> 当前已经报名学生数量</a></span>
                                                                 <span className="float-right">{ this.state.course.currentStudentAmount }</span>
                                                             </li>
                                                         </ul>
@@ -226,12 +230,12 @@ export class SingleCourse extends React.Component {
                                                 </div>
                                             </div>
                                             <div className="tab-pane fade" id="description" role="tabpanel" aria-labelledby="description">
-                                                <h4 className="title">Course Description</h4>
+                                                <h4 className="title">课程详情</h4>
                                                 <p>{ this.state.course.detail }</p>
                                             </div>
                                             <div className="tab-pane fade" id="instructor" role="tabpanel" aria-labelledby="instructor">
                                                 <div className="author-bio">
-                                                    <h3 className="title">About the Instructor</h3>
+                                                    <h3 className="title">关于指导教师</h3>
                                                     <div className="author-contents media">
                                                         <div className="author-avatar float-left">
                                                             <img className="radius" src={this.state.authorInfo.headImage ? 'http://' + this.state.authorInfo.headImage : ''} alt="Avatar" />
@@ -245,7 +249,7 @@ export class SingleCourse extends React.Component {
                                                 </div>
                                             </div>
                                             <div className="tab-pane fade" id="reviews" role="tabpanel" aria-labelledby="reviews">
-                                                <h3 className="title">Student Reviews</h3>
+                                                <h3 className="title">学生评价</h3>
                                                 <div className="course-reviews">
                                                     <div className="review-contents">
                                                         <ol className="review-list">
@@ -285,7 +289,7 @@ export class SingleCourse extends React.Component {
                                                 {
                                                     sessionStorage.getItem('jsUser') ?
                                                         <div className="respond">
-                                                            <h3 className="title">Add Your Comment</h3>
+                                                            <h3 className="title">添加评价</h3>
                                                             <form className="comment-form" onSubmit={ this.submitCommentInfo }>
                                                                 <textarea id="comment" className="form-control" name="comment" placeholder="Comment" rows="8"
                                                                           onChange={ this.handleCommentChange } value={ this.state.comment } required>
@@ -304,12 +308,12 @@ export class SingleCourse extends React.Component {
                                         <button className="btn btn-lg enroll-btn" onClick={ this.buyCourse.bind(this, this.state.course.id) }>BUY</button>
                                         <div className="info">
                                             <ul className="info-list">
-                                                <li><span className="price">Price: {this.state.course.price}</span></li>
+                                                <li><span className="price">课程价格 {this.state.course.price} 元</span></li>
                                                 <li>
-                                                    <p>Start Time</p>{this.state.course.courseStartTime}
+                                                    <p>开课时间</p>{this.state.course.courseStartTime}
                                                 </li>
-                                                <li><span>Duration Time: {this.state.course.courseDurationTime}</span></li>
-                                                <li><span>Student Amount: {`${this.state.course.currentStudentAmount}/${this.state.course.targetStudentAmount}`}</span></li>
+                                                <li><span>授课时长: {this.state.course.courseDurationTime} 分钟</span></li>
+                                                <li><span>目标人数: {`${this.state.course.currentStudentAmount}/${this.state.course.targetStudentAmount}`}</span></li>
                                             </ul>
                                         </div>
                                     </aside>

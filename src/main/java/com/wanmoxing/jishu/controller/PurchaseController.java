@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.fastjson.JSONObject;
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;
 import com.alipay.api.internal.util.AlipaySignature;
@@ -48,6 +49,54 @@ public class PurchaseController {
 	private CourseService courseService;
 	@Resource
 	private PurchaseService purchaseService;
+	
+	/**
+	 * 购买课程前的校验
+	  {
+	  		"buyerId": 1,
+	  		"courseId": 1
+	  }
+	 * @return
+	 */
+	@RequestMapping(value = "/purchaseCourseCheck", method = RequestMethod.POST)
+	public ResultDTO purchaseCourseCheck(HttpSession session, @RequestBody JSONObject jsonParams) {
+		ResultDTO result = new ResultDTO();
+		try {
+			int buyerId = jsonParams.getInteger("buyerId");
+			int courseId = jsonParams.getInteger("courseId");
+			
+			if (!CommonConstants.DEV_MODE && !CommUtil.isUserLogined(session)) {
+				result.setStatus(ResultDTOStatus.ERROR.getStatus());
+				result.setErrorMsg("用户未登录!");
+			}
+			
+			Course course = courseService.find(Integer.valueOf(courseId));
+			User user = userService.findById(Integer.valueOf(buyerId));
+			
+			if (course == null) {
+				result.setStatus(ResultDTOStatus.ERROR.getStatus());
+				result.setErrorMsg("课程不存在！！！购买失败");
+			}
+			
+			if (user == null) {
+				result.setStatus(ResultDTOStatus.ERROR.getStatus());
+				result.setErrorMsg("购买者不存在！！！购买失败");
+			}
+			
+			int purchasedNumber = purchaseService.findPayedNumPurchaseByBuyerIdAndCourseId(Integer.valueOf(courseId), Integer.valueOf(buyerId));
+			if (purchasedNumber > 0) {
+				result.setStatus(ResultDTOStatus.ERROR.getStatus());
+				result.setErrorMsg("您已购买，无需重复购买！");
+			}
+			
+			return result;
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus(ResultDTOStatus.ERROR.getStatus());
+			result.setErrorMsg("Exception occured!");
+			return result;
+		}
+	}
 
 	/**
 	 * 购买课程
@@ -63,22 +112,8 @@ public class PurchaseController {
 			@RequestParam String courseId, 
 			@RequestParam String buyerId) {
 		try {
-			if (!CommonConstants.DEV_MODE && !CommUtil.isUserLogined(session)) {
-				System.out.println("用户未登录!购买失败！");
-				return;
-			}
-			
 			Course course = courseService.find(Integer.valueOf(courseId));
-			User user = userService.findById(Integer.valueOf(buyerId));
-			if (course == null) {
-				System.out.println("课程(id:" + courseId + ")不存在！！！购买失败");
-				return;
-			}
-			if (user == null) {
-				System.out.println("购买者(id:" + buyerId + ")不存在！！！购买失败");
-				return;
-			}
-
+			
 			Purchase purchase = new Purchase();
 			purchase.setId(IdGenerator.newId());
 			purchase.setCourseId(Integer.valueOf(courseId));
@@ -235,10 +270,6 @@ public class PurchaseController {
 					purchase.setStatus(PurchaseStatus.ENDED.getStatus());
 					purchase.setUpdatedTime(new Timestamp(System.currentTimeMillis()));
 					purchaseService.update(purchase);
-					
-					Course course = courseService.find(purchase.getCourseId());
-					course.setCurrentStudentAmount(course.getCurrentStudentAmount() + 1);
-					courseService.update(course);
 				} 
 				// 付款完成后，支付宝系统发送该交易状态通知
 				else if (trade_status.equals("TRADE_SUCCESS")) {
@@ -253,6 +284,10 @@ public class PurchaseController {
 					purchase.setStatus(PurchaseStatus.PAYED.getStatus());
 					purchase.setUpdatedTime(new Timestamp(System.currentTimeMillis()));
 					purchaseService.update(purchase);
+					
+					Course course = courseService.find(purchase.getCourseId());
+					course.setCurrentStudentAmount(course.getCurrentStudentAmount() + 1);
+					courseService.update(course);
 				}
 			}
 		} catch (Exception e) {

@@ -32,6 +32,11 @@ public class Course {
 	 * 课程作者昵称
 	 */
 	private String authorName;
+
+	/**
+	 * 课程作者头像
+	 */
+	private String authorHead;
 	
 	/**
 	 * 课程价格
@@ -72,7 +77,7 @@ public class Course {
 	 * 课程当前状态
 	 */
 	private String status;
-	
+
 	/**
 	 * 课程类型
 	 */
@@ -81,7 +86,15 @@ public class Course {
 	private Timestamp createdTime = new Timestamp(System.currentTimeMillis());
 	
 	private Timestamp updatedTime;
-	
+
+	public String getAuthorHead() {
+		return authorHead;
+	}
+
+	public void setAuthorHead(String authorHead) {
+		this.authorHead = authorHead;
+	}
+
 	public int getId() {
 		return id;
 	}

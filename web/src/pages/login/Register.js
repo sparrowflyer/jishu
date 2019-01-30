@@ -174,6 +174,11 @@ class Register extends React.Component {
                         sendEmailLoading: false
                     }
                 });
+                if (data === 'success') {
+                    this.props.alert.success('发送邮箱验证码成功。');
+                } else {
+                    this.props.alert.error('发送邮箱验证码失败，请重新发送。');
+                }
             })
             .catch((error) => {
                 this.setState((state) => {
@@ -182,6 +187,7 @@ class Register extends React.Component {
                         sendEmailLoading: false
                     }
                 });
+                this.props.alert.error('发送邮箱验证码失败。');
             });
     }
 
@@ -266,7 +272,7 @@ class Register extends React.Component {
                                             <p className="form-input">
                                                 <input type="text" name="emailCode" id="email_code" style={ legalEmailInput } value={ this.state.emailCode }
                                                        placeholder="Email Verification Code" onChange={ this.handleInputChange } required />
-                                                <input type="button" style={ this.state.sendEmailLoading ? {} : legalEmailButton } value="Send"
+                                                <input type="button" style={ this.state.sendEmailLoading ? {"width": "40%"} : legalEmailButton } value="Send"
                                                        disabled={ this.state.sendEmailLoading } onClick={ this.sendEmailCode } />
                                             </p>
                                             : null

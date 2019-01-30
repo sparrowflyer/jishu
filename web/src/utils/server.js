@@ -5,7 +5,7 @@ async function getVerifyCodeImage() {
 
 async function getEmailVerifyCode(email) {
     let res = await fetch('/jishu/sendVerifyCodeEmail?emailTo=' + encodeURIComponent(email));
-    return (await res.json());
+    return (await res.text());
 }
 
 async function getUserInfo(userID) {

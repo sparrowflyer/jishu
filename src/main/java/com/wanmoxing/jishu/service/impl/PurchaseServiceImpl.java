@@ -1,6 +1,8 @@
 package com.wanmoxing.jishu.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -46,6 +48,14 @@ public class PurchaseServiceImpl implements PurchaseService {
 	@Override
 	public void delete(String id) {
 		purchaseMapper.delete(id);
+	}
+
+	@Override
+	public int findPayedNumPurchaseByBuyerIdAndCourseId(int courseId, int buyerId) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("courseId", courseId);
+		params.put("buyerId", buyerId);
+		return purchaseMapper.findPayedNumPurchaseByBuyerIdAndCourseId(params);
 	}
 
 }

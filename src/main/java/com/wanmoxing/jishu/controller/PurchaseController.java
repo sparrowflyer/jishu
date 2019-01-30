@@ -78,6 +78,12 @@ public class PurchaseController {
 				System.out.println("购买者(id:" + buyerId + ")不存在！！！购买失败");
 				return;
 			}
+			
+			int purchasedNumber = purchaseService.findPayedNumPurchaseByBuyerIdAndCourseId(Integer.valueOf(courseId), Integer.valueOf(buyerId));
+			if (purchasedNumber > 0) {
+				System.out.println("用户(" + buyerId + ")已购买课程("+courseId+")，无需重复购买！");
+				return;
+			}
 
 			Purchase purchase = new Purchase();
 			purchase.setId(IdGenerator.newId());

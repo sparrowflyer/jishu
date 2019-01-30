@@ -1,7 +1,8 @@
 import React from 'react';
-import { Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Header } from '../../components/common/Header.js';
 import { Footer } from '../../components/common/Footer.js';
+import { postJson } from '../../utils/server.js';
 
 function Banner() {
     return (
@@ -98,124 +99,61 @@ function Promotion() {
     );
 }
 
-function CourseCategory() {
-    return (
-        <section className="course-category">
-            <div className="section-padding">
-                <div className="container">
-                    <div className="top-content text-center">
-                        <h2 className="section-title">课程模块</h2>
-                        <p>正在开设的课程模块</p>
-                    </div>
-                    <div className="category-items">
-                        <div className="item radius text-center">
-                            <div className="item-thumb"><img className="radius" src="/images/category/1.jpg" alt="Item Thumbnail" /></div>
-                            <div className="item-details">
-                                <a href="#">
-                                    <div className="item-texts">
-                                        <i className="icon-layers"></i><span className="item-title">技能</span>
-                                    </div>
-                                </a>
-                            </div>
+class CourseCategory extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            courseTypes: []
+        };
+    }
+    componentDidMount() {
+        postJson('/getCourseTypes')
+            .then((data) => {
+                if (data.status === 'success') {
+                    this.setState((state) => {
+                        return {
+                            ...state,
+                            courseTypes: data.data || []
+                        };
+                    });
+                }
+            });
+    }
+    render() {
+        return (
+            <section className="course-category">
+                <div className="section-padding">
+                    <div className="container">
+                        <div className="top-content text-center">
+                            <h2 className="section-title">课程模块</h2>
+                            <p>正在开设的课程模块</p>
                         </div>
-                        {/*<div className="item radius text-center">*/}
-                            {/*<div className="item-thumb"><img className="radius" src="/images/category/2.jpg" alt="Item Thumbnail" /></div>*/}
-                            {/*<div className="item-details">*/}
-                                {/*<a href="#">*/}
-                                    {/*<div className="item-texts">*/}
-                                        {/*<i className="icon-chemistry"></i><span className="item-title">Development</span>*/}
-                                    {/*</div>*/}
-                                {/*</a>*/}
-                            {/*</div>*/}
-                        {/*</div>*/}
-                        {/*<div className="item radius text-center">*/}
-                            {/*<div className="item-thumb"><img className="radius" src="/images/category/3.jpg" alt="Item Thumbnail" /></div>*/}
-                            {/*<div className="item-details">*/}
-                                {/*<a href="#">*/}
-                                    {/*<div className="item-texts">*/}
-                                        {/*<i className="icon-puzzle"></i><span className="item-title">IT & Software</span>*/}
-                                    {/*</div>*/}
-                                {/*</a>*/}
-                            {/*</div>*/}
-                        {/*</div>*/}
-                        {/*<div className="item radius text-center">*/}
-                            {/*<div className="item-thumb"><img className="radius" src="/images/category/4.jpg" alt="Item Thumbnail" /></div>*/}
-                            {/*<div className="item-details">*/}
-                                {/*<a href="#">*/}
-                                    {/*<div className="item-texts">*/}
-                                        {/*<i className="icon-briefcase"></i><span className="item-title">商业</span>*/}
-                                    {/*</div>*/}
-                                {/*</a>*/}
-                            {/*</div>*/}
-                        {/*</div>*/}
-                        {/*<div className="item radius text-center">*/}
-                            {/*<div className="item-thumb"><img className="radius" src="/images/category/5.jpg" alt="Item Thumbnail" /></div>*/}
-                            {/*<div className="item-details">*/}
-                                {/*<a href="#">*/}
-                                    {/*<div className="item-texts">*/}
-                                        {/*<i className="icon-handbag"></i><span className="item-title">Marketing</span>*/}
-                                    {/*</div>*/}
-                                {/*</a>*/}
-                            {/*</div>*/}
-                        {/*</div>*/}
-                        <div className="item radius text-center">
-                            <div className="item-thumb"><img className="radius" src="/images/category/6.jpg" alt="Item Thumbnail" /></div>
-                            <div className="item-details">
-                                <a href="#">
-                                    <div className="item-texts">
-                                        <i className="icon-layers"></i><span className="item-title">生活</span>
-                                    </div>
-                                </a>
-                            </div>
+                        <div className="category-items">
+                            {
+                                this.state.courseTypes.map((courseType, index) => {
+                                    return (
+                                        <div className="item radius text-center" key={index}>
+                                            <div className="item-thumb"><img className="radius" src="/images/category/1.jpg" alt="Item Thumbnail" /></div>
+                                            <div className="item-details">
+                                                <Link to={{pathname: "/course", state: courseType}}>
+                                                    <div className="item-texts">
+                                                        <i className="icon-layers"></i><span className="item-title">{courseType}</span>
+                                                    </div>
+                                                </Link>
+                                            </div>
+                                        </div>
+                                    )
+                                })
+                            }
                         </div>
-                        <div className="item radius text-center">
-                            <div className="item-thumb"><img className="radius" src="/images/category/7.jpg" alt="Item Thumbnail" /></div>
-                            <div className="item-details">
-                                <a href="#">
-                                    <div className="item-texts">
-                                        <i className="icon-chemistry"></i><span className="item-title">摄影</span>
-                                    </div>
-                                </a>
-                            </div>
+                        <div className="btn-container text-center bm8">
+                            <Link className="btn btn-lg section-btn" to="/course">查看全部课程</Link>
                         </div>
-                        <div className="item radius text-center">
-                            <div className="item-thumb"><img className="radius" src="/images/category/8.jpg" alt="Item Thumbnail" /></div>
-                            <div className="item-details">
-                                <a href="#">
-                                    <div className="item-texts">
-                                        <i className="icon-puzzle"></i><span className="item-title">音乐</span>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                        {/*<div className="item radius text-center">*/}
-                            {/*<div className="item-thumb"><img className="radius" src="/images/category/9.jpg" alt="Item Thumbnail" /></div>*/}
-                            {/*<div className="item-details">*/}
-                                {/*<a href="#">*/}
-                                    {/*<div className="item-texts">*/}
-                                        {/*<i className="icon-briefcase"></i><span className="item-title">Academics</span>*/}
-                                    {/*</div>*/}
-                                {/*</a>*/}
-                            {/*</div>*/}
-                        {/*</div>*/}
-                        <div className="item radius text-center">
-                            <div className="item-thumb"><img className="radius" src="/images/category/10.jpg" alt="Item Thumbnail" /></div>
-                            <div className="item-details">
-                                <a href="#">
-                                    <div className="item-texts">
-                                        <i className="icon-handbag"></i><span className="item-title">语言</span>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="btn-container text-center bm8">
-                        <a href="course" className="btn btn-lg section-btn">查看全部课程</a>
                     </div>
                 </div>
-            </div>
-        </section>
-    );
+            </section>
+        );
+    }
 }
 
 function PopularCourses() {

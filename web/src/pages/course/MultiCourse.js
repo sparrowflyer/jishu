@@ -11,10 +11,11 @@ import { postJson } from '../../utils/server.js';
 class MultiCourse extends React.Component {
     constructor(props) {
         super(props);
+        let courseState = this.props.location.state;
         this.state = {
             courses: [],
             courseTypes: [],
-            courseType: '',
+            courseType: courseState || '',
             currentPage: 1,
             totalCourses: 0
         };
@@ -72,19 +73,29 @@ class MultiCourse extends React.Component {
             this.props.alert.error('请先登录。');
             return ;
         }
-        window.location.href = `/jishu/purchaseCourse?courseId=${courseID}&buyerId=${userID}`;
+        postJson('/purchaseCourseCheck', {
+            "courseId": courseID,
+            "buyerId": userID
+        }).then((data) => {
+            if (data.status === 'success') {
+                window.location.href = `/jishu/purchaseCourse?courseId=${courseID}&buyerId=${userID}`;
+            } else {
+                this.props.alert.error(data.errorMsg || data.error);
+            }
+        }).catch((error) => {
+            this.props.alert.error('无法检测用户支付情况');
+        });
     }
 
     componentDidMount() {
         this.setState((state) => {
             return {
+                ...state,
                 courses: [],
-                courseTypes: [],
-                courseType: '',
                 currentPage: 1
             };
         });
-        this.getCourses('', 1);
+        this.getCourses(this.state.courseType, 1);
         postJson('/getCourseTypes')
             .then((data) => {
                 if (data.status === 'success') {

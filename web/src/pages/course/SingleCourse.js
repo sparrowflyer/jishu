@@ -144,7 +144,18 @@ export class SingleCourse extends React.Component {
             this.props.alert.error('请先登录。');
             return ;
         }
-        window.location.href = `/jishu/purchaseCourse?courseId=${courseID}&buyerId=${userID}`;
+        postJson('/purchaseCourseCheck', {
+            "courseId": courseID,
+            "buyerId": userID
+        }).then((data) => {
+            if (data.status === 'success') {
+                window.location.href = `/jishu/purchaseCourse?courseId=${courseID}&buyerId=${userID}`;
+            } else {
+                this.props.alert.error(data.errorMsg || data.error);
+            }
+        }).catch((error) => {
+            this.props.alert.error('无法检测用户支付情况');
+        });
     }
 
     render() {

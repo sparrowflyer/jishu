@@ -82,19 +82,23 @@ class AddBlog extends React.Component {
             this.props.alert.error('Article Content is required.');
             return ;
         }
-        if (this.state.image) {
-            uploadImage(this.state.image)
-                .then((data) => {
-                    if (data.status === 'success') {
-                        this.state.blog ? this.editArticle(data.data) : this.addArticle(data.data);
-                    } else {
-                        this.props.alert.error(data.errorMsg || data.error);
-                    }
-                }).catch((error) => {
-                    this.props.alert.error('上传图片失败。');
-                });
+        if (this.state.blog) {
+            this.editArticle();
         } else {
-            this.state.blog ? this.editArticle() : this.addArticle();
+            if (this.state.image) {
+                uploadImage(this.state.image)
+                    .then((data) => {
+                        if (data.status === 'success') {
+                            this.addArticle(data.data);
+                        } else {
+                            this.props.alert.error(data.errorMsg || data.error);
+                        }
+                    }).catch((error) => {
+                        this.props.alert.error('上传图片失败。');
+                    });
+            } else {
+                this.addArticle();
+            }
         }
     }
 
@@ -133,7 +137,7 @@ class AddBlog extends React.Component {
         });
     }
 
-    editArticle(image = '') {
+    editArticle() {
         this.setState((state) => {
             return {
                 ...state,
@@ -145,7 +149,7 @@ class AddBlog extends React.Component {
             "uid": this.state.blog.uid,
             "title": this.state.title[0],
             "content": this.state.content,
-            "imagesrc": image,
+            "imagesrc": this.state.showImage,
             "typeId": Array.isArray(this.state.typeId) ? this.state.typeId[0] : (this.state.typeId || 0)
         }).then((data) => {
             this.setState((state) => {
@@ -198,14 +202,13 @@ class AddBlog extends React.Component {
                                             }
                                         </select>
                                     </p>
-                                    <p className="form-input">
-                                        {
-                                            this.state.showImage ? <img src={'http://' + this.state.showImage} /> : null
-                                        }
-                                        <input id="img" name="img" type="file"
-                                               accept="image/jpeg,image/x-png,image/gif"
-                                               onChange={ this.handleImageChange } />
-                                    </p>
+                                    {
+                                        this.state.showImage ? null : <p className="form-input">
+                                            <input id="img" name="img" type="file"
+                                                   accept="image/jpeg,image/x-png,image/gif"
+                                                   onChange={ this.handleImageChange } />
+                                        </p>
+                                    }
                                 </form>
                                 <Editor value={ this.state.content } onChange={ this.handleContentChange } />
                                 <p className="form-input" style={{marginTop: '20px'}}>

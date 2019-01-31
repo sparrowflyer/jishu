@@ -100,7 +100,7 @@ export class MultiBlog extends React.Component {
                                                     </div>
                                                     <div className="content-details media-body">
                                                         <h3 className="entry-title">
-                                                            <Link to={{pathname: `/blog/${article.aid}`, state: article}}>{article.title}</Link>
+                                                            <Link to={`/blog/${article.aid}`}>{article.title}</Link>
                                                         </h3>
                                                         <div className="entry-meta">
                                                             <span className="author"><img width="5%" className="rounded-circle mr-3" src={headImage}  alt="Avatar Image" /><Link to={`/user/${article.user.id}`}>作者:{article.user.nickName}</Link></span>
@@ -113,7 +113,7 @@ export class MultiBlog extends React.Component {
                                                             <span className="comments"><i className="far fa-save"></i> <a>收藏:{article.collectCount}</a></span>
                                                             <span className="comments"><i className="icon-bubbles"></i> <a>评论:{article.commentCount}</a></span>
                                                         </div>
-                                                        <Link to={{pathname: `/blog/${article.aid}`, state: article}} className="btn btn-lg">阅读全文</Link>
+                                                        <Link to={`/blog/${article.aid}`} className="btn btn-lg">阅读全文</Link>
                                                     </div>
                                                 </div>
                                             </article>

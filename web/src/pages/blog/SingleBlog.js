@@ -1,4 +1,5 @@
 import React from 'react';
+import Editor from 'react-umeditor';
 import { withAlert } from 'react-alert';
 import { withRouter } from 'react-router';
 import { Link } from 'react-router-dom';
@@ -7,6 +8,7 @@ import { BreadCrumb } from '../../components/common/BreadCrumb.js';
 import { Footer } from '../../components/common/Footer.js';
 import { StandardInnerArticleSingle, getMonth, getDate } from '../../components/ControlInBlog.js';
 import { postJson, getArticleDetail } from '../../utils/server.js';
+
 const fanStyle = {
     display: "block",
     color: "#6d8591",
@@ -14,6 +16,7 @@ const fanStyle = {
     lineHeight: "26px",
     margin: "0.5em 0"
 };
+
 const marginRight10 = {
     marginRight: '10px'
 };
@@ -55,109 +58,72 @@ class SingleBlog extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            blog: this.props.location.state,
+            blog: {},
+            blogUser: {},
             addedComment: '',
             comments: [],
             releaseCourses: [],
             releasePosts:[],
-            isMyBlog: false,
+            jsUserID: '',
             isGood: false,
             isBad: false,
             isCollected: false
         };
-        this.getGoodOrNot = this.getGoodOrNot.bind(this);
-        this.getBadOrNot = this.getBadOrNot.bind(this);
-        this.getCollectedOrNot = this.getCollectedOrNot.bind(this);
         this.setGood = this.setGood.bind(this);
         this.setBad = this.setBad.bind(this);
         this.setCollect = this.setCollect.bind(this);
         this.report = this.report.bind(this);
-        this.getArticleDetail = this.getArticleDetail.bind(this);
+        this.getGoodOrBad = this.getGoodOrBad.bind(this);
+        this.getCollectedOrNot = this.getCollectedOrNot.bind(this);
+        this.getComment = this.getComment.bind(this);
         this.addComment = this.addComment.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleReply = this.handleReply.bind(this);
     }
 
-    setGood() {
-        postJson(`/tieba/clickGood?aid=${this.state.blog.aid}`)
+    getComment() {
+        getArticleDetail(this.state.blog.aid)
             .then((data) => {
                 if (data.status === 'success') {
-                    this.getGoodOrNot();
-                    this.getBadOrNot();
-                } else {
-                    this.props.alert.error(data.errorMsg || data.error);
+                    this.setState((state) => {
+                        return {
+                            ...state,
+                            comments: data.data.comments
+                        }
+                    }, () => {
+                        floorComment = this.state.comments;
+                    });
                 }
-            }).catch((error) => {
-            this.props.alert.success('点赞失败!');
+            });
+    }
+
+    handleInputChange(addedComment) {
+        this.setState((state) => {
+            return {
+                ...state,
+                addedComment
+            }
         });
     }
 
-    setBad() {
-        postJson(`/tieba/clickBad?aid=${this.state.blog.aid}`)
-            .then((data) => {
-                if (data.status === 'success') {
-                    this.getGoodOrNot();
-                    this.getBadOrNot();
-                } else {
-                    this.props.alert.error(data.errorMsg || data.error);
-                }
-            }).catch((error) => {
-            this.props.alert.success('点踩失败!');
-        });
-    }
-
-    setCollect() {
-        postJson(`/tieba/clickCollection?aid=${this.state.blog.aid}`)
-            .then((data) => {
-                if (data.status === 'success') {
-                    this.getCollectedOrNot();
-                } else {
-                    this.props.alert.error(data.errorMsg || data.error);
-                }
-            }).catch((error) => {
-            this.props.alert.success('收藏失败!');
-        });
-    }
-
-    report() {
-        postJson(`/tieba/reportArticle?aid=${this.state.blog.aid}`)
-            .then((data) => {
-                if (data.status === 'success') {
-                    this.props.alert.success('举报成功!');
-                } else {
-                    this.props.alert.error(data.errorMsg || data.error);
-                }
-            }).catch((error) => {
-            this.props.alert.success('举报失败!');
-        });
-    }
-
-    getArticleDetail() {
-        if (sessionStorage.getItem('jsUser')) {
-            getArticleDetail(this.state.blog.aid)
-                .then((data) => {
-                    if (data.status === 'success') {
-                        this.setState((state) => {
-                            return {
-                                ...state,
-                                comments: data.data.comments
-                            }
-                        }, () => {
-                            floorComment = this.state.comments;
-                        });
-                    }
-                });
-        }
+    handleReply(event, index) {
+        floorComment[index].replyContent = event.target.value;
     }
 
     addComment() {
         event.preventDefault();
         postJson('/tieba/addComment', {
             aid: this.state.blog.aid,
-            content: this.state.addedComment[0]
+            content: this.state.addedComment
         }).then((data) => {
             if (data.status === 'success') {
-                this.getArticleDetail();
+                this.getComment();
+                this.setState((state) => {
+                    return {
+                        ...state,
+                        addedComment: ''
+                    }
+                })
                 this.props.alert.success('添加评价成功!');
             } else {
                 this.props.alert.error(data.errorMsg || data.error);
@@ -182,7 +148,7 @@ class SingleBlog extends React.Component {
             content: floorComment[index].replyContent
         }).then((data) => {
             if (data.status === 'success') {
-                this.getArticleDetail();
+                this.getComment();
                 this.props.alert.success('添加评价成功!');
             } else {
                 this.props.alert.error(data.errorMsg || data.error);
@@ -192,23 +158,60 @@ class SingleBlog extends React.Component {
         });
     }
 
-    handleInputChange(event) {
-        const name = event.target.name;
-        const value = event.target.value;
-        this.setState((state) => {
-            return {
-                ...state,
-                [name]: [value]
-            };
-        });
+    setGood() {
+        postJson(`/tieba/clickGood?aid=${this.state.blog.aid}`)
+            .then((data) => {
+                if (data.status === 'success') {
+                    this.getGoodOrBad(this.state.blog.aid);
+                } else {
+                    this.props.alert.error(data.errorMsg || data.error);
+                }
+            }).catch((error) => {
+                this.props.alert.success('点赞失败!');
+            });
     }
 
-    handleReply(event, index) {
-        floorComment[index].replyContent = event.target.value;
+    setBad() {
+        postJson(`/tieba/clickBad?aid=${this.state.blog.aid}`)
+            .then((data) => {
+                if (data.status === 'success') {
+                    this.getGoodOrBad(this.state.blog.aid);
+                } else {
+                    this.props.alert.error(data.errorMsg || data.error);
+                }
+            }).catch((error) => {
+                this.props.alert.success('点踩失败!');
+            });
     }
 
-    getGoodOrNot () {
-        postJson(`/tieba/isClickedGood?aid=${this.state.blog.aid}`)
+    setCollect() {
+        postJson(`/tieba/clickCollection?aid=${this.state.blog.aid}`)
+            .then((data) => {
+                if (data.status === 'success') {
+                    this.getCollectedOrNot(this.state.blog.aid);
+                } else {
+                    this.props.alert.error(data.errorMsg || data.error);
+                }
+            }).catch((error) => {
+                this.props.alert.success('收藏失败!');
+            });
+    }
+
+    report() {
+        postJson(`/tieba/reportArticle?aid=${this.state.blog.aid}`)
+            .then((data) => {
+                if (data.status === 'success') {
+                    this.props.alert.success('举报成功!');
+                } else {
+                    this.props.alert.error(data.errorMsg || data.error);
+                }
+            }).catch((error) => {
+                this.props.alert.success('举报失败!');
+            });
+    }
+
+    getGoodOrBad (articleID) {
+        postJson(`/tieba/isClickedGood?aid=${articleID}`)
             .then((data) => {
                 if (data.status === 'success') {
                     this.setState((state) => {
@@ -219,10 +222,7 @@ class SingleBlog extends React.Component {
                     });
                 }
             });
-    }
-
-    getBadOrNot () {
-        postJson(`/tieba/isClickedBad?aid=${this.state.blog.aid}`)
+        postJson(`/tieba/isClickedBad?aid=${articleID}`)
             .then((data) => {
                 if (data.status === 'success') {
                     this.setState((state) => {
@@ -235,8 +235,8 @@ class SingleBlog extends React.Component {
             });
     }
 
-    getCollectedOrNot () {
-        postJson(`/tieba/isClickedCollection?aid=${this.state.blog.aid}`)
+    getCollectedOrNot (articleID) {
+        postJson(`/tieba/isClickedCollection?aid=${articleID}`)
             .then((data) => {
                 if (data.status === 'success') {
                     this.setState((state) => {
@@ -250,50 +250,63 @@ class SingleBlog extends React.Component {
     }
 
     componentDidMount() {
-        let loginUserId;
+        let jsUserID = '';
         try {
-            loginUserId = JSON.parse(sessionStorage.getItem('jsUser')).id;
+            jsUserID = JSON.parse(sessionStorage.getItem('jsUser')).id;
         } catch (e) {
         }
         this.setState((state) => {
             return {
                 ...state,
-                isMyBlog: loginUserId === this.state.blog.uid
+                jsUserID
             }
         });
-        postJson('/getCreatedCourses', {
-            id: this.state.blog.uid
-        }).then((data) => {
-            if (data.status === 'success') {
-                this.setState((state) => {
-                    return {
-                        ...state,
-                        releaseCourses: data.data || []
-                    }
-                })
-            }
-        });
-        postJson('/userAllArticles', {
-            id: this.state.blog.uid
-        }).then((data) => {
-            if (data.status === 'success') {
+        getArticleDetail(this.props.match.params.blogID)
+            .then((data) => {
+                if (data.status === 'success') {
+                    let singleBlog = data.data;
+                    this.setState((state) => {
+                        return {
+                            ...state,
+                            blog: singleBlog,
+                            blogUser: singleBlog.user,
+                            comments: singleBlog.comments
+                        }
+                    }, () => {
+                        floorComment = this.state.comments;
+                    });
 
-                this.setState((state) => {
-                    return {
-                        ...state,
+                    postJson('/getCreatedCourses', {
+                        id: singleBlog.uid
+                    }).then((data) => {
+                        if (data.status === 'success') {
+                            this.setState((state) => {
+                                return {
+                                    ...state,
+                                    releaseCourses: data.data || []
+                                }
+                            })
+                        }
+                    });
 
-                        releasePosts: data.data || []
-                    }
-                })
-            }
-        });
-        this.getArticleDetail();
-        this.getGoodOrNot();
-        this.getBadOrNot();
-        this.getCollectedOrNot();
+                    postJson('/userAllArticles', {
+                        id: singleBlog.uid
+                    }).then((data) => {
+                        if (data.status === 'success') {
+                            this.setState((state) => {
+                                return {
+                                    ...state,
+                                    releasePosts: data.data || []
+                                }
+                            })
+                        }
+                    });
+
+                    this.getGoodOrBad(singleBlog.aid);
+                    this.getCollectedOrNot(singleBlog.aid);
+                }
+            });
     }
-
-
 
     render() {
         return (
@@ -320,7 +333,7 @@ class SingleBlog extends React.Component {
                                                 <div className="entry-meta clearfix">
                                                     <span className="author float-left">
                                                         <i className="icon-user"></i>
-                                                        <Link to={`/user/${this.state.blog.user.id}`}>{this.state.blog.user.nickName}</Link>
+                                                        <Link to={`/user/${this.state.blogUser.id}`}>{this.state.blogUser.nickName}</Link>
                                                     </span>
                                                     {
                                                         this.state.blog.articleType ?
@@ -330,7 +343,7 @@ class SingleBlog extends React.Component {
                                                             </span> : null
                                                     }
                                                     {
-                                                        this.state.isMyBlog ?
+                                                        this.state.jsUserID == this.state.blog.uid ?
                                                             <span className="author float-right" style={{marginRight: '10px'}}>
                                                                 <i className="fas fa-edit"></i>
                                                                 <Link to={{pathname: `/addBlog`, state: this.state.blog}}>编辑</Link>
@@ -374,9 +387,10 @@ class SingleBlog extends React.Component {
                                                                         <div className="comment-content media-body">
                                                                             <span className="time">{comment.createDate}</span>
                                                                             <span className="name"><Link to={`/user/${comment.user.id}`}>{comment.user.nickName}</Link></span>
-                                                                            <p className="description">{comment.content}</p>
+                                                                            <div dangerouslySetInnerHTML={{__html: comment.content}}></div>
                                                                         </div>
                                                                     </div>
+                                                                    <ChildBlog floors={comment.floors} />
                                                                     <div className="respond" style={{marginTop: '0'}}>
                                                                         {/*<h6 className="title">reply {comment.user.nickName}</h6>*/}
                                                                         <form method="post" className="comment-form" style={{marginTop: '1em'}}>
@@ -385,7 +399,6 @@ class SingleBlog extends React.Component {
                                                                             <input className="btn reply-btn" type="submit" value="回复" onClick={this.addFloorComment.bind(this, comment.cid, index)} />
                                                                         </form>
                                                                     </div>
-                                                                    <ChildBlog floors={comment.floors} />
                                                                 </li>
                                                             );
                                                         })
@@ -393,11 +406,8 @@ class SingleBlog extends React.Component {
                                                 </ol>
                                                 <div className="respond">
                                                     <h2 className="title">添加你的观点</h2>
-                                                    <form method="post" className="comment-form">
-                                                        <textarea id="addedComment" className="form-control" name="addedComment" placeholder="Comment"
-                                                                  rows="8" required onChange={ this.handleInputChange } value={ this.state.addedComment }></textarea>
-                                                        <input className="btn" type="submit" value="提交观点" onClick={this.addComment} />
-                                                    </form>
+                                                    <Editor value={ this.state.addedComment } onChange={ this.handleInputChange } />
+                                                    <input style={{marginTop: '10px'}} className="btn" type="submit" value="提交观点" onClick={this.addComment} />
                                                 </div>
                                             </div> : <Link to='/login'>登录查看评价</Link>
                                     }
@@ -410,8 +420,6 @@ class SingleBlog extends React.Component {
                                                 {
                                                     this.state.releasePosts.map((post) => {
                                                         return (
-
-
                                                             <article className="post type-post media" key={post.aid}>
                                                                 <div className="entry-thumbnail">
                                                                     <img src={'http://' + post.imagesrc} alt="post"/>
@@ -419,14 +427,10 @@ class SingleBlog extends React.Component {
                                                                 <div className="entry-content media-body">
                                                                     <h3 className="entry-title"><Link to={`/blog/${post.aid}`}><a>{post.title}</a></Link></h3>
                                                                     <div className="entry-meta">
-
                                                                         {/*<span >课程价格：{comment.price}</span>*/}
                                                                         <span className="time">
                                                                           <Link style={fanStyle} key={post.user.id} to={`/user/${post.user.id}`}> <img width="10%" className="rounded-circle mr-3" src={`http://${post.user.headImage}`}  alt="Avatar Image" />{post.user.nickName}</Link>博客创建时间：{post.createDate}
                                                                     </span>
-
-
-
                                                                     </div>
                                                                 </div>
                                                             </article>
@@ -439,11 +443,8 @@ class SingleBlog extends React.Component {
                                             <h2 className="widget-title">可能感兴趣课程</h2>
                                             <div className="widget-details">
                                                 {
-
                                                     this.state.releaseCourses.map((course) => {
-
                                                         return (
-
                                                             <article className="post type-post media" key={course.id}>
                                                                 <div className="entry-thumbnail">
                                                                     <img src={'http://' + course.coverImage} alt="post"/>
@@ -451,18 +452,13 @@ class SingleBlog extends React.Component {
                                                                 <div className="entry-content media-body">
                                                                     <h3 className="entry-title"><Link to={`/course/${course.id}`}>{course.title}</Link></h3>
                                                                     <div className="entry-meta">
-
                                                                     {/*<span >课程价格：{comment.price}</span>*/}
                                                                         <span className="time">
                                                                         课程价格：{course.price}元<br />
-
                                                                     </span>
-
                                                                     <span className="time">
-
                                                                         开课时间：{course.courseStartTime}
                                                                     </span>
-
                                                                     </div>
                                                                 </div>
                                                             </article>
@@ -471,9 +467,7 @@ class SingleBlog extends React.Component {
                                                 }
                                             </div>
                                         </div>
-
                                     </aside>
-
                                 </div>
                             </div>
                         </div>

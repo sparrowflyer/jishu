@@ -131,7 +131,7 @@ class MultiCourse extends React.Component {
                                                                 </div>
                                                                 <div className="item-details">
                                                                     <h3 className="item-title">
-                                                                        <Link to={{pathname: `/course/${course.id}`, state: course}}>{course.title}</Link>
+                                                                        <Link to={`/course/${course.id}`}>{course.title}</Link>
                                                                     </h3>
                                                                     <span className="instructor">
                                                                         <Link to={`/user/${course.authorId}`}>

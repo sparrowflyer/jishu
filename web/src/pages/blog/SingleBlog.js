@@ -449,7 +449,7 @@ class SingleBlog extends React.Component {
                                                                     <img src={'http://' + course.coverImage} alt="post"/>
                                                                 </div>
                                                                 <div className="entry-content media-body">
-                                                                    <h3 className="entry-title"><Link to={{pathname: `/course/${course.id}`, state: course}}>{course.title}</Link></h3>
+                                                                    <h3 className="entry-title"><Link to={`/course/${course.id}`}>{course.title}</Link></h3>
                                                                     <div className="entry-meta">
 
                                                                     {/*<span >课程价格：{comment.price}</span>*/}

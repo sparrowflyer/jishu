@@ -389,7 +389,7 @@ class User extends React.Component {
                                                 this.state.releaseCourses.map((course) => {
                                                     return (
                                                         <div style={{width: '100%', borderBottom: '1px solid #cfd8dc', padding: '10px 0 15px'}} key={course.id}>
-                                                            <h3 className="entry-title"><Link to={{pathname: `/course/${course.id}`, state: course}}>课程名称：{course.title}</Link></h3>
+                                                            <h3 className="entry-title"><Link to={`/course/${course.id}`}>课程名称：{course.title}</Link></h3>
 
                                                             <div className="entry-thumbnail">
                                                                 <img width="30%" src={'http://' + course.coverImage} alt="post"/>

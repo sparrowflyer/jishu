@@ -27,12 +27,13 @@ export class SingleCourse extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            course: this.props.location.state,
+            course: {},
             comments: [],
             authorInfo: {},
             comment: '',
             jsUserID: ''
         };
+        this.buyCourse = this.buyCourse.bind(this);
         this.handleCommentChange = this.handleCommentChange.bind(this);
         this.submitCommentInfo = this.submitCommentInfo.bind(this);
         this.getComments = this.getComments.bind(this);
@@ -48,9 +49,9 @@ export class SingleCourse extends React.Component {
         });
     }
 
-    getComments() {
+    getComments(courseID) {
         postJson('/getCourseComments', {
-            courseId: this.state.course.id
+            courseId: courseID
         }).then((data) => {
             if (data.status === 'success') {
                 this.setState((state) => {
@@ -68,7 +69,7 @@ export class SingleCourse extends React.Component {
             id: commentID
         }).then((data) => {
             if (data.status === 'success') {
-                this.getComments();
+                this.getComments(this.state.course.id);
             } else {
                 this.props.alert.error(data.errorMsg || data.error);
             }
@@ -96,7 +97,7 @@ export class SingleCourse extends React.Component {
             "content": this.state.comment[0]
         }).then((data) => {
             if (data.status === 'success') {
-                this.getComments();
+                this.getComments(this.state.course.id);
                 this.setState((state) => {
                     return {
                         ...state,
@@ -113,45 +114,57 @@ export class SingleCourse extends React.Component {
     }
 
     componentDidMount() {
-        this.setState((state) => {
-           return {
-               ...state,
-               comments: [],
-               authorInfo: {},
-               jsUserID: ''
-           }
-        });
+        let jsUserID = '';
         try {
-            this.setState((state) => {
-               return {
-                   ...state,
-                   jsUserID: JSON.parse(sessionStorage.getItem('jsUser')).id
-               }
-            });
+            jsUserID = JSON.parse(sessionStorage.getItem('jsUser')).id;
         } catch(e) {}
-        this.getComments();
-        getUserInfo(this.state.course.authorId)
-            .then((data) => {
-                if (data.status === 'success') {
-                    this.setState((state) => {
-                       return {
-                           ...state,
-                           authorInfo: data.data
-                       }
+        this.setState((state) => {
+            return {
+                ...state,
+                jsUserID
+            }
+        });
+        postJson('/getSingleCourse', {
+            courseId: this.props.match.params.courseID
+        }).then((data) => {
+            if (data.status === 'success') {
+                let singleCourse = data.data;
+                this.setState((state) => {
+                    return {
+                        ...state,
+                        course: singleCourse
+                    }
+                });
+                this.getComments(singleCourse.id);
+                getUserInfo(singleCourse.authorId)
+                    .then((userData) => {
+                        if (userData.status === 'success') {
+                            this.setState((state) => {
+                                return {
+                                    ...state,
+                                    authorInfo: userData.data
+                                }
+                            });
+                        }
                     });
-                }
-            });
+            }
+        });
     }
 
-    buyCourse(courseID) {
-        let userID = '';
-        try {
-            userID = JSON.parse(sessionStorage.getItem('jsUser')).id;
-        } catch(e) {}
+    buyCourse() {
+        let userID = this.state.jsUserID;
         if (!userID) {
-            this.props.alert.error('请先登录。');
-            return ;
+            this.props.alert.error('请登录再购买。');
+            sessionStorage.removeItem('jsUser');
+            this.setState((state) => {
+                return {
+                    ...state,
+                    jsUserID: ''
+                }
+            });
+            return;
         }
+        let courseID = this.state.course.id;
         postJson('/purchaseCourseCheck', {
             "courseId": courseID,
             "buyerId": userID
@@ -281,7 +294,7 @@ export class SingleCourse extends React.Component {
                                                                                         <img className="rounded-circle author-avatar" src="/images/comments/1.jpg" alt="RAvatar" />
                                                                                         <div className="author-details media-body">
                                                                                             <span className="time">{getTimeOfNow(comment.createdTime)}</span>
-                                                                                            <h3 className="name"><a href="">{comment.userName}</a></h3>
+                                                                                            <h3 className="name"><Link to={`/user/${comment.userId}`}>{comment.userName}</Link></h3>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
@@ -323,7 +336,7 @@ export class SingleCourse extends React.Component {
                                 </div>
                                 <div className="col-md-4">
                                     <aside className="sidebar">
-                                        <button className="btn btn-lg enroll-btn" onClick={ this.buyCourse.bind(this, this.state.course.id) }>BUY</button>
+                                        <button className="btn btn-lg enroll-btn" onClick={ this.buyCourse }>BUY</button>
                                         <div className="info">
                                             <ul className="info-list">
                                                 <li><span className="price">课程价格 {this.state.course.price} 元</span></li>

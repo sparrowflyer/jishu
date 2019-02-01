@@ -286,12 +286,13 @@ export class SingleCourse extends React.Component {
                                                         <ol className="review-list">
                                                             {
                                                                 this.state.comments.map((comment) => {
+                                                                    var userHead="http://"+comment.userHead;
                                                                     return (
                                                                         <li className="review" key={comment.id}>
                                                                             <div className="row">
                                                                                 <div className="col-md-5">
                                                                                     <div className="media">
-                                                                                        <img className="rounded-circle author-avatar" src="/images/comments/1.jpg" alt="RAvatar" />
+                                                                                        <img className="rounded-circle author-avatar" src={userHead} alt="RAvatar" />
                                                                                         <div className="author-details media-body">
                                                                                             <span className="time">{getTimeOfNow(comment.createdTime)}</span>
                                                                                             <h3 className="name"><Link to={`/user/${comment.userId}`}>{comment.userName}</Link></h3>
@@ -336,7 +337,7 @@ export class SingleCourse extends React.Component {
                                 </div>
                                 <div className="col-md-4">
                                     <aside className="sidebar">
-                                        <button className="btn btn-lg enroll-btn" onClick={ this.buyCourse }>BUY</button>
+
                                         <div className="info">
                                             <ul className="info-list">
                                                 <li><span className="price">课程价格 {this.state.course.price} 元</span></li>

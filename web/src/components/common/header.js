@@ -338,7 +338,7 @@ class NormalHeader extends React.Component {
                         <div className="col-md-2">
 
                             <div className="menu-cart dropdown float-right">
-                                <a className="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <a className="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <i className="fas fa-comment-dots"></i>
                                     {
                                         this.state.unreadComments.length > 0 ? <span className="count">{this.state.unreadComments.length}</span> : null

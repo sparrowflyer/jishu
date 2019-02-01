@@ -9,6 +9,8 @@
 		<result property="detail" column="DETAIL"/>
 		<result property="coverImage" column="COVER_IMAGE"/>
 		<result property="authorId" column="AUTHOR_ID"/>
+		<result property="authorHead" column="HEAD_IMAGE"/>
+		<result property="authorName" column="NICK_NAME"/>
 		<result property="price" column="PRICE"/>
 		<result property="courseCollectionStartTime" column="COURSE_COLLECTION_START_TIME"/>
 		<result property="courseCollectionEndTime" column="COURSE_COLLECTION_END_TIME"/>
@@ -69,9 +71,9 @@
     </update>
     
     <select id="find" parameterType="int" resultMap="courseResultMap">
-        SELECT *
-      	FROM jishu.T_COURSE
-      	WHERE ID=#{0}
+      SELECT *
+      	FROM jishu.T_COURSE,jishu.T_USER
+      	WHERE jishu.T_COURSE.`AUTHOR_ID`=jishu.T_USER.`ID` AND   jishu.T_COURSE.ID=#{0}
     </select>
     
     <!-- 此方法未来会被废弃，已被findByAuthorIdAndConditions取代 -->

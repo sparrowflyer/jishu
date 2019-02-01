@@ -149,9 +149,53 @@ class MultiCourse extends React.Component {
                                                                             目标人数:<span className="label label-default">{ course.targetStudentAmount - course.currentStudentAmount }</span>
                                                                         </div>
                                                                     </div>
-                                                                    <div style={{overflow: "hidden"}}>
-                                                                        <span onClick={ this.buyCourse.bind(this, course.id)} className="btn btn-sm">购买</span>
-                                                                    </div>
+                                                                    {
+
+
+                                                                        course.status == 'collecting' ?
+                                                                            (
+                                                                            <div style={{overflow: "hidden"}}>
+                                                                                <span onClick={ this.buyCourse.bind(this, course.id)} className="btn btn-sm">购买课程</span>
+                                                                            </div>
+
+                                                                            ): <span></span>
+
+                                                                    }
+                                                                    {
+
+
+                                                                        course.status == 'collected' ?
+                                                                            (
+                                                                            <div style={{overflow: "hidden"}}>
+                                                                                <span className="btn btn-sm">等待课程开始</span>
+                                                                            </div>
+
+                                                                            ): <span></span>
+
+                                                                    }
+                                                                    {
+
+
+                                                                        course.status == 'teaching' ?
+                                                                            (
+                                                                                <div style={{overflow: "hidden"}}>
+                                                                                <span className="btn btn-sm">导师授课中。。。</span>
+                                                                                </div>
+                                                                            ): <span></span>
+
+                                                                    }
+                                                                    {
+
+
+                                                                        course.status == 'ended' ?
+                                                                            (
+                                                                                <div style={{overflow: "hidden"}}>
+                                                                                <span className="btn btn-sm">课程已结束</span>
+                                                                                </div>
+                                                                            ): <span></span>
+
+                                                                    }
+
                                                                 </div>
                                                             </div>
                                                         </div>

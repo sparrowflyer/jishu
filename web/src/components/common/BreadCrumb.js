@@ -8,8 +8,8 @@ function SearchContainer() {
     return (
         <div className="container">
             <form action="#" className="course-search-form">
-                <input type="text" name="search" id="search" className="search" placeholder="Find a course or tutorial " />
-                <input type="submit" name="submit" id="search-submit" className="sreach-submit" />
+                {/*<input type="text" name="search" id="search" className="search" placeholder="Find a course or tutorial " />*/}
+                {/*<input type="submit" name="submit" id="search-submit" className="sreach-submit" />*/}
             </form>
         </div>
     );

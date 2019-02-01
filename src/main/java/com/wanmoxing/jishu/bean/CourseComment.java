@@ -11,11 +11,21 @@ public class CourseComment {
 	private int userId;
 	
 	private String userName;
+
+	private String userHead;
 	
 	private String content;
 	
 	private Timestamp createdTime;
-	
+
+	public String getUserHead() {
+		return userHead;
+	}
+
+	public void setUserHead(String userHead) {
+		this.userHead = userHead;
+	}
+
 	public Timestamp getCreatedTime() {
 		return createdTime;
 	}

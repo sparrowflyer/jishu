@@ -194,6 +194,7 @@ class AddCourse extends React.Component {
     }
 
     render() {
+        console.log(this.state.courseTypes);
         return (
             <div>
                 <Header activeTitle="course" />
@@ -221,9 +222,9 @@ class AddCourse extends React.Component {
                                             <option value="">All</option>
                                             {
                                                 this.state.courseTypes.map((courseType) => {
-                                                    console.log(courseType);
+
                                                     return (
-                                                        <option key={courseType.id} value={courseType.id}>{courseType.value}</option>
+                                                        <option key={courseType} value={courseType}>{courseType}</option>
                                                     );
                                                 })
                                             }

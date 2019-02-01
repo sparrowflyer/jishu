@@ -8,6 +8,7 @@
 		<result property="courseId" column="COURSE_ID"/>
 		<result property="userId" column="USER_ID"/>
 		<result property="userName" column="USER_NAME"/>
+		<result property="userHead" column="USER_HEAD"/>
 		<result property="content" column="CONTENT"/>
 		<result property="createdTime" column="CREATED_TIME"/>
 	</resultMap>
@@ -18,7 +19,7 @@
     </insert>
     
     <select id="findByCourseId" parameterType="int" resultMap="courseCommentResultMap">
-        SELECT cc.ID, cc.COURSE_ID, cc.USER_ID, u.NICK_NAME as USER_NAME, cc.CONTENT, cc.CREATED_TIME
+        SELECT cc.ID, cc.COURSE_ID, cc.USER_ID, u.NICK_NAME as USER_NAME,u.HEAD_IMAGE as USER_HEAD, cc.CONTENT, cc.CREATED_TIME
       	FROM jishu.T_COURSE_COMMENT cc, jishu.T_USER u
       	WHERE cc.USER_ID = u.ID
       		AND cc.COURSE_ID=#{0}

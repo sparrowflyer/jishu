@@ -337,7 +337,46 @@ export class SingleCourse extends React.Component {
                                 </div>
                                 <div className="col-md-4">
                                     <aside className="sidebar">
+                                        {
 
+
+                                            this.state.course.status == 'collecting' ?
+                                                (
+                                                    <button className="btn btn-lg enroll-btn" onClick={ this.buyCourse }>购买课程</button>
+
+                                                ): <span></span>
+
+                                        }
+                                        {
+
+
+                                            this.state.course.status == 'collected' ?
+                                                (
+                                                    <button className="btn btn-lg enroll-btn" >等待课程开始</button>
+
+                                                ): <span></span>
+
+                                        }
+                                        {
+
+
+                                            this.state.course.status == 'teaching' ?
+                                                (
+                                                    <button className="btn btn-lg enroll-btn" >导师授课中。。。</button>
+
+                                                ): <span></span>
+
+                                        }
+                                        {
+
+
+                                            this.state.course.status == 'ended' ?
+                                                (
+                                                    <button className="btn btn-lg enroll-btn" >课程已结束</button>
+
+                                                ): <span></span>
+
+                                        }
                                         <div className="info">
                                             <ul className="info-list">
                                                 <li><span className="price">课程价格 {this.state.course.price} 元</span></li>

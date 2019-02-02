@@ -56,11 +56,11 @@ class RecentPosts extends React.Component {
                             </div>
                             {/*<div className="owl-controls float-right"></div>*/}
                         </div>
-                        <div id="post-slider" className="post-slider owl-carousel" style={{overflow: 'hidden'}}>
+                        <div id="post-slider" className="post-slider owl-carousel" style={{overflow: 'hidden', display: 'block'}}>
                             {
                                 this.state.articles.map((article) => {
                                     return (
-                                        <div className="owl-item" style={{maxWidth:'370px', marginRight: '30px', marginBottom: '10px'}}>
+                                        <div key={article.aid} className="owl-item" style={{maxWidth:'370px', marginRight: '30px', marginBottom: '10px'}}>
                                             <div className="item">
                                                 <article className="post">
                                                     <div className="entry-thumbnail radius"><img style={{maxHeight: '270px'}} src={'http://' + article.imagesrc} alt="Post Thumbnail" /></div>
@@ -203,11 +203,11 @@ class PopularCourses extends React.Component {
                             {/*<div className="owl-controls float-right"></div>*/}
                         </div>
                         <div className="course-items with-slider">
-                            <div id="course-slider" className="course-slider owl-carousel" style={{overflow: 'hidden'}}>
+                            <div id="course-slider" className="course-slider owl-carousel" style={{overflow: 'hidden', display: 'block'}}>
                                 {
                                     this.state.courses.map((course) => {
                                         return (
-                                            <div className="owl-item" style={{width:'270px', marginRight: '30px', marginBottom: '10px'}}>
+                                            <div key={course.id} className="owl-item" style={{width:'270px', marginRight: '30px', marginBottom: '10px'}}>
                                                 <div className="item">
                                                     <div className="item-thumb">
                                                         <img style={{height: '200px'}} src={course.coverImage ? 'http://' + course.coverImage : ''} alt="Item Thumbnail" />

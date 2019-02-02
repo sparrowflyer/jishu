@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Header } from '../../components/common/Header.js';
 import { Footer } from '../../components/common/Footer.js';
-import { postJson } from '../../utils/server.js';
+import { postJson, getArticles } from '../../utils/server.js';
 
 function Banner() {
     return (
@@ -22,60 +22,69 @@ function Banner() {
     );
 }
 
-function RecentPosts() {
-    return (
-        <section className="popular-courses">
-            <div className="section-padding">
-                <div className="container">
-                    <div className="top-content">
-                        <div className="left-content float-left">
-                            <h2 className="section-title">最近更新的博客论坛</h2>
-                            <p>你与大咖近在咫尺</p>
+class RecentPosts extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            articles: []
+        }
+    }
+    componentDidMount() {
+        getArticles(0, 1)
+            .then((data) => {
+                if (data.status === 'success') {
+                    if (data.data && data.data.list && Array.isArray(data.data.list)) {
+                        this.setState((state) => {
+                            return {
+                                ...state,
+                                articles: data.data.list.slice(0, 3)
+                            }
+                        });
+                    }
+                }
+            });
+    }
+    render() {
+        return (
+            <section className="popular-courses">
+                <div className="section-padding">
+                    <div className="container">
+                        <div className="top-content">
+                            <div className="left-content float-left">
+                                <h2 className="section-title">最近更新的博客论坛</h2>
+                                <p>你与大咖近在咫尺</p>
+                            </div>
+                            {/*<div className="owl-controls float-right"></div>*/}
                         </div>
-                        <div className="owl-controls float-right"></div>
-                    </div>
-                    <div id="post-slider" className="post-slider owl-carousel">
-                        <div className="item">
-                            <article className="post">
-                                <div className="entry-thumbnail radius"><img src="/images/posts/1.jpg" alt="Post Thumbnail" /></div>
-                                <div className="entry-content">
-                                    <h3 className="entry-title"><a href="single.html">WordPress Theme Development Resources</a></h3>
-                                    <div className="entry-meta">
-                                        <span className="author"><i className="icon-user"></i> <a href="#">Anthony Doe</a></span>
-                                        <span className="time"><i className="icon-calendar"></i> 26/05/2018</span>
-                                    </div>
-                                </div>
-                            </article>
-                        </div>
-                        <div className="item">
-                            <article className="post">
-                                <div className="entry-thumbnail radius"><img src="/images/posts/2.jpg" alt="Post Thumbnail" /></div>
-                                <div className="entry-content">
-                                    <h3 className="entry-title"><a href="single.html">ow To Create A Local Business Directory Site In WordPress</a></h3>
-                                    <div className="entry-meta">
-                                        <span className="author"><i className="icon-user"></i> <a href="#">Anthony Doe</a></span>
-                                        <span className="time"><i className="icon-calendar"></i> 26/05/2018</span>
-                                    </div>
-                                </div>
-                            </article>
-                        </div>
-                        <div className="item">
-                            <article className="post">
-                                <div className="entry-thumbnail radius"><img src="/images/posts/3.jpg" alt="Post Thumbnail" /></div>
-                                <div className="entry-content">
-                                    <h3 className="entry-title"><a href="single.html">How To Tell If A Site Is WordPress Or Not</a></h3>
-                                    <div className="entry-meta">
-                                        <span className="author"><i className="icon-user"></i> <a href="#">Anthony Doe</a></span>
-                                        <span className="time"><i className="icon-calendar"></i> 26/05/2018</span>
-                                    </div>
-                                </div>
-                            </article>
+                        <div id="post-slider" className="post-slider owl-carousel" style={{overflow: 'hidden'}}>
+                            {
+                                this.state.articles.map((article) => {
+                                    return (
+                                        <div className="owl-item" style={{maxWidth:'370px', marginRight: '30px', marginBottom: '10px'}}>
+                                            <div className="item">
+                                                <article className="post">
+                                                    <div className="entry-thumbnail radius"><img style={{maxHeight: '270px'}} src={'http://' + article.imagesrc} alt="Post Thumbnail" /></div>
+                                                    <div className="entry-content">
+                                                        <h3 className="entry-title"><Link to={`/blog/${article.aid}`}>{article.title}</Link></h3>
+                                                        <div className="entry-meta">
+                                                        <span className="author"><i className="icon-user"></i>
+                                                            <Link to={`/user/${article.user.id}`}>{article.user.nickName}</Link>
+                                                        </span>
+                                                            <span className="time"><i className="icon-calendar"></i> {article.createDate}</span>
+                                                        </div>
+                                                    </div>
+                                                </article>
+                                            </div>
+                                        </div>
+                                    )
+                                })
+                            }
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
-    );
+            </section>
+        );
+    }
 }
 
 function Promotion() {
@@ -156,133 +165,87 @@ class CourseCategory extends React.Component {
     }
 }
 
-function PopularCourses() {
-    return (
-        <section className="recent-posts black-bg">
-            <div className="section-padding">
-                <div className="container">
-                    <div className="top-content">
-                        <div className="left-content float-left">
-                            <h2 className="section-title">最新课程</h2>
-                            <p>正在进行中。。。</p>
+class PopularCourses extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            courses: []
+        };
+    }
+
+    componentDidMount() {
+        postJson('/getAvailableCourses', {
+            pageStart: 0,
+            pageSize: 4,
+            needAmount: false
+        }).then((data) => {
+            if (data.status === 'success') {
+                this.setState((state) => {
+                    return {
+                        ...state,
+                        courses: data.data.courses
+                    };
+                });
+            }
+        });
+    }
+
+    render() {
+        return (
+            <section className="recent-posts black-bg">
+                <div className="section-padding">
+                    <div className="container">
+                        <div className="top-content">
+                            <div className="left-content float-left">
+                                <h2 className="section-title">最新课程</h2>
+                                <p>正在进行中。。。</p>
+                            </div>
+                            {/*<div className="owl-controls float-right"></div>*/}
                         </div>
-                        <div className="owl-controls float-right"></div>
-                    </div>
-                    <div className="course-items with-slider">
-                        <div id="course-slider" className="course-slider owl-carousel">
-                            <div className="item">
-                                <div className="item-thumb">
-                                    <img src="/images/popular/1.jpg" alt="Item Thumbnail" />
-                                    <div className="avatar">
-                                        <img className="rounded-circle" src="/images/avatar/1.png" alt="Avatar Image" />
-                                    </div>
-                                </div>
-                                <div className="item-details">
-                                    <h3 className="item-title"><a href="course-single-01.html">Python Bootcamp: Go from zero to hero in Python</a></h3>
-                                    <span className="instructor"><a href="#">Justin Marks</a></span>
-                                    <div className="details-bottom">
-                                        <div className="course-price float-left"><span className="currency">$</span><span className="price">15.99</span></div>
-                                        <div className="rating float-right">
-                                            <input type="hidden" className="rating-tooltip-manual" data-filled="fas fa-star" data-empty="far fa-star" data-fractions="2" />
-                                        </div>
-                                    </div>
-                                    <div className="item-meta">
-                                        <span><i className="icons icon-people"></i> 129</span>
-                                        <span><i className="icons icon-clock"></i> 22Hrs</span>
-                                        <span><i className="icons icon-bubble"></i> 51</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="item">
-                                <div className="item-thumb">
-                                    <img src="/images/popular/2.jpg" alt="Item Thumbnail" />
-                                    <div className="avatar"><img className="rounded-circle" src="/images/avatar/2.png" alt="Avatar Image" /></div>
-                                </div>
-                                <div className="item-details">
-                                    <h3 className="item-title"><a href="course-single-01.html">The Complete Web Developer Bootcamp</a></h3>
-                                    <span className="instructor"><a href="#">Justin Marks</a></span>
-                                    <div className="details-bottom">
-                                        <div className="course-price float-left"><span className="currency">$</span><span className="price">15.99</span></div>
-                                        <div className="rating float-right">
-                                            <input type="hidden" className="rating-tooltip-manual" data-filled="fas fa-star" data-empty="far fa-star" data-fractions="2"/>
-                                        </div>
-                                    </div>
-                                    <div className="item-meta">
-                                        <span><i className="icons icon-people"></i> 129</span>
-                                        <span><i className="icons icon-clock"></i> 22Hrs</span>
-                                        <span><i className="icons icon-bubble"></i> 51</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="item">
-                                <div className="item-thumb">
-                                    <img src="/images/popular/3.jpg" alt="Item Thumbnail" />
-                                    <div className="avatar"><img className="rounded-circle" src="/images/avatar/3.png" alt="Avatar Image" /></div>
-                                </div>
-                                <div className="item-details">
-                                    <h3 className="item-title"><a href="course-single-01.html">Complete Web Developer in 2018: Zero to Mastery</a></h3>
-                                    <span className="instructor"><a href="#">Justin Marks</a></span>
-                                    <div className="details-bottom">
-                                        <div className="course-price float-left"><span className="currency">$</span><span className="price">15.99</span></div>
-                                        <div className="rating float-right">
-                                            <input type="hidden" className="rating-tooltip-manual" data-filled="fas fa-star" data-empty="far fa-star" data-fractions="2"/>
-                                        </div>
-                                    </div>
-                                    <div className="item-meta">
-                                        <span><i className="icons icon-people"></i> 129</span>
-                                        <span><i className="icons icon-clock"></i> 22Hrs</span>
-                                        <span><i className="icons icon-bubble"></i> 51</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="item">
-                                <div className="item-thumb">
-                                    <img src="/images/popular/4.jpg" alt="Item Thumbnail" />
-                                    <div className="avatar"><img className="rounded-circle" src="/images/avatar/4.png" alt="Avatar Image" /></div>
-                                </div>
-                                <div className="item-details">
-                                    <h3 className="item-title"><a href="course-single-01.html">Course On: Complete Java Masterclass</a></h3>
-                                    <span className="instructor"><a href="#">Justin Marks</a></span>
-                                    <div className="details-bottom">
-                                        <div className="course-price float-left"><span className="currency">$</span><span className="price">15.99</span></div>
-                                        <div className="rating float-right">
-                                            <input type="hidden" className="rating-tooltip-manual" data-filled="fas fa-star" data-empty="far fa-star" data-fractions="2"/>
-                                        </div>
-                                    </div>
-                                    <div className="item-meta">
-                                        <span><i className="icons icon-people"></i> 129</span>
-                                        <span><i className="icons icon-clock"></i> 22Hrs</span>
-                                        <span><i className="icons icon-bubble"></i> 51</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="item">
-                                <div className="item-thumb">
-                                    <img src="/images/popular/7.jpg" alt="Item Thumbnail" />
-                                    <div className="avatar"><img className="rounded-circle" src="/images/avatar/1.png" alt="Avatar Image" /></div>
-                                </div>
-                                <div className="item-details">
-                                    <h3 className="item-title"><a href="course-single-01.html">Complete JavaScript Course 2018: Build Real Projects!</a></h3>
-                                    <span className="instructor"><a href="#">Justin Marks</a></span>
-                                    <div className="details-bottom">
-                                        <div className="course-price float-left"><span className="currency">$</span><span className="price">15.99</span></div>
-                                        <div className="rating float-right">
-                                            <input type="hidden" className="rating-tooltip-manual" data-filled="fas fa-star" data-empty="far fa-star" data-fractions="2"/>
-                                        </div>
-                                    </div>
-                                    <div className="item-meta">
-                                        <span><i className="icons icon-people"></i> 129</span>
-                                        <span><i className="icons icon-clock"></i> 22Hrs</span>
-                                        <span><i className="icons icon-bubble"></i> 51</span>
-                                    </div>
-                                </div>
+                        <div className="course-items with-slider">
+                            <div id="course-slider" className="course-slider owl-carousel" style={{overflow: 'hidden'}}>
+                                {
+                                    this.state.courses.map((course) => {
+                                        return (
+                                            <div className="owl-item" style={{width:'270px', marginRight: '30px', marginBottom: '10px'}}>
+                                                <div className="item">
+                                                    <div className="item-thumb">
+                                                        <img style={{height: '200px'}} src={course.coverImage ? 'http://' + course.coverImage : ''} alt="Item Thumbnail" />
+                                                        <div className="avatar">
+                                                            <img className="rounded-circle" src={course.authorHead ? 'http://' + course.authorHead : ''} alt="Avatar Image" />
+                                                        </div>
+                                                    </div>
+                                                    <div className="item-details">
+                                                        <h3 className="item-title"><Link to={`/course/${course.id}`}>{course.title}</Link></h3>
+                                                        <span className="instructor"><Link to={`/user/${course.authorId}`}>{course.authorName}</Link></span>
+                                                        <div className="details-bottom">
+                                                            <div className="course-price float-left">
+                                                                <span className="currency">¥</span>
+                                                                <span className="price">{course.price}</span>
+                                                            </div>
+                                                        </div>
+                                                        {
+                                                            /*
+                                                             <div className="item-meta">
+                                                             <span><i className="icons icon-people"></i> 129</span>
+                                                             <span><i className="icons icon-clock"></i> 22Hrs</span>
+                                                             <span><i className="icons icon-bubble"></i> 51</span>
+                                                             </div>
+                                                             */
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )
+                                    })
+                                }
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
-    );
+            </section>
+        );
+    }
 }
 
 function Testimonial() {

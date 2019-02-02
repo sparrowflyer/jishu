@@ -79,6 +79,7 @@ class SingleBlog extends React.Component {
         this.addComment = this.addComment.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleReply = this.handleReply.bind(this);
+        this.getPlugins = this.getPlugins.bind(this);
     }
 
     getComment() {
@@ -249,6 +250,18 @@ class SingleBlog extends React.Component {
             });
     }
 
+    getPlugins() {
+        return {
+            image: {
+                uploader: {
+                    name: 'file',
+                    url: '/jishu/upload',
+                    filter: (res) => 'http://' + res.data
+                }
+            }
+        }
+    }
+
     componentDidMount() {
         let jsUserID = '';
         try {
@@ -309,6 +322,7 @@ class SingleBlog extends React.Component {
     }
 
     render() {
+        let plugins = this.getPlugins();
         return (
             <div>
                 <Header activeTitle="blog" />
@@ -406,7 +420,7 @@ class SingleBlog extends React.Component {
                                                 </ol>
                                                 <div className="respond">
                                                     <h2 className="title">添加你的观点</h2>
-                                                    <Editor value={ this.state.addedComment } onChange={ this.handleInputChange } />
+                                                    <Editor value={ this.state.addedComment } onChange={ this.handleInputChange } plugin={plugins}/>
                                                     <input style={{marginTop: '10px'}} className="btn" type="submit" value="提交观点" onClick={this.addComment} />
                                                 </div>
                                             </div> : <Link to='/login'>登录查看评价</Link>

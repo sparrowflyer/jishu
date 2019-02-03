@@ -22,6 +22,7 @@ class AddBlog extends React.Component {
             articleTypes: [],
             isLoading: false
         };
+        this.getPlugins = this.getPlugins.bind(this);
         this.submitArticleInfo = this.submitArticleInfo.bind(this);
         this.addArticle = this.addArticle.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
@@ -52,6 +53,18 @@ class AddBlog extends React.Component {
                 [name]: [value]
             };
         });
+    }
+
+    getPlugins() {
+        return {
+            image: {
+                uploader: {
+                    name: 'file',
+                    url: '/jishu/upload',
+                    filter: (res) => 'http://' + res.data
+                }
+            }
+        }
     }
 
     handleImageChange(event) {
@@ -175,6 +188,7 @@ class AddBlog extends React.Component {
     }
 
     render() {
+        let plugins = this.getPlugins();
         return (
             <div>
                 <Header activeTitle="blog" />
@@ -210,7 +224,7 @@ class AddBlog extends React.Component {
                                         </p>
                                     }
                                 </form>
-                                <Editor value={ this.state.content } onChange={ this.handleContentChange } />
+                                <Editor value={ this.state.content } onChange={ this.handleContentChange } plugins={plugins} />
                                 <p className="form-input" style={{marginTop: '20px'}}>
                                     <input type="submit" name="wp-submit" id="wp-submit" className="btn"
                                            value={this.state.isLoading ? "Loading..." : this.state.blogTitle}

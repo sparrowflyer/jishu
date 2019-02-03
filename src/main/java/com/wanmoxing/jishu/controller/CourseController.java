@@ -127,21 +127,22 @@ public class CourseController {
 		ResultDTO result = new ResultDTO();
 		try {
 			int courseId = jsonParams.getInteger("courseId");
-			User user = (User) session.getAttribute("user");
 			Course course = courseService.find(courseId);
-			course.setUserStatus("init");
-			if (user!=null) {
-				int purchasedNumber = purchaseService.findPayedNumPurchaseByBuyerIdAndCourseId(Integer.valueOf(courseId), Integer.valueOf(user.getId()));
-				if (purchasedNumber>0){
-					course.setUserStatus("payed");
-				}
-			}
-			if (course != null) {
-				result.setData(course);
-			} else {
+			if (course == null) {
 				result.setStatus(ResultDTOStatus.ERROR.getStatus());
 				result.setErrorMsg("Course ID unavailable!");
 			}
+			course.setUserStatus("init");
+			
+			User user = (User) session.getAttribute("user");
+			if (user != null) {
+				int purchasedNumber = purchaseService.findPayedNumPurchaseByBuyerIdAndCourseId(Integer.valueOf(courseId), Integer.valueOf(user.getId()));
+				if (purchasedNumber > 0){
+					course.setUserStatus("payed");
+				}
+			}
+			
+			result.setData(course);
 			return result;
 		} catch (Exception e) {
 			e.printStackTrace();

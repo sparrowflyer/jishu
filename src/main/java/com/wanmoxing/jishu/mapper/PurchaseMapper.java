@@ -11,6 +11,8 @@ import com.wanmoxing.jishu.bean.Purchase;
 public interface PurchaseMapper {
 	
 	public Purchase find(String id);
+
+	public Purchase findByUserIdAndCourseId(Map<String, Object> params);
 	
 	public List<Purchase> findByBuyerId(int buyerId);
 	

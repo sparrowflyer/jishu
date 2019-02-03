@@ -118,11 +118,19 @@ public class CourseController {
 	 * @return
 	 */
 	@RequestMapping(value = "/getSingleCourse", method = RequestMethod.POST)
-	public ResultDTO getCourse (@RequestBody JSONObject jsonParams) {
+	public ResultDTO getCourse (HttpSession session, @RequestBody JSONObject jsonParams) {
 		ResultDTO result = new ResultDTO();
 		try {
 			int courseId = jsonParams.getInteger("courseId");
+			User user = (User) session.getAttribute("user");
 			Course course = courseService.find(courseId);
+			course.setUserStatus("init");
+			if (user!=null) {
+				int purchasedNumber = purchaseService.findPayedNumPurchaseByBuyerIdAndCourseId(Integer.valueOf(courseId), Integer.valueOf(user.getId()));
+				if (purchasedNumber>0){
+					course.setUserStatus("payed");
+				}
+			}
 			if (course != null) {
 				result.setData(course);
 			} else {

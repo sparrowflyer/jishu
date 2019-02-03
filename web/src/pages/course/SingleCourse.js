@@ -340,7 +340,17 @@ export class SingleCourse extends React.Component {
                                         {
 
 
-                                            this.state.course.status == 'collecting' ?
+                                            this.state.course.userStatus == 'payed'   ?
+                                                (
+                                                    <button className="btn btn-lg enroll-btn" disabled="disabled">已购买课程</button>
+
+                                                ): <span></span>
+
+                                        }
+                                        {
+
+
+                                            this.state.course.status == 'collecting' &&  this.state.course.userStatus == 'init' ?
                                                 (
                                                     <button className="btn btn-lg enroll-btn" onClick={ this.buyCourse }>购买课程</button>
 
@@ -352,7 +362,7 @@ export class SingleCourse extends React.Component {
 
                                             this.state.course.status == 'collected' ?
                                                 (
-                                                    <button className="btn btn-lg enroll-btn" >等待课程开始</button>
+                                                    <button className="btn btn-lg enroll-btn"  disabled="disabled" >等待课程开始</button>
 
                                                 ): <span></span>
 
@@ -362,7 +372,7 @@ export class SingleCourse extends React.Component {
 
                                             this.state.course.status == 'teaching' ?
                                                 (
-                                                    <button className="btn btn-lg enroll-btn" >导师授课中。。。</button>
+                                                    <button className="btn btn-lg enroll-btn"  disabled="disabled">导师授课中。。。</button>
 
                                                 ): <span></span>
 
@@ -372,7 +382,7 @@ export class SingleCourse extends React.Component {
 
                                             this.state.course.status == 'ended' ?
                                                 (
-                                                    <button className="btn btn-lg enroll-btn" >课程已结束</button>
+                                                    <button className="btn btn-lg enroll-btn"  disabled="disabled">课程已结束</button>
 
                                                 ): <span></span>
 

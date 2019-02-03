@@ -11,6 +11,8 @@ import com.wanmoxing.jishu.bean.Course;
 public interface CourseMapper {
 	
 	public Course find(int id);
+
+	public Course findByUserIdAndCourseId(int id);
 	
 	public List<Course> findByAuthorId(int authorId);
 	

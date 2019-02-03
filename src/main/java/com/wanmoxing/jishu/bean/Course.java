@@ -79,8 +79,23 @@ public class Course {
 	private String status;
 
 	/**
+	 * 课程当前状态
+	 */
+	private String userStatus;
+
+	public String getUserStatus() {
+		return userStatus;
+	}
+
+	public void setUserStatus(String userStatus) {
+		this.userStatus = userStatus;
+	}
+
+	/**
 	 * 课程类型
 	 */
+
+
 	private String type;
 	
 	private Timestamp createdTime = new Timestamp(System.currentTimeMillis());

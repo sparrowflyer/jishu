@@ -27,14 +27,17 @@ import com.alipay.api.request.AlipayTradePagePayRequest;
 import com.wanmoxing.jishu.bean.Course;
 import com.wanmoxing.jishu.bean.Purchase;
 import com.wanmoxing.jishu.bean.User;
+import com.wanmoxing.jishu.bean.UserNotification;
 import com.wanmoxing.jishu.constant.AlipayConfig;
 import com.wanmoxing.jishu.constant.CommonConstants;
 import com.wanmoxing.jishu.constant.enums.PurchasePayment;
 import com.wanmoxing.jishu.constant.enums.PurchaseStatus;
 import com.wanmoxing.jishu.constant.enums.ResultDTOStatus;
+import com.wanmoxing.jishu.constant.enums.UserNotificationType;
 import com.wanmoxing.jishu.dto.ResultDTO;
 import com.wanmoxing.jishu.service.CourseService;
 import com.wanmoxing.jishu.service.PurchaseService;
+import com.wanmoxing.jishu.service.UserNotificationService;
 import com.wanmoxing.jishu.service.UserService;
 import com.wanmoxing.jishu.util.CommUtil;
 import com.wanmoxing.jishu.util.IdGenerator;
@@ -49,6 +52,8 @@ public class PurchaseController {
 	private CourseService courseService;
 	@Resource
 	private PurchaseService purchaseService;
+	@Resource
+	private UserNotificationService userNotificationService;
 	
 	/**
 	 * 购买课程前的校验
@@ -284,10 +289,26 @@ public class PurchaseController {
 					purchase.setStatus(PurchaseStatus.PAYED.getStatus());
 					purchase.setUpdatedTime(new Timestamp(System.currentTimeMillis()));
 					purchaseService.update(purchase);
-					
+					//课程当前人数+1
 					Course course = courseService.find(purchase.getCourseId());
 					course.setCurrentStudentAmount(course.getCurrentStudentAmount() + 1);
 					courseService.update(course);
+					// 生成新购买通知给老师
+					UserNotification newBuyerNotification = new UserNotification();
+					newBuyerNotification.setType(UserNotificationType.NEW_COURSE_BUYER.getType());
+					newBuyerNotification.setUserId(course.getAuthorId());
+					newBuyerNotification.setTitle("您的课程有新购买者！");
+					newBuyerNotification.setContent(userService.getUserDisplayName(purchase.getBuyerId())+" 购买了您的课程("+course.getTitle()+").");
+					newBuyerNotification.setClickUrl("/course/" + course.getId());
+					userNotificationService.insert(newBuyerNotification);
+					// 生成新购买通知给购买者
+					UserNotification newPurchaseNotification = new UserNotification();
+					newPurchaseNotification.setType(UserNotificationType.NEW_PURCHASE.getType());
+					newPurchaseNotification.setUserId(purchase.getBuyerId());
+					newPurchaseNotification.setTitle("您已成功购买课程！");
+					newPurchaseNotification.setContent("您已成功购买了课程("+course.getTitle()+").");
+					newPurchaseNotification.setClickUrl("/course/" + course.getId());
+					userNotificationService.insert(newPurchaseNotification);
 				}
 			}
 		} catch (Exception e) {

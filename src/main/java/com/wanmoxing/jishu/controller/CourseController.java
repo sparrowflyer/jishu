@@ -18,10 +18,12 @@ import com.alibaba.fastjson.JSONObject;
 import com.wanmoxing.jishu.bean.Course;
 import com.wanmoxing.jishu.bean.CourseComment;
 import com.wanmoxing.jishu.bean.User;
+import com.wanmoxing.jishu.bean.UserNotification;
 import com.wanmoxing.jishu.constant.CommonConstants;
 import com.wanmoxing.jishu.constant.enums.CourseStatus;
 import com.wanmoxing.jishu.constant.enums.CourseType;
 import com.wanmoxing.jishu.constant.enums.ResultDTOStatus;
+import com.wanmoxing.jishu.constant.enums.UserNotificationType;
 import com.wanmoxing.jishu.constant.enums.UserType;
 import com.wanmoxing.jishu.dto.AddCourseCommentDTO;
 import com.wanmoxing.jishu.dto.AddCourseDTO;
@@ -31,6 +33,7 @@ import com.wanmoxing.jishu.dto.ResultDTO;
 import com.wanmoxing.jishu.service.CourseCommentService;
 import com.wanmoxing.jishu.service.CourseService;
 import com.wanmoxing.jishu.service.PurchaseService;
+import com.wanmoxing.jishu.service.UserNotificationService;
 import com.wanmoxing.jishu.service.UserService;
 import com.wanmoxing.jishu.util.CommUtil;
 
@@ -46,6 +49,8 @@ public class CourseController {
 	private PurchaseService purchaseService;
 	@Resource
 	private CourseCommentService courseCommentService;
+	@Resource
+	private UserNotificationService userNotificationService;
 	
 	/**
 	 * 获取课程类型列表
@@ -238,6 +243,12 @@ public class CourseController {
 				result.setErrorMsg("User not logined!");
 				return result;
 			}
+			Course course = courseService.find(addCourseCommentDTO.getCourseId());
+			if (course == null) {
+				result.setStatus(ResultDTOStatus.ERROR.getStatus());
+				result.setErrorMsg("Course not exist!");
+				return result;
+			}
 			//判断用户是否有购买成功记录
 			int payedNum = purchaseService.findPayedNumPurchaseByBuyerId(addCourseCommentDTO.getUserId());
 			if (payedNum <= 0) {
@@ -251,6 +262,16 @@ public class CourseController {
 			courseComment.setContent(addCourseCommentDTO.getContent());
 			courseComment.setCreatedTime(new Timestamp(System.currentTimeMillis()));
 			courseCommentService.insert(courseComment);
+			
+			// 生成新课程评论通知给老师
+			UserNotification newCourseCommentNotification = new UserNotification();
+			newCourseCommentNotification.setType(UserNotificationType.COURSE_REPLY.getType());
+			newCourseCommentNotification.setUserId(course.getAuthorId());
+			newCourseCommentNotification.setTitle("您的课程有新评论！");
+			newCourseCommentNotification.setContent(userService.getUserDisplayName(addCourseCommentDTO.getUserId())+" 评论了您的课程("+course.getTitle()+").");
+			newCourseCommentNotification.setClickUrl("/course/" + course.getId());
+			userNotificationService.insert(newCourseCommentNotification);
+			
 			return result;
 		} catch (Exception e) {
 			e.printStackTrace();

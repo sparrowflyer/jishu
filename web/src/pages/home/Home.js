@@ -37,7 +37,7 @@ class RecentPosts extends React.Component {
                         this.setState((state) => {
                             return {
                                 ...state,
-                                articles: data.data.list.slice(0, 3)
+                                articles: data.data.list
                             }
                         });
                     }
@@ -54,32 +54,41 @@ class RecentPosts extends React.Component {
                                 <h2 className="section-title">最近更新的博客论坛</h2>
                                 <p>你与大咖近在咫尺</p>
                             </div>
-                            {/*<div className="owl-controls float-right"></div>*/}
+                            <div className="owl-controls float-right"></div>
                         </div>
-                        <div id="post-slider" className="post-slider owl-carousel" style={{overflow: 'hidden', display: 'block'}}>
-                            {
-                                this.state.articles.map((article) => {
-                                    return (
-                                        <div key={article.aid} className="owl-item" style={{maxWidth:'370px', marginRight: '30px', marginBottom: '10px'}}>
-                                            <div className="item">
-                                                <article className="post">
-                                                    <div className="entry-thumbnail radius"><img style={{maxHeight: '270px'}} src={'http://' + article.imagesrc} alt="Post Thumbnail" /></div>
-                                                    <div className="entry-content">
-                                                        <h3 className="entry-title"><Link to={`/blog/${article.aid}`}>{article.title}</Link></h3>
-                                                        <div className="entry-meta">
-                                                        <span className="author"><i className="icon-user"></i>
-                                                            <Link to={`/user/${article.user.id}`}>{article.user.nickName}</Link>
-                                                        </span>
-                                                            <span className="time"><i className="icon-calendar"></i> {article.createDate}</span>
+                        {
+                            this.state.articles.length > 0 ? (
+                                <div id="post-slider" className="post-slider owl-carousel" style={{overflow: 'hidden', display: 'block'}}>
+                                    {
+                                        this.state.articles.map((article) => {
+                                            return (
+                                                <div className="item" key={article.aid}>
+                                                    <article className="post">
+                                                        <div className="entry-thumbnail radius">
+                                                            {article.imagesrc ? <img style={{maxWidth: '370px', height: '270px'}} src={'http://' + article.imagesrc} alt="Post Thumbnail" /> : null}
                                                         </div>
-                                                    </div>
-                                                </article>
-                                            </div>
-                                        </div>
-                                    )
-                                })
-                            }
-                        </div>
+                                                        <div className="entry-content">
+                                                            <h3 className="entry-title">
+                                                                <Link to={`/blog/${article.aid}`}>{article.title}</Link>
+                                                            </h3>
+                                                            <div className="entry-meta">
+                                                                <span className="author">
+                                                                    <i className="icon-user"></i>
+                                                                    <Link to={`/user/${article.user.id}`}>{article.user.nickName}</Link>
+                                                                </span>
+                                                                <span className="time">
+                                                                    <i className="icon-calendar"></i> {article.createDate}
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </article>
+                                                </div>
+                                            )
+                                        })
+                                    }
+                                </div>
+                            ) : null
+                        }
                     </div>
                 </div>
             </section>
@@ -180,12 +189,14 @@ class PopularCourses extends React.Component {
             needAmount: false
         }).then((data) => {
             if (data.status === 'success') {
-                this.setState((state) => {
-                    return {
-                        ...state,
-                        courses: data.data.courses
-                    };
-                });
+                if (data.data && data.data.courses && Array.isArray(data.data.courses)) {
+                    this.setState((state) => {
+                        return {
+                            ...state,
+                            courses: data.data.courses
+                        };
+                    });
+                }
             }
         });
     }
@@ -200,47 +211,49 @@ class PopularCourses extends React.Component {
                                 <h2 className="section-title">最新课程</h2>
                                 <p>正在进行中。。。</p>
                             </div>
-                            {/*<div className="owl-controls float-right"></div>*/}
+                            <div className="owl-controls float-right"></div>
                         </div>
-                        <div className="course-items with-slider">
-                            <div id="course-slider" className="course-slider owl-carousel" style={{overflow: 'hidden', display: 'block'}}>
-                                {
-                                    this.state.courses.map((course) => {
-                                        return (
-                                            <div key={course.id} className="owl-item" style={{width:'270px', marginRight: '30px', marginBottom: '10px'}}>
-                                                <div className="item">
-                                                    <div className="item-thumb">
-                                                        <img style={{height: '200px'}} src={course.coverImage ? 'http://' + course.coverImage : ''} alt="Item Thumbnail" />
-                                                        <div className="avatar">
-                                                            <img className="rounded-circle" src={course.authorHead ? 'http://' + course.authorHead : ''} alt="Avatar Image" />
-                                                        </div>
-                                                    </div>
-                                                    <div className="item-details">
-                                                        <h3 className="item-title"><Link to={`/course/${course.id}`}>{course.title}</Link></h3>
-                                                        <span className="instructor"><Link to={`/user/${course.authorId}`}>{course.authorName}</Link></span>
-                                                        <div className="details-bottom">
-                                                            <div className="course-price float-left">
-                                                                <span className="currency">¥</span>
-                                                                <span className="price">{course.price}</span>
+                        {
+                            this.state.courses.length > 0 ? (
+                                <div className="course-items with-slider">
+                                    <div id="course-slider" className="course-slider owl-carousel" style={{overflow: 'hidden', display: 'block'}}>
+                                        {
+                                            this.state.courses.map((course) => {
+                                                return (
+                                                    <div className="item" key={course.id}>
+                                                        <div className="item-thumb">
+                                                            {course.coverImage ? <img style={{maxWidth: '270px', height: '200px'}} src={'http://' + course.coverImage} alt="Item Thumbnail" /> : null}
+                                                            <div className="avatar">
+                                                                {course.authorHead ? <img className="rounded-circle" src={'http://' + course.authorHead} alt="Avatar Image" /> : null}
                                                             </div>
                                                         </div>
-                                                        {
-                                                            /*
-                                                             <div className="item-meta">
-                                                             <span><i className="icons icon-people"></i> 129</span>
-                                                             <span><i className="icons icon-clock"></i> 22Hrs</span>
-                                                             <span><i className="icons icon-bubble"></i> 51</span>
-                                                             </div>
-                                                             */
-                                                        }
+                                                        <div className="item-details">
+                                                            <h3 className="item-title"><Link to={`/course/${course.id}`}>{course.title}</Link></h3>
+                                                            <span className="instructor"><Link to={`/user/${course.authorId}`}>{course.authorName}</Link></span>
+                                                            <div className="details-bottom">
+                                                                <div className="course-price float-left">
+                                                                    <span className="currency">¥</span>
+                                                                    <span className="price">{course.price}</span>
+                                                                </div>
+                                                            </div>
+                                                            {
+                                                                /*
+                                                                 <div className="item-meta">
+                                                                 <span><i className="icons icon-people"></i> 129</span>
+                                                                 <span><i className="icons icon-clock"></i> 22Hrs</span>
+                                                                 <span><i className="icons icon-bubble"></i> 51</span>
+                                                                 </div>
+                                                                 */
+                                                            }
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </div>
-                                        )
-                                    })
-                                }
-                            </div>
-                        </div>
+                                                )
+                                            })
+                                        }
+                                    </div>
+                                </div>
+                            ) : null
+                        }
                     </div>
                 </div>
             </section>

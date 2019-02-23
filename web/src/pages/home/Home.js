@@ -54,15 +54,14 @@ class RecentPosts extends React.Component {
                                 <h2 className="section-title">最近更新的博客论坛</h2>
                                 <p>你与大咖近在咫尺</p>
                             </div>
-                            <div className="owl-controls float-right"></div>
                         </div>
                         {
                             this.state.articles.length > 0 ? (
-                                <div id="post-slider" className="post-slider owl-carousel" style={{overflow: 'hidden', display: 'block'}}>
+                                <div id="post-slider" className="post-slider owl-carousel" style={{display: 'flex', justifyContent: 'space-between', flexWrap: 'noWrap', overflow: 'auto'}}>
                                     {
                                         this.state.articles.map((article) => {
                                             return (
-                                                <div className="item" key={article.aid}>
+                                                <div className="item" key={article.aid} style={{marginRight: '10px'}}>
                                                     <article className="post">
                                                         <div className="entry-thumbnail radius">
                                                             {article.imagesrc ? <img style={{maxWidth: '370px', height: '270px'}} src={'http://' + article.imagesrc} alt="Post Thumbnail" /> : null}
@@ -211,16 +210,15 @@ class PopularCourses extends React.Component {
                                 <h2 className="section-title">最新课程</h2>
                                 <p>正在进行中。。。</p>
                             </div>
-                            <div className="owl-controls float-right"></div>
                         </div>
                         {
                             this.state.courses.length > 0 ? (
                                 <div className="course-items with-slider">
-                                    <div id="course-slider" className="course-slider owl-carousel" style={{overflow: 'hidden', display: 'block'}}>
+                                    <div id="course-slider" className="course-slider owl-carousel" style={{display: 'flex', justifyContent: 'space-between', flexWrap: 'noWrap', overflow: 'auto'}}>
                                         {
                                             this.state.courses.map((course) => {
                                                 return (
-                                                    <div className="item" key={course.id}>
+                                                    <div className="item" key={course.id} style={{marginRight: '10px', width: '270px'}}>
                                                         <div className="item-thumb">
                                                             {course.coverImage ? <img style={{maxWidth: '270px', height: '200px'}} src={'http://' + course.coverImage} alt="Item Thumbnail" /> : null}
                                                             <div className="avatar">

@@ -54,40 +54,39 @@ class RecentPosts extends React.Component {
                                 <h2 className="section-title">最近更新的博客论坛</h2>
                                 <p>你与大咖近在咫尺</p>
                             </div>
-                            <div className="owl-controls float-right"></div>
                         </div>
                         {
                             this.state.articles.length > 0 ? (
-                                <div id="post-slider" className="post-slider owl-carousel" style={{overflow: 'hidden', display: 'block'}}>
-                                    {
-                                        this.state.articles.map((article) => {
-                                            return (
-                                                <div className="item" key={article.aid}>
-                                                    <article className="post">
-                                                        <div className="entry-thumbnail radius">
-                                                            {article.imagesrc ? <img style={{maxWidth: '370px', height: '270px'}} src={'http://' + article.imagesrc} alt="Post Thumbnail" /> : null}
-                                                        </div>
-                                                        <div className="entry-content">
-                                                            <h3 className="entry-title">
-                                                                <Link to={`/blog/${article.aid}`}>{article.title}</Link>
-                                                            </h3>
-                                                            <div className="entry-meta">
+                                    <div id="post-slider" className="post-slider owl-carousel" style={{display: 'flex', justifyContent: 'space-between', flexWrap: 'noWrap', overflow: 'auto'}}>
+                                        {
+                                            this.state.articles.map((article) => {
+                                                return (
+                                                    <div className="item" key={article.aid} style={{marginRight: '10px'}}>
+                                                        <article className="post">
+                                                            <div className="entry-thumbnail radius">
+                                                                {article.imagesrc ? <img style={{maxWidth: '370px', height: '270px'}} src={'http://' + article.imagesrc} alt="Post Thumbnail" /> : null}
+                                                            </div>
+                                                            <div className="entry-content">
+                                                                <h3 className="entry-title">
+                                                                    <Link to={`/blog/${article.aid}`}>{article.title}</Link>
+                                                                </h3>
+                                                                <div className="entry-meta">
                                                                 <span className="author">
                                                                     <i className="icon-user"></i>
                                                                     <Link to={`/user/${article.user.id}`}>{article.user.nickName}</Link>
                                                                 </span>
-                                                                <span className="time">
+                                                                    <span className="time">
                                                                     <i className="icon-calendar"></i> {article.createDate}
                                                                 </span>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                    </article>
-                                                </div>
-                                            )
-                                        })
-                                    }
-                                </div>
-                            ) : null
+                                                        </article>
+                                                    </div>
+                                                )
+                                            })
+                                        }
+                                    </div>
+                                ) : null
                         }
                     </div>
                 </div>
@@ -211,48 +210,47 @@ class PopularCourses extends React.Component {
                                 <h2 className="section-title">最新课程</h2>
                                 <p>正在进行中。。。</p>
                             </div>
-                            <div className="owl-controls float-right"></div>
                         </div>
                         {
                             this.state.courses.length > 0 ? (
-                                <div className="course-items with-slider">
-                                    <div id="course-slider" className="course-slider owl-carousel" style={{overflow: 'hidden', display: 'block'}}>
-                                        {
-                                            this.state.courses.map((course) => {
-                                                return (
-                                                    <div className="item" key={course.id}>
-                                                        <div className="item-thumb">
-                                                            {course.coverImage ? <img style={{maxWidth: '270px', height: '200px'}} src={'http://' + course.coverImage} alt="Item Thumbnail" /> : null}
-                                                            <div className="avatar">
-                                                                {course.authorHead ? <img className="rounded-circle" src={'http://' + course.authorHead} alt="Avatar Image" /> : null}
-                                                            </div>
-                                                        </div>
-                                                        <div className="item-details">
-                                                            <h3 className="item-title"><Link to={`/course/${course.id}`}>{course.title}</Link></h3>
-                                                            <span className="instructor"><Link to={`/user/${course.authorId}`}>{course.authorName}</Link></span>
-                                                            <div className="details-bottom">
-                                                                <div className="course-price float-left">
-                                                                    <span className="currency">¥</span>
-                                                                    <span className="price">{course.price}</span>
+                                    <div className="course-items with-slider">
+                                        <div id="course-slider" className="course-slider owl-carousel" style={{display: 'flex', justifyContent: 'space-between', flexWrap: 'noWrap', overflow: 'auto'}}>
+                                            {
+                                                this.state.courses.map((course) => {
+                                                    return (
+                                                        <div className="item" key={course.id} style={{marginRight: '10px', width: '270px'}}>
+                                                            <div className="item-thumb">
+                                                                {course.coverImage ? <img style={{maxWidth: '270px', height: '200px'}} src={'http://' + course.coverImage} alt="Item Thumbnail" /> : null}
+                                                                <div className="avatar">
+                                                                    {course.authorHead ? <img className="rounded-circle" src={'http://' + course.authorHead} alt="Avatar Image" /> : null}
                                                                 </div>
                                                             </div>
-                                                            {
-                                                                /*
-                                                                 <div className="item-meta">
-                                                                 <span><i className="icons icon-people"></i> 129</span>
-                                                                 <span><i className="icons icon-clock"></i> 22Hrs</span>
-                                                                 <span><i className="icons icon-bubble"></i> 51</span>
-                                                                 </div>
-                                                                 */
-                                                            }
+                                                            <div className="item-details">
+                                                                <h3 className="item-title"><Link to={`/course/${course.id}`}>{course.title}</Link></h3>
+                                                                <span className="instructor"><Link to={`/user/${course.authorId}`}>{course.authorName}</Link></span>
+                                                                <div className="details-bottom">
+                                                                    <div className="course-price float-left">
+                                                                        <span className="currency">¥</span>
+                                                                        <span className="price">{course.price}</span>
+                                                                    </div>
+                                                                </div>
+                                                                {
+                                                                    /*
+                                                                     <div className="item-meta">
+                                                                     <span><i className="icons icon-people"></i> 129</span>
+                                                                     <span><i className="icons icon-clock"></i> 22Hrs</span>
+                                                                     <span><i className="icons icon-bubble"></i> 51</span>
+                                                                     </div>
+                                                                     */
+                                                                }
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                )
-                                            })
-                                        }
+                                                    )
+                                                })
+                                            }
+                                        </div>
                                     </div>
-                                </div>
-                            ) : null
+                                ) : null
                         }
                     </div>
                 </div>
@@ -284,7 +282,7 @@ function Testimonial() {
                                 <div className="bottom-content">
                                     <span className="title">完美的学习论坛</span>
                                     <p>
-                                       叽叔论坛，给予了海外留学生一个展示自己海外生活的一个窗口，也给国内想要出国的学生了解到真实的海外生活的一个社区。
+                                        叽叔论坛，给予了海外留学生一个展示自己海外生活的一个窗口，也给国内想要出国的学生了解到真实的海外生活的一个社区。
                                     </p>
                                 </div>
                             </div>

@@ -43,10 +43,10 @@ public class LoginController {
 	 * @param vercode
 	 * @return
 	 */
-	@RequestMapping(value="/login", method = RequestMethod.POST)
+	@RequestMapping(value="/login", produces = "application/json;charset=utf-8" ,method = RequestMethod.POST)
 	public ResultDTO login(HttpSession session,
 						  @RequestBody LoginInfoVo loginInfoVo) {
-		
+		System.out.println("lishaoben test "+(String)session.getAttribute("imageVerifyCode"));
 		ResultDTO resultDTO = new ResultDTO();
 
 		String email=loginInfoVo.getEmail();
@@ -229,8 +229,7 @@ public class LoginController {
 				resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
 				return resultDTO;
 			}
-			
-			// 身份检测
+				// 身份检测
 			if (!"success".equalsIgnoreCase(checkEmailVerifyCode(emailVercode, session))) {
 				resultDTO.setErrorMsg("邮箱验证码错误！");
 				resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
@@ -310,11 +309,13 @@ public class LoginController {
 	}
 
 	private String checkImageVerifyCode(String imageCode, HttpSession session) {
-		Object imageVerifyCodeInSessionObj = session.getAttribute("imageVerifyCode");
-		if (imageVerifyCodeInSessionObj == null) {
+		String imageVerifyCodeInSession = (String)session.getAttribute("imageVerifyCode");
+//		System.out.println("lishaoben test: "+imageVerifyCodeInSessionObj.toString());
+//		System.out.println("lishaoben imageCode: "+imageCode);
+
+		if (imageVerifyCodeInSession == null) {
 			return "expired";
 		}
-		String imageVerifyCodeInSession = imageVerifyCodeInSessionObj.toString();
 		LocalDateTime localDateTime = (LocalDateTime) session.getAttribute("imageVerifyCodeTime");
 		long past = localDateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
 		long now = LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();

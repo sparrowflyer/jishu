@@ -24,8 +24,8 @@ public class VerifyCodeController {
 	
 	private static Logger logger = LoggerFactory.getLogger(VerifyCodeController.class);
 	
-	@RequestMapping(value = "/sendVerifyCodeEmail", method = RequestMethod.GET)
-	public String sendEmailVerifyCode(HttpServletRequest request, HttpServletResponse response, 
+	@RequestMapping(value = "/sendVerifyCodeEmail", produces = "application/json;charset=utf-8",method = RequestMethod.GET)
+	public String sendEmailVerifyCode(HttpServletRequest request, HttpServletResponse response,HttpSession session ,
 			@RequestParam("emailTo") String emailTo) {
 		response.setHeader("Pragma", "No-cache");
 		response.setHeader("Cache-Control", "no-cache");
@@ -33,7 +33,7 @@ public class VerifyCodeController {
 		// 生成随机字串
 		String verifyCode = VerifyCodeUtil.generateVerifyCode(4);
 		// 存入会话session
-		HttpSession session = request.getSession(true);
+
 		// 删除以前的
 		session.removeAttribute("emailVerifyCode");
 		session.removeAttribute("emailVerifyCodeTime");
@@ -49,21 +49,21 @@ public class VerifyCodeController {
 		}
 	}
 
-	@RequestMapping(value = "/getVerifyCodeImage", method = RequestMethod.GET)
-	public void getVerifyCodeImage(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	@RequestMapping(value = "/getVerifyCodeImage", produces = "application/json;charset=utf-8",method = RequestMethod.GET)
+	public void getVerifyCodeImage(HttpServletRequest request, HttpServletResponse response,HttpSession session) throws IOException {
 		response.setHeader("Pragma", "No-cache");
 		response.setHeader("Cache-Control", "no-cache");
 		response.setDateHeader("Expires", 0);
 		response.setContentType("image/jpeg");
 		// 生成随机字串
 		String verifyCode = VerifyCodeUtil.generateVerifyCode(4);
-		// 存入会话session
-		HttpSession session = request.getSession(true);
+
 		// 删除以前的
 		session.removeAttribute("imageVerifyCode");
 		session.removeAttribute("imageVerifyCodeTime");
 		session.setAttribute("imageVerifyCode", verifyCode.toLowerCase());
 		session.setAttribute("imageVerifyCodeTime", LocalDateTime.now());
+		System.out.println("lishaoben: "+ session.getAttribute("imageVerifyCode"));
 		// 生成图片
 		int w = 100, h = 30;
 		OutputStream out = response.getOutputStream();

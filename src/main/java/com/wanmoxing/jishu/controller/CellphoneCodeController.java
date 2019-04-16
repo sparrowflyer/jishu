@@ -27,9 +27,10 @@ public class CellphoneCodeController {
 		logger.info("开始发送短信验证码");
 		CommonResponse commonResponse = CellphoneUtil.sendSms(phoneNumber, random);
 		if(null != commonResponse.getData()) {
+			logger.info("验证码发送成功");
 			session.removeAttribute("cellphoneCode");
 			session.removeAttribute("cellphoneCodeTime");
-			session.setAttribute("cellphoneCode", commonResponse.getData());
+			session.setAttribute("cellphoneCode", random);
 			session.setAttribute("cellphoneCodeTime", LocalDateTime.now());
 		}		
 	}

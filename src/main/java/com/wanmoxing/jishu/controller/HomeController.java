@@ -10,13 +10,13 @@ public class HomeController {
 	
 	@RequestMapping(value={"/", "/about", "/contact", "/faq", "/login", "/register", "/pwd", "/blog", "/addBlog", "/course", "/addCourse",})
 	public String home() {
-		return "/index.html";
+		return "index.html";
 	}
 
 	@RequestMapping(value={ "/blog/**","/course/**",  "/user/**", "/jishu/payResult/**/**"})
 	public String home1(HttpServletRequest request) {
 		System.out.print(request);
-		return "/index.html";
+		return "index.html";
 	}
 
 }

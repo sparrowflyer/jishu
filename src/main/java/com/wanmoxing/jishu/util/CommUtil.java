@@ -19,7 +19,7 @@ public class CommUtil {
 	}
 	
 	public static boolean isEmail(String email) {
-		return email.matches("^[_a-z0-9-]+(\\.[_a-z0-9-]+)*@[a-z0-9-]+(\\.[a-z0-9-]+)*(\\.[a-z]{2,})$");
+		return email.matches("^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$");
 	}
 	
 	public static boolean isPhone(String phone) {
@@ -41,4 +41,8 @@ public class CommUtil {
 				|| phone.matches(ja_JP)
 				|| phone.matches(en_IN);
 	}	
+	
+	public static boolean isCNPhone(String phone) {
+		return phone.matches("^1\\d{10}$");
+	}
 }

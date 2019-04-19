@@ -51,12 +51,14 @@ public class LoginController {
 
 		String email=loginInfoVo.getEmail();
 
+		String phoneNumber = loginInfoVo.getPhoneNumber();
+		
 		String password=loginInfoVo.getPassword();
 
 		String imageVercode=loginInfoVo.getImageVercode();
 
-		if(CommUtil.isEmptyOrNull(email)) {
-			resultDTO.setErrorMsg("email不能为空");
+		if(CommUtil.isEmptyOrNull(email) && CommUtil.isEmptyOrNull(phoneNumber)) {
+			resultDTO.setErrorMsg("邮箱或手机号不能为空");
 			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
 			return resultDTO;
 		} else if(CommUtil.isEmptyOrNull(password)) {
@@ -75,7 +77,12 @@ public class LoginController {
 			return resultDTO;
 		}
 		try {
-			User user = userService.findByEmail(email, MD5Util.EncodeByMD5(password));
+			User user = null;
+			if(email != null && CommUtil.isEmail(email)) { 
+				user = userService.findByEmail(email, MD5Util.EncodeByMD5(password));
+			} else if(phoneNumber != null && CommUtil.isCNPhone(phoneNumber)) {
+				user = userService.findByPhoneNumber(phoneNumber, MD5Util.EncodeByMD5(password));
+			}
 			if (user!=null) {
 				user.setPassword(null);
 				logger.info("登录成功!");
@@ -88,7 +95,7 @@ public class LoginController {
 		}catch (Exception e) {
 			e.printStackTrace();
 			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
-			resultDTO.setErrorMsg("Exception occured!");
+			resultDTO.setErrorMsg("登录发生异常，请联系管理员!");
 			return resultDTO;
 		}
 		logger.info("登录失败!");
@@ -117,11 +124,15 @@ public class LoginController {
 		String nickName=loginInfoVo.getNickName();
 
 		String email=loginInfoVo.getEmail();
+		
+		String phoneNumber=loginInfoVo.getPhoneNumber();
 
 		String password=loginInfoVo.getPassword();
 
 		String emailVercode=loginInfoVo.getEmailVercode();
 
+		String phoneVercode=loginInfoVo.getPhoneVercode();
+		
 		String imageVercode=loginInfoVo.getImageVercode();
 
 
@@ -130,16 +141,16 @@ public class LoginController {
 			resultDTO.setErrorMsg("注册失败，用户名不能为空");
 			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
 			return resultDTO;
-		} else if(CommUtil.isEmptyOrNull(email)) {
-			resultDTO.setErrorMsg("注册失败，邮箱不能为空");
+		} else if(CommUtil.isEmptyOrNull(email) && CommUtil.isEmptyOrNull(phoneNumber)) {
+			resultDTO.setErrorMsg("注册失败，邮箱或手机号不能为空");
 			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
 			return resultDTO;
 		} else if(CommUtil.isEmptyOrNull(password)) {
 			resultDTO.setErrorMsg("注册失败，密码不能为空");
 			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
 			return resultDTO;
-		} else if(CommUtil.isEmptyOrNull(emailVercode)) {
-			resultDTO.setErrorMsg("注册失败，邮箱验证码不能为空");
+		} else if(CommUtil.isEmptyOrNull(emailVercode) && CommUtil.isEmptyOrNull(phoneVercode)) {
+			resultDTO.setErrorMsg("注册失败，验证码不能为空");
 			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
 			return resultDTO;
 		} else if(CommUtil.isEmptyOrNull(imageVercode)) {
@@ -151,17 +162,32 @@ public class LoginController {
 
 		try {
 			//验证码和账户判断
-			User user=userService.existenceByEmail(email);
-			if(user!=null){
-				resultDTO.setErrorMsg("邮箱已经存在！");
-				resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
-				return resultDTO;
+			if(email != null && CommUtil.isEmail(email)) {
+				User user=userService.existenceByEmail(email);
+				if(user!=null){
+					resultDTO.setErrorMsg("邮箱已经存在！");
+					resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+					return resultDTO;
+				}
+				if (!"success".equalsIgnoreCase(checkEmailVerifyCode(emailVercode,session))){
+					resultDTO.setErrorMsg("邮箱验证码错误！");
+					resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+					return resultDTO;
+				}
+			} else if(phoneNumber != null && CommUtil.isCNPhone(phoneNumber)) {
+				User user=userService.existenceByPhoneNumber(phoneNumber);
+				if(user!=null){
+					resultDTO.setErrorMsg("手机号已经存在！");
+					resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+					return resultDTO;
+				}
+				if (!"success".equalsIgnoreCase(checkPhoneVerifyCode(phoneVercode,session))){
+					resultDTO.setErrorMsg("短信验证码错误！");
+					resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+					return resultDTO;
+				}
 			}
-			if (!"success".equalsIgnoreCase(checkEmailVerifyCode(emailVercode,session))){
-				resultDTO.setErrorMsg("邮箱验证码错误！");
-				resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
-				return resultDTO;
-			}
+			
 			if (!"success".equalsIgnoreCase(checkImageVerifyCode(imageVercode,session))){
 				resultDTO.setErrorMsg("图形验证码错误！");
 				resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
@@ -172,6 +198,7 @@ public class LoginController {
 			userNew.setNickName(nickName);
 			userNew.setPassword(MD5Util.EncodeByMD5(password));
 			userNew.setEmail(email);
+			userNew.setCellPhone(phoneNumber);
 			userNew.setType(UserType.USER.getType());
 			userNew.setStatus(UserStatus.ACTIVE.getStatus());
 			userNew.setHeadImage(CommonConstants.DEFAULT_HEADIMG_ADDRESS);
@@ -183,15 +210,15 @@ public class LoginController {
 		} catch (Exception e) {
 			e.printStackTrace();
 			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
-			resultDTO.setErrorMsg("Exception occured!");
+			resultDTO.setErrorMsg("注册发生异常，请联系管理员!");
 			return resultDTO;
 		}
 	}
 	
 	/**
-	 * 根据email找回密码
+	 * 根据email或者手机号找回密码
 	 * @param session
-	 * @param email
+	 * @param email or phone
 	 * @param password
 	 * @return
 	 */
@@ -201,14 +228,15 @@ public class LoginController {
 								   @RequestBody LoginInfoVo loginInfoVo) {
 		ResultDTO resultDTO = new ResultDTO();
 		String email = loginInfoVo.getEmail();
+		String phoneNumber = loginInfoVo.getPhoneNumber();
 		String password = loginInfoVo.getPassword();
 		String emailVercode = loginInfoVo.getEmailVercode();
+		String phoneVercode = loginInfoVo.getPhoneVercode();
 
-
-		if (CommUtil.isEmptyOrNull(email)) {
-			logger.info("更新失败，邮箱不能为空");
+		if (CommUtil.isEmptyOrNull(email) && CommUtil.isEmptyOrNull(phoneNumber)) {
+			logger.info("更新失败，邮箱或手机号不能为空");
 			
-			resultDTO.setErrorMsg("信息修改失败，邮箱不能为空");
+			resultDTO.setErrorMsg("信息修改失败，邮箱或手机号不能为空");
 			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
 			return resultDTO;
 		} else if (CommUtil.isEmptyOrNull(password)) {
@@ -216,26 +244,42 @@ public class LoginController {
 			resultDTO.setErrorMsg("信息修改失败，密码不能为空");
 			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
 			return resultDTO;
-		} else if (CommUtil.isEmptyOrNull(emailVercode)) {
-			logger.info("更新失败，邮箱验证码不能为空");
-			resultDTO.setErrorMsg("信息修改失败，邮箱验证码不能为空");
+		} else if (CommUtil.isEmptyOrNull(emailVercode) && CommUtil.isEmptyOrNull(phoneVercode)) {
+			logger.info("更新失败，验证码不能为空");
+			resultDTO.setErrorMsg("信息修改失败，验证码不能为空");
 			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
 			return resultDTO;
 		} 
 		try {
-			User user = userService.existenceByEmail(email); // 检测用户存不存在
-			if (user == null) {
-				resultDTO.setErrorMsg("用户不存在，请注册！");
-				resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
-				return resultDTO;
-			}
+			User user = null;
+			if(email != null && CommUtil.isEmail(email)) {
+				user = userService.existenceByEmail(email); // 检测用户存不存在
+				if (user == null) {
+					resultDTO.setErrorMsg("用户不存在，请先注册！");
+					resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+					return resultDTO;
+				}
 				// 身份检测
-			if (!"success".equalsIgnoreCase(checkEmailVerifyCode(emailVercode, session))) {
-				resultDTO.setErrorMsg("邮箱验证码错误！");
-				resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
-				return resultDTO;
+				if (!"success".equalsIgnoreCase(checkEmailVerifyCode(emailVercode, session))) {
+					resultDTO.setErrorMsg("邮箱验证码错误！");
+					resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+					return resultDTO;
+				}
+			} else if(phoneNumber != null && CommUtil.isCNPhone(phoneNumber)) {
+				user = userService.existenceByPhoneNumber(phoneNumber); // 检测用户存不存在
+				if (user == null) {
+					resultDTO.setErrorMsg("用户不存在，请先注册！");
+					resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+					return resultDTO;
+				}
+				// 身份检测
+				if (!"success".equalsIgnoreCase(checkPhoneVerifyCode(phoneVercode, session))) {
+					resultDTO.setErrorMsg("短信验证码错误！");
+					resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+					return resultDTO;
+				}
 			}
-			
+				
 			// 更新用户密码
 			user.setPassword(MD5Util.EncodeByMD5(password));
 			userService.update(user);
@@ -247,7 +291,7 @@ public class LoginController {
 		} catch (Exception e) {
 			e.printStackTrace();
 			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
-			resultDTO.setErrorMsg("Exception occured!");
+			resultDTO.setErrorMsg("密码找回发生异常，请联系管理员!");
 			return resultDTO;
 		}
 	}
@@ -261,9 +305,9 @@ public class LoginController {
 	@ResponseBody
 	public ResultDTO checkExistEmail(HttpSession session,
 			@RequestBody LoginInfoVo loginInfoVo) {
-		String email=(loginInfoVo.getEmail());
+		String email = loginInfoVo.getEmail();
 		ResultDTO resultDTO = new ResultDTO();
-		if(email==null) {
+		if(email == null) {
 			logger.info("邮箱不能为空");
 			resultDTO.setErrorMsg("邮箱不能为空");
 			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
@@ -283,7 +327,43 @@ public class LoginController {
 		} catch (Exception e) {
 			e.printStackTrace();
 			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
-			resultDTO.setErrorMsg("Exception occured!");
+			resultDTO.setErrorMsg("校验邮箱时候发生异常，请联系管理员!");
+			return resultDTO;
+		}
+	}
+	
+	/**
+	 * 检查手机号是否已经注册
+	 * @param session
+	 * @return
+	 */
+	@RequestMapping(value = "/existenceCellphone",produces = "application/json;charset=utf-8", method = RequestMethod.POST)
+	@ResponseBody
+	public ResultDTO checkExistCellphone(HttpSession session,
+			@RequestBody LoginInfoVo loginInfoVo) {
+		String phoneNumber = loginInfoVo.getPhoneNumber();
+		ResultDTO resultDTO = new ResultDTO();
+		if(phoneNumber == null) {
+			logger.info("手机号不能为空");
+			resultDTO.setErrorMsg("手机号不能为空");
+			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+			return resultDTO;
+		} 
+		try {
+			// 检测手机号是否存在
+			User user = userService.existenceByPhoneNumber(phoneNumber);
+			if (user != null) {
+				resultDTO.setErrorMsg("手机号已经存在");
+				resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+				return resultDTO;
+			} 
+			resultDTO.setErrorMsg("手机号可以注册");
+			resultDTO.setStatus(ResultDTOStatus.SUCCESS.getStatus());
+			return resultDTO;
+		} catch (Exception e) {
+			e.printStackTrace();
+			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+			resultDTO.setErrorMsg("校验邮箱时候发生异常，请联系管理员!");
 			return resultDTO;
 		}
 	}
@@ -326,6 +406,26 @@ public class LoginController {
 		} else {
 			session.removeAttribute("imageVerifyCode");
 			session.removeAttribute("imageVerifyCodeTime");
+			return "success";
+		}
+	}
+	
+	private String checkPhoneVerifyCode(String phoneCode, HttpSession session) {
+		Object phoneVerifyCodeInSessionObj = session.getAttribute("cellphoneCode");
+		if (phoneVerifyCodeInSessionObj == null) {
+			return "expired";
+		}
+		String phoneVerifyCodeInSession = phoneVerifyCodeInSessionObj.toString();
+		LocalDateTime localDateTime = (LocalDateTime) session.getAttribute("cellphoneCodeTime");
+		long past = localDateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+		long now = LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+		if (phoneVerifyCodeInSession == null || phoneCode == null || phoneCode.isEmpty() || !phoneVerifyCodeInSession.equalsIgnoreCase(phoneCode)) {
+			return "failed";
+		} else if ((now - past) / 1000 / 60 > 5) {
+			return "expired";
+		} else {
+			session.removeAttribute("cellphoneCode");
+			session.removeAttribute("cellphoneCodeTime");
 			return "success";
 		}
 	}

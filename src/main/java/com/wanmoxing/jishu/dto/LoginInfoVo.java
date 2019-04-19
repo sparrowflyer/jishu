@@ -8,10 +8,14 @@ public class LoginInfoVo {
     String nickName;
 
     String email;
+    
+    String phoneNumber;
 
     String password;
 
     String emailVercode;
+    
+    String phoneVercode;
 
     String imageVercode;
 
@@ -31,7 +35,15 @@ public class LoginInfoVo {
         this.email = email;
     }
 
-    public String getPassword() {
+    public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
+	public String getPassword() {
         return password;
     }
 
@@ -46,6 +58,14 @@ public class LoginInfoVo {
     public void setEmailVercode(String emailVercode) {
         this.emailVercode = emailVercode;
     }
+
+	public String getPhoneVercode() {
+		return phoneVercode;
+	}
+
+	public void setPhoneVercode(String phoneVercode) {
+		this.phoneVercode = phoneVercode;
+	}
 
 	public String getImageVercode() {
 		return imageVercode;

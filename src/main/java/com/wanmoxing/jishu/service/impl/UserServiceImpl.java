@@ -36,6 +36,11 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
+	public User findByPhoneNumber(String phoneNumber, String password) {
+		return userMapper.findByPhoneNumber(phoneNumber, password);
+	}
+	
+	@Override
 	public List<User> findByType(UserType type) {
 		return userMapper.findByType(type);
 	}
@@ -44,6 +49,12 @@ public class UserServiceImpl implements UserService {
 	public User existenceByEmail(String email) {
 		return userMapper.existenceByEmail(email);
 	}
+	
+	@Override
+	public User existenceByPhoneNumber(String phoneNumber) {
+		return userMapper.existenceByPhoneNumber(phoneNumber);
+	}
+	
 	@Override
 	public void insert(User User) {
 		userMapper.insert(User);

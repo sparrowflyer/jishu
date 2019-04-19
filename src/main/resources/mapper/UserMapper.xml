@@ -36,12 +36,20 @@
         SELECT ID,NICK_NAME,EMAIL,CELL_PHONE,PASSWORD,HEAD_IMAGE,TYPE,STATUS,CREATED_TIME,UPDATED_TIME FROM jishu.T_USER WHERE EMAIL=#{email} and PASSWORD=#{password}
     </select>
     
+    <select id="findByPhoneNumber" resultMap="userResultMap">
+        SELECT ID,NICK_NAME,EMAIL,CELL_PHONE,PASSWORD,HEAD_IMAGE,TYPE,STATUS,CREATED_TIME,UPDATED_TIME FROM jishu.T_USER WHERE CELL_PHONE=#{phoneNumber} and PASSWORD=#{password}
+    </select>
+    
     <select id="findByType" resultMap="userResultMap">
         SELECT ID,NICK_NAME,EMAIL,CELL_PHONE,PASSWORD,HEAD_IMAGE,TYPE,STATUS,CREATED_TIME,UPDATED_TIME FROM jishu.T_USER WHERE type=#{type}
     </select>
 
     <select id="existenceByEmail" parameterType="java.lang.String" resultMap="userResultMap">
         SELECT * FROM jishu.T_USER WHERE EMAIL=#{email}
+    </select>
+    
+    <select id="existenceByPhoneNumber" parameterType="java.lang.String" resultMap="userResultMap">
+        SELECT * FROM jishu.T_USER WHERE CELL_PHONE=#{phoneNumber}
     </select>
 
     <delete id="delete" parameterType="int">

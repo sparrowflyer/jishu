@@ -13,9 +13,13 @@ public interface UserService {
 
 	public User findByEmail(String email, String password);
 	
+	public User findByPhoneNumber(String phoneNumber, String password);
+	
 	public List<User> findByType(UserType type);
 	
 	public User existenceByEmail(String email);
+
+	public User existenceByPhoneNumber(String phoneNumber);
 
 	public void insert(User user);
 	

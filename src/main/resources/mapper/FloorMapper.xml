@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+  
+<mapper namespace="com.wanmoxing.jishu.mapper.FloorMapper">  
+
+	<resultMap id="floorResultMap" type="com.wanmoxing.jishu.bean.Floor">
+		<id property="fid" column="fid"/>
+		<result property="cid" column="cid"/>
+		<result property="uid" column="uid"/>
+		<result property="content" column="content"/>
+		<result property="createDate" column="create_date"/>
+		<result property="updateDate" column="update_date"/>
+		<association property="user" column="uid" select="com.wanmoxing.jishu.mapper.UserMapper.findById"></association>
+	</resultMap>
+    
+    <select id="getFloorList" resultMap="floorResultMap">
+        select * from T_FLOOR,T_USER where T_FLOOR.uid=T_USER.ID and cid=#{cid} order by fid desc
+    </select>
+    
+     <select id="getFloorById" resultMap="floorResultMap">
+        select * from T_FLOOR,T_USER where T_FLOOR.uid=T_USER.ID and fid=#{fid} order by fid desc
+    </select>
+	
+    <delete id="delete" parameterType="int">
+        DELETE FROM jishu.T_FLOOR WHERE fid=#{fid}
+    </delete>
+    
+    <insert id="insert" parameterType="com.wanmoxing.jishu.bean.Floor" useGeneratedKeys="true" keyProperty="fid">
+        INSERT INTO jishu.T_FLOOR(cid,uid,content) VALUES(#{cid},#{uid},#{content})
+    </insert>
+    
+    <update id="update" parameterType="com.wanmoxing.jishu.bean.Floor">
+        UPDATE jishu.T_FLOOR SET content=#{content} WHERE fid=#{fid}
+    </update>
+    
+</mapper>

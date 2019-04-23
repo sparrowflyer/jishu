@@ -1,0 +1,100 @@
+/* css reset */
+
+/* html,body,h1,h2,h3,h4,h5,h6,div,dl,dt,dd,ul,ol,li,p,blockquote,pre,hr,figure,table,caption,th,td,form,fieldset,legend,input,button,textarea,menu{margin:0;padding:0;}
+header,footer,section,article,aside,nav,hgroup,address,figure,figcaption,menu,details{display:block;}
+table{border-collapse:collapse;border-spacing:0;}
+caption,th{text-align:left;font-weight:normal;}
+html,body,fieldset,img,iframe,abbr{border:0;}
+i,cite,em,var,address,dfn{font-style:normal;}
+[hidefocus],summary{outline:0;}
+li{list-style:none;}
+h1,h2,h3,h4,h5,h6,small{font-size:100%;}
+sup,sub{font-size:83%;}
+pre,code,kbd,samp{font-family:inherit;}
+q:before,q:after{content:none;}
+textarea{overflow:auto;resize:none;}
+label,summary{cursor:default;}
+a,button{cursor:pointer;}
+h1,h2,h3,h4,h5,h6,em,strong,b{font-weight:bold;}
+del,ins,u,s,a,a:hover{text-decoration:none;}
+body,textarea,input,button,select,keygen,legend{font:12px/1.14 arial,\5b8b\4f53;color:#333;outline:0;}
+body{background:#fff;}
+a,a:hover{color:#333;} */
+
+ul,ol,li{
+    margin:0;padding:0;
+    list-style: none;
+}
+
+html,body {
+    max-width: 1440px;
+}
+.home-title{
+    width:148px;
+    height:28px;
+    font-size:20px;
+    font-weight:600;
+    color:rgba(48,48,48,1);
+    line-height:28px;
+    letter-spacing:6px;
+    -webkit-text-stroke:2px rgba(48,48,48,1);
+}
+
+.home-menu{
+    display: flex;
+    justify-content: space-around;
+}
+
+.home-menu li{
+    margin-right: 60px;
+    height:28px;
+    font-size:20px;
+    font-weight:400;
+    color:rgba(132,132,132,1);
+    line-height:28px;
+}
+
+.home-menu li.active{
+    color:rgba(48,48,48,1);
+    position: relative;
+}
+
+.home-menu li.active:after{
+    content:"";
+    display: block;
+    width:100%;
+    height:8px;
+    background:rgba(255,226,1,1);
+    position: absolute;
+    bottom: 0;
+    left:0;
+}
+
+.home-btn{
+    width:124px;
+    height:40px;
+    background:rgba(255,226,1,1);
+    border-radius:30px;
+    width:63px;
+    font-size:14px;
+    font-weight:500;
+    color:rgba(14,14,14,1);
+    line-height:20px;
+}
+
+.home-banner{
+    width:100%;
+    height:auto;
+    overflow: hidden;
+}
+
+.banner-btn li{
+    width:12px;
+    height:12px;
+    background:rgba(0,0,0,0.3);
+    box-shadow:0px 2px 2px 0px rgba(45,45,45,0.21);
+}
+
+.banner-btn li.active{
+    background:rgba(255,226,1,1);
+}

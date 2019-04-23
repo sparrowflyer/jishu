@@ -6,6 +6,9 @@ target/*
 node_modules/*
 src/main/resources/static/built/*
 package-lock.json
+web/dist/*
+web/node_modules/*
+web/package-lock.json
 
 # Log file
 *.log
@@ -35,3 +38,7 @@ hs_err_pid*
 .settings/*
 .classpath
 .project
+
+# idea config files
+.idea/*
+jishu.iml

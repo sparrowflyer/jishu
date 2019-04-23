@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+  
+<mapper namespace="com.wanmoxing.jishu.mapper.ArticleMapper">  
+
+	<resultMap id="articleResultMap" type="com.wanmoxing.jishu.bean.Article">
+		<id property="aid" column="aid"/>
+		<result property="title" column="title"/>
+		<result property="uid" column="uid"/>
+		<result property="content" column="content"/>
+		<result property="createDate" column="create_date"/>
+		<result property="updateDate" column="update_date"/>
+		<result property="typeId" column="typeid"/>
+		<result property="status" column="status"/>
+		<result property="goodCount" column="good_count"/>
+		<result property="badCount" column="bad_count"/>
+		<result property="collectCount" column="collect_count"/>
+		<result property="commentCount" column="comment_count"/>
+		<result property="imagesrc" column="image_src"/>
+		<association property="user" column="uid" select="com.wanmoxing.jishu.mapper.UserMapper.findById"></association>
+		<association property="articleType" column="typeid" select="getArticleTypeById"></association>
+	</resultMap>
+	
+	<resultMap id="articleTypeResultMap" type="com.wanmoxing.jishu.bean.ArticleType">
+		<id property="id" column="id"/>
+		<result property="value" column="value"/>
+	</resultMap>
+    
+    <select id="getArticleList" resultMap="articleResultMap">
+        select * from T_ARTICLE,T_USER where T_ARTICLE.uid=T_USER.ID and T_ARTICLE.status !=4 order by aid desc
+    </select>
+    
+    <select id="getArticleListByTypeId" parameterType="int" resultMap="articleResultMap">
+        select * from T_ARTICLE,T_USER,T_ARTICLE_TYPE where T_ARTICLE.uid=T_USER.ID and T_ARTICLE.typeid=T_ARTICLE_TYPE.id and T_ARTICLE_TYPE.id=#{typeId} and T_ARTICLE.status !=4 order by aid desc
+    </select>
+
+    <select id="getArticleById" parameterType="int" resultMap="articleResultMap">
+        SELECT * from T_ARTICLE,T_USER where T_ARTICLE.uid=T_USER.ID and aid=#{aid}
+    </select>
+    
+    <select id="getArticleListByUid" parameterType="int" resultMap="articleResultMap">
+        SELECT * from T_ARTICLE,T_USER where T_ARTICLE.uid=T_USER.ID and T_ARTICLE.uid=#{uid}
+    </select>
+    
+    <select id="getArticleCollectListByUid" parameterType="int" resultMap="articleResultMap">
+        SELECT * from T_ARTICLE,T_USER,T_COLLECTION_COUNT where T_ARTICLE.uid=T_USER.ID and T_ARTICLE.aid =T_COLLECTION_COUNT.aid and T_COLLECTION_COUNT.uid=#{uid}
+    </select>
+
+	<select id="searchArticleByTitle" resultMap="articleResultMap">
+		select * from T_ARTICLE where title like '%' #{key} '%' order by aid desc
+	</select>
+	
+	<select id="getAllArticleType" resultMap="articleTypeResultMap">
+		select * from T_ARTICLE_TYPE  order by id asc
+	</select>
+	
+	<select id="getArticleTypeById" resultMap="articleTypeResultMap">
+		select * from T_ARTICLE_TYPE where id=#{typeId} order by id asc
+	</select>
+	
+    <delete id="delete" parameterType="int">
+        DELETE FROM jishu.T_ARTICLE WHERE aid=#{aid}
+    </delete>
+    
+    <insert id="insert" parameterType="com.wanmoxing.jishu.bean.Article" useGeneratedKeys="true" keyProperty="aid">
+        INSERT INTO jishu.T_ARTICLE(title,uid,content,typeid,status,good_count,bad_count,collect_count,comment_count,image_src) VALUES(#{title},#{uid},#{content},#{typeId},#{status},#{goodCount},#{badCount},#{collectCount},#{commentCount},#{imagesrc})
+    </insert>
+    
+    <update id="update" parameterType="com.wanmoxing.jishu.bean.Article">
+        UPDATE jishu.T_ARTICLE SET title=#{title},content=#{content},good_count=#{goodCount},bad_count=#{badCount},collect_count=#{collectCount},comment_count=#{commentCount},image_src=#{imagesrc} WHERE aid=#{aid}
+    </update>
+    
+    <update id="updateArticleStatus">
+        UPDATE jishu.T_ARTICLE SET status=#{status} WHERE aid=#{aid}
+    </update>
+    
+</mapper>

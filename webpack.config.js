@@ -1,23 +1,36 @@
-var path = require('path');
+const path = require('path');
 
 module.exports = {
-    entry: './src/main/js/app.js',
-    devtool: 'sourcemaps',
-    cache: true,
-    mode: 'development',
+    entry: path.resolve(__dirname, 'web/src/app.js'),
     output: {
-        path: __dirname,
-        filename: './src/main/resources/static/built/bundle.js'
+        path: path.resolve(__dirname, 'src/main/resources/static/built'),
+        filename: 'bundle.js'
     },
     module: {
         rules: [
             {
-                test: path.join(__dirname, '.'),
+                test: /\.jsx?$/,
                 exclude: /(node_modules)/,
                 use: [{
-                    loader: 'babel-loader',
+                    loader: 'babel-loader'
+                }]
+            },
+            {
+                test: /\.css$/,
+                use: ['style-loader', 'css-loader']
+            },
+            {
+                test: /\.less$/,
+                use: ['style-loader', 'css-loader', 'less-loader']
+            },
+            {
+                test: /\.(eot|woff|woff2|ttf|svg|png|jpg|gif|otf)$/,
+                use: [{
+                    loader: 'url-loader',
                     options: {
-                        presets: ["@babel/preset-env", "@babel/preset-react"]
+                        name: '[name].[ext]',
+                        limit: 1024,
+                        publicPath: 'built/'
                     }
                 }]
             }

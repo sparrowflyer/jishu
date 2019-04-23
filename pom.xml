@@ -5,8 +5,8 @@
 
 	<groupId>com.wanmoxing</groupId>
 	<artifactId>jishu</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<version>0.0.1</version>
+	<packaging>jar</packaging>
 
 	<name>jishu</name>
 	<description>jishu project for WanMoXing</description>
@@ -29,6 +29,12 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+		</dependency>
+		
 		<dependency>
 			<groupId>org.mybatis.spring.boot</groupId>
 			<artifactId>mybatis-spring-boot-starter</artifactId>
@@ -40,20 +46,58 @@
 			<artifactId>mysql-connector-java</artifactId>
 			<scope>runtime</scope>
 		</dependency>
+		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-tomcat</artifactId>
 			<scope>provided</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-		</dependency>
 		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
+		</dependency>
+		
+		<dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+            <version>1.4.7</version>
+        </dependency>
+        
+        <dependency>
+  			<groupId>com.alipay.sdk</groupId>
+  			<artifactId>alipay-sdk-java</artifactId>
+  			<version>3.4.49.ALL</version>
+		</dependency>
+		
+		<dependency>
+   			<groupId>com.alibaba</groupId>
+   			<artifactId>fastjson</artifactId>
+   			<version>1.2.54</version>
+		</dependency>
+        
+        <dependency>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper-spring-boot-starter</artifactId>
+            <version>1.2.3</version>
+        </dependency>
+        
+		<dependency>
+    		<groupId>com.qiniu</groupId>
+    		<artifactId>qiniu-java-sdk</artifactId>
+    		<version>7.2.17</version>
+		</dependency>
+
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>1.3.1</version>
+        </dependency>
+        
+        <dependency>
+  			<groupId>com.aliyun</groupId>
+  			<artifactId>aliyun-java-sdk-core</artifactId>
+  			<version>4.0.3</version>
 		</dependency>
 	</dependencies>
 

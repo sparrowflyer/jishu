@@ -1,18 +1,56 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head lang="en">
-    <meta charset="UTF-8"/>
-    <title>ReactJS + Spring Data REST</title>
-    <link rel="stylesheet" href="/main.css" />
-
-    <script src="./src/index.js"></script>
-
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>jishu</title>
+    <!-- favicon -->
+    <link rel="icon" href="/favicon/favicon.png" sizes="32x32" />
+    <link rel="icon" href="/favicon/favicon-300x300.png" sizes="192x192" />
+    <link rel="apple-touch-icon-precomposed" href="/favicon/favicon-300x300.png" />
+    <!-- Import Template Icons CSS Files -->
+    <link rel="stylesheet" href="/assets/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="/assets/css/simple-line-icons.css" />
+    <!-- Import Bootstrap CSS File -->
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css" />
+    <!-- Import Owl Carousel CSS File -->
+    <link rel="stylesheet" href="/assets/css/owl.carousel.min.css" />
+    <!-- TimeTo Countdown CSS Files -->
+    <link rel="stylesheet" href="/assets/css/timeTo.css" />
+    <!-- Import Template's CSS Files -->
+    <link rel="stylesheet" href="/assets/css/style.css" />
+    <link rel="stylesheet" href="/assets/css/responsive.css" />
+    <link rel="stylesheet" href="/assets/css/magnific-popup.css" />
+    <link rel="stylesheet" href="/assets/css/selectric.css" />
+    <link rel="stylesheet" href="/assets/css/woocommerce.css" />
+    <link rel="stylesheet" href="/assets/css/pagination.css" />
+    <link rel="stylesheet" href="/assets/css/mathquill.css" />
+    <link rel="stylesheet" href="/assets/css/react-datepicker.min.css" />
 </head>
 <body>
-
-    <div id="react"></div>
-
-    <script src="built/bundle.js"></script>
-
+    <div id="app"></div>
+    <script src="/built/bundle.js"></script>
+    <script src="/assets/js/jquery-3.3.1.min.js"></script>
+    <script src="/assets/js/plugins.js"></script>
+    <script src="/assets/js/main.js"></script>
+    <script src="/assets/js/jquery.selectric.js"></script>
+    <script src="/assets/js/jquery-ui.min.js"></script>
+    <script src="/assets/js/mathquill.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            "use strict";
+            // home contact info
+            $(".trggericon").on("click", function(e){
+                $(this).parent('.top-contact').addClass('togglecontact');
+            });
+            $(".top-contact .close").on("click", function(e){
+                $(this).parent('.top-contact').removeClass('togglecontact');
+            });
+        });
+        $(function() {
+            $('.filter-select').selectric();
+        });
+    </script>
 </body>
 </html>

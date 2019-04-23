@@ -6,28 +6,37 @@
   "scripts": {
     "start:dev": "",
     "build:dev": "webpack --config config/webpack.dev.js",
-    "build:prod": "webpack --config config/webpack.prod.js"
+    "build:prod": "webpack --config config/webpack.prod.js",
+    "eslint": "node_modules/.bin/eslint --ext .js src"
   },
   "author": "Cheryl_Yang",
   "license": "ISC",
+  "pre-commit": [
+    "eslint"
+  ],
   "devDependencies": {
     "@babel/core": "^7.4.3",
     "@babel/preset-env": "^7.4.3",
     "@babel/preset-react": "^7.0.0",
+    "babel-eslint": "^10.0.1",
     "babel-loader": "^8.0.5",
     "clean-webpack-plugin": "^2.0.1",
     "css-loader": "^2.1.1",
     "eslint": "^5.16.0",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-plugin-import": "^2.17.2",
+    "eslint-plugin-jsx-a11y": "^6.2.1",
     "eslint-plugin-react": "^7.12.4",
     "file-loader": "^3.0.1",
     "html-webpack-plugin": "^3.2.0",
     "mini-css-extract-plugin": "^0.6.0",
+    "pre-commit": "^1.2.2",
     "react-hot-loader": "^4.8.4",
     "style-loader": "^0.23.1",
     "uglifyjs-webpack-plugin": "^2.1.2",
     "url-loader": "^1.1.2",
     "webpack": "^4.30.0",
-    "webpack-cli": "^3.3.0",
+    "webpack-cli": "^3.3.1",
     "webpack-dev-middleware": "^3.6.2",
     "webpack-hot-middleware": "^2.24.3",
     "webpack-merge": "^4.2.1"

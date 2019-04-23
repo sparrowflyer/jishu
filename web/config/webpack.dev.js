@@ -20,13 +20,6 @@ const merge = require('webpack-merge'),
                 test: /\.css$/,
                 use: ['style-loader', 'css-loader']
             }]
-        },
-        //https://webpack.js.org/configuration/dev-server/#devserver
-        devServer: {
-            port: 6666,
-            contentBase: path.join(__dirname, '../dist'),
-            historyApiFallback: true,
-            hot: true
         }
     };
 

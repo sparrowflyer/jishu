@@ -43,6 +43,20 @@
     <select id="findByType" resultMap="userResultMap">
         SELECT ID,NICK_NAME,EMAIL,CELL_PHONE,PASSWORD,HEAD_IMAGE,TYPE,STATUS,CREATED_TIME,UPDATED_TIME FROM jishu.T_USER WHERE type=#{type}
     </select>
+    
+    <select id="findTotalAmountBySchool" parameterType="int" resultType="int">
+        SELECT count(1) FROM jishu.T_SCHOOL_USER
+        WHERE SCHOOL_ID=#{schoolId}
+    </select>
+    
+    <select id="findBySchool" parameterType="java.util.Map" resultMap="userResultMap">
+        SELECT * FROM jishu.T_USER
+        WHERE ID in (SELECT USER_ID FROM jishu.T_SCHOOL_USER WHERE SCHOOL_ID = #{schoolId})
+        ORDER BY NICK_NAME
+        <if test=" pageStart &gt;= 0 and pageAmount &gt; 0 ">
+        LIMIT #{pageStart}, #{pageAmount}
+        </if>
+    </select>
 
     <select id="existenceByEmail" parameterType="java.lang.String" resultMap="userResultMap">
         SELECT * FROM jishu.T_USER WHERE EMAIL=#{email}

@@ -1,6 +1,7 @@
 package com.wanmoxing.jishu.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -20,6 +21,10 @@ public interface UserMapper {
 	public User findByPhoneNumber(@Param("phoneNumber")String phoneNumber, @Param("password")String password);
 
 	public List<User> findByType(UserType type);
+	
+	public int findTotalAmountBySchool(int schoolId);
+	
+	public List<User> findBySchool(Map<String, Object> conditions);
 
     public User existenceByEmail(@Param("email")String email);
     

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+  
+<mapper namespace="com.wanmoxing.jishu.mapper.UserStudentInfoMapper">  
+
+	<resultMap id="userStudentInfoResultMap" type="com.wanmoxing.jishu.bean.UserStudentInfo">
+		<id property="userId" column="USER_ID"/>
+		<result property="majar" column="MAJAR"/>
+		<result property="topics" column="TOPICS"/>
+		<result property="honors" column="HONORS"/>
+		<result property="contacts" column="CONTACTS"/>
+		<result property="scoreResponse" column="SCORE_RESPONSE"/>
+		<result property="scoreAttitude" column="SCORE_ATTITUDE"/>
+		<result property="scoreProfessional" column="SCORE_PROFESSIONAL"/>
+	</resultMap>
+	
+    <select id="findByUserId" parameterType="int" resultMap="userStudentInfoResultMap">
+        SELECT * FROM jishu.T_USER_STUDENT_INFO WHERE USER_ID=#{userId}
+    </select>
+    
+</mapper>

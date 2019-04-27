@@ -4,7 +4,7 @@ target/*
 
 # Compiled js files
 node_modules/*
-src/main/resources/static/built/*
+src/main/resources/templates/*
 package-lock.json
 
 # Log file

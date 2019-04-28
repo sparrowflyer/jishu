@@ -1,0 +1,55 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-size: 62.5%;
+}
+
+#app {
+    width: 100%;
+    height: 100%;
+}
+
+.login {
+    width: 100%;
+    height: 100%;
+    background-color: #FBDE17;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.login_item {
+    background-color: #FFF;
+    margin: 0 auto;
+}
+
+@media (min-width: 767px) {
+    .login {
+        background-image: url('../images/login_web.png');
+        padding-top: 28.3vh;
+    }
+    .login_item {
+        width: 30.5vw;
+        height: 44.5vh;
+        padding: 4rem 4rem 3rem 4rem;
+        box-shadow: 0 0 2rem 0 rgba(176, 176, 176, 0.5);
+        border-radius: 1.9rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .login {
+        background-image: url('../images/login_mobile.png');
+        padding-top: 17.4vh;
+    }
+    .login_item {
+        width: 70.4vw;
+        height: 43.3vh;
+        padding: 2.4rem 2.4rem 1.8rem 2.4rem;
+        box-shadow: 0 0 1.2rem 0 rgba(176, 176, 176, 0.5);
+        border-radius: 1.1rem;
+    }
+}
+
+

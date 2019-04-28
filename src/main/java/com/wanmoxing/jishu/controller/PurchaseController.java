@@ -295,20 +295,21 @@ public class PurchaseController {
 					courseService.update(course);
 					// 生成新购买通知给老师
 					UserNotification newBuyerNotification = new UserNotification();
-					newBuyerNotification.setType(UserNotificationType.NEW_COURSE_BUYER.getType());
+					newBuyerNotification.setTypeId(UserNotificationType.NEW_PURCHASE.getTypeId());
 					newBuyerNotification.setUserId(course.getAuthorId());
 					newBuyerNotification.setTitle("您的课程有新购买者！");
-					newBuyerNotification.setContent(userService.getUserDisplayName(purchase.getBuyerId())+" 购买了您的课程("+course.getTitle()+").");
-					newBuyerNotification.setClickUrl("/course/" + course.getId());
+					
+					User user = userService.findById(purchase.getBuyerId());
+					String userURL = "http://www.unclejee.cn/user/" + user.getId();
+					String userName = user.getNickName();
+					String userImg = user.getHeadImage();
+					String secondURL = "http://www.unclejee.cn/course/" + course.getId();
+					String secondName = course.getTitle();
+					String content = " 购买了课程：";
+					newBuyerNotification.setContent(CommUtil.generateJSONContent(userURL, userName, userImg, secondURL, secondName, content));
+					
 					userNotificationService.insert(newBuyerNotification);
-					// 生成新购买通知给购买者
-					UserNotification newPurchaseNotification = new UserNotification();
-					newPurchaseNotification.setType(UserNotificationType.NEW_PURCHASE.getType());
-					newPurchaseNotification.setUserId(purchase.getBuyerId());
-					newPurchaseNotification.setTitle("您已成功购买课程！");
-					newPurchaseNotification.setContent("您已成功购买了课程("+course.getTitle()+").");
-					newPurchaseNotification.setClickUrl("/course/" + course.getId());
-					userNotificationService.insert(newPurchaseNotification);
+					
 				}
 			}
 		} catch (Exception e) {

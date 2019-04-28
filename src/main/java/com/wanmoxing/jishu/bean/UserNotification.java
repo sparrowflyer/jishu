@@ -16,7 +16,7 @@ public class UserNotification {
 	
 	private String clickUrl;
 	
-	private String type;
+	private int typeId;
 	
 	private String status = UserNotificationStatus.UNREAD.getStatus();
 	
@@ -56,12 +56,12 @@ public class UserNotification {
 		this.content = content;
 	}
 
-	public String getType() {
-		return type;
+	public int getTypeId() {
+		return typeId;
 	}
 
-	public void setType(String type) {
-		this.type = type;
+	public void setTypeId(int typeId) {
+		this.typeId = typeId;
 	}
 
 	public String getStatus() {

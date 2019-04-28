@@ -27,6 +27,16 @@ public class UserNotificationServiceImpl implements UserNotificationService {
 	public List<UserNotification> findByUserId(int userId) {
 		return userNotificationMapper.findByUserId(userId);
 	}
+	
+	@Override
+	public int findNotificationCount(int userId, String status) {
+		return userNotificationMapper.findNotificationCount(userId, status);
+	}
+	
+	@Override
+	public List<UserNotification> findByUserIdAndTypeId(int userId, int typeId) {
+		return userNotificationMapper.findByUserIdAndTypeId(userId, typeId);
+	}
 
 	@Override
 	public void insert(UserNotification userNotification) {

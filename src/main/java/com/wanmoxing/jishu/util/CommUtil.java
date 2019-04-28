@@ -45,4 +45,52 @@ public class CommUtil {
 	public static boolean isCNPhone(String phone) {
 		return phone.matches("^1\\d{10}$");
 	}
+	
+	public static String generateJSONContent(String userURL, String userName, String userImg, String secondURL, String secondName, String content) {
+		StringBuffer jsonContent = new StringBuffer();
+		jsonContent.append("{");
+		jsonContent.append("\"userURL\"");
+		jsonContent.append(":");
+		jsonContent.append("\"");
+		jsonContent.append(userURL);
+		jsonContent.append("\"");
+		jsonContent.append(",");
+		
+		jsonContent.append("\"userName\"");
+		jsonContent.append(":");
+		jsonContent.append("\"");
+		jsonContent.append(userName);
+		jsonContent.append("\"");
+		jsonContent.append(",");
+		
+		jsonContent.append("\"userImg\"");
+		jsonContent.append(":");
+		jsonContent.append("\"");
+		jsonContent.append(userImg);
+		jsonContent.append("\"");
+		jsonContent.append(",");
+		
+		jsonContent.append("\"secondURL\"");
+		jsonContent.append(":");
+		jsonContent.append("\"");
+		jsonContent.append(secondURL);
+		jsonContent.append("\"");
+		jsonContent.append(",");
+		
+		jsonContent.append("\"secondName\"");
+		jsonContent.append(":");
+		jsonContent.append("\"");
+		jsonContent.append(secondName);
+		jsonContent.append("\"");
+		jsonContent.append(",");
+		
+		jsonContent.append("\"content\"");
+		jsonContent.append(":");
+		jsonContent.append("\"");
+		jsonContent.append(content);
+		jsonContent.append("\"");
+		
+		jsonContent.append("}");
+		return jsonContent.toString();
+	}
 }

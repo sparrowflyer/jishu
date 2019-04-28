@@ -1,5 +1,9 @@
 package com.wanmoxing.jishu.controller;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 
@@ -9,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.fastjson.JSONObject;
 import com.wanmoxing.jishu.bean.User;
 import com.wanmoxing.jishu.constant.CommonConstants;
 import com.wanmoxing.jishu.constant.enums.ResultDTOStatus;
@@ -19,6 +24,7 @@ import com.wanmoxing.jishu.dto.UserDTO;
 import com.wanmoxing.jishu.service.ArticleService;
 import com.wanmoxing.jishu.service.UserNotificationService;
 import com.wanmoxing.jishu.service.UserService;
+import com.wanmoxing.jishu.service.UserStudentInfoService;
 import com.wanmoxing.jishu.util.CommUtil;
 
 @RestController
@@ -29,6 +35,8 @@ public class UserController {
 
 	@Resource
 	private UserService userService;
+	@Resource
+	private UserStudentInfoService userStudentInfoService;
 	@Resource
 	private ArticleService articleservice;
 	@Resource
@@ -48,6 +56,46 @@ public class UserController {
 			UserDTO userDTO = new UserDTO(user);
 			result.setData(userDTO);
 			return result;
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus(ResultDTOStatus.ERROR.getStatus());
+			result.setErrorMsg("Exception occured!");
+			return result;
+		}
+	}
+	
+	/**
+	 * 根据schoolId获取所有学生用户信息
+	   {
+	   		"schoolId": 1,
+	   		"pageNo": 0,
+	   		"pageAmount": 1,
+	   		"needTotalAmount": "Y"
+	   }
+	 * @param jsonParams
+	 * @return
+	 */
+	public ResultDTO getUserBySchool(@RequestBody JSONObject jsonParams) {
+		ResultDTO result = new ResultDTO();
+		try {
+			int schoolId = jsonParams.getInteger("schoolId");
+			int pageNo = jsonParams.getInteger("pageNo");
+			int pageAmount = jsonParams.getInteger("pageAmount");
+			
+			List<User> users = userService.findBySchool(schoolId, pageNo, pageAmount);
+			for (User user : users) {
+				user.setUserStudentInfo(userStudentInfoService.findByUserId(user.getId()));
+			}
+			Map<String, Object> resultMap = new HashMap<String, Object>();
+			resultMap.put("students", users);
+			if ("Y".equalsIgnoreCase(jsonParams.getString("needTotalAmount"))) {
+				resultMap.put("totalAmount", userService.findTotalAmountBySchool(schoolId));
+			} else {
+				resultMap.put("totalAmount", null);
+			}
+			result.setData(resultMap);
+			return result;
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			result.setStatus(ResultDTOStatus.ERROR.getStatus());

@@ -1,6 +1,8 @@
 package com.wanmoxing.jishu.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -82,6 +84,20 @@ public class UserServiceImpl implements UserService {
 		} else {
 			return "火星人";
 		}
+	}
+
+	@Override
+	public List<User> findBySchool(int schoolId, int pageNo, int pageAmount) {
+		Map<String, Object> conditions = new HashMap<String, Object>();
+		conditions.put("schoolId", schoolId);
+		conditions.put("pageStart", (pageNo-1)*pageAmount);
+		conditions.put("pageAmount", pageAmount);
+		return userMapper.findBySchool(conditions);
+	}
+
+	@Override
+	public int findTotalAmountBySchool(int schoolId) {
+		return userMapper.findTotalAmountBySchool(schoolId);
 	}
 
 }

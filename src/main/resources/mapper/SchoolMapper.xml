@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+  
+<mapper namespace="com.wanmoxing.jishu.mapper.SchoolMapper">  
+
+	<resultMap id="schoolResultMap" type="com.wanmoxing.jishu.bean.School">
+		<id property="id" column="ID"/>
+		<result property="enName" column="EN_NAME"/>
+		<result property="cnName" column="CN_NAME"/>
+		<result property="country" column="COUNTRY"/>
+		<result property="location" column="LOCATION"/>
+		<result property="officialSite" column="OFFICIAL_SITE"/>
+		<result property="description" column="DESCRIPTION"/>
+		<result property="rank" column="RANK"/>
+		<result property="iconImage" column="ICON_IMAGE"/>
+		<result property="homeImage" column="HOME_IMAGE"/>
+		<result property="dataBasic" column="DATA_BASIC"/>
+		<result property="dataApply" column="DATA_APPLY"/>
+	</resultMap>
+	
+	<insert id="insert" parameterType="com.wanmoxing.jishu.bean.School" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO jishu.T_SCHOOL(EN_NAME,CN_NAME,COUNTRY,LOCATION,OFFICIAL_SITE,DESCRIPTION,RANK,ICON_IMAGE,HOME_IMAGE,DATA_BASIC,DATA_APPLY) 
+        VALUES(#{enName},#{cnName},#{country},#{location},#{officialSite},#{description},#{rank},#{iconImage},#{homeImage},#{dataBasic},#{dataApply});
+    </insert>
+	
+	<delete id="delete" parameterType="int">
+        DELETE FROM jishu.T_SCHOOL WHERE ID=#{0}
+    </delete>
+
+    <update id="update" parameterType="com.wanmoxing.jishu.bean.School">
+        UPDATE jishu.T_SCHOOL 
+        SET EN_NAME=#{enName},CN_NAME=#{cnName},COUNTRY=#{country},LOCATION=#{location},
+        	OFFICIAL_SITE=#{officialSite},DESCRIPTION=#{description},RANK=#{rank},
+        	ICON_IMAGE=#{iconImage},HOME_IMAGE=#{homeImage},DATA_BASIC=#{dataBasic},
+        	DATA_APPLY=#{dataApply}
+        WHERE ID=#{id}
+    </update>
+    
+    <select id="findTotalAmount" parameterType="java.lang.String" resultType="int">
+        SELECT count(1) FROM jishu.T_SCHOOL 
+        <if test=" country != null and country != '' ">
+        WHERE COUNTRY=#{country}
+        </if>
+    </select>
+    
+    <select id="findById" parameterType="int" resultMap="schoolResultMap">
+        SELECT * FROM jishu.T_SCHOOL WHERE ID=#{id}
+    </select>
+    
+    <select id="findAll" parameterType="java.util.Map" resultMap="schoolResultMap">
+        SELECT * FROM jishu.T_SCHOOL
+        <if test=" country != null and country != '' ">
+        WHERE COUNTRY=#{country}
+        </if>
+        ORDER BY RANK
+        <if test=" pageStart &gt;= 0 and pageAmount &gt; 0 ">
+        LIMIT #{pageStart}, #{pageAmount}
+        </if>
+    </select>
+    
+</mapper>

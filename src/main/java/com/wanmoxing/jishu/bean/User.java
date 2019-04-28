@@ -23,6 +23,17 @@ public class User {
 	private Timestamp createdTime;
 	
 	private Timestamp updatedTime;
+	
+	private UserStudentInfo userStudentInfo;
+	
+
+	public UserStudentInfo getUserStudentInfo() {
+		return userStudentInfo;
+	}
+
+	public void setUserStudentInfo(UserStudentInfo userStudentInfo) {
+		this.userStudentInfo = userStudentInfo;
+	}
 
 	public int getId() {
 		return id;

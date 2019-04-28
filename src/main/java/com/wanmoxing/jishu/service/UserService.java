@@ -17,6 +17,10 @@ public interface UserService {
 	
 	public List<User> findByType(UserType type);
 	
+	public int findTotalAmountBySchool(int schoolId);
+	
+	public List<User> findBySchool(int schoolId, int pageNo, int pageAmount);
+	
 	public User existenceByEmail(String email);
 
 	public User existenceByPhoneNumber(String phoneNumber);

@@ -1,27 +1,36 @@
 package com.wanmoxing.jishu.bean;
 
+import java.math.BigDecimal;
+
 public class UserStudentInfo {
 	
 	private int userId;
-	private String majar;
+	private String major;
 	private String topics;
 	private String honors;
 	private String contacts;
+	private BigDecimal contactsPrice;
 	private int scoreResponse;
 	private int scoreAttitude;
 	private int scoreProfessional;
 	
+	public BigDecimal getContactsPrice() {
+		return contactsPrice;
+	}
+	public void setContactsPrice(BigDecimal contactsPrice) {
+		this.contactsPrice = contactsPrice;
+	}
 	public int getUserId() {
 		return userId;
 	}
 	public void setUserId(int userId) {
 		this.userId = userId;
 	}
-	public String getMajar() {
-		return majar;
+	public String getMajor() {
+		return major;
 	}
-	public void setMajar(String majar) {
-		this.majar = majar;
+	public void setMajor(String major) {
+		this.major = major;
 	}
 	public String getTopics() {
 		return topics;

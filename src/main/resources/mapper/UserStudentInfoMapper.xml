@@ -5,10 +5,11 @@
 
 	<resultMap id="userStudentInfoResultMap" type="com.wanmoxing.jishu.bean.UserStudentInfo">
 		<id property="userId" column="USER_ID"/>
-		<result property="majar" column="MAJAR"/>
+		<result property="major" column="MAJOR"/>
 		<result property="topics" column="TOPICS"/>
 		<result property="honors" column="HONORS"/>
 		<result property="contacts" column="CONTACTS"/>
+		<result property="contactsPrice" column="CONTACTS_PRICE"/>
 		<result property="scoreResponse" column="SCORE_RESPONSE"/>
 		<result property="scoreAttitude" column="SCORE_ATTITUDE"/>
 		<result property="scoreProfessional" column="SCORE_PROFESSIONAL"/>

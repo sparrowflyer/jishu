@@ -3,7 +3,7 @@ package com.wanmoxing.jishu.bean;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
-public class PurchaseContacts {
+public class PurchaseContact {
 	
 	private String id;
 	private int sellerId;

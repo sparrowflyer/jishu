@@ -93,4 +93,38 @@ public class CommUtil {
 		jsonContent.append("}");
 		return jsonContent.toString();
 	}
+	
+	public static String generatePurchaseContactNotificationJSONContent(String userURL, String userName, String userImg, String content) {
+		StringBuffer jsonContent = new StringBuffer();
+		jsonContent.append("{");
+		jsonContent.append("\"userURL\"");
+		jsonContent.append(":");
+		jsonContent.append("\"");
+		jsonContent.append(userURL);
+		jsonContent.append("\"");
+		jsonContent.append(",");
+		
+		jsonContent.append("\"userName\"");
+		jsonContent.append(":");
+		jsonContent.append("\"");
+		jsonContent.append(userName);
+		jsonContent.append("\"");
+		jsonContent.append(",");
+		
+		jsonContent.append("\"userImg\"");
+		jsonContent.append(":");
+		jsonContent.append("\"");
+		jsonContent.append(userImg);
+		jsonContent.append("\"");
+		jsonContent.append(",");
+		
+		jsonContent.append("\"content\"");
+		jsonContent.append(":");
+		jsonContent.append("\"");
+		jsonContent.append(content);
+		jsonContent.append("\"");
+		
+		jsonContent.append("}");
+		return jsonContent.toString();
+	}
 }

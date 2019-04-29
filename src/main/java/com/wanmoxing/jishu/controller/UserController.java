@@ -65,7 +65,7 @@ public class UserController {
 	}
 	
 	/**
-	 * 根据schoolId获取所有学生用户信息
+	 * 根据schoolId分页获取所有学生用户信息
 	   {
 	   		"schoolId": 1,
 	   		"pageNo": 0,
@@ -75,6 +75,7 @@ public class UserController {
 	 * @param jsonParams
 	 * @return
 	 */
+	@RequestMapping(value = "/getUsersBySchool", method = RequestMethod.POST)
 	public ResultDTO getUserBySchool(@RequestBody JSONObject jsonParams) {
 		ResultDTO result = new ResultDTO();
 		try {

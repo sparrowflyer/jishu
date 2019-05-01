@@ -5,7 +5,6 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -24,74 +23,66 @@ import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;
 import com.alipay.api.internal.util.AlipaySignature;
 import com.alipay.api.request.AlipayTradePagePayRequest;
-import com.wanmoxing.jishu.bean.Course;
-import com.wanmoxing.jishu.bean.Purchase;
+import com.wanmoxing.jishu.bean.PurchaseContact;
 import com.wanmoxing.jishu.bean.User;
 import com.wanmoxing.jishu.bean.UserNotification;
+import com.wanmoxing.jishu.bean.UserStudentInfo;
 import com.wanmoxing.jishu.constant.AlipayConfig;
 import com.wanmoxing.jishu.constant.CommonConstants;
+import com.wanmoxing.jishu.constant.enums.PurchaseContactStatus;
 import com.wanmoxing.jishu.constant.enums.PurchasePayment;
-import com.wanmoxing.jishu.constant.enums.PurchaseStatus;
 import com.wanmoxing.jishu.constant.enums.ResultDTOStatus;
 import com.wanmoxing.jishu.constant.enums.UserNotificationType;
 import com.wanmoxing.jishu.dto.ResultDTO;
-import com.wanmoxing.jishu.service.CourseService;
-import com.wanmoxing.jishu.service.PurchaseService;
+import com.wanmoxing.jishu.service.PurchaseContactService;
 import com.wanmoxing.jishu.service.UserNotificationService;
 import com.wanmoxing.jishu.service.UserService;
+import com.wanmoxing.jishu.service.UserStudentInfoService;
 import com.wanmoxing.jishu.util.CommUtil;
 import com.wanmoxing.jishu.util.IdGenerator;
 
 @RestController
 @RequestMapping("/jishu")
-public class PurchaseController {
+public class PurchaseContactController {
 
 	@Resource
 	private UserService userService;
 	@Resource
-	private CourseService courseService;
+	private UserStudentInfoService userStudentInfoService;
 	@Resource
-	private PurchaseService purchaseService;
+	private PurchaseContactService purchaseContactService;
 	@Resource
 	private UserNotificationService userNotificationService;
 	
 	/**
-	 * 购买课程前的校验
+	 * 购买学生联系方式前的校验
 	  {
-	  		"buyerId": 1,
-	  		"courseId": 1
+	  		"sellerId": 1,
+	  		"buyerId": 2
 	  }
 	 * @return
 	 */
-	@RequestMapping(value = "/purchaseCourseCheck", method = RequestMethod.POST)
-	public ResultDTO purchaseCourseCheck(HttpSession session, @RequestBody JSONObject jsonParams) {
+	@RequestMapping(value = "/purchaseContactCheck", method = RequestMethod.POST)
+	public ResultDTO purchaseContactCheck(HttpSession session, @RequestBody JSONObject jsonParams) {
 		ResultDTO result = new ResultDTO();
 		try {
+			int sellerId = jsonParams.getInteger("sellerId");
 			int buyerId = jsonParams.getInteger("buyerId");
-			int courseId = jsonParams.getInteger("courseId");
 			
 			if (!CommonConstants.DEV_MODE && !CommUtil.isUserLogined(session)) {
 				result.setStatus(ResultDTOStatus.ERROR.getStatus());
 				result.setErrorMsg("用户未登录!");
 			}
 			
-			Course course = courseService.find(Integer.valueOf(courseId));
-			User user = userService.findById(Integer.valueOf(buyerId));
-			
-			if (course == null) {
+			User seller = userService.findById(Integer.valueOf(sellerId));
+			User buyer = userService.findById(Integer.valueOf(buyerId));
+			if (seller == null) {
 				result.setStatus(ResultDTOStatus.ERROR.getStatus());
-				result.setErrorMsg("课程不存在！！！购买失败");
+				result.setErrorMsg("学生不存在！！！购买失败");
 			}
-			
-			if (user == null) {
+			if (buyer == null) {
 				result.setStatus(ResultDTOStatus.ERROR.getStatus());
 				result.setErrorMsg("购买者不存在！！！购买失败");
-			}
-			
-			int purchasedNumber = purchaseService.findPayedNumPurchaseByBuyerIdAndCourseId(Integer.valueOf(courseId), Integer.valueOf(buyerId));
-			if (purchasedNumber > 0) {
-				result.setStatus(ResultDTOStatus.ERROR.getStatus());
-				result.setErrorMsg("您已购买，无需重复购买！");
 			}
 			
 			return result;
@@ -104,39 +95,37 @@ public class PurchaseController {
 	}
 
 	/**
-	 * 购买课程
-	 * 
-	 * /purchaseCourse?courseId=1&buyerId=1
-	 * 
-	 * @param session
-	 * @param response
-	 * @param purchaseCourseDTO
+	 * 购买学生练习方式
+	 * /purchaseContact?sellerId=1&buyerId=2&questions=xxxx
 	 */
-	@RequestMapping(value = "/purchaseCourse", method = RequestMethod.GET)
-	public void purchaseCourse(HttpSession session, HttpServletResponse response, 
-			@RequestParam String courseId, 
-			@RequestParam String buyerId) {
+	@RequestMapping(value = "/purchaseContact", method = RequestMethod.GET)
+	public void purchaseContact(HttpServletResponse response, 
+			@RequestParam String sellerId, 
+			@RequestParam String buyerId,
+			@RequestParam String questions) {
 		try {
-			Course course = courseService.find(Integer.valueOf(courseId));
+			User seller = userService.findById(Integer.valueOf(sellerId));
+			UserStudentInfo sellerStudentInfo = userStudentInfoService.findByUserId(Integer.valueOf(sellerId));
 			
-			Purchase purchase = new Purchase();
-			purchase.setId(IdGenerator.newId());
-			purchase.setCourseId(Integer.valueOf(courseId));
-			purchase.setBuyerId(Integer.valueOf(buyerId));
-			purchase.setPayment(PurchasePayment.ALIPAY.getPayment());
-			purchase.setPaymentAmount(course.getPrice());
-			purchaseService.insert(purchase);
+			PurchaseContact purchaseContact = new PurchaseContact();
+			purchaseContact.setId(IdGenerator.newId());
+			purchaseContact.setSellerId(Integer.valueOf(sellerId));
+			purchaseContact.setBuyerId(Integer.valueOf(buyerId));
+			purchaseContact.setQuestions(questions);
+			purchaseContact.setPayment(PurchasePayment.ALIPAY.getPayment());
+			purchaseContact.setPaymentAmount(sellerStudentInfo.getContactsPrice());
+			purchaseContactService.insert(purchaseContact);
 
 			AlipayClient alipayClient = AlipayConfig.getAlipayClient();
 			AlipayTradePagePayRequest alipayRequest = new AlipayTradePagePayRequest();
-			alipayRequest.setReturnUrl(AlipayConfig.ALIPAY_RETURN_URL);
-			alipayRequest.setNotifyUrl(AlipayConfig.ALIPAY_NOTIFY_URL);
+			alipayRequest.setReturnUrl(AlipayConfig.ALIPAY_PURCHASE_CONTACT_RETURN_URL);
+			alipayRequest.setNotifyUrl(AlipayConfig.ALIPAY_PURCHASE_CONTACT_NOTIFY_URL);
 			alipayRequest.setBizContent("{" 
-					+ "    \"out_trade_no\":\"" + purchase.getId() + "\","
+					+ "    \"out_trade_no\":\"" + purchaseContact.getId() + "\","
 					+ "    \"product_code\":\"FAST_INSTANT_TRADE_PAY\"," 
-					+ "    \"total_amount\":" + purchase.getPaymentAmount() + ","
-					+ "    \"subject\":\"" + course.getTitle() + "\"," 
-					+ "    \"body\":\""+ course.getTitle() +"\""
+					+ "    \"total_amount\":" + purchaseContact.getPaymentAmount() + ","
+					+ "    \"subject\":\"" + seller.getNickName() + "的联系方式\"," 
+					+ "    \"body\":\""+ seller.getNickName() +"的联系方式\""
 					+ "  }");
 			String form = "";
 			try {
@@ -162,8 +151,8 @@ public class PurchaseController {
 	 * @return
 	 * @throws IOException 
 	 */
-	@RequestMapping(value = "/purchaseReturn", method = RequestMethod.GET)
-	public void alipayPurchaseReturn(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	@RequestMapping(value = "/purchaseContactReturn", method = RequestMethod.GET)
+	public void alipayPurchaseContactReturn(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		try {
 			// 获取支付宝GET过来反馈信息
 			Map<String,String> params = new HashMap<String,String>();
@@ -211,8 +200,8 @@ public class PurchaseController {
 	 * @param addCourseVO
 	 * @return
 	 */
-	@RequestMapping(value = "/purchaseNotify", method = RequestMethod.POST)
-	public void alipayPurchaseNotify(HttpServletRequest request, HttpServletResponse response) {
+	@RequestMapping(value = "/purchaseContactNotify", method = RequestMethod.POST)
+	public void alipayPurchaseContactNotify(HttpServletRequest request, HttpServletResponse response) {
 		try {
 			// 获取支付宝POST过来反馈信息
 			Map<String,String> params = new HashMap<String,String>();
@@ -254,59 +243,60 @@ public class PurchaseController {
 					return;
 				}
 				// 验证通知数据中的out_trade_no是否为商户系统中创建的订单号
-				Purchase purchase = purchaseService.find(out_trade_no);
-				if (purchase == null) {
+				PurchaseContact purchaseContact = purchaseContactService.find(out_trade_no);
+				if (purchaseContact == null) {
 					return;
 				}
 				// 判断total_amount是否确实为该订单的实际金额（即商户订单创建时的金额）
-				if (new BigDecimal(total_amount).compareTo(purchase.getPaymentAmount()) != 0) {
+				if (new BigDecimal(total_amount).compareTo(purchaseContact.getPaymentAmount()) != 0) {
 					return;
 				}
 				
 				// 退款日期超过可退款期限后（如三个月可退款），支付宝系统发送该交易状态通知
 				if (trade_status.equals("TRADE_FINISHED")) {
 					// 判断该笔订单是否在商户网站中已经做过处理
-					if (purchase.getStatus().equals(PurchaseStatus.PAYED.getStatus())
-							|| purchase.getStatus().equals(PurchaseStatus.ENDED.getStatus())
-							|| purchase.getStatus().equals(PurchaseStatus.REFUNDED.getStatus())) {
+					if (purchaseContact.getStatus().equals(PurchaseContactStatus.PAYED_CAN_NOT_BE_REFUND.getStatus())
+							|| purchaseContact.getStatus().equals(PurchaseContactStatus.REFUNDED.getStatus())
+							|| purchaseContact.getStatus().equals(PurchaseContactStatus.ENDED.getStatus())) {
 						return;
 					}
 					
-					purchase.setStatus(PurchaseStatus.ENDED.getStatus());
-					purchase.setUpdatedTime(new Timestamp(System.currentTimeMillis()));
-					purchaseService.update(purchase);
+					purchaseContact.setStatus(PurchaseContactStatus.PAYED_CAN_NOT_BE_REFUND.getStatus());
+					purchaseContact.setUpdatedTime(new Timestamp(System.currentTimeMillis()));
+					purchaseContactService.update(purchaseContact);
 				} 
 				// 付款完成后，支付宝系统发送该交易状态通知
 				else if (trade_status.equals("TRADE_SUCCESS")) {
 					// 判断该笔订单是否在商户网站中已经做过处理
-					if (purchase.getStatus().equals(PurchaseStatus.PAYED.getStatus())
-							|| purchase.getStatus().equals(PurchaseStatus.ENDED.getStatus())
-							|| purchase.getStatus().equals(PurchaseStatus.REFUNDED.getStatus())) {
+					if (purchaseContact.getStatus().equals(PurchaseContactStatus.PAYED_CAN_BE_REFUND.getStatus())
+							|| purchaseContact.getStatus().equals(PurchaseContactStatus.PAYED_CAN_NOT_BE_REFUND.getStatus())
+							|| purchaseContact.getStatus().equals(PurchaseContactStatus.ENDED.getStatus())
+							|| purchaseContact.getStatus().equals(PurchaseContactStatus.REFUNDED.getStatus())) {
 						return;
 					}
 					
-					purchase.setPaymentAdditionalInfo(trade_no); //设置支付宝订单号
-					purchase.setStatus(PurchaseStatus.PAYED.getStatus());
-					purchase.setUpdatedTime(new Timestamp(System.currentTimeMillis()));
-					purchaseService.update(purchase);
-					//课程当前人数+1
-					Course course = courseService.find(purchase.getCourseId());
-					course.setCurrentStudentAmount(course.getCurrentStudentAmount() + 1);
-					courseService.update(course);
-					// 生成新购买通知给老师
-					UserNotification newBuyerNotification = new UserNotification();
-					newBuyerNotification.setTypeId(UserNotificationType.NEW_PURCHASE.getTypeId());
-					newBuyerNotification.setUserId(course.getAuthorId());
-					newBuyerNotification.setTitle("您的课程有新购买者！");
+					// TODO 生成随机码
+					String randomCode = "";
 					
-					User user = userService.findById(purchase.getBuyerId());
-					String userURL = "http://www.unclejee.cn/user/" + user.getId();
-					String userName = user.getNickName();
-					String userImg = user.getHeadImage();
-					String secondURL = "http://www.unclejee.cn/course/" + course.getId();
-					String secondName = course.getTitle();
-					String content = " 购买了课程：";
-					newBuyerNotification.setContent(CommUtil.generateJSONContent(userURL, userName, userImg, secondURL, secondName, content));
+					purchaseContact.setPaymentAdditionalInfo(trade_no); //设置支付宝订单号
+					purchaseContact.setStatus(PurchaseContactStatus.PAYED_CAN_BE_REFUND.getStatus());
+					purchaseContact.setRandomCode(randomCode);
+					purchaseContact.setUpdatedTime(new Timestamp(System.currentTimeMillis()));
+					purchaseContactService.update(purchaseContact);
+					
+					
+					// 生成新购买通知给卖家
+					UserNotification newBuyerNotification = new UserNotification();
+					newBuyerNotification.setTypeId(UserNotificationType.NEW_PURCHASE_CONTACT.getTypeId());
+					newBuyerNotification.setUserId(purchaseContact.getSellerId());
+					newBuyerNotification.setTitle("您的联系方式有新购买者！");
+					
+					User buyer = userService.findById(purchaseContact.getBuyerId());
+					String userURL = "http://www.unclejee.cn/user/" + buyer.getId();
+					String userName = buyer.getNickName();
+					String userImg = buyer.getHeadImage();
+					String content = " 购买了您的联系方式！";
+					newBuyerNotification.setContent(CommUtil.generatePurchaseContactNotificationJSONContent(userURL, userName, userImg, content));
 					
 					userNotificationService.insert(newBuyerNotification);
 					
@@ -317,33 +307,4 @@ public class PurchaseController {
 		}
 	}
 	
-	/**
-	 * 获取购买历史
-	 	{
-			"id":"1"
-		}
-	 * @param session
-	 * @param getCreatedCoursesDTO
-	 * @return
-	 */
-	@RequestMapping(value = "/getPurchaseHistory", method = RequestMethod.POST)
-	public ResultDTO getPurchaseHistorys(HttpSession session, @RequestBody User getCreatedCoursesDTO) {
-		ResultDTO result = new ResultDTO();
-		try {
-			if (!CommonConstants.DEV_MODE && !CommUtil.isUserLogined(session)) {
-				result.setStatus(ResultDTOStatus.ERROR.getStatus());
-				result.setErrorMsg("User not logined!");
-				return result;
-			}
-			List<Purchase> purchases = purchaseService.findByBuyerId(getCreatedCoursesDTO.getId());
-			result.setData(purchases);
-			return result;
-		} catch (Exception e) {
-			e.printStackTrace();
-			result.setStatus(ResultDTOStatus.ERROR.getStatus());
-			result.setErrorMsg("Exception occured!");
-			return result;
-		}
-	}
-
 }

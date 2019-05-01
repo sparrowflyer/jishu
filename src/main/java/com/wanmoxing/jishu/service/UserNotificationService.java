@@ -9,6 +9,10 @@ public interface UserNotificationService {
 	public UserNotification find(int id);
 	
 	public List<UserNotification> findByUserId(int userId);
+	
+	public int findNotificationCount(int userId, String status);
+	
+	public List<UserNotification> findByUserIdAndTypeId(int userId, int typeId);
 
     public void insert(UserNotification userNotification);
 

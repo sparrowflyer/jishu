@@ -266,11 +266,19 @@ public class CourseController {
 			
 			// 生成新课程评论通知给老师
 			UserNotification newCourseCommentNotification = new UserNotification();
-			newCourseCommentNotification.setType(UserNotificationType.COURSE_REPLY.getType());
+			newCourseCommentNotification.setTypeId(UserNotificationType.ARTICLE_REPLY.getTypeId());
 			newCourseCommentNotification.setUserId(course.getAuthorId());
 			newCourseCommentNotification.setTitle("您的课程有新评论！");
-			newCourseCommentNotification.setContent(userService.getUserDisplayName(addCourseCommentDTO.getUserId())+" 评论了您的课程("+course.getTitle()+").");
-			newCourseCommentNotification.setClickUrl("/course/" + course.getId());
+			
+			User user = userService.findById(addCourseCommentDTO.getUserId());
+			String userURL = "http://www.unclejee.cn/user/" + user.getId();
+			String userName = user.getNickName();
+			String userImg = user.getHeadImage();
+			String secondURL = "http://www.unclejee.cn/course/" + course.getId();
+			String secondName = course.getTitle();
+			String content = " 评论了课程：";
+			newCourseCommentNotification.setContent(CommUtil.generateJSONContent(userURL, userName, userImg, secondURL, secondName, content));
+			
 			userNotificationService.insert(newCourseCommentNotification);
 			
 			return result;

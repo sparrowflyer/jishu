@@ -1,6 +1,7 @@
 # Compiled class file
 *.class
 target/*
+src/main/resources/static/built/*
 
 # Compiled js files
 node_modules/*

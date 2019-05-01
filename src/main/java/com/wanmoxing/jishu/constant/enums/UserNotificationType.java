@@ -2,22 +2,26 @@ package com.wanmoxing.jishu.constant.enums;
 
 public enum UserNotificationType {
 	
-	GENERAL("general"), 
-	NEW_FAN("new_fan"), 
-	NEW_COURSE_BUYER("new_course_buyer"),
-	NEW_PURCHASE("new_purchase"),
-	ARTICLE_REPLY("article_reply"), 
-	COURSE_REPLY("course_reply"), 
-	REPORT_ARTICLE("report_article");
+	NEW_FAN("关注",1), 
+	NEW_PURCHASE("购买与付费",2),
+	ARTICLE_REPLY("评论",3), 
+	Good_LIKE("点赞和喜欢",4),
+	REPORT_ARTICLE("违规举报",5),
+	NEW_PURCHASE_CONTACT("购买联系方式",6);
 	
 	private String type;
-	
-	private UserNotificationType (String type) {
+	private int typeId;
+	private UserNotificationType (String type, int typeId) {
 		this.type = type;
+		this.typeId = typeId;
 	}
 
 	public String getType() {
 		return type;
+	}
+
+	public int getTypeId() {
+		return typeId;
 	}
 	
 }

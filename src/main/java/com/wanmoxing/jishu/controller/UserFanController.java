@@ -61,12 +61,19 @@ public class UserFanController {
 			if (existingUserFan == null) {
 				userFanService.insert(userFan);
 				// 生成新粉丝通知
+				User ownerUser = userService.findById(userFan.getOwnerId());
+				
 				UserNotification addFanNotification = new UserNotification();
-				addFanNotification.setType(UserNotificationType.NEW_FAN.getType());
+				addFanNotification.setTypeId(UserNotificationType.NEW_FAN.getTypeId());
 				addFanNotification.setUserId(userFan.getOwnerId());
 				addFanNotification.setTitle("您有一位新粉丝！");
-				addFanNotification.setContent(userService.getUserDisplayName(userFan.getFanId())+" 关注了您");
-				addFanNotification.setClickUrl("/user/" + userFan.getFanId());
+				
+				String userURL = "http://www.unclejee.cn/user/" + ownerUser.getId();
+				String userName = ownerUser.getNickName();
+				String userImg = ownerUser.getHeadImage();
+				String content = " 关注了你";
+				addFanNotification.setContent(CommUtil.generateJSONContent(userURL, userName, userImg, null, null, content));
+				
 				userNotificationService.insert(addFanNotification);
 			} else {
 				result.setStatus(ResultDTOStatus.ERROR.getStatus());

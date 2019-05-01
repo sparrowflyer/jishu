@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+  
+<mapper namespace="com.wanmoxing.jishu.mapper.PurchaseContactMapper">  
+
+	<resultMap id="purchaseContactResultMap" type="com.wanmoxing.jishu.bean.PurchaseContact">
+		<result property="id" column="ID"/>
+		<result property="sellerId" column="SELLER_ID"/>
+		<result property="buyerId" column="BUYER_ID"/>
+		<result property="questions" column="QUESTIONS"/>
+		<result property="payment" column="PAYMENT"/>
+		<result property="paymentAdditionalInfo" column="PAYMENT_ADDITIONAL_INFO"/>
+		<result property="paymentAmount" column="PAYMENT_AMOUNT"/>
+		<result property="status" column="STATUS"/>
+		<result property="randomCode" column="RANDOM_CODE"/>
+		<result property="scoreResponse" column="SCORE_RESPONSE"/>
+		<result property="scoreAttitude" column="SCORE_ATTITUDE"/>
+		<result property="scoreProfessional" column="SCORE_PROFESSIONAL"/>
+		<result property="createdTime" column="CREATED_TIME"/>
+		<result property="updatedTime" column="UPDATED_TIME"/>
+		<result property="comment" column="COMMENT"/>
+	</resultMap>
+
+    <insert id="insert" parameterType="com.wanmoxing.jishu.bean.PurchaseContact">
+        INSERT INTO jishu.T_PURCHASE_CONTACT(
+        	ID,SELLER_ID,BUYER_ID,QUESTIONS,PAYMENT,
+        	PAYMENT_ADDITIONAL_INFO,PAYMENT_AMOUNT,STATUS,RANDOM_CODE,SCORE_RESPONSE,
+        	SCORE_ATTITUDE,SCORE_PROFESSIONAL,CREATED_TIME,UPDATED_TIME,COMMENT) 
+        VALUES(
+        	#{id},#{sellerId},#{buyerId},#{questions},#{payment},
+        	#{paymentAdditionalInfo},#{paymentAmount},#{status},#{randomCode},#{scoreResponse},
+        	#{scoreAttitude},#{scoreProfessional},#{createdTime},#{updatedTime},#{comment});
+    </insert>
+    
+    <delete id="delete" parameterType="java.lang.String">
+        DELETE FROM jishu.T_PURCHASE_CONTACT WHERE ID=#{0}
+    </delete>
+    
+    <update id="update" parameterType="com.wanmoxing.jishu.bean.PurchaseContact">
+        UPDATE jishu.T_PURCHASE_CONTACT 
+        SET SELLER_ID=#{sellerId},
+        	BUYER_ID=#{buyerId},
+        	QUESTIONS=#{questions},
+        	PAYMENT=#{payment},
+        	PAYMENT_ADDITIONAL_INFO=#{paymentAdditionalInfo},
+        	PAYMENT_AMOUNT=#{paymentAmount},
+        	STATUS=#{status},
+        	RANDOM_CODE=#{randomCode},
+        	SCORE_RESPONSE=#{scoreResponse},
+        	SCORE_ATTITUDE=#{scoreAttitude},
+        	SCORE_PROFESSIONAL=#{scoreProfessional},
+        	CREATED_TIME=#{createdTime},
+        	UPDATED_TIME=#{updatedTime},
+        	COMMENT=#{comment}
+        WHERE ID=#{id}
+    </update>
+    
+    <select id="find" parameterType="java.lang.String" resultMap="purchaseContactResultMap">
+        SELECT *
+      	FROM jishu.T_PURCHASE_CONTACT
+      	WHERE ID=#{0}
+    </select>
+    
+</mapper>

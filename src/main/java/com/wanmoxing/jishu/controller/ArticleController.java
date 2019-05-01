@@ -815,14 +815,28 @@ public class ArticleController {
 				return resultDTO;
 			}
 			
+			if(!CommUtil.isUserLogined(session)) {
+				resultDTO.setErrorMsg("还未登录，请先登录");
+				resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+				return resultDTO;
+			}
+			
+			User userReport = (User)session.getAttribute("user");
+			
 			// 通知sysadmin，有人举报该帖子
 			for(User user: userService.findByType(UserType.SYSADMIN)) {
-				UserNotification addFanNotification = new UserNotification();
-				addFanNotification.setType(UserNotificationType.REPORT_ARTICLE.getType());
-				addFanNotification.setUserId(user.getId());
-				addFanNotification.setTitle("您有一个举报需要处理");
-				addFanNotification.setContent(articleDatabase.getTitle() +"被举报，请及时处理");
-				userNotificationService.insert(addFanNotification);
+				UserNotification reportNotification = new UserNotification();
+				reportNotification.setTypeId(UserNotificationType.REPORT_ARTICLE.getTypeId());
+				reportNotification.setUserId(user.getId());
+				reportNotification.setTitle("您有一个举报需要处理");
+				String userURL = "http://www.unclejee.cn/user/" + userReport.getId();
+				String userName = userReport.getNickName();
+				String userImg = userReport.getHeadImage();
+				String secondURL = "http://www.unclejee.cn/blog/" + articleDatabase.getAid();
+				String secondName = articleDatabase.getTitle();
+				String content = " 举报了文章：";
+				reportNotification.setContent(CommUtil.generateJSONContent(userURL, userName, userImg, secondURL, secondName, content));
+				userNotificationService.insert(reportNotification);
 			}
 			
 			resultDTO.setErrorMsg("举报成功");

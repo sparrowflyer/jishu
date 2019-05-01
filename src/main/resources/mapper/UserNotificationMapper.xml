@@ -9,7 +9,7 @@
 		<result property="title" column="TITLE"/>
 		<result property="content" column="CONTENT"/>
 		<result property="clickUrl" column="CLICK_URL"/>
-		<result property="type" column="TYPE"/>
+		<result property="typeId" column="TYPE"/>
 		<result property="status" column="STATUS"/>
 		<result property="createdTime" column="CREATED_TIME"/>
 		<result property="updatedTime" column="UPDATED_TIME"/>
@@ -17,7 +17,7 @@
 
     <insert id="insert" parameterType="com.wanmoxing.jishu.bean.UserNotification" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO jishu.T_USER_NOTIFICATION(USER_ID,TITLE,CONTENT,CLICK_URL,TYPE,STATUS,CREATED_TIME,UPDATED_TIME) 
-        VALUES(#{userId},#{title},#{content},#{clickUrl},#{type},#{status},#{createdTime},#{updatedTime});
+        VALUES(#{userId},#{title},#{content},#{clickUrl},#{typeId},#{status},#{createdTime},#{updatedTime});
     </insert>
     
     <update id="update" parameterType="com.wanmoxing.jishu.bean.UserNotification">
@@ -26,7 +26,7 @@
         	TITLE=#{title},
         	CONTENT=#{content},
         	CLICK_URL=#{clickUrl},
-        	TYPE=#{type},
+        	TYPE=#{typeId},
         	STATUS=#{status},
         	CREATED_TIME=#{createdTime},
         	UPDATED_TIME=#{updatedTime}
@@ -43,6 +43,18 @@
         SELECT *
       	FROM jishu.T_USER_NOTIFICATION
       	WHERE USER_ID=#{0}
+    </select>
+    
+    <select id="findNotificationCount"  resultType="java.lang.Integer">
+        SELECT count(*)
+      	FROM jishu.T_USER_NOTIFICATION
+      	WHERE USER_ID=#{userId} and STATUS=#{status}
+    </select>
+    
+    <select id="findByUserIdAndTypeId" parameterType="int" resultMap="userNotificationResultMap">
+        SELECT *
+      	FROM jishu.T_USER_NOTIFICATION
+      	WHERE USER_ID=#{userId} and TYPE=#{typeId} 
     </select>
     
     <delete id="delete" parameterType="int">

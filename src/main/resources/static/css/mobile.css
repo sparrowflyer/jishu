@@ -1,0 +1,52 @@
+.login {
+    background-image: url('../image/login_mobile.png');
+}
+
+.login_item {
+    width: 2.64rem;
+    padding: .24rem .24rem .18rem .24rem;
+    box-shadow: 0 0 .12rem 0 rgba(176, 176, 176, 0.5);
+    border-radius: .11rem;
+    max-width: 540px;
+}
+
+.login_item_logo {
+    font-size: .12rem;
+    line-height: .17rem;
+    letter-spacing: .03rem;
+    -webkit-text-stroke: .01rem #303030;
+    text-stroke: .01rem #303030;
+}
+
+.login_item_field {
+    font-size: .1rem;
+    padding: .06rem .06rem .06rem .1rem;
+}
+
+.login_item_field input {
+    height: 0.22rem;
+}
+
+.login_item_field_verify {
+    align-items: flex-end;
+    background-color: #D8D8D8;
+    width: .53rem;
+    height: .18rem;
+}
+
+.login_item_note {
+    font-size: .1rem;
+    margin: .1rem .06rem .18rem .12rem;
+}
+
+.login_item_submit-btn {
+    padding-left: .2rem;
+    padding-right: .2rem;
+    height: .24rem;
+    border-radius: .12rem;
+    font-size: .1rem;
+}
+
+.login_item_info {
+    margin-top: .12rem;
+}

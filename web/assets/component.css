@@ -1,0 +1,178 @@
+@import './style.css';
+
+
+.header-wrap{
+    margin: 2.2rem 10.8rem;
+}
+.header-wrap-small{
+    margin: 36px 16px 17px;
+}
+
+.header-title img{
+    margin-top: 0.4rem;
+    max-width:12.3rem;
+    height:auto;
+}
+.header-title-small img{
+    max-width: 92px;
+    height: auto;
+}
+
+.header-menu{
+    margin-top: 0.4rem;
+    display: flex;
+    justify-content: space-around;
+}
+
+.header-menu li{
+    margin-right: 5rem;
+    height:2.3rem;
+    font-size: 1.6rem;
+    font-weight:400;
+    color:rgba(132,132,132,1);
+    line-height:2.3rem;
+}
+
+.header-menu li.active{
+    color:rgba(48,48,48,1);
+    position: relative;
+}
+
+.header-menu li.active:after{
+    content:"";
+    display: block;
+    position: relative;
+    z-index: -1;
+    width:100%;
+    height:0.6rem;
+    background:rgba(255,226,1,1);
+    position: absolute;
+    bottom: 0;
+    left:0;
+}
+
+.header-btn{
+    background:rgba(255,226,1,1);
+    border-radius:2.5rem;
+    font-size:1.4em;
+    font-weight:500;
+    padding: 0.83rem 2.58rem;
+    color:rgba(14,14,14,1);
+}
+.header-btn-small{
+    background:rgba(255,226,1,1);
+    border-radius: 8px;
+    padding: 5px 8px 4px 9px;
+    font-size: .5em;
+    font-weight:500;
+    color:rgba(14,14,14,1);
+    line-height:7px;
+}
+.header-menu-small div{
+    width:14px;
+    height:2px;
+    background:rgba(48,48,48,1);
+    border-radius:1px;
+}
+.header-menu-small div:nth-child(2){
+    margin: 2px 0;
+}
+
+
+.footer-contain {
+    /*position: fixed;*/
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(48, 48, 48, 1);
+    text-align: center;
+}
+
+.footer-list, .footer-contact {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    font-weight: 400;
+    color: rgba(159, 159, 159, 1);
+}
+.footer-list li:nth-child(odd), .footer-contact li:nth-child(odd){
+    white-space:nowrap;
+}
+.footer-list li:nth-child(even), .footer-contact li:nth-child(even) {
+    width:1px;
+    opacity:0.35729999999999995;
+    background: rgba(255,255,255,1);
+}
+
+.footer-line {
+    height: 1px;
+    width: 85%;
+    background: rgba(159, 159, 159, 1);
+}
+
+.footer-contact img {
+    max-width: 2.2rem;
+    height: auto;
+    margin-right: 2rem;
+}
+.footer-desc{
+    font-weight:400;
+    color:rgba(159,159,159,1);
+    line-height: 1.8rem;
+}
+
+/*媒体查询：@media 设备类型 and (设备特性)｛样式代码｝*/
+@media (min-width: 1024px) {
+    .header-wrap-small{
+        display: none;
+    }
+    .header-wrap{
+        display: block;
+    }
+
+    .footer-list, .footer-contact{
+        font-size: 2em;
+        line-height: 2rem;
+        margin-bottom: 3rem;
+    }
+    .footer-contain {
+        padding: 5rem 0 2rem 0;
+    }
+    .footer-contact li:nth-child(even){
+        margin: 0 5rem;
+    }
+    .footer-line {
+        margin: 0 auto 3rem;
+    }
+    .footer-desc{
+        font-size:1.6em;
+        margin-bottom: 1.6rem;
+    }
+    .footer-list li:nth-child(even), .footer-contact li:nth-child(even){
+        height:2rem;
+        margin: 0 2.1rem;
+    }
+}
+@media (max-width:1023px) {
+    .header-wrap-small{
+        display: flex;
+        justify-content: space-around;
+    }
+    .header-wrap{
+        display: none;
+    }
+
+    .footer-contain {
+        padding: 1rem 0;
+    }
+    .footer-list, .footer-contact {
+        margin-bottom: 1rem;
+    }
+    .footer-list li:nth-child(even), .footer-contact li:nth-child(even) {
+        margin: 0 1px;
+    }
+    .footer-line {
+        margin: 0 auto 1rem;
+    }
+}

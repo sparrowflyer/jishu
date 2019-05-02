@@ -7,8 +7,21 @@
     <title>Uncle Jee</title>
     <!-- favicon -->
     <!--<link rel="icon" href="/image/favicon.png" sizes="32x32" />-->
+    <link rel="stylesheet" href="../static/css/style.css" type="text/css" />
+    <link media="screen and (min-width: 768px)" rel="stylesheet" href="../static/css/web.css" type="text/css" />
+    <link media="screen and (max-width: 768px)" rel="stylesheet" href="../static/css/mobile.css" type="text/css" />
+    <link rel="stylesheet" href="../static/css/font.css" type="text/css" />
 </head>
 <body>
     <div id="app"></div>
+    <script>
+        function refreshRem() {
+            var clientWidth = document.documentElement.clientWidth || document.body.clientWidth || window.innerWidth,
+                    count =clientWidth > 768 ? 19.2 : 3.75;
+            document.documentElement.style.fontSize = clientWidth / count + 'px';
+        }
+        document.addEventListener('DOMContentLoaded', refreshRem);
+        window.addEventListener('orientationchange' in window ? 'orientationchange' : 'resize', refreshRem);
+    </script>
 </body>
 </html>

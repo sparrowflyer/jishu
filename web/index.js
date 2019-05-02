@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDom from 'react-dom';
-import { College } from './page/College.js';
+import { Login } from './page/Login.js';
 
 ReactDom.render(
-    <College />,
+    <Login />,
     document.getElementById('app')
 );

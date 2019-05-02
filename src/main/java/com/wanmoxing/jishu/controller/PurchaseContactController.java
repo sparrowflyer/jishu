@@ -96,7 +96,7 @@ public class PurchaseContactController {
 
 	/**
 	 * 购买学生练习方式
-	 * /purchaseContact?sellerId=1&buyerId=2&questions=xxxx
+	 * /purchaseContact?sellerId=18&buyerId=19&questions=xxxx
 	 */
 	@RequestMapping(value = "/purchaseContact", method = RequestMethod.GET)
 	public void purchaseContact(HttpServletResponse response, 
@@ -114,6 +114,7 @@ public class PurchaseContactController {
 			purchaseContact.setQuestions(questions);
 			purchaseContact.setPayment(PurchasePayment.ALIPAY.getPayment());
 			purchaseContact.setPaymentAmount(sellerStudentInfo.getContactsPrice());
+			purchaseContact.setStatus(PurchaseContactStatus.INIT.getStatus());
 			purchaseContactService.insert(purchaseContact);
 
 			AlipayClient alipayClient = AlipayConfig.getAlipayClient();

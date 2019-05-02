@@ -26,13 +26,15 @@ export class Footer extends React.Component {
                 <ul className='footer-contact'>
                     <li>
                         {/*<img src={utils.resizeIcon("../assets/images/dianhua-2.png")} alt=""/>*/}
-                        <img src={require("../assets/images/dianhua-2.png")} alt=""/>
+                        <img className="img-big" src={require("../assets/images/dianhua-2@2x.png")} alt=""/>
+                        <img className="img-small" src={require("../assets/images/dianhua-2.png")} alt=""/>
                         +86 137 7713 3446
                     </li>
                     <li></li>
                     <li>
                         {/*<img src={utils.resizeIcon("../assets/images/youxiang.png")} alt=""/>*/}
-                        <img src={require("../assets/images/youxiang.png")} alt=""/>
+                        <img className="img-big" src={require("../assets/images/youxiang@2x.png")} alt=""/>
+                        <img className="img-small" src={require("../assets/images/youxiang.png")} alt=""/>
                         jishugo@unclejee.cn
                     </li>
                 </ul>

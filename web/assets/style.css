@@ -1,6 +1,6 @@
 @import "./resize.css";
 html,body{
-    font-size: 10px;
+    /*font-size: 10px;*/
     overflow: auto;
 }
 body{
@@ -13,9 +13,6 @@ ul, li {
     padding: 0;
 }
 
-.home-contain{
-    position: relative;
-}
 .fr{
     float:right;
 }

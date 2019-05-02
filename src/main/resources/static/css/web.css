@@ -1,0 +1,52 @@
+.login {
+    background-image: url('../image/login_web.png');
+}
+
+.login_item {
+    width: 4.4rem;
+    padding: 0.4rem 0.4rem 0.3rem 0.4rem;
+    box-shadow: 0 0 .2rem 0 rgba(176, 176, 176, 0.5);
+    border-radius: .19rem;
+    min-width: 293px;
+}
+
+.login_item_logo {
+    font-size: .2rem;
+    line-height: .28rem;
+    letter-spacing: .06rem;
+    -webkit-text-stroke: .02rem #303030;
+    text-stroke: .02rem #303030;
+}
+
+.login_item_field {
+    font-size: .16rem;
+    padding: .08rem .1rem .08rem .17rem;
+}
+
+.login_item_field input {
+    height: 0.4rem;
+}
+
+.login_item_field_verify {
+    align-items: flex-end;
+    background-color: #D8D8D8;
+    width: .88rem;
+    height: .3rem;
+}
+
+.login_item_note {
+    font-size: 12px;
+    margin: .2rem .1rem .3rem .17rem;
+}
+
+.login_item_submit-btn {
+    padding-left: .3rem;
+    padding-right: .3rem;
+    height: .4rem;
+    border-radius: .2rem;
+    font-size: .16rem;
+}
+
+.login_item_info {
+    margin-top: .2rem;
+}

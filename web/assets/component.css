@@ -60,7 +60,7 @@
     font-weight:500;
     padding: 0.083rem .258rem;
     color:rgba(14,14,14,1);
-    margin-left: 0.1rem;
+    margin-left: .1rem;
 }
 .header-btn-small{
     background:rgba(255,226,1,1);
@@ -70,6 +70,12 @@
     font-weight:500;
     color:rgba(14,14,14,1);
 }
+
+.header-user{
+    font-weight:400;
+    color:rgba(48,48,48,1);
+}
+
 .header-menu-small{
     position: relative;
 }
@@ -113,12 +119,12 @@
     bottom: 0;
     left:0;
 }
-.header-menu-small:hover .menu-list {
+.header-menu-small:hover .menu-list,.header-menu-small:visited .menu-list {
     display: block;
     animation: 0.5s ease-out forwards menuShow;
 }
 
-.header-menu-small:hover .header-menu-icon{
+.header-menu-small:hover .header-menu-icon,.header-menu-small:visited .header-menu-icon{
     -webkit-transform: rotate(90deg);
     transform: rotate(90deg);
     -webkit-transition: -webkit-transform .5s linear;
@@ -134,9 +140,9 @@
 /* 底部导航条等 */
 .footer-contain {
     /*position: fixed;*/
-    position: absolute;
-    bottom: 0;
-    left: 0;
+    /*position: absolute;*/
+    /*bottom: 0;*/
+    /*left: 0;*/
     width: 100%;
     background: rgba(48, 48, 48, 1);
     text-align: center;
@@ -189,6 +195,24 @@
     position: absolute;
     top: 48%;
 }
+.next-btn img,.pre-btn img{
+    width:100%;
+}
+
+.next-btn .active,.pre-btn .active{
+    display: none;
+}
+.next-btn img:first-child,.pre-btn img:first-child{
+    display: block;
+}
+
+.next-btn:hover .active,.pre-btn:hover .active,.next-btn:visited .active,.pre-btn:visited .active{
+    display: block;
+}
+
+.next-btn:hover img:first-child,.pre-btn:hover img:first-child,.next-btn:visited img:first-child,.pre-btn:visited img:first-child{
+    display: none;
+}
 
 .img-list img{
     width: 100%;
@@ -210,15 +234,18 @@
     outline: 0;
     border: 0;
     border-radius: 50%;
-    width:16px;
-    height:16px;
     background:rgba(0,0,0,0.3);
-    box-shadow:0px 2px 2px 0px rgba(45,45,45,0.21);
+    box-shadow:0 2px 2px 0 rgba(45,45,45,0.21);
     overflow: hidden;
     transition: all .6s;
     cursor: pointer;
+    width:16px;
+    height:16px;
+    margin-right: .27rem;
 }
-
+.circle-btn button.active {
+    background: rgba(255, 226, 1, 1);
+}
 /*媒体查询：@media 设备类型 and (设备特性)｛样式代码｝*/
 @media (min-width: 1024px) {
     .header-wrap-small{
@@ -227,6 +254,18 @@
     .header-wrap{
         display: block;
     }
+    .header-user{
+        margin-left: .1rem;
+        font-size:.2rem;
+        line-height:.28rem;
+    }
+    .header-user img{
+        width: .4rem;
+        height: .4rem;
+        margin-right: .1rem;
+        border-radius: 50%;
+        vertical-align: middle;
+    }
 
     .footer-list, .footer-contact{
         font-size: .2em;
@@ -234,6 +273,7 @@
         margin-bottom: .3rem;
     }
     .footer-contain {
+        margin-top: .72rem;
         padding: .5rem 0 .2rem 0;
     }
     .footer-contact li:nth-child(even){
@@ -263,19 +303,18 @@
         width: 0.91rem;
         height: 0.91rem;
     }
+    .pre-btn{
+        left:.85rem;
+    }
+
     .next-btn{
-        left: .85rem;
-        background: url("./images/r@2x.png");
-    }
-    .next-btn:hover{
-        background: url("./images/rhover@2x.png");
-    }
-    .pre-btn{
         right:.84rem;
-        background: url("./images/l@2x.png");
     }
-    .pre-btn{
-        background: url("./images/lhover@2x.png");
+
+    .circle-btn button{
+        width:16px;
+        height:16px;
+        margin-right: .27rem;
     }
 }
 @media (max-width:1023px) {
@@ -283,11 +322,18 @@
         display: flex;
         justify-content: space-between;
     }
+
     .header-wrap{
         display: none;
     }
 
+    .header-user img{
+        width: .24rem;
+        height: .24rem;
+    }
+
     .footer-contain {
+        margin-top: .13rem;
         padding: .13rem 0 .06rem;
     }
     .footer-list, .footer-contact {
@@ -296,7 +342,7 @@
         font-size: 5px;
     }
     .footer-list li:nth-child(even) {
-        margin: 0 1px;
+        margin: 0 .05rem;
     }
     .footer-contact li:nth-child(even){
         margin:0 .13rem;
@@ -319,18 +365,17 @@
         width: 0.18rem;
         height: 0.18rem;
     }
-    .next-btn{
-        background-image: url("./images/r.png");
-    }
-    .next-btn:hover{
-        background-image: url("./images/rhover.png");
-    }
     .pre-btn{
-        right:.84rem;
-        background-image: url("./images/l.png");
+        left:.14rem;
     }
-    .pre-btn:hover{
-        background-image: url("./images/lhover.png");
+    .next-btn{
+        right:.13rem;
+    }
+
+    .circle-btn button{
+        width:.03rem;
+        height:.03rem;
+        margin-right: .05rem;
     }
 }
 

@@ -132,9 +132,6 @@ public class LoginController {
 		String emailVercode=loginInfoVo.getEmailVercode();
 
 		String phoneVercode=loginInfoVo.getPhoneVercode();
-		
-		String imageVercode=loginInfoVo.getImageVercode();
-
 
 		//字段判断
 		if(CommUtil.isEmptyOrNull(nickName) ) {
@@ -153,12 +150,7 @@ public class LoginController {
 			resultDTO.setErrorMsg("注册失败，验证码不能为空");
 			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
 			return resultDTO;
-		} else if(CommUtil.isEmptyOrNull(imageVercode)) {
-			resultDTO.setErrorMsg("注册失败，图像验证码不能为空");
-			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
-			return resultDTO;
 		}
-
 
 		try {
 			//验证码和账户判断
@@ -186,12 +178,6 @@ public class LoginController {
 					resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
 					return resultDTO;
 				}
-			}
-			
-			if (!"success".equalsIgnoreCase(checkImageVerifyCode(imageVercode,session))){
-				resultDTO.setErrorMsg("图形验证码错误！");
-				resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
-				return resultDTO;
 			}
 	
 			User userNew = new User();

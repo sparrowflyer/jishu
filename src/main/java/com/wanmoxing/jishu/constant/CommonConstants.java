@@ -20,5 +20,7 @@ public class CommonConstants {
 	 * 默认显示帖子个数
 	 */
 	public static final int DEFAULT_PAGE_SIZE = 8;
+	
+	public static final String ADMIN_EMAIL_ADDRESS = "ylf989@163.com";
 
 }

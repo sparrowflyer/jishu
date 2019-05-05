@@ -9,7 +9,7 @@ export class Header extends React.Component {
                     {/* 登陆与否 */}
                     {/*<div className="header-btn fr">登录/注册</div>*/}
                     <div className="header-user">
-                        <img src={require("./../assets/images/GB@2x.png")} alt=""/>
+                        <img src={require("../../assets/images/GB@2x.png")} alt=""/>
                         <span>name</span>
                     </div>
                     <ul className="header-menu fr">
@@ -29,7 +29,7 @@ export class Header extends React.Component {
                     </ul>
                     <div className="header-title">
                         {/*<img src={utils.resizeIcon("./../assets/images/UNCLEJEE.png")} alt=""/>*/}
-                        <img src={require("./../assets/images/UNCLEJEE@2x.png")} alt=""/>
+                        <img src={require("../../assets/images/UNCLEJEE@2x.png")} alt=""/>
                     </div>
                 </div>
                 <div className="header-wrap-small">
@@ -50,11 +50,11 @@ export class Header extends React.Component {
                     </div>
                     <div className="header-title-small">
                         {/*<img src={utils.resizeIcon("./../assets/images/UNCLEJEE.png")} alt=""/>*/}
-                        <img src={require("./../assets/images/UNCLEJEE.png")} alt=""/>
+                        <img src={require("../../assets/images/UNCLEJEE.png")} alt=""/>
                     </div>
                     {/*<div className="header-btn-small">登录/注册</div>*/}
                     <div className="header-user">
-                        <img src={require("./../assets/images/GB.png")} alt=""/>
+                        <img src={require("../../assets/images/GB.png")} alt=""/>
                     </div>
                 </div>
             </div>

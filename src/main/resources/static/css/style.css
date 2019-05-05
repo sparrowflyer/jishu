@@ -16,9 +16,7 @@ html, body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #FBDE17;
-    background-position: center;
-    background-repeat: no-repeat;
+    background: #FBDE17 no-repeat center;
     background-size: cover;
 }
 
@@ -165,12 +163,29 @@ html, body {
     color: #303030;
 }
 
-.cover {
-    width: 100%;
-    height: 300px;
-    background: #ccc;
+.user {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
+.sub-title {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
 
+.sub-title__cn {
+    font-weight: 600;
+    color: #303030;
+}
 
+.sub-title__en {
+    font-weight: 600;
+    color: #848484;
+}
 
+.sub-title_bottom {
+    background-color: #FFE201;
+}

@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDom from 'react-dom';
-import { Login } from './page/Login.js';
+import { PersonalCenter } from './page/PersonalCenter.js';
 
 ReactDom.render(
-    <Login />,
+    <PersonalCenter />,
     document.getElementById('app')
 );

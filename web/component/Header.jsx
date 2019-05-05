@@ -1,5 +1,5 @@
 import React from 'react';
-import utils from "../utils/utils.jsx";
+import { Link } from 'react-router-dom';
 
 export class Header extends React.Component {
     render() {
@@ -13,10 +13,19 @@ export class Header extends React.Component {
                         <span>name</span>
                     </div>
                     <ul className="header-menu fr">
-                        <li className="active">主页</li>
-                        <li>课程信息</li>
-                        <li>学生博客</li>
-                        <li>关于我们</li>
+                        <li className="active">
+                            <Link to="/">主页</Link>
+                        </li>
+                        <li>
+                            <Link to="/college">择校服务</Link>
+                        </li>
+                        {
+                            /*
+                             <li>课程信息</li>
+                             <li>学生博客</li>
+                             <li>关于我们</li>
+                            */
+                        }
                     </ul>
                     <div className="header-title">
                         {/*<img src={utils.resizeIcon("./../assets/images/UNCLEJEE.png")} alt=""/>*/}
@@ -31,10 +40,12 @@ export class Header extends React.Component {
                             <div></div>
                         </div>
                         <ul className="menu-list">
-                            <li className="active">主页</li>
-                            <li>课程信息</li>
-                            <li>学生博客</li>
-                            <li>关于我们</li>
+                            <li className="active">
+                                <Link to="/">主页</Link>
+                            </li>
+                            <li>
+                                <Link to="/college">择校服务</Link>
+                            </li>
                         </ul>
                     </div>
                     <div className="header-title-small">
@@ -47,7 +58,6 @@ export class Header extends React.Component {
                     </div>
                 </div>
             </div>
-
         );
     }
 }

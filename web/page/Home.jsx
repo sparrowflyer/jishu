@@ -1,6 +1,6 @@
 import React from 'react';
-import {Footer} from '../component/footer.jsx';
-import {Header} from '../component/header.jsx';
+import {Footer} from '../component/Footer.jsx';
+import {Header} from '../component/Header.jsx';
 import {Carousel} from '../component/Carousel.jsx';
 import '../assets/style.css';
 // import img from "./../assets/images/001.jpg";
@@ -12,13 +12,12 @@ export class HomePage extends React.Component {
                 <Header></Header>
                 <Carousel></Carousel>
                 <div>
-                    <p className="stShow-title">
+                    <div className="stShow-title">
                         学生展示
                         <div className="stShow-subtitle">
                             Students show
                         </div>
-                    </p>
-
+                    </div>
                     <div className="cards-wrap">
                         <ul className="card-list">
                             <li>

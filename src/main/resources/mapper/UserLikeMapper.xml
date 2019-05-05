@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+  
+<mapper namespace="com.wanmoxing.jishu.mapper.UserLikeMapper">  
+
+	<resultMap id="userLikeResultMap" type="com.wanmoxing.jishu.bean.UserLike">
+		<result property="userId" column="USER_ID"/>
+		<result property="likeId" column="LIKE_ID"/>
+		<result property="likeType" column="LIKE_TYPE"/>
+	</resultMap>
+	
+	<insert id="insert" parameterType="com.wanmoxing.jishu.bean.UserLike">
+        INSERT INTO jishu.T_USER_LIKE(USER_ID,LIKE_ID,LIKE_TYPE) 
+        VALUES(#{userId},#{likeId},#{likeType})
+    </insert>
+	
+	<delete id="delete" parameterType="com.wanmoxing.jishu.bean.UserLike">
+        DELETE FROM jishu.T_USER_LIKE WHERE USER_ID=#{userId} and LIKE_ID=#{likeId} and LIKE_TYPE=#{likeType}
+    </delete>
+    
+</mapper>

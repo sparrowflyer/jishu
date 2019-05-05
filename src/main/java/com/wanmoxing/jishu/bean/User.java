@@ -20,6 +20,8 @@ public class User {
 	
 	private String status;
 	
+	private int likeAmount;
+	
 	private Timestamp createdTime;
 	
 	private Timestamp updatedTime;
@@ -113,6 +115,14 @@ public class User {
 
 	public void setUpdatedTime(Timestamp updatedTime) {
 		this.updatedTime = updatedTime;
+	}
+
+	public int getLikeAmount() {
+		return likeAmount;
+	}
+
+	public void setLikeAmount(int likeAmount) {
+		this.likeAmount = likeAmount;
 	}
 	
 }

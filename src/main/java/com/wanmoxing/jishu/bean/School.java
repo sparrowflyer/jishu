@@ -14,6 +14,7 @@ public class School {
 	private String homeImage;
 	private String dataBasic;
 	private String dataApply;
+	private int likeAmount;
 	
 	public int getId() {
 		return id;
@@ -86,6 +87,12 @@ public class School {
 	}
 	public void setDataApply(String dataApply) {
 		this.dataApply = dataApply;
+	}
+	public int getLikeAmount() {
+		return likeAmount;
+	}
+	public void setLikeAmount(int likeAmount) {
+		this.likeAmount = likeAmount;
 	}
 	
 }

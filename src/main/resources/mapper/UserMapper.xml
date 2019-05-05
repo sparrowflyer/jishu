@@ -12,36 +12,37 @@
 		<result property="headImage" column="HEAD_IMAGE"/>
 		<result property="type" column="TYPE"/>
 		<result property="status" column="STATUS"/>
+		<result property="likeAmount" column="LIKE_AMOUNT"/>
 		<result property="createdTime" column="CREATED_TIME"/>
 		<result property="updatedTime" column="UPDATED_TIME"/>
 	</resultMap>
 
     <insert id="insert" parameterType="com.wanmoxing.jishu.bean.User" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO jishu.T_USER(NICK_NAME,EMAIL,CELL_PHONE,PASSWORD,HEAD_IMAGE,TYPE,STATUS) VALUES(#{nickName},#{email},#{cellPhone},#{password},#{headImage},#{type},#{status});
+        INSERT INTO jishu.T_USER(NICK_NAME,EMAIL,CELL_PHONE,PASSWORD,HEAD_IMAGE,TYPE,STATUS,LIKE_AMOUNT,CREATED_TIME,UPDATED_TIME) VALUES(#{nickName},#{email},#{cellPhone},#{password},#{headImage},#{type},#{status},#{likeAmount},#{createdTime},#{updatedTime});
     </insert>
     
     <update id="update" parameterType="com.wanmoxing.jishu.bean.User">
-        UPDATE jishu.T_USER SET NICK_NAME=#{nickName},EMAIL=#{email},CELL_PHONE=#{cellPhone},PASSWORD=#{password},HEAD_IMAGE=#{headImage},TYPE=#{type},STATUS=#{status} WHERE ID=#{id}
+        UPDATE jishu.T_USER SET NICK_NAME=#{nickName},EMAIL=#{email},CELL_PHONE=#{cellPhone},PASSWORD=#{password},HEAD_IMAGE=#{headImage},TYPE=#{type},STATUS=#{status},LIKE_AMOUNT=#{likeAmount},CREATED_TIME=#{createdTime},UPDATED_TIME=#{updatedTime} WHERE ID=#{id}
     </update>
     
     <select id="findById" parameterType="int" resultMap="userResultMap">
-        SELECT ID,NICK_NAME,EMAIL,CELL_PHONE,PASSWORD,HEAD_IMAGE,TYPE,STATUS,CREATED_TIME,UPDATED_TIME FROM jishu.T_USER WHERE ID=#{id}
+        SELECT * FROM jishu.T_USER WHERE ID=#{id}
     </select>
     
     <select id="findByNickname" resultMap="userResultMap">
-        SELECT ID,NICK_NAME,EMAIL,CELL_PHONE,PASSWORD,HEAD_IMAGE,TYPE,STATUS,CREATED_TIME,UPDATED_TIME FROM jishu.T_USER WHERE NICK_NAME=#{nickName} and PASSWORD=#{password}
+        SELECT * FROM jishu.T_USER WHERE NICK_NAME=#{nickName} and PASSWORD=#{password}
     </select>
     
     <select id="findByEmail" resultMap="userResultMap">
-        SELECT ID,NICK_NAME,EMAIL,CELL_PHONE,PASSWORD,HEAD_IMAGE,TYPE,STATUS,CREATED_TIME,UPDATED_TIME FROM jishu.T_USER WHERE EMAIL=#{email} and PASSWORD=#{password}
+        SELECT * FROM jishu.T_USER WHERE EMAIL=#{email} and PASSWORD=#{password}
     </select>
     
     <select id="findByPhoneNumber" resultMap="userResultMap">
-        SELECT ID,NICK_NAME,EMAIL,CELL_PHONE,PASSWORD,HEAD_IMAGE,TYPE,STATUS,CREATED_TIME,UPDATED_TIME FROM jishu.T_USER WHERE CELL_PHONE=#{phoneNumber} and PASSWORD=#{password}
+        SELECT * FROM jishu.T_USER WHERE CELL_PHONE=#{phoneNumber} and PASSWORD=#{password}
     </select>
     
     <select id="findByType" resultMap="userResultMap">
-        SELECT ID,NICK_NAME,EMAIL,CELL_PHONE,PASSWORD,HEAD_IMAGE,TYPE,STATUS,CREATED_TIME,UPDATED_TIME FROM jishu.T_USER WHERE type=#{type}
+        SELECT * FROM jishu.T_USER WHERE type=#{type}
     </select>
     
     <select id="findTotalAmountBySchool" parameterType="int" resultType="int">
@@ -52,7 +53,7 @@
     <select id="findBySchool" parameterType="java.util.Map" resultMap="userResultMap">
         SELECT * FROM jishu.T_USER
         WHERE ID in (SELECT USER_ID FROM jishu.T_SCHOOL_USER WHERE SCHOOL_ID = #{schoolId})
-        ORDER BY NICK_NAME
+        ORDER BY LIKE_AMOUNT
         <if test=" pageStart &gt;= 0 and pageAmount &gt; 0 ">
         LIMIT #{pageStart}, #{pageAmount}
         </if>

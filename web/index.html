@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Uncle Jee</title>
     <!-- favicon -->
@@ -22,6 +21,11 @@
         }
         document.addEventListener('DOMContentLoaded', refreshRem);
         window.addEventListener('orientationchange' in window ? 'orientationchange' : 'resize', refreshRem);
+        var scale = 1 / (window.devicePixelRatio || 1),
+                metaEl = document.createElement('meta');
+        metaEl.setAttribute('name', 'viewport');
+        metaEl.setAttribute('content', 'width=device-width,initial-scale=' + scale + ',maximum-scale=' + scale + ',minimum-scale=' + scale + ',user-scalable=no');
+        document.head.appendChild(metaEl);
     //区分移动端和PC端
     //     let sUserAgent = navigator.userAgent.toLowerCase();
     //     let pc = sUserAgent.match(/windows/i) == "windows";

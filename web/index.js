@@ -1,8 +1,11 @@
 import React from 'react';
 import ReactDom from 'react-dom';
-import { PersonalCenter } from './page/PersonalCenter.js';
+import { College } from './page/College.js';
+import {HomePage} from "./page/home.jsx";
+import { Login } from './page/Login.js';
+import {UniversityList} from "./page/UniversityList.jsx";
 
 ReactDom.render(
-    <PersonalCenter />,
+    <UniversityList />,
     document.getElementById('app')
 );

@@ -38,8 +38,11 @@ import com.wanmoxing.jishu.service.PurchaseContactService;
 import com.wanmoxing.jishu.service.UserNotificationService;
 import com.wanmoxing.jishu.service.UserService;
 import com.wanmoxing.jishu.service.UserStudentInfoService;
+import com.wanmoxing.jishu.util.CellphoneUtil;
 import com.wanmoxing.jishu.util.CommUtil;
+import com.wanmoxing.jishu.util.EmailUtil;
 import com.wanmoxing.jishu.util.IdGenerator;
+import com.wanmoxing.jishu.util.VerifyCodeUtil;
 
 @RestController
 @RequestMapping("/jishu")
@@ -95,7 +98,7 @@ public class PurchaseContactController {
 	}
 
 	/**
-	 * 购买学生练习方式
+	 * 购买学生联系方式
 	 * /purchaseContact?sellerId=18&buyerId=19&questions=xxxx
 	 */
 	@RequestMapping(value = "/purchaseContact", method = RequestMethod.GET)
@@ -277,14 +280,59 @@ public class PurchaseContactController {
 					}
 					
 					// TODO 生成随机码
-					String randomCode = "";
+					String randomCode = VerifyCodeUtil.generateVerifyCode(6);
 					
+					StringBuffer messageToNotifyAdmin = new StringBuffer();
+					messageToNotifyAdmin.append("订单类型： 购买联系方式\n")
+										.append("订单ID： ").append(purchaseContact.getId()).append("\n")
+										.append("订单时间： ").append(purchaseContact.getCreatedTime()).append("\n")
+										.append("订单金额： ").append(purchaseContact.getPaymentAmount()).append("\n")
+										.append("卖家ID： ").append(purchaseContact.getSellerId()).append("\n")
+										.append("买家ID： ").append(purchaseContact.getBuyerId()).append("\n")
+										.append("随机码： ").append(randomCode).append("\n");
+					EmailUtil.sendEmail(CommonConstants.ADMIN_EMAIL_ADDRESS, "有新的购买联系方式订单！", messageToNotifyAdmin.toString());
+					
+					User seller = userService.findById(purchaseContact.getSellerId());
+					User buyer = userService.findById(purchaseContact.getBuyerId());
+					StringBuffer messageToNotifySeller = new StringBuffer();
+					messageToNotifySeller.append("订单类型： 购买联系方式\n")
+										.append("订单ID： ").append(purchaseContact.getId()).append("\n")
+										.append("订单时间： ").append(purchaseContact.getCreatedTime()).append("\n")
+										.append("订单金额： ").append(purchaseContact.getPaymentAmount()).append("\n")
+										.append("买家： ").append(buyer.getNickName()).append("\n")
+										.append("随机码： ").append(randomCode).append("\n");
+					
+					String sellerEmail = seller.getEmail();
+					if (sellerEmail != null && sellerEmail != "") {
+						EmailUtil.sendEmail(sellerEmail, "您有新的购买联系方式订单！", messageToNotifySeller.toString());
+					}
+					String sellerCellphone = seller.getCellPhone();
+					if (sellerCellphone != null && sellerCellphone != "") {
+						//CellphoneUtil.sendSms(sellerCellphone, messageToNotifySeller.toString());
+					}
+					StringBuffer messageToNotifyBuyer = new StringBuffer();
+					messageToNotifyBuyer.append("订单类型： 购买联系方式\n")
+										.append("订单ID： ").append(purchaseContact.getId()).append("\n")
+										.append("订单时间： ").append(purchaseContact.getCreatedTime()).append("\n")
+										.append("订单金额： ").append(purchaseContact.getPaymentAmount()).append("\n")
+										.append("卖家： ").append(seller.getNickName()).append("\n")
+										.append("随机码： ").append(randomCode).append("\n");
+					String buyerEmail = buyer.getEmail();
+					if (buyerEmail != null && buyerEmail != "") {
+						EmailUtil.sendEmail(sellerEmail, "购买联系方式成功！", messageToNotifyBuyer.toString());
+					}
+					String buyerCellphone = buyer.getCellPhone();
+					if (buyerCellphone != null && buyerCellphone != "") {
+						//CellphoneUtil.sendSms(buyerCellphone, messageToNotifyBuyer.toString());
+					}
+					
+					
+					purchaseContact.setRandomCode(randomCode);
 					purchaseContact.setPaymentAdditionalInfo(trade_no); //设置支付宝订单号
 					purchaseContact.setStatus(PurchaseContactStatus.PAYED_CAN_BE_REFUND.getStatus());
 					purchaseContact.setRandomCode(randomCode);
 					purchaseContact.setUpdatedTime(new Timestamp(System.currentTimeMillis()));
 					purchaseContactService.update(purchaseContact);
-					
 					
 					// 生成新购买通知给卖家
 					UserNotification newBuyerNotification = new UserNotification();
@@ -292,7 +340,6 @@ public class PurchaseContactController {
 					newBuyerNotification.setUserId(purchaseContact.getSellerId());
 					newBuyerNotification.setTitle("您的联系方式有新购买者！");
 					
-					User buyer = userService.findById(purchaseContact.getBuyerId());
 					String userURL = "http://www.unclejee.cn/user/" + buyer.getId();
 					String userName = buyer.getNickName();
 					String userImg = buyer.getHeadImage();

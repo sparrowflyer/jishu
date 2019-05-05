@@ -16,11 +16,12 @@
 		<result property="homeImage" column="HOME_IMAGE"/>
 		<result property="dataBasic" column="DATA_BASIC"/>
 		<result property="dataApply" column="DATA_APPLY"/>
+		<result property="likeAmount" column="LIKE_AMOUNT"/>
 	</resultMap>
 	
 	<insert id="insert" parameterType="com.wanmoxing.jishu.bean.School" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO jishu.T_SCHOOL(EN_NAME,CN_NAME,COUNTRY,LOCATION,OFFICIAL_SITE,DESCRIPTION,RANK,ICON_IMAGE,HOME_IMAGE,DATA_BASIC,DATA_APPLY) 
-        VALUES(#{enName},#{cnName},#{country},#{location},#{officialSite},#{description},#{rank},#{iconImage},#{homeImage},#{dataBasic},#{dataApply});
+        INSERT INTO jishu.T_SCHOOL(EN_NAME,CN_NAME,COUNTRY,LOCATION,OFFICIAL_SITE,DESCRIPTION,RANK,ICON_IMAGE,HOME_IMAGE,DATA_BASIC,DATA_APPLY,LIKE_AMOUNT) 
+        VALUES(#{enName},#{cnName},#{country},#{location},#{officialSite},#{description},#{rank},#{iconImage},#{homeImage},#{dataBasic},#{dataApply},#{likeAmount});
     </insert>
 	
 	<delete id="delete" parameterType="int">
@@ -32,7 +33,7 @@
         SET EN_NAME=#{enName},CN_NAME=#{cnName},COUNTRY=#{country},LOCATION=#{location},
         	OFFICIAL_SITE=#{officialSite},DESCRIPTION=#{description},RANK=#{rank},
         	ICON_IMAGE=#{iconImage},HOME_IMAGE=#{homeImage},DATA_BASIC=#{dataBasic},
-        	DATA_APPLY=#{dataApply}
+        	DATA_APPLY=#{dataApply},LIKE_AMOUNT=#{likeAmount}
         WHERE ID=#{id}
     </update>
     

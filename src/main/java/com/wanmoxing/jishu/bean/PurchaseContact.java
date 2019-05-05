@@ -14,9 +14,9 @@ public class PurchaseContact {
 	private BigDecimal paymentAmount;
 	private String status;
 	private String randomCode;
-	private int scoreResponse;
-	private int scoreAttitude;
-	private int scoreProfessional;
+	private BigDecimal scoreResponse;
+	private BigDecimal scoreAttitude;
+	private BigDecimal scoreProfessional;
 	private Timestamp createdTime = new Timestamp(System.currentTimeMillis());
 	private Timestamp updatedTime;
 	private String comment;
@@ -75,22 +75,22 @@ public class PurchaseContact {
 	public void setRandomCode(String randomCode) {
 		this.randomCode = randomCode;
 	}
-	public int getScoreResponse() {
+	public BigDecimal getScoreResponse() {
 		return scoreResponse;
 	}
-	public void setScoreResponse(int scoreResponse) {
+	public void setScoreResponse(BigDecimal scoreResponse) {
 		this.scoreResponse = scoreResponse;
 	}
-	public int getScoreAttitude() {
+	public BigDecimal getScoreAttitude() {
 		return scoreAttitude;
 	}
-	public void setScoreAttitude(int scoreAttitude) {
+	public void setScoreAttitude(BigDecimal scoreAttitude) {
 		this.scoreAttitude = scoreAttitude;
 	}
-	public int getScoreProfessional() {
+	public BigDecimal getScoreProfessional() {
 		return scoreProfessional;
 	}
-	public void setScoreProfessional(int scoreProfessional) {
+	public void setScoreProfessional(BigDecimal scoreProfessional) {
 		this.scoreProfessional = scoreProfessional;
 	}
 	public Timestamp getCreatedTime() {

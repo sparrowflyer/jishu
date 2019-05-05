@@ -17,6 +17,11 @@ public class UserStudentInfoServiceImpl implements UserStudentInfoService {
 	private UserStudentInfoMapper userStudentInfoMapper;
 	
 	@Override
+	public void update(UserStudentInfo userStudentInfo) {
+		userStudentInfoMapper.update(userStudentInfo);
+	}
+	
+	@Override
 	public UserStudentInfo findByUserId(int userId) {
 		return userStudentInfoMapper.findByUserId(userId);
 	}

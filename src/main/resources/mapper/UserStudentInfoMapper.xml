@@ -15,6 +15,14 @@
 		<result property="scoreProfessional" column="SCORE_PROFESSIONAL"/>
 	</resultMap>
 	
+	<update id="update" parameterType="com.wanmoxing.jishu.bean.UserStudentInfo">
+        UPDATE jishu.T_USER_STUDENT_INFO 
+        SET MAJOR=#{major},TOPICS=#{topics},HONORS=#{honors},CONTACTS=#{contacts},
+        	CONTACTS_PRICE=#{contactsPrice},SCORE_RESPONSE=#{scoreResponse},
+        	SCORE_ATTITUDE=#{scoreAttitude},SCORE_PROFESSIONAL=#{scoreProfessional}
+        WHERE USER_ID=#{userId}
+    </update>
+	
     <select id="findByUserId" parameterType="int" resultMap="userStudentInfoResultMap">
         SELECT * FROM jishu.T_USER_STUDENT_INFO WHERE USER_ID=#{userId}
     </select>

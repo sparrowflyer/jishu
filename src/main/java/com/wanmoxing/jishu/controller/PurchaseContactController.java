@@ -38,7 +38,6 @@ import com.wanmoxing.jishu.service.PurchaseContactService;
 import com.wanmoxing.jishu.service.UserNotificationService;
 import com.wanmoxing.jishu.service.UserService;
 import com.wanmoxing.jishu.service.UserStudentInfoService;
-import com.wanmoxing.jishu.util.CellphoneUtil;
 import com.wanmoxing.jishu.util.CommUtil;
 import com.wanmoxing.jishu.util.EmailUtil;
 import com.wanmoxing.jishu.util.IdGenerator;
@@ -259,23 +258,23 @@ public class PurchaseContactController {
 				// 退款日期超过可退款期限后（如三个月可退款），支付宝系统发送该交易状态通知
 				if (trade_status.equals("TRADE_FINISHED")) {
 					// 判断该笔订单是否在商户网站中已经做过处理
-					if (purchaseContact.getStatus().equals(PurchaseContactStatus.PAYED_CAN_NOT_BE_REFUND.getStatus())
+					if (purchaseContact.getStatus().equals(PurchaseContactStatus.ENDED.getStatus())
 							|| purchaseContact.getStatus().equals(PurchaseContactStatus.REFUNDED.getStatus())
-							|| purchaseContact.getStatus().equals(PurchaseContactStatus.ENDED.getStatus())) {
+							|| purchaseContact.getStatus().equals(PurchaseContactStatus.CANCELLED.getStatus())) {
 						return;
 					}
 					
-					purchaseContact.setStatus(PurchaseContactStatus.PAYED_CAN_NOT_BE_REFUND.getStatus());
+					purchaseContact.setStatus(PurchaseContactStatus.ENDED.getStatus());
 					purchaseContact.setUpdatedTime(new Timestamp(System.currentTimeMillis()));
 					purchaseContactService.update(purchaseContact);
 				} 
 				// 付款完成后，支付宝系统发送该交易状态通知
 				else if (trade_status.equals("TRADE_SUCCESS")) {
 					// 判断该笔订单是否在商户网站中已经做过处理
-					if (purchaseContact.getStatus().equals(PurchaseContactStatus.PAYED_CAN_BE_REFUND.getStatus())
-							|| purchaseContact.getStatus().equals(PurchaseContactStatus.PAYED_CAN_NOT_BE_REFUND.getStatus())
+					if (purchaseContact.getStatus().equals(PurchaseContactStatus.PAYED.getStatus())
 							|| purchaseContact.getStatus().equals(PurchaseContactStatus.ENDED.getStatus())
-							|| purchaseContact.getStatus().equals(PurchaseContactStatus.REFUNDED.getStatus())) {
+							|| purchaseContact.getStatus().equals(PurchaseContactStatus.REFUNDED.getStatus())
+							|| purchaseContact.getStatus().equals(PurchaseContactStatus.CANCELLED.getStatus())) {
 						return;
 					}
 					
@@ -329,7 +328,7 @@ public class PurchaseContactController {
 					
 					purchaseContact.setRandomCode(randomCode);
 					purchaseContact.setPaymentAdditionalInfo(trade_no); //设置支付宝订单号
-					purchaseContact.setStatus(PurchaseContactStatus.PAYED_CAN_BE_REFUND.getStatus());
+					purchaseContact.setStatus(PurchaseContactStatus.PAYED.getStatus());
 					purchaseContact.setRandomCode(randomCode);
 					purchaseContact.setUpdatedTime(new Timestamp(System.currentTimeMillis()));
 					purchaseContactService.update(purchaseContact);
@@ -352,6 +351,55 @@ public class PurchaseContactController {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * 
+	 	{
+	   		"purchaseContactId": "201905021701034661260",
+	   		"scoreResponse": 2,
+	   		"scoreAttitude": 3,
+	   		"scoreProfessional": 4
+	    }
+	 * @param jsonParams
+	 * @return
+	 */
+	@RequestMapping(value = "/commentPurchaseContact", method = RequestMethod.POST)
+	public ResultDTO commentPurchaseContact(@RequestBody JSONObject jsonParams) {
+		ResultDTO result = new ResultDTO();
+		try {
+			String purchaseContactId = jsonParams.getString("purchaseContactId");
+			BigDecimal scoreResponse = jsonParams.getBigDecimal("scoreResponse");
+			BigDecimal scoreAttitude = jsonParams.getBigDecimal("scoreAttitude");
+			BigDecimal scoreProfessional = jsonParams.getBigDecimal("scoreProfessional");
+			
+			PurchaseContact purchaseContact = purchaseContactService.find(purchaseContactId);
+			if (purchaseContact == null) {
+				result.setStatus(ResultDTOStatus.ERROR.getStatus());
+				result.setErrorMsg("订单不存在");
+			}
+			purchaseContact.setScoreResponse(scoreResponse);
+			purchaseContact.setScoreAttitude(scoreAttitude);
+			purchaseContact.setScoreProfessional(scoreProfessional);
+			purchaseContact.setUpdatedTime(new Timestamp(System.currentTimeMillis()));
+			purchaseContactService.update(purchaseContact);
+			
+			UserStudentInfo sellerStudentInfo = userStudentInfoService.findByUserId(purchaseContact.getSellerId());
+			Map<String, Object> avgScores = purchaseContactService.findAvgScoresForSeller(purchaseContact.getSellerId());
+			if (avgScores != null) {
+				sellerStudentInfo.setScoreResponse((BigDecimal)avgScores.get("AVG_SCORE_RESPONSE"));
+				sellerStudentInfo.setScoreAttitude((BigDecimal)avgScores.get("AVG_SCORE_ATTITUDE"));
+				sellerStudentInfo.setScoreProfessional((BigDecimal)avgScores.get("AVG_SCORE_PROFESSIONAL"));
+				userStudentInfoService.update(sellerStudentInfo);
+			}
+			
+			return result;
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus(ResultDTOStatus.ERROR.getStatus());
+			result.setErrorMsg("Exception occured!");
+			return result;
 		}
 	}
 	

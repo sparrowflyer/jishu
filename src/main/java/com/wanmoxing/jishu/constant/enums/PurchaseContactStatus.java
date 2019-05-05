@@ -3,11 +3,12 @@ package com.wanmoxing.jishu.constant.enums;
 public enum PurchaseContactStatus {
 	
 	INIT("init"), 			//等待支付
-	PAYED_CAN_BE_REFUND("payed_can_be_refund"), 		//支付成功(可退款)，待评价
-	PAYED_CAN_NOT_BE_REFUND("payed_can_not_be_refund"), //支付成功(不可退款)，待评价
-	ENDED("ended"), 		//评价完成(不可退款)，订单结束
+	PAYED("payed"), 		//支付成功
+	SERVICED("serviced"),	//服务完成
+	COMMENTED("commented"),	//用户评价完成
+	ENDED("ended"), 		//订单结束
 	REFUNDED("refunded"), 	//已退款
-	CANCELLED("cancelled");	//取消订单
+	CANCELLED("cancelled");	//已取消
 	
 	private String status;
 	

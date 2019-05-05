@@ -61,4 +61,27 @@
       	WHERE ID=#{0}
     </select>
     
+    <select id="findByStatuses" parameterType="java.util.List" resultMap="purchaseContactResultMap">
+    	select *
+    	from jishu.T_PURCHASE_CONTACT
+    	where status in
+    		<foreach collection="statuses" index="index" item="item"
+	            open="(" separator="," close=")">
+	            #{item}
+	        </foreach>
+    </select>
+    
+    <select id="findAvgScoresForSeller" parameterType="java.util.Map" resultType="java.util.Map">
+    	select AVG(SCORE_RESPONSE) as AVG_SCORE_RESPONSE, 
+    			AVG(SCORE_ATTITUDE) as AVG_SCORE_ATTITUDE, 
+    			AVG(SCORE_PROFESSIONAL) as AVG_SCORE_PROFESSIONAL
+    	from jishu.T_PURCHASE_CONTACT
+    	where SELLER_ID = #{sellerId}
+    		AND STATUS in
+    		<foreach collection="statuses" index="index" item="item"
+	            open="(" separator="," close=")">
+	            #{item}
+	        </foreach>
+    </select>
+    
 </mapper>

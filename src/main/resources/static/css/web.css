@@ -352,7 +352,7 @@
 }
 
 .personal-center_tab-title-container {
-    margin: 0 3.97rem .6rem 3.97rem;
+    margin: .6rem 3.97rem .6rem 3.97rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -376,3 +376,61 @@
     text-align: center;
 }
 
+.item-container {
+    width: 4.1rem;
+    height: 3.86rem;
+    background: #FFFFFF;
+    border-radius: .2rem;
+}
+
+.personal-center-content {
+    margin: 0 2.95rem 1.2rem 2.95rem;
+}
+
+.image-container {
+    width: 100%;
+    height: 2.66rem;
+    background-color: #eeeeee;
+    position: relative;
+}
+
+.image-container_bottom {
+    text-align: center;
+    font-size: .16rem;
+    line-height: .38rem;
+    height: .38rem;
+    background: rgba(0, 0, 0, 0.3);
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+
+.word-container {
+    padding: .2rem .2rem .3rem .2rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-content: space-between;
+}
+
+.word-desc {
+    font-size: .2rem;
+    line-height: .28rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.word-note {
+    font-size: .16rem;
+    line-height: .22rem;
+    color: #848484;
+}
+
+.word-note .title {
+    margin-right: .1rem;
+}
+
+.word-note .value {
+    margin-right: .3rem;
+}

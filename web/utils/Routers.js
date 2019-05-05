@@ -2,6 +2,8 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { HomePage } from '../page/Home.jsx';
 import { UniversityList } from '../page/UniversityList.jsx';
+import { StudentDetail } from '../page/StudentDetail/index.js';
+import { PersonalCenter } from '../page/PersonalCenter.js';
 import { Login } from '../page/Login.js';
 
 export function Routers() {
@@ -11,6 +13,8 @@ export function Routers() {
                 <Switch>
                     <Route exact path='/' component={ HomePage } />
                     <Route path='/college' component={ UniversityList } />
+                    <Route path='/StudentDetail' component={ StudentDetail } />
+                    <Route path='/PersonalCenter' component={ PersonalCenter } />
                     <Route path='/login' component={ Login } />
                 </Switch>
             </div>

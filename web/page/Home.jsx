@@ -1,6 +1,6 @@
 import React from 'react';
-import {Footer} from '../component/Footer.jsx';
-import {Header} from '../component/Header.jsx';
+import {Footer} from '../component/common/Footer.jsx';
+import {Header} from '../component/common/Header.jsx';
 import {Carousel} from '../component/Carousel.jsx';
 import '../assets/style.css';
 // import img from "./../assets/images/001.jpg";

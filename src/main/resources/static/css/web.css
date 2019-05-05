@@ -50,3 +50,329 @@
 .login_item_info {
     margin-top: .2rem;
 }
+
+.avator_bg {
+    width: 100%;
+    height: 3rem;
+    background: #B8E0EA url('../image/bg.png') no-repeat center;
+}
+
+.avator {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    margin: -1rem auto .4rem auto;
+    background: #eee no-repeat center;
+    position: relative;
+}
+
+.avator_note {
+    width: .8rem;
+    height: .6rem;
+    font-size: .3rem;
+    border-radius: .16rem;
+    color: #303030;
+    background-color: #FFE201;
+    line-height: .6rem;
+    text-align: center;
+    position: absolute;
+    left: .6rem;
+    bottom: -.3rem;
+    z-index: 5;
+}
+
+.user_name {
+    font-size: .4rem;
+    color: #303030;
+    margin-right: .5rem;
+}
+
+.user_edit-icon {
+    font-size: .32rem;
+    color: #848484;
+}
+
+.user_know-btn {
+    width: 1.27rem;
+    line-height: .51rem;
+    border-radius: .31rem;
+    font-size: .2rem;
+    text-align: center;
+    color: #0E0E0E;
+    background-color: #FFE201;
+}
+
+.school {
+    color: #303030;
+    font-size: .24rem;
+    margin-top: .2rem;
+    text-align: center;
+}
+
+.desc-container {
+    text-align: center;
+    line-height: .28rem;
+    font-size: .2rem;
+    margin-top: .35rem;
+}
+
+.desc {
+    color: #848484;
+    position: relative;
+    max-width: 7rem;
+}
+
+.desc:before {
+    font-family: 'icomoon';
+    color: #FFE201;
+    content: "\e977";
+    font-size: .11rem;
+    position: absolute;
+    left: -.4rem;
+    top: 0;
+}
+
+.desc:after {
+    font-family: 'icomoon';
+    color: #FFE201;
+    content: "\e978";
+    font-size: .11rem;
+    position: absolute;
+    right: -.4rem;
+    top: 0;
+}
+
+.num-container {
+    display: flex;
+    justify-content: center;
+    margin-top: .4rem;
+}
+
+.num-item {
+    width: 3.58rem;
+    height: .72rem;
+    border-right: 1px solid #D8D8D8;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.num-item:last-child {
+    border: none;
+}
+
+.num-item_value {
+    font-size: .3rem;
+    color: #040404;
+}
+
+.num-item_title {
+    font-size: .2rem;
+    color: #848484;
+}
+
+.sub-title__cn {
+    font-size: .4rem;
+    line-height: .56rem;
+}
+
+.sub-title__en {
+    font-size: .31rem;
+    line-height: .42rem;
+}
+
+.sub-title_bottom {
+    width: 100%;
+    height: .11rem;
+    margin-top: -.13rem;
+}
+
+.conversation-container {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.conversation-item {
+    display: flex;
+    width: 5.85rem;
+    justify-content: center;
+    align-items: center;
+}
+
+.conversation-title {
+    width: 1rem;
+    height: .6rem;
+    color: #303030;
+    background-color: #FFE201;
+    font-size: .31rem;
+    line-height: .6rem;
+    border-radius: .1rem;
+    text-align: center;
+}
+
+.conversation-desc {
+    width: 3.92rem;
+    color: #848484;
+    font-size: .22rem;
+    line-height: .3rem;
+    margin-left: .2rem;
+}
+
+.evaluation-container {
+    margin-top: .7rem;
+    margin-bottom: 1.55rem;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.evaluation-item {
+     width: 4rem;
+     height: 2.51rem;
+     background: #FFFFFF;
+     box-shadow: 0 .02rem .2rem 0 rgba(203, 203, 203, .5);
+     border-radius: .2rem;
+     position: relative;
+ }
+
+.evaluation-item_avator {
+    position: absolute;
+    top: -.49rem;
+    left: .3rem;
+    width: .98rem;
+    height: .98rem;
+    border-radius: 50%;
+    background: #eee no-repeat center;
+}
+
+.evaluation-item_username {
+    font-size: .24rem;
+    height: .49rem;
+    padding-left: 1.48rem;
+    color: #040404;
+    display: flex;
+    align-items: flex-end;
+}
+
+.evaluation-item_desc {
+    color: #848484;
+    font-size: .2rem;
+    line-height: .28rem;
+    height: .8rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin: .3rem;
+    position: relative;
+}
+
+.evaluation-item_bottom {
+    height: .62rem;
+    color: #848484;
+    background: #F9F9F9;
+    border-radius: 0 0 .2rem .2rem;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.evaluation-item_bottom .title {
+    font-size: .2rem;
+    line-height: .28rem;
+}
+
+.evaluation-item_bottom .value {
+    font-size: .3rem;
+    line-height: .42rem;
+}
+
+.evaluation-item__active {
+    width: 4.4rem;
+    height: 2.6rem;
+    background: #FFFFFF;
+    box-shadow: 0 .02rem .22rem 0 rgba(203, 203, 203, .5);
+    border-radius: .22rem;
+    position: relative;
+}
+
+.evaluation-item_avator__active {
+    position: absolute;
+    top: -.54rem;
+    left: .33rem;
+    width: 1.08rem;
+    height: 1.08rem;
+    border-radius: 50%;
+    background: #eee no-repeat center;
+}
+
+.evaluation-item_username__active {
+    font-size: .26rem;
+    height: .54rem;
+    padding-left: 1.63rem;
+    color: #040404;
+    display: flex;
+    align-items: flex-end;
+}
+
+.evaluation-item_desc__active {
+    color: #848484;
+    font-size: .22rem;
+    line-height: .3rem;
+    height: .88rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin: .32rem .32rem .35rem .33rem;
+    position: relative;
+}
+
+.evaluation-item_bottom__active {
+    height: .68rem;
+    background: #FFE201;
+    border-radius: 0 0 .22rem .22rem;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.evaluation-item_bottom__active .title {
+    color: #303030;
+    font-size: .22rem;
+    line-height: .3rem;
+}
+
+.evaluation-item_bottom__active .value {
+    color: #040404;
+    font-size: .33rem;
+    line-height: .46rem;
+}
+
+.personal-center_tab-title-container {
+    margin: 0 3.97rem .6rem 3.97rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.tab-title {
+    font-size: .24rem;
+    line-height: .33rem;
+    color: #848484;
+}
+
+.tab-title__selected {
+    display: inline-block;
+    width: 1.8rem;
+    height: .6rem;
+    background-color: #FFE201;
+    color: #303030;
+    border-radius: .44rem;
+    font-size: .24rem;
+    line-height: .6rem;
+    text-align: center;
+}
+

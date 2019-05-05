@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'icomoon';
-  src:  url('../font/icomoon.eot?f7zm5e');
-  src:  url('../font/icomoon.eot?f7zm5e#iefix') format('embedded-opentype'),
-  url('../font/icomoon.ttf?f7zm5e') format('truetype'),
-  url('../font/icomoon.woff?f7zm5e') format('woff'),
-  url('../font/icomoon.svg?f7zm5e#icomoon') format('svg');
+  src:  url('../font/icomoon.eot?sgilcf');
+  src:  url('../font/icomoon.eot?sgilcf#iefix') format('embedded-opentype'),
+  url('../font/icomoon.ttf?sgilcf') format('truetype'),
+  url('../font/icomoon.woff?sgilcf') format('woff'),
+  url('../font/icomoon.svg?sgilcf#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -24,6 +24,9 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.jee-edit:before {
+  content: "\e900";
+}
 .jee-eye:before {
   content: "\e9ce";
 }
@@ -32,4 +35,10 @@
 }
 .jee-arrow-right:before {
   content: "\ea3c";
+}
+.jee-quote-left:before {
+  content: "\e977";
+}
+.jee-quote-right:before {
+  content: "\e978";
 }

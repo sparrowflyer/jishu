@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSONObject;
 import com.wanmoxing.jishu.bean.School;
+import com.wanmoxing.jishu.constant.enums.Country;
 import com.wanmoxing.jishu.constant.enums.ResultDTOStatus;
 import com.wanmoxing.jishu.dto.ResultDTO;
 import com.wanmoxing.jishu.service.SchoolService;
@@ -75,6 +76,25 @@ public class SchoolController {
 			result.setData(resultMap);
 			return result;
 			
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus(ResultDTOStatus.ERROR.getStatus());
+			result.setErrorMsg("Exception occured!");
+			return result;
+		}
+	}
+	
+	/**
+	 * 获取国家列表
+	 * @param jsonParams
+	 * @return
+	 */
+	@RequestMapping(value = "/getCountrys", method = RequestMethod.POST)
+	public ResultDTO getCountrys() {
+		ResultDTO result = new ResultDTO();
+		try {
+			result.setData(Country.getCountryNames());
+			return result;
 		} catch (Exception e) {
 			e.printStackTrace();
 			result.setStatus(ResultDTOStatus.ERROR.getStatus());

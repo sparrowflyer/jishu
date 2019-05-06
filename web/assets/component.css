@@ -12,11 +12,11 @@
 
 .header-title img{
     margin-top: 0.04rem;
-    max-width: 1.23rem;
+    max-width: 1.48rem;
     height: auto;
 }
 .header-title-small img{
-    max-width: 0.92rem;
+    width: 0.92rem;
     height: auto;
     vertical-align: middle;
 }
@@ -79,16 +79,16 @@
 .header-menu-small{
     position: relative;
 }
-.header-menu-small .header-menu-icon{
+.header-menu-small .header-menu-icon img{
     width:.14rem;
     margin-top:.05rem;
 }
-.header-menu-small .header-menu-icon div{
-    width: .14rem;
-    height: 2px;
-    background:rgba(48,48,48,1);
-    border-radius:1px;
-}
+/*.header-menu-small .header-menu-icon div{*/
+    /*width: .14rem;*/
+    /*height: 2px;*/
+    /*background:rgba(48,48,48,1);*/
+    /*border-radius:1px;*/
+/*}*/
 .menu-list{
     display: none;
     background:rgba(255,255,255,1);
@@ -133,9 +133,9 @@
     /*animation: spin 1s linear infinite;*/
 }
 
-.header-menu-small .header-menu-icon div:nth-child(2){
-    margin: 2px 0;
-}
+/*.header-menu-small .header-menu-icon div:nth-child(2){*/
+    /*margin: 2px 0;*/
+/*}*/
 
 /* 底部导航条等 */
 .footer-contain {

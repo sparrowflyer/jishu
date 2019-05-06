@@ -65,8 +65,8 @@ export class UniversityList extends React.Component {
                         <li className="clearfloat"></li>
                     </ul>
                     <div className="search-wrap">
-                        <input className={this.state.searchBlock ? 'active': ''} placeholder="请输入大学名称进行搜索" type="text"/>
-                        <img onClick={this.resize} src={require("./../assets/images/lhover@2x.png")} alt=""/>
+                        <input className={this.state.searchBlock ? 'active': ''} placeholder="输入大学名称搜索" type="text"/>
+                        <img onClick={this.resize} src={require("./../assets/images/搜索@2x.png")} alt=""/>
                     </div>
                     {/*<div className="clearfloat"></div>*/}
                 </div>

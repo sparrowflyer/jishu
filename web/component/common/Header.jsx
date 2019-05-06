@@ -8,7 +8,7 @@ export class Header extends React.Component {
                 <div className="header-wrap">
                     {/* 登陆与否 */}
                     {/*<div className="header-btn fr">登录/注册</div>*/}
-                    <div className="header-user">
+                    <div className="header-user fr">
                         <img src={require("../../assets/images/GB@2x.png")} alt=""/>
                         <span>name</span>
                     </div>
@@ -35,9 +35,10 @@ export class Header extends React.Component {
                 <div className="header-wrap-small">
                     <div className="header-menu-small">
                         <div className="header-menu-icon">
-                            <div></div>
-                            <div></div>
-                            <div></div>
+                            {/*<div></div>*/}
+                            {/*<div></div>*/}
+                            {/*<div></div>*/}
+                            <img src={require("./../assets/images/分组 9@2x.png")} alt=""/>
                         </div>
                         <ul className="menu-list">
                             <li className="active">
@@ -58,6 +59,7 @@ export class Header extends React.Component {
                     </div>
                 </div>
             </div>
+
         );
     }
 }

@@ -26,6 +26,16 @@
         metaEl.setAttribute('name', 'viewport');
         metaEl.setAttribute('content', 'width=device-width,initial-scale=' + scale + ',maximum-scale=' + scale + ',minimum-scale=' + scale + ',user-scalable=no');
         document.head.appendChild(metaEl);
+    //区分移动端和PC端
+    //     let sUserAgent = navigator.userAgent.toLowerCase();
+    //     let pc = sUserAgent.match(/windows/i) == "windows";
+    //     if(pc){
+    //         console.log('当前是pc');
+    //         document.body.style.minWidth='1024px';
+    //         console.log(document.body.style.minWidth)
+    //     }else{
+    //         console.log('当前是phone');
+    //     }
     </script>
 </body>
 </html>

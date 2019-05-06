@@ -16,8 +16,8 @@ ul, li {
 .fl{
     float: left;
 }
-.clearfloat{
-    clear: both;
+.ta-center{
+    text-align: center;
 }
 
 .flex-box{

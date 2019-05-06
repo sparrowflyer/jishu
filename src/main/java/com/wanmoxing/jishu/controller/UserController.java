@@ -68,7 +68,7 @@ public class UserController {
 	 * 根据schoolId分页获取所有学生用户信息
 	   {
 	   		"schoolId": 1,
-	   		"pageNo": 0,
+	   		"pageNo": 1,
 	   		"pageAmount": 1,
 	   		"needTotalAmount": "Y"
 	   }

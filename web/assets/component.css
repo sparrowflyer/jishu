@@ -246,6 +246,59 @@
 .circle-btn button.active {
     background: rgba(255, 226, 1, 1);
 }
+
+/* 弹窗 */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    overflow: hidden;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    z-index: 9999;
+    background:rgba(255,255,255,1);
+}
+
+.modal-title {
+    width: 100%;
+    height: 50px;
+    line-height: 50px;
+    padding: 0 10px;
+}
+
+.modal-content {
+    /*width: 100%;*/
+    /*height: 100px;*/
+    padding: .3rem .8rem;
+}
+
+.mask {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.3);
+    z-index: 9998;
+}
+.l-text{
+    font-weight:500;
+    color:rgba(48,48,48,1);
+}
+.m-text{
+    font-weight:400;
+    color:rgba(48,48,48,1);
+}
+.li-text{
+    font-weight:400;
+    color:rgba(132,132,132,1);
+}
+
+
 /*媒体查询：@media 设备类型 and (设备特性)｛样式代码｝*/
 @media (min-width: 1024px) {
     .header-wrap-small{
@@ -316,6 +369,48 @@
         height:16px;
         margin-right: .27rem;
     }
+    
+    /* 弹窗 */
+    .modal {
+        width: 8.97rem;
+        max-height: 8.99rem;
+        border-radius: .2rem;
+        padding: .3rem .8rem;
+        box-shadow:0 .02rem .2rem 0 rgba(183,183,183,0.5);
+    }
+
+    .modal-content {
+        margin-top: .3rem;
+    }
+    .close-topRight{
+        width:.3rem;
+        height: .3rem;
+        float: right;
+        display: block;
+    }
+    .close-topRight img{
+        width: 100%;
+    }
+    .close-bottom{
+        display: none;
+    }
+    .l-text{
+        font-size:.3rem;
+        line-height:.42rem;
+    }
+    .m-text{
+        font-size:.2rem;
+        line-height:.28rem;
+    }
+    .li-text{
+        font-size:.2rem;
+        line-height:.28rem;
+    }
+    .li-text:before{
+        content: "\2022";
+        color: rgba(255,226,1,1);
+        font-size: .16rem;
+    }
 }
 @media (max-width:1023px) {
     .header-wrap-small{
@@ -376,6 +471,36 @@
         width:.03rem;
         height:.03rem;
         margin-right: .05rem;
+    }
+    
+    /* 弹窗 */
+    .modal {
+        width: 3.43rem;
+        max-height: 3.75rem;
+        border-radius: .2rem;
+        padding: .22rem .18rem .44rem .16rem;
+    }
+
+    .close-topRight{
+        display: none;
+    }
+    .close-bottom{
+        display: block;
+        /*position: fixed;*/
+        margin:.24rem auto;
+
+    }
+    .l-text,.li-text{
+        font-size:.09rem;
+        line-height:.13rem;
+    }
+    .m-text{
+       display: none;
+    }
+    .li-text:before{
+        content: "\2022";
+        color: rgba(255,226,1,1);
+        font-size: .8rem;
     }
 }
 

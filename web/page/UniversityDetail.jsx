@@ -1,5 +1,8 @@
 import React from 'react';
+import {Footer} from '../component/common/Footer.jsx';
+import {Header} from '../component/common/Header.jsx';
 import '../assets/style.css';
+import { Link } from 'react-router-dom';
 import BacgroundImg from "./../assets/images/20180202135334633.jpg";
 
 let unibannerBg = {
@@ -11,8 +14,8 @@ export class UniversityDetail extends React.Component {
 
         return (
             <div>
+                <Header></Header>
                 <div className="uni-banner" style={unibannerBg}>
-                    {/*<img src={require("")} alt=""/>*/}
                     <div className="uni-name">圣安德鲁斯大学</div>
                     <div className="uni-ename">The University of St Andrews</div>
                     <div className="uni-desc">
@@ -69,6 +72,7 @@ export class UniversityDetail extends React.Component {
                     </div>
                     <div className="clearfloat"></div>
                 </div>
+                <Footer></Footer>
             </div>
         )
 

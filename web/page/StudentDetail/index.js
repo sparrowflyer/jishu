@@ -1,6 +1,7 @@
 import React from 'react';
 import { Web } from './Web.js';
 import { Mobile } from './Mobile.js';
+import  { Modal} from '../../component/common/Modal.jsx';
 
 export class StudentDetail extends React.Component {
     constructor(props) {
@@ -26,6 +27,7 @@ export class StudentDetail extends React.Component {
                 {
                     this.state.width > 768 ? <Web /> : <Mobile />
                 }
+                <Modal></Modal>
             </div>
         );
     }

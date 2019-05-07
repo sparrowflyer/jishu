@@ -1,4 +1,8 @@
 import React from 'react';
+import {Footer} from '../component/common/Footer.jsx';
+import {Header} from '../component/common/Header.jsx';
+import '../assets/style.css';
+import { Link } from 'react-router-dom';
 
 const uniList = [{name:"爱丁堡大学",ename:"University of Edinburgh",img:"./../assets/images/lhover@2x.png"},
     {name:"爱丁堡大学",ename:"University of Edinburgh",img:"./../assets/images/lhover@2x.png"},
@@ -42,6 +46,7 @@ export class UniversityList extends React.Component {
         }
         return (
             <div>
+                <Header></Header>
             {/* 筛选搜索栏 */}
                 <div className="filter-wrap">
                     <ul className="nation-list">
@@ -84,6 +89,7 @@ export class UniversityList extends React.Component {
                     {/*<img src={require("./../assets/images/r.png")} alt=""/>*/}
                 </span>
             </div>
+                <Footer></Footer>
             </div>
         );
     }

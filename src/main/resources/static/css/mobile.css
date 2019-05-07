@@ -437,3 +437,144 @@
     margin: .3rem .23rem .27rem .23rem;
     border: 0;
 }
+/* 弹窗-modal */
+.modal-contain{
+    background: transparent;
+    width:3.43rem;
+    height: 4.29rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    z-index: 9999;
+}
+.mb9{
+    margin-bottom: .09rem;
+}
+.mb10{
+    margin-bottom: .1rem;
+}
+.mb13{
+    margin-bottom: .13rem;
+}
+.mb15{
+    margin-bottom: .15rem;
+}
+.mb16{
+    margin-bottom: .16rem;
+}
+.mb46{
+    margin-bottom: .46rem;
+}
+.modal {
+    overflow: hidden;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    background:rgba(255,255,255,1);
+    width: 3.43rem;
+    height: 3.75rem;
+    border-radius: .2rem;
+    padding: .22rem .18rem .44rem .16rem;
+    margin-bottom: .24rem;
+}
+
+.mask {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.3);
+    z-index: 9998;
+}
+
+.ipt-wrap{
+    width:100%;
+    /*height: .22rem;*/
+}
+.ph-text{
+    color:rgba(48,48,48,1);
+    border: none;
+    outline: none;
+    padding: 0;
+    margin: 0 0 .09rem 0;
+    width:100%;
+    font-weight:400;
+    font-size:.09rem;
+    line-height:.13rem;
+    float: left;
+}
+.ipt-line{
+    /*display: block;*/
+    /*content: '';*/
+    border:1px solid rgba(216,216,216,1);
+    width:100%;
+    clear: both;
+}
+
+.li-text:before{
+    content: "\2022";
+    color: rgba(255,226,1,1);
+    margin-right: .2rem;
+    width:.08rem;
+    height:.08rem;
+}
+.add-line{
+    width:100%;
+}
+.add-line img{
+    float: right;
+    width:.18rem;
+    height:.18rem;
+    margin-bottom: .07rem;
+}
+.add-line:after{
+    clear: both;
+    display: block;
+    content: '';
+    border:1px solid rgba(255,226,1,1);
+    width:100%;
+}
+
+.close-bottom{
+    width: 100%;
+    text-align: center;
+}
+.close-bottom img{
+    width: .3rem;
+    height: .3rem;
+}
+.l-text{
+    font-weight:500;
+    color:rgba(48,48,48,1);
+}
+.li-text{
+    font-weight:400;
+    color:rgba(132,132,132,1);
+}
+
+.l-text,.li-text{
+    font-size:.09rem;
+    line-height:.13rem;
+}
+
+.li-text:before{
+    content: "\2022";
+    color: rgba(255,226,1,1);
+    display: inline-block;
+    width: .03rem;
+    height: .03rem;
+    margin-right: .05rem;
+}
+.m-button{
+    background:rgba(255,226,1,1);
+    border-radius:.31rem;
+    padding:.09rem .36rem;
+    font-size:.09rem;
+    font-weight:500;
+    line-height: .13rem;
+    color:rgba(14,14,14,1);
+}

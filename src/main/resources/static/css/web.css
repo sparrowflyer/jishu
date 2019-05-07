@@ -440,3 +440,136 @@
 .word-note .value {
     margin-right: .3rem;
 }
+
+/* 弹窗-Modal */
+
+/* 弹窗 */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    overflow: hidden;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    z-index: 9999;
+    background:rgba(255,255,255,1);
+    width: 8.97rem;
+    max-height: 9.65rem;
+    border-radius: .2rem;
+    padding: .3rem .3rem .8rem .8rem;;
+    box-shadow:0 .02rem .2rem 0 rgba(183,183,183,0.5);
+}
+
+.modal-content {
+    margin: .3rem .5rem 0 0;
+}
+
+.mask {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.3);
+    z-index: 9998;
+}
+.l-text{
+    font-weight:500;
+    color:rgba(48,48,48,1);
+    font-size:.3rem;
+    line-height:.42rem;
+}
+
+.mb20{
+    margin-bottom:.2rem;
+}
+.mb25{
+    margin-bottom:.25rem;
+}
+.mb30{
+    margin-bottom:.3rem;
+}
+.mt42{
+    margin-top:.42rem;
+}
+.m-button{
+    background:rgba(255,226,1,1);
+    border-radius:.31rem;
+    padding:.12rem .23rem;
+    font-size:.2rem;
+    font-weight:500;
+    color:rgba(14,14,14,1);
+}
+.m-text{
+    font-weight:400;
+    color:rgba(48,48,48,1);
+    font-size:.2rem;
+    line-height:.28rem;
+}
+ul.li-style{
+    list-style: circle;
+}
+.li-text{
+    font-weight:400;
+    color:rgba(132,132,132,1);
+    font-size:.2rem;
+    line-height:.28rem;
+}
+
+.close-topRight{
+    width: .3rem;
+    height: .3rem;
+    float: right;
+    display: block;
+}
+.close-topRight img{
+    width: 100%;
+}
+.ipt-wrap{
+    width:100%;
+    margin-bottom: .28rem;
+}
+.ph-text{
+    color:rgba(48,48,48,1);
+    border: none;
+    outline: none;
+    width:100%;
+    font-weight:400;
+    font-size:.2rem;
+    line-height:.28rem;
+}
+.ipt-wrap:after{
+    display: block;
+    content: '';
+    border:1px solid rgba(216,216,216,1);
+    width:100%;
+    margin-top: .2rem;
+}
+
+.li-text:before{
+    content: "\2022";
+    color: rgba(255,226,1,1);
+    margin-right: .2rem;
+    width:.08rem;
+    height:.08rem;
+}
+.add-line{
+    width:100%;
+}
+.add-line img{
+    float: right;
+    width:.33rem;
+    height:.33rem;
+    margin-bottom: .19rem;
+}
+.add-line:after{
+    clear: both;
+    display: block;
+    content: '';
+    border:1px solid rgba(255,226,1,1);
+    width:100%;
+}

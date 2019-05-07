@@ -38,7 +38,7 @@ export class Header extends React.Component {
                             {/*<div></div>*/}
                             {/*<div></div>*/}
                             {/*<div></div>*/}
-                            <img src={require("../../assets/images/分组 9@2x.png")} alt=""/>
+                            <img src={require("../../assets/images/分组9@2x.png")} alt=""/>
                         </div>
                         <ul className="menu-list">
                             <li className="active">

@@ -1,8 +1,8 @@
 import React from 'react';
 import { Web } from './Web.js';
 import { Mobile } from './Mobile.js';
-import  { ModalMobile } from '../../component/common/Modal/Mobile.jsx';
-import  { ModalWeb } from '../../component/common/Modal/Web.jsx';
+import  { ModalMobile } from '../../component/Modal/Mobile.jsx';
+import  { ModalWeb } from '../../component/Modal/Web.jsx';
 
 export class StudentDetail extends React.Component {
     constructor(props) {

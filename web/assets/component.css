@@ -317,7 +317,6 @@
         height:16px;
         margin-right: .27rem;
     }
-
 }
 @media (max-width:1023px) {
     .header-wrap-small{
@@ -379,7 +378,7 @@
         height:.03rem;
         margin-right: .05rem;
     }
-    
+   
 }
 
 /* 动画 */

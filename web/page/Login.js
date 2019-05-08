@@ -1,7 +1,36 @@
 import React from 'react';
+import { getVerifyCodeImage } from '../utils/http.js';
 
 //所有跳转 都要有手势符号
 export class Login extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            imageUrl: ''
+        };
+        this.getImageCode = this.getImageCode.bind(this);
+    }
+    getImageCode() {
+        let imageUrl = '';
+        getVerifyCodeImage()
+            .then((response) => {
+                if (response.status === 200) {
+                    imageUrl = window.URL.createObjectURL(response.data);
+                }
+                this.setState((state) => {
+                   return { ...state, imageUrl }
+                });
+            })
+            .catch((error) => {
+                console.error('获取图像验证码：', error);
+                this.setState((state) => {
+                    return { ...state, imageUrl };
+                });
+            });
+    }
+    componentDidMount() {
+        this.getImageCode();
+    }
     render() {
         return (
             <div className="login">
@@ -34,7 +63,8 @@ export class Login extends React.Component {
                     </div>
                     <div className="login_item_field">
                         <input type="text" id="verification" name="verification" placeholder="验证码" />
-                        <span className="login_item_field_verify ml10"></span>
+                        <img className="login_item_field_verify ml10" src={this.state.imageUrl}
+                             onClick={() => {this.getImageCode();}} />
                         {
                             /*
                              <img src="" alt="图形验证码" />

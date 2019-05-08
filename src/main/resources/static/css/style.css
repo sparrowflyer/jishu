@@ -189,3 +189,19 @@ html, body {
 .sub-title_bottom {
     background-color: #FFE201;
 }
+
+.no-content-container {
+    width: 100%;
+    text-align: center;
+}
+
+.no-content-img {
+    width: 510px;
+    height: 301px;
+    margin-bottom: 60px;
+}
+
+.no-content-desc {
+    font-size: 30px;
+    color: #848484;
+}

@@ -29,7 +29,6 @@
 
 .login_item_field_verify {
     align-items: flex-end;
-    background-color: #D8D8D8;
     width: .88rem;
     height: .3rem;
 }
@@ -557,15 +556,18 @@ ul.li-style{
     width:.08rem;
     height:.08rem;
 }
+
 .add-line{
     width:100%;
 }
+
 .add-line img{
     float: right;
     width:.33rem;
     height:.33rem;
     margin-bottom: .19rem;
 }
+
 .add-line:after{
     clear: both;
     display: block;

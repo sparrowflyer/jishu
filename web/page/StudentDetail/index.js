@@ -29,7 +29,7 @@ export class StudentDetail extends React.Component {
                     this.state.width > 768 ? <Web /> : <Mobile />
                 }
                 {
-                    this.state.width > 768 ? <ModalWeb /> : <ModalMobile />
+                    this.state.width > 768 ? <ModalWeb type={"Advisory"}/> : <ModalMobile type={"Advisory"}/>
                 }
             </div>
         );

@@ -36,6 +36,11 @@ public class PurchaseContactServiceImpl implements PurchaseContactService {
 	public void update(PurchaseContact purchaseContact) {
 		purchaseContactMapper.update(purchaseContact);
 	}
+	
+	@Override
+	public void updateStatus(String status, String id) {
+		purchaseContactMapper.updateStatus(status, id);
+	}
 
 	@Override
 	public PurchaseContact find(String purchaseContactId) {
@@ -43,8 +48,8 @@ public class PurchaseContactServiceImpl implements PurchaseContactService {
 	}
 
 	@Override
-	public List<PurchaseContact> findByStatuses(List<String> statuses) {
-		return purchaseContactMapper.findByStatuses(statuses);
+	public List<PurchaseContact> findByStatuses(List<String> statuses,int userId) {
+		return purchaseContactMapper.findByStatuses(statuses, userId);
 	}
 
 	@Override

@@ -17,9 +17,11 @@ public interface PurchaseContactMapper {
     
     public void update(PurchaseContact purchaseContact);
     
+    public void updateStatus(@Param("status")String status, @Param("id")String id);
+
     public PurchaseContact find(String purchaseContactId);
     
-    public List<PurchaseContact> findByStatuses(@Param(value="statuses") List<String> statuses);
+    public List<PurchaseContact> findByStatuses(@Param(value="statuses") List<String> statuses, int userId);
     
     public Map<String, Object> findAvgScoresForSeller(Map<String, Object> conditions);
 	

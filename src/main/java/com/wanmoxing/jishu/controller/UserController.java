@@ -1,5 +1,6 @@
 package com.wanmoxing.jishu.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,14 +15,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSONObject;
+import com.wanmoxing.jishu.bean.PurchaseContact;
 import com.wanmoxing.jishu.bean.User;
 import com.wanmoxing.jishu.constant.CommonConstants;
+import com.wanmoxing.jishu.constant.enums.PurchaseContactStatus;
 import com.wanmoxing.jishu.constant.enums.ResultDTOStatus;
 import com.wanmoxing.jishu.dto.ResultDTO;
 import com.wanmoxing.jishu.dto.UpdateUserHeadImageDTO;
 import com.wanmoxing.jishu.dto.UpdateUserNicknameDTO;
 import com.wanmoxing.jishu.dto.UserDTO;
 import com.wanmoxing.jishu.service.ArticleService;
+import com.wanmoxing.jishu.service.PurchaseContactService;
 import com.wanmoxing.jishu.service.UserNotificationService;
 import com.wanmoxing.jishu.service.UserService;
 import com.wanmoxing.jishu.service.UserStudentInfoService;
@@ -41,7 +45,9 @@ public class UserController {
 	private ArticleService articleservice;
 	@Resource
 	private UserNotificationService userNotificationService;
-
+	@Resource
+	private PurchaseContactService purchaseContactService;
+	
 	/**
 	 * 获取User
 	 * @param session
@@ -224,6 +230,108 @@ public class UserController {
 			e.printStackTrace();
 			result.setStatus(ResultDTOStatus.ERROR.getStatus());
 			result.setErrorMsg("Exception occured!");
+			return result;
+		}
+	}
+	
+	/**
+	 * 获取用户未完成订单
+	 * 
+	 * @param session
+	 * @param User user
+	 * @return
+	 */
+	@RequestMapping(value = "/getUncompletePerchaseContactOrder", method = RequestMethod.POST)
+	public ResultDTO getUncompletePerchaseContactOrder(HttpSession session, @RequestBody User user) {
+		ResultDTO result = new ResultDTO();
+		try {
+			if (!CommonConstants.DEV_MODE && !CommUtil.isUserLogined(session)) {
+				result.setStatus(ResultDTOStatus.ERROR.getStatus());
+				result.setErrorMsg("用户未登录!");
+				return result;
+			}
+			User userInSession = (User) session.getAttribute("user");
+			if(userInSession.getId() != user.getId()) {
+				result.setStatus(ResultDTOStatus.ERROR.getStatus());
+				result.setErrorMsg("只能查看自己的订单!");
+				return result;
+			}
+			List<String> statuses = new ArrayList<>();
+			statuses.add(PurchaseContactStatus.PAYED.getStatus());
+			result.setData(purchaseContactService.findByStatuses(statuses, user.getId()));
+			return result;
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus(ResultDTOStatus.ERROR.getStatus());
+			result.setErrorMsg("获取用户未完成订单发生异常!");
+			return result;
+		}
+	}
+	
+	/**
+	 * 获取用户未完成订单
+	 * 
+	 * @param session
+	 * @param User user
+	 * @return
+	 */
+	@RequestMapping(value = "/getCompletedPerchaseContactOrder", method = RequestMethod.POST)
+	public ResultDTO getCompletedPerchaseContactOrder(HttpSession session, @RequestBody User user) {
+		ResultDTO result = new ResultDTO();
+		try {
+			if (!CommonConstants.DEV_MODE && !CommUtil.isUserLogined(session)) {
+				result.setStatus(ResultDTOStatus.ERROR.getStatus());
+				result.setErrorMsg("用户未登录!");
+				return result;
+			}
+			User userInSession = (User) session.getAttribute("user");
+			if(userInSession.getId() != user.getId()) {
+				result.setStatus(ResultDTOStatus.ERROR.getStatus());
+				result.setErrorMsg("只能查看自己的订单!");
+				return result;
+			}
+			List<String> statuses = new ArrayList<>();
+			statuses.add(PurchaseContactStatus.SERVICED.getStatus());
+			statuses.add(PurchaseContactStatus.COMMENTED.getStatus());
+			statuses.add(PurchaseContactStatus.ENDED.getStatus());
+			result.setData(purchaseContactService.findByStatuses(statuses, user.getId()));
+			return result;
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus(ResultDTOStatus.ERROR.getStatus());
+			result.setErrorMsg("获取用户完成订单发生异常!");
+			return result;
+		}
+	}
+	
+	/**
+	 * 卖家完成服务
+	 * 
+	 * @param session
+	 * @param User user
+	 * @return
+	 */
+	@RequestMapping(value = "/completedPerchaseContactOrder", method = RequestMethod.POST)
+	public ResultDTO completedPerchaseContactOrder(HttpSession session, @RequestBody PurchaseContact purchaseContact) {
+		ResultDTO result = new ResultDTO();
+		try {
+			if (!CommonConstants.DEV_MODE && !CommUtil.isUserLogined(session)) {
+				result.setStatus(ResultDTOStatus.ERROR.getStatus());
+				result.setErrorMsg("用户未登录!");
+				return result;
+			}
+			User userInSession = (User) session.getAttribute("user");
+			if(userInSession.getId() != purchaseContact.getSellerId()) {
+				result.setStatus(ResultDTOStatus.ERROR.getStatus());
+				result.setErrorMsg("只有卖家可以改变订单状态!");
+				return result;
+			}
+			purchaseContactService.updateStatus(PurchaseContactStatus.SERVICED.getStatus(), purchaseContact.getId());
+			return result;
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus(ResultDTOStatus.ERROR.getStatus());
+			result.setErrorMsg("订单设置已完成时发生错误!");
 			return result;
 		}
 	}

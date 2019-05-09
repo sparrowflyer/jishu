@@ -36,6 +36,12 @@
         DELETE FROM jishu.T_PURCHASE_CONTACT WHERE ID=#{0}
     </delete>
     
+    <update id="updateStatus" parameterType="java.lang.String">
+        UPDATE jishu.T_PURCHASE_CONTACT 
+        SET STATUS=#{status}
+        WHERE ID=#{id}
+    </update>
+    
     <update id="update" parameterType="com.wanmoxing.jishu.bean.PurchaseContact">
         UPDATE jishu.T_PURCHASE_CONTACT 
         SET SELLER_ID=#{sellerId},
@@ -61,10 +67,11 @@
       	WHERE ID=#{0}
     </select>
     
-    <select id="findByStatuses" parameterType="java.util.List" resultMap="purchaseContactResultMap">
+    <select id="findByStatuses"  resultMap="purchaseContactResultMap">
     	select *
     	from jishu.T_PURCHASE_CONTACT
-    	where status in
+    	where (SELLER_ID = #{userId} or BUYER_ID=#{userId})
+    	     and status in
     		<foreach collection="statuses" index="index" item="item"
 	            open="(" separator="," close=")">
 	            #{item}

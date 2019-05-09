@@ -13,9 +13,11 @@ public interface PurchaseContactService {
     
     public void update(PurchaseContact purchaseContact);
     
+    public void updateStatus(String status, String id);
+
     public PurchaseContact find(String purchaseContactId);
     
-    public List<PurchaseContact> findByStatuses(List<String> statuses);
+    public List<PurchaseContact> findByStatuses(List<String> statuses, int userId);
     
     public Map<String, Object> findAvgScoresForSeller(int sellerId);
 

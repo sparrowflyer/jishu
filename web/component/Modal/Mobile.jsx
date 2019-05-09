@@ -11,7 +11,7 @@ function  Advisory () {
         <input placeholder="问题占位符" className="ph-text" type="text"/>
         <div className="ipt-line mb13"></div>
         <div className="add-line mb15">
-            <img src={require("../../../assets/images/添加@2x.png")} alt=""/>
+            <img src={require("../../assets/images/添加@2x.png")} alt=""/>
         </div>
         <div className="l-text mb16">你愿意支付</div>
         <input value="¥30" className="ph-text l-text" type="text"/>
@@ -32,7 +32,7 @@ export class ModalMobile extends React.Component {
                     </div>
                 </div>
                 <div className="close-bottom">
-                    <img src={require("../../../assets/images/guanbi1@2x.png")} alt=""/>
+                    <img src={require("../../assets/images/guanbi1@2x.png")} alt=""/>
                 </div>
             </div>
             <div className="mask"></div>

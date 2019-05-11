@@ -575,3 +575,65 @@ ul.li-style{
     border:1px solid rgba(255,226,1,1);
     width:100%;
 }
+
+.modal.modal-radio{
+    height: 4.25rem;
+}
+
+.radio-wrap{
+    margin-top: .59rem;
+    margin-bottom: .8rem;
+}
+.modal-radio{
+    display: block;
+    cursor: pointer;
+    position: relative;
+    font-size:.3rem;
+    font-weight:500;
+    color:rgba(48,48,48,1);
+    line-height:.42rem;
+}
+.modal-radio:first-child{
+    margin-bottom: .41rem;
+}
+.modal-radio input{
+    display: none;
+}
+.modal-radio .radio-style{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: .4rem;
+    height: .4rem;
+    border-radius: 50%;
+    background: #fff;
+    border: 1px solid #848484;
+}
+
+.modal-radio span{
+    margin-left: .9rem;
+}
+
+.modal-radio input:checked+.radio-style{
+    background: #FFE201;
+    border-color: #FFE201;
+}
+
+.modal.modal-paysuc{
+    height: 4.62rem;
+}
+.paysuc-contain{
+    width: 100%;
+    margin-top: .61rem;
+    margin-bottom: .8rem;
+    font-size:.3rem;
+    font-weight:500;
+    color:rgba(14,14,14,1);
+    line-height:.42rem;
+}
+.paysuc-contain .jee-success{
+    width: .82rem;
+    height: .58rem;
+    color:#FFE201;
+    margin-bottom: .3rem;
+}

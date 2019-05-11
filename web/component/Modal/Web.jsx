@@ -1,4 +1,6 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
+import {SubTitle} from "../SubTitle";
 
 function Advisory() {
     return (<div>
@@ -27,11 +29,19 @@ function Advisory() {
 }
 
 function WillPay() {
-    return (<div>
-        <div>
-            <label><input type="radio" name="payWay" value=""/>微信支付</label>
-            <label><input type="radio" name="payWay" value=""/>支付宝支付</label>
-        </div>
+    return (<div className="radio-wrap">
+            <label className="modal-radio">
+                <input type="radio" name="payWay" value=""/>
+                <div className="radio-style"></div>
+                {/*<div className="jee-checkmark"></div>*/}
+                <span>微信支付</span>
+            </label>
+            <label className="modal-radio">
+                <input type="radio" name="payWay" value=""/>
+                <div className="radio-style"></div>
+                {/*<div className="jee-checkmark"></div>*/}
+                <span>支付宝支付</span>
+            </label>
         <div className="ta-center mt42">
             <button className="m-button">去支付</button>
         </div>
@@ -39,29 +49,34 @@ function WillPay() {
 }
 
 function PaySuccess() {
-    return (<div>
-        <div>
-            <img src={require("../../assets/images/chenggong@2x.png")} alt=""/>
+    return (<div className="ta-center">
+        <div className="paysuc-contain">
+            <div className="jee-success"></div>
             <div className="ta-center">支付成功</div>
         </div>
-        <div className="ta-center mt42">
+        <div className="mt42">
             <button className="m-button">完成</button>
         </div>
     </div>)
 }
 
-export class ModalWeb extends React.Component {
-    render() {
+// export class ModalWeb extends React.Component {
+export function ModalWeb (type) {
+    // render() {
         return <div className="modal-wrapper">
-            <div className="modal">
+            <div className="modal modal-radio modal-paysuc">
                 <div className="close-topRight">
                     <img src={require("../../assets/images/guanbi1.png")} alt=""/>
                 </div>
                 <div className="modal-content">
-                    <Advisory/>
+                    { type === "Advisory" ? <Advisory/> : type === "PaySuccess" ? <PaySuccess/> : <WillPay/>}
                 </div>
             </div>
             <div className="mask"></div>
         </div>
-    }
+    // }
 }
+
+ModalWeb.propTypes = {
+    type: PropTypes.string.isRequired
+};

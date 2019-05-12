@@ -20,6 +20,16 @@ html, body {
     background-size: cover;
 }
 
+.form_error {
+    position: absolute;
+    padding: .09rem .22rem;
+    font-size: .16rem;
+    line-height: .22rem;
+    z-index: 5;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
 .login_item {
     background-color: #FFF;
     box-sizing: border-box;
@@ -37,6 +47,10 @@ html, body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+.login_item_field_error {
+    border-bottom: 1px solid #FF3B3B;
 }
 
 .login_item_field input {

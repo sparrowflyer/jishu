@@ -5,7 +5,7 @@ import { UniversityList } from '../page/UniversityList.jsx';
 import {UniversityDetail} from "../page/UniversityDetail.jsx";
 import { StudentDetail } from '../page/StudentDetail/index.js';
 import { PersonalCenter } from '../page/PersonalCenter.js';
-import { Login } from '../page/Login.js';
+import LoginWithRouter from '../page/Login.js';
 
 export function Routers() {
     return (
@@ -17,7 +17,11 @@ export function Routers() {
                     <Route path='/collegeDetail' component={ UniversityDetail } />
                     <Route path='/StudentDetail' component={ StudentDetail } />
                     <Route path='/PersonalCenter' component={ PersonalCenter } />
-                    <Route path='/login' component={ Login } />
+                    {
+                        ['login', 'register', 'forgetPwd'].map((name) =>
+                            <Route key={name} path={'/' + name} component={ LoginWithRouter } />
+                        )
+                    }
                 </Switch>
             </div>
         </Router>

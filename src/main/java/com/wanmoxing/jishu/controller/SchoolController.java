@@ -52,6 +52,7 @@ public class SchoolController {
 	 * 分页获取学校列表
 	 	{
 	 		"country": "英国",
+	 		"schoolNamePart": "",
 	   		"pageNo": 1,
 	   		"pageAmount": 10,
 	   		"needTotalAmount": "Y"
@@ -62,14 +63,19 @@ public class SchoolController {
 		ResultDTO result = new ResultDTO();
 		try {
 			String country = jsonParams.getString("country");
+			String schoolNamePart = jsonParams.getString("schoolNamePart");
 			int pageNo = jsonParams.getInteger("pageNo");
 			int pageAmount = jsonParams.getInteger("pageAmount");
+			System.out.println(country);
+			System.out.println(schoolNamePart);
+			System.out.println(pageNo);
+			System.out.println(pageAmount);
 			
-			List<School> schools = schoolService.findAll(country, pageNo, pageAmount);
+			List<School> schools = schoolService.findAll(country, schoolNamePart, pageNo, pageAmount);
 			Map<String, Object> resultMap = new HashMap<String, Object>();
 			resultMap.put("schools", schools);
 			if ("Y".equalsIgnoreCase(jsonParams.getString("needTotalAmount"))) {
-				resultMap.put("totalAmount", schoolService.findTotalAmount(country));
+				resultMap.put("totalAmount", schoolService.findTotalAmount(country, schoolNamePart));
 			} else {
 				resultMap.put("totalAmount", null);
 			}

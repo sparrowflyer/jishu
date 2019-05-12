@@ -36,19 +36,23 @@ public class SchoolServiceImpl implements SchoolService {
 	}
 	
 	@Override
-	public int findTotalAmount(String country) {
-		return schoolMapper.findTotalAmount(country);
-	}
-
-	@Override
 	public School findById(int id) {
 		return schoolMapper.findById(id);
 	}
-
+	
 	@Override
-	public List<School> findAll(String country, int pageNo, int pageAmount) {
+	public int findTotalAmount(String country, String schoolNamePart) {
 		Map<String, Object> conditions = new HashMap<String, Object>();
 		conditions.put("country", country);
+		conditions.put("schoolNamePart", schoolNamePart);
+		return schoolMapper.findTotalAmount(conditions);
+	}
+
+	@Override
+	public List<School> findAll(String country, String schoolNamePart, int pageNo, int pageAmount) {
+		Map<String, Object> conditions = new HashMap<String, Object>();
+		conditions.put("country", country);
+		conditions.put("schoolNamePart", schoolNamePart);
 		conditions.put("pageStart", (pageNo-1)*pageAmount);
 		conditions.put("pageAmount", pageAmount);
 		return schoolMapper.findAll(conditions);

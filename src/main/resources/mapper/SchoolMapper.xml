@@ -37,21 +37,32 @@
         WHERE ID=#{id}
     </update>
     
-    <select id="findTotalAmount" parameterType="java.lang.String" resultType="int">
-        SELECT count(1) FROM jishu.T_SCHOOL 
+    <select id="findById" parameterType="int" resultMap="schoolResultMap">
+        SELECT * 
+        FROM jishu.T_SCHOOL 
+        WHERE ID=#{id}
+    </select>
+    
+    <select id="findTotalAmount" parameterType="java.util.Map" resultType="int">
+        SELECT count(1) FROM jishu.T_SCHOOL
+        WHERE 1 = 1
         <if test=" country != null and country != '' ">
-        WHERE COUNTRY=#{country}
+        and COUNTRY=#{country}
+        </if>
+        <if test=" schoolNamePart != null and schoolNamePart != '' ">
+        and (CN_NAME like CONCAT('%', #{schoolNamePart} ,'%') or EN_NAME like CONCAT('%', #{schoolNamePart} ,'%'))
         </if>
     </select>
     
-    <select id="findById" parameterType="int" resultMap="schoolResultMap">
-        SELECT * FROM jishu.T_SCHOOL WHERE ID=#{id}
-    </select>
-    
     <select id="findAll" parameterType="java.util.Map" resultMap="schoolResultMap">
-        SELECT * FROM jishu.T_SCHOOL
+        SELECT * 
+        FROM jishu.T_SCHOOL
+        WHERE 1 = 1
         <if test=" country != null and country != '' ">
-        WHERE COUNTRY=#{country}
+        and COUNTRY=#{country}
+        </if>
+        <if test=" schoolNamePart != null and schoolNamePart != '' ">
+        and (CN_NAME like CONCAT('%', #{schoolNamePart} ,'%') or EN_NAME like CONCAT('%', #{schoolNamePart} ,'%'))
         </if>
         ORDER BY RANK
         <if test=" pageStart &gt;= 0 and pageAmount &gt; 0 ">

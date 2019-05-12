@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 
 import com.wanmoxing.jishu.bean.School;
 
@@ -17,10 +16,10 @@ public interface SchoolMapper {
 	
 	public void update(School school);
 	
-	public int findTotalAmount(@Param(value="country") String country);
-	
 	public School findById(int id);
 	
+	public int findTotalAmount(Map<String, Object> conditions);
+	
 	public List<School> findAll(Map<String, Object> conditions);
-
+	
 }

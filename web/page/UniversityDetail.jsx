@@ -4,14 +4,54 @@ import {Header} from '../component/common/Header.jsx';
 import '../assets/style.css';
 import { Link } from 'react-router-dom';
 import BacgroundImg from "./../assets/images/20180202135334633.jpg";
-
-let unibannerBg = {
-    backgroundImage: `url(${BacgroundImg})`
-};
+import {getUsersBySchool,getSchoolById} from "../utils/http.js";
 
 export class UniversityDetail extends React.Component {
+    constructor(props) {
+        super(props);
+        this.getUsersBySchool = this.getUsersBySchool.bind(this);
+        this.state = {
+            schoolData:{},
+            schoolId:"",
+            stuList:[]
+        }
+    }
+    componentDidMount(){
+        let id = this.props.params.id;
+       this.setState({
+           schoolId: id
+       }) ;
+        this.getSchoolById(id);
+        this.getUsersBySchool(id,1);
+    }
+    getSchoolById(id){
+        getSchoolById({
+            "id": id
+        }).then(resp => {
+            if(resp.status === 200) {
+                console.log("getSchoolById",resp.data);
+                this.state.schoolData = resp.data.data;
+            }
+        })
+    }
+    getUsersBySchool(schoolId,pageNo){
+        //schoolId是学校id，pageNo表示页数，pageAmount表示一页数量，needTotalAmount表示是否需要总数Y或N
+        getUsersBySchool({
+            "schoolId": schoolId,
+            "pageNo": pageNo || 1,
+            "pageAmount": 1,
+            "needTotalAmount": "Y"
+        }).then( response => {
+            if(response.status === 200) {
+                console.log("getUsersBySchool",response.data)
+                this.state.stuList = response.data.data;
+            }
+        })
+    }
     render() {
-
+        let unibannerBg = {
+            backgroundImage: `url(${BacgroundImg})`
+        };
         return (
             <div>
                 <Header></Header>

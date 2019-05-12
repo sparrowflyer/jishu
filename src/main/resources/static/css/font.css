@@ -1,17 +1,17 @@
 @font-face {
-  font-family: 'jee';
-  src:  url('../fonts/jee.eot?d9ihts');
-  src:  url('../fonts/jee.eot?d9ihts#iefix') format('embedded-opentype'),
-    url('../fonts/jee.ttf?d9ihts') format('truetype'),
-    url('../fonts/jee.woff?d9ihts') format('woff'),
-    url('../fonts/jee.svg?d9ihts#jee') format('svg');
+  font-family: 'icomoon';
+  src:  url('../fonts/icomoon.eot?4961f8');
+  src:  url('../fonts/icomoon.eot?4961f8#iefix') format('embedded-opentype'),
+    url('../fonts/icomoon.ttf?4961f8') format('truetype'),
+    url('../fonts/icomoon.woff?4961f8') format('woff'),
+    url('../fonts/icomoon.svg?4961f8#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
 }
 
 [class^="jee-"], [class*=" jee-"] {
   /* use !important to prevent issues with browser extensions that change fonts */
-  font-family: 'jee' !important;
+  font-family: 'icomoon' !important;
   speak: none;
   font-style: normal;
   font-weight: normal;
@@ -27,14 +27,8 @@
 .jee-edit:before {
   content: "\e903";
 }
-.jee-uniE905:before {
+.jee-thumb-up:before {
   content: "\e905";
-}
-.jee-uniE906:before {
-  content: "\e906";
-}
-.jee-uniE907:before {
-  content: "\e907";
 }
 .jee-comment:before {
   content: "\e908";
@@ -68,4 +62,13 @@
 }
 .jee-menu:before {
   content: "\e904";
+}
+.jee-success:before {
+  content: "\e902";
+}
+.jee-menu:before {
+  content: "\e904";
+}
+.jee-arrow-left:before {
+  content: "\ea40";
 }

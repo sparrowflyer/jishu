@@ -82,14 +82,10 @@ ul, li {
     /*float: left;*/
 }
 
-.card-list li.active{
+/*.card-list li.active{*/
+.cards-wrap .card-list li:hover{
     padding-top: 0;
 }
-
-/*.card-list li.active .person-pic{*/
-    /*width:3.36rem;*/
-    /*height:4.48rem;*/
-/*}*/
 
 .person-name{
     font-weight:400;
@@ -158,7 +154,7 @@ ul, li {
     box-sizing: border-box;
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: flex-start;
     text-align: center;
 }
 .card-name,.card-eName{
@@ -185,6 +181,9 @@ ul, li {
     box-sizing: border-box;
 }
 .page-num.active{
+    background:rgba(255,226,1,1);
+}
+.page-num.page-next:hover,.page-num.page-pre:hover{
     background:rgba(255,226,1,1);
 }
 
@@ -247,7 +246,7 @@ ul, li {
 }
 
 /*媒体查询：@media 设备类型 and (设备特性)｛样式代码｝*/
-@media (min-width: 1024px) {
+@media (min-width: 769px) {
     .stShow-title{
         margin-top: .6rem;
         font-size:.43rem;
@@ -282,13 +281,14 @@ ul, li {
     .card-list{
         /*max-width: 125%;*/
         margin-bottom: .63rem;
-        margin-left: -12%;
+        /*margin-left: -12%;*/
     }
     .card-list li{
         margin: 0 .3rem;
         padding-top: .45rem;
     }
-    .card-list li.active .person-pic{
+    /*.card-list li.active .person-pic{*/
+    .card-list li:hover .person-pic{
         width:3.36rem;
         height:4.48rem;
     }
@@ -472,7 +472,7 @@ ul, li {
     }
 }
 
-@media (max-width: 1023px) {
+@media (max-width: 768px) {
     .stShow-title{
         margin-top: .21rem;
 
@@ -515,7 +515,8 @@ ul, li {
         margin: 0 .08rem;
         padding-top: .12rem;
     }
-    .card-list li.active .person-pic{
+    /*.card-list li.active .person-pic{*/
+    .card-list li:hover .person-pic{
         width:.86rem;
         height:1.14rem;
     }

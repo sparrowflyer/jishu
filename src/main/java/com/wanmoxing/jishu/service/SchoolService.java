@@ -12,10 +12,10 @@ public interface SchoolService {
 	
 	public void update(School school);
 	
-	public int findTotalAmount(String country);
-	
 	public School findById(int id);
 	
-	public List<School> findAll(String country, int pageNo, int pageAmount);
-
+	public int findTotalAmount(String country, String schoolNamePart);
+	
+	public List<School> findAll(String country, String schoolNamePart, int pageNo, int pageAmount);
+	
 }

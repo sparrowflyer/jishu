@@ -14,7 +14,7 @@ export function Routers() {
                 <Switch>
                     <Route exact path='/' component={ HomePage } />
                     <Route path='/college' component={ UniversityList } />
-                    <Route path='/collegeDetail' component={ UniversityDetail } />
+                    <Route path='/collegeDetail/:id' component={ UniversityDetail } />
                     <Route path='/StudentDetail' component={ StudentDetail } />
                     <Route path='/PersonalCenter' component={ PersonalCenter } />
                     <Route path='/login' component={ Login } />

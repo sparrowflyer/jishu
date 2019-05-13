@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {SubTitle} from "../SubTitle";
 
 function Advisory() {
     return (<div>
@@ -31,7 +30,7 @@ function Advisory() {
 function WillPay() {
     return (<div className="radio-wrap">
             <label className="modal-radio">
-                <input type="radio" name="payWay" value=""/>
+                <input checked type="radio" name="payWay" value=""/>
                 <div className="radio-style"></div>
                 {/*<div className="jee-checkmark"></div>*/}
                 <span>微信支付</span>
@@ -51,7 +50,7 @@ function WillPay() {
 function PaySuccess() {
     return (<div className="ta-center">
         <div className="paysuc-contain">
-            <div className="jee-success"></div>
+            <img className="mb30" src={require("../../assets/images/chenggong@2x.png")} alt=""/>
             <div className="ta-center">支付成功</div>
         </div>
         <div className="mt42">
@@ -60,21 +59,55 @@ function PaySuccess() {
     </div>)
 }
 
-// export class ModalWeb extends React.Component {
-export function ModalWeb (type) {
-    // render() {
-        return <div className="modal-wrapper">
-            <div className="modal modal-radio modal-paysuc">
-                <div className="close-topRight">
+export class ModalWeb extends React.Component {
+    constructor(props){
+        super(props);
+        this.state = {
+            visible: false
+        };
+        this.closeModal = this.closeModal.bind(this);
+        this.maskClick = this.maskClick.bind(this);
+    }
+    // 点击取消更新modal中的visible状态
+    closeModal() {
+        const { onClose } = this.props;
+        onClose && onClose()
+        this.setState({ visible: false })
+    }
+
+    maskClick() {
+        this.setState({ visible: false})
+    }
+
+    // ChildrenFunc (data){
+    //     this.setState({
+    //         visible: data
+    //     });
+    // }
+
+    componentDidMount() {
+        this.setState({ visible: this.props.visible })
+    }
+
+    render() {
+        // 通过父组件传递的visile控制显隐
+        const { visible } = this.state,{type}= this.props;
+        let styleObj= {
+            height: (type==="Advisory") ? '' : (type==="PaySuccess") ? '4.62rem' : '4.25rem'
+        };
+        return visible && <div className="modal-wrapper">
+            <div style={styleObj} className="modal">
+                <div className="close-topRight" onClick={this.closeModal}>
                     <img src={require("../../assets/images/guanbi1.png")} alt=""/>
                 </div>
                 <div className="modal-content">
-                    { type === "Advisory" ? <Advisory/> : type === "PaySuccess" ? <PaySuccess/> : <WillPay/>}
+                    {/* onUpdata={(data) => {$this.ChildrenFunc(data)}}*/}
+                    { (type==="Advisory") ? <Advisory/> : (type==="PaySuccess") ? <PaySuccess/> : <WillPay/>}
                 </div>
             </div>
-            <div className="mask"></div>
+            <div className="mask" onClick={this.maskClick}></div>
         </div>
-    // }
+    }
 }
 
 ModalWeb.propTypes = {

@@ -577,3 +577,66 @@
     line-height: .13rem;
     color:rgba(14,14,14,1);
 }
+
+
+/*.modal.modal-radio{*/
+    /*height: 2.06rem;*/
+    /*width: 3.43rem;*/
+/*}*/
+
+.radio-wrap{
+    margin-top: .11rem;
+    margin-left: .16rem;
+}
+
+.modal-radio{
+    display: block;
+    cursor: pointer;
+    position: relative;
+    font-size:.09rem;
+    font-weight:500;
+    color:rgba(48,48,48,1);
+    line-height:.13rem;
+}
+.modal-radio:first-child{
+    margin-bottom: .2rem;
+}
+.modal-radio input{
+    display: none;
+}
+
+.modal-radio .radio-style{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: .14rem;
+    height: .14rem;
+    border-radius: 50%;
+    background: #fff;
+    border: 1px solid #848484;
+}
+
+.modal-radio span{
+    margin-left: .3rem;
+}
+
+.modal-radio input:checked+.radio-style{
+    background: #FFE201;
+    border-color: #FFE201;
+}
+
+.paysuc-contain{
+    width: 100%;
+    margin-top: .18rem;
+    margin-bottom: .19rem;
+    font-weight:500;
+    color:rgba(14,14,14,1);
+    height:.35rem;
+    font-size:.18rem;
+    line-height:.25rem;
+}
+.paysuc-contain img{
+    width: .49rem;
+    height: .35rem;
+    margin-bottom: .19rem;
+}

@@ -8,7 +8,8 @@ export class StudentDetail extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            width: document.documentElement.clientWidth || document.body.clientWidth || window.innerWidth
+            width: document.documentElement.clientWidth || document.body.clientWidth || window.innerWidth,
+            visible: false
         };
         this.updateDimensions = this.updateDimensions.bind(this);
     }
@@ -22,14 +23,21 @@ export class StudentDetail extends React.Component {
     componentWillUnmount() {
         window.removeEventListener('resize', this.updateDimensions);
     }
+
+    showModal() {
+        this.setState({ visible: true })
+    }
+
     render() {
+        const { visible } = this.state;
         return (
             <div>
                 {
                     this.state.width > 768 ? <Web /> : <Mobile />
                 }
+                {/* onClick={this.showModal}*/}
                 {
-                    this.state.width > 768 ? <ModalWeb type={"Advisory"}/> : <ModalMobile type={"Advisory"}/>
+                    this.state.width > 768 ? <ModalWeb visible={visible} type={"PaySuccess"}/> : <ModalMobile visible={visible} type={"PaySuccess"}/>
                 }
             </div>
         );

@@ -7,6 +7,16 @@ import '../assets/style.css';
 import { Link } from 'react-router-dom';
 
 export class HomePage extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            studentList:[]
+        };
+    }
+    componentDidMount() {
+        this.setState({ studentList: [] })
+    }
+
     render() {
         return (
             <div className='home-contain'>

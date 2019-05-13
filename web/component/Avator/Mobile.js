@@ -1,5 +1,6 @@
 import React from 'react';
 
+//react-redux 处理User内容
 export class Avator extends React.Component {
     render() {
         return (

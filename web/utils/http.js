@@ -19,3 +19,7 @@ export function getEmailCode(email) {
 export function postUrl(url, params) {
     return axios.post(`${baseUrl}${url}`, { ...params });
 }
+
+export function getUser(userID) {
+    return axios.get(`${baseUrl}/user?id=${userID}`);
+}

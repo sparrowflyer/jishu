@@ -1,11 +1,13 @@
 import React from 'react';
 import { withRouter } from 'react-router';
+import { withAlert } from 'react-alert';
 import { Link } from 'react-router-dom';
 import { getVerifyCodeImage, getSMSCode, getEmailCode, postUrl } from '../utils/http.js';
 
 /*
     错误提示 待完善，抽象
-    所有跳转 都要有手势符号
+    提交按钮 disabled 手势
+    移动端 头部
 */
 class Login extends React.Component {
     constructor(props) {
@@ -17,7 +19,6 @@ class Login extends React.Component {
             verification: '',
             isPwd: true,
             imageUrl: '',
-            formError: '',
             nicknameError: '',
             usernameError: '',
             pwdError: '',
@@ -49,7 +50,6 @@ class Login extends React.Component {
         this.changePwdType = this.changePwdType.bind(this);
         this.getImageCode = this.getImageCode.bind(this);
         this.sendVerification = this.sendVerification.bind(this);
-        this.openErrorAlert = this.openErrorAlert.bind(this);
         this.loginSubmit = this.loginSubmit.bind(this);
         this.registerSubmit = this.registerSubmit.bind(this);
         this.forgetPwdSubmit = this.forgetPwdSubmit.bind(this);
@@ -107,46 +107,29 @@ class Login extends React.Component {
             getEmailCode(this.state.username)
                 .then((response) => {
                     if (response.status === 200) {
-                        this.openErrorAlert('成功发送邮箱验证码，请查收');
+                        this.props.alert.success('成功发送邮箱验证码，请查收');
                     } else {
-                        this.openErrorAlert('邮箱验证码发送失败，请重新发送');
+                        this.props.alert.error('邮箱验证码发送失败，请重新发送');
                     }
                 })
                 .catch((error) => {
-                    this.openErrorAlert('短信验证码发送失败，请重新发送');
+                    this.props.alert.error('短信验证码发送失败，请重新发送');
                     console.error('获取邮箱验证码：', error);
                 });
         } else {
             getSMSCode(this.state.username)
                 .then((response) => {
                     if (response.status === 200) {
-                        this.openErrorAlert('成功发送短信验证码，请查收');
+                        this.props.alert.success('成功发送短信验证码，请查收');
                     } else {
-                        this.openErrorAlert('短信验证码发送失败，请重新发送');
+                        this.props.alert.error('短信验证码发送失败，请重新发送');
                     }
                 })
                 .catch((error) => {
-                    this.openErrorAlert('短信验证码发送失败，请重新发送');
+                    this.props.alert.error('短信验证码发送失败，请重新发送');
                     console.error('获取短信验证码：', error);
                 });
         }
-    }
-    openErrorAlert(content) {
-        this.setState((state) => {
-            return {
-                ...state,
-                formError: content
-            }
-        });
-        clearTimeout(this.alertTimer);
-        this.alertTimer = setTimeout(() => {
-            this.setState((state) => {
-                return {
-                    ...state,
-                    formError: ''
-                }
-            });
-        }, 5000);
     }
     togglePwdChecked() {
         this.setState((state) => {
@@ -192,12 +175,12 @@ class Login extends React.Component {
                     sessionStorage.setItem('jeeUser', JSON.stringify(data.data));
                     this.props.history.push('/');
                 } else {
-                    this.openErrorAlert(`登录失败，原因为${data.errorMsg || `${response.status}${response.statusText}`}`);
+                    this.props.alert.error(`登录失败，原因为${data.errorMsg || `${response.status}${response.statusText}`}`);
                 }
             })
             .catch(error => {
                 console.error('登录', error);
-                this.openErrorAlert('登录失败，请重新登录');
+                this.props.alert.error('登录失败，请重新登录');
             });
     }
     registerSubmit() {
@@ -234,12 +217,12 @@ class Login extends React.Component {
                 if (data.status === 'success') {
                     this.props.history.push('/login');
                 } else {
-                    this.openErrorAlert(`注册失败，原因为${data.errorMsg || `${response.status}${response.statusText}`}`);
+                    this.props.alert.error(`注册失败，原因为${data.errorMsg || `${response.status}${response.statusText}`}`);
                 }
             })
             .catch(error => {
                 console.error('注册', error);
-                this.openErrorAlert('注册失败，请重新注册');
+                this.props.alert.error('注册失败，请重新注册');
             });
     }
     forgetPwdSubmit() {
@@ -275,12 +258,12 @@ class Login extends React.Component {
                 if (data.status === 'success') {
                     this.props.history.push('/login');
                 } else {
-                    this.openErrorAlert(`修改密码失败，原因为${data.errorMsg || `${response.status}${response.statusText}`}`);
+                    this.props.alert.error(`修改密码失败，原因为${data.errorMsg || `${response.status}${response.statusText}`}`);
                 }
             })
             .catch(error => {
                 console.error('修改密码', error);
-                this.openErrorAlert('修改密码失败，请重新修改');
+                this.props.alert.error('修改密码失败，请重新修改');
             });
     }
     isEmail(unknown) {
@@ -294,10 +277,6 @@ class Login extends React.Component {
     render() {
         return (
             <div className="login">
-                {
-                    this.state.formError &&
-                        <div className="form_error">{this.state.formError}</div>
-                }
                 <form className="login_item" noValidate>
                     <div className="login_item_logo">
                         UNCLEJEE
@@ -375,5 +354,5 @@ class Login extends React.Component {
     }
 }
 
-const LoginWithRouter = withRouter(Login);
-export default LoginWithRouter;
+const LoginPage = withRouter(withAlert(Login));
+export default LoginPage;

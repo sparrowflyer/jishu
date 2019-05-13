@@ -12,7 +12,8 @@ export class StudentDetail extends React.Component {
         super(props);
         this.state = {
             width: document.documentElement.clientWidth || document.body.clientWidth || window.innerWidth,
-            avator: {}
+            avator: {},
+            visible: false
         };
         this.updateDimensions = this.updateDimensions.bind(this);
     }
@@ -52,14 +53,26 @@ export class StudentDetail extends React.Component {
     componentWillUnmount() {
         window.removeEventListener('resize', this.updateDimensions);
     }
+
+    showModal() {
+        this.setState(state => {
+            return {
+                ...state,
+                visible: true
+            }
+        })
+    }
+
     render() {
+        const { visible } = this.state;
         return (
             <div>
                 {
                     this.state.width > 768 ? <Web {...this.state.avator} /> : <Mobile {...this.state.avator} />
                 }
+                {/* onClick={this.showModal}*/}
                 {
-                    this.state.width > 768 ? <ModalWeb type={"Advisory"}/> : <ModalMobile type={"Advisory"}/>
+                    this.state.width > 768 ? <ModalWeb visible={visible} type={"PaySuccess"}/> : <ModalMobile visible={visible} type={"PaySuccess"}/>
                 }
             </div>
         );

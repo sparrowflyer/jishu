@@ -451,7 +451,6 @@
 
 /* 弹窗-Modal */
 
-/* 弹窗 */
 .modal {
     position: fixed;
     top: 0;
@@ -585,14 +584,11 @@ ul.li-style{
     width:100%;
 }
 
-.modal.modal-radio{
-    height: 4.25rem;
-}
-
 .radio-wrap{
     margin-top: .59rem;
     margin-bottom: .8rem;
 }
+
 .modal-radio{
     display: block;
     cursor: pointer;
@@ -628,9 +624,6 @@ ul.li-style{
     border-color: #FFE201;
 }
 
-.modal.modal-paysuc{
-    height: 4.62rem;
-}
 .paysuc-contain{
     width: 100%;
     margin-top: .61rem;
@@ -639,10 +632,4 @@ ul.li-style{
     font-weight:500;
     color:rgba(14,14,14,1);
     line-height:.42rem;
-}
-.paysuc-contain .jee-success{
-    width: .82rem;
-    height: .58rem;
-    color:#FFE201;
-    margin-bottom: .3rem;
 }

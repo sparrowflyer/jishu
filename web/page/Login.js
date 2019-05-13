@@ -45,7 +45,6 @@ class Login extends React.Component {
                 toPageName: '登录'
             }
         };
-        this.alertTimer = null;
         this.handleInputChange = this.handleInputChange.bind(this);
         this.changePwdType = this.changePwdType.bind(this);
         this.getImageCode = this.getImageCode.bind(this);
@@ -354,5 +353,5 @@ class Login extends React.Component {
     }
 }
 
-const LoginPage = withRouter(withAlert(Login));
+const LoginPage = withAlert()(withRouter(Login));
 export default LoginPage;

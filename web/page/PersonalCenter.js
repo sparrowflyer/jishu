@@ -16,7 +16,26 @@ class PersonalCenter extends React.Component {
             width: document.documentElement.clientWidth || document.body.clientWidth || window.innerWidth,
             avator: {}
         };
+        this.getUser = this.getUser.bind(this);
         this.updateDimensions = this.updateDimensions.bind(this);
+    }
+    getUser(userID) {
+        getUser(userID)
+            .then(response => {
+                let data = response.data;
+                if (data.status === 'success') {
+                    this.setState((state) => {
+                        return {
+                            ...state,
+                            avator: data.data
+                        }
+                    });
+                } else {
+                    this.props.alert.error(`获取${userID}的个人信息失败,原因为${data.errorMsg || `${response.status}${response.statusText}`}`);
+                }
+            }).catch(error => {
+                console.error('获取个人信息', error);
+            });
     }
     componentDidMount() {
         let userID = '';
@@ -26,22 +45,7 @@ class PersonalCenter extends React.Component {
             sessionStorage.removeItem('jeeUser');
         }
         if (userID) {
-            getUser(userID)
-                .then(response => {
-                    let data = response.data;
-                    if (data.status === 'success') {
-                        this.setState((state) => {
-                            return {
-                                ...state,
-                                avator: data.data
-                            }
-                        });
-                    } else {
-                        this.props.alert.error(`获取${userID}的个人信息失败,原因为${data.errorMsg || `${response.status}${response.statusText}`}`);
-                    }
-                }).catch(error => {
-                    console.error('获取个人信息', error);
-                });
+            this.getUser(userID);
             window.addEventListener('resize', this.updateDimensions);
         } else {
             this.props.history.push('/');
@@ -62,7 +66,7 @@ class PersonalCenter extends React.Component {
     render() {
         return (
             <div>
-                { this.state.width > 768 ? <AvatorWeb {...this.state.avator} /> : <AvatorMobile {...this.state.avator} /> }
+                { this.state.width > 768 ? <AvatorWeb {...this.state.avator} parent="PersonalCenter" /> : <AvatorMobile {...this.state.avator} parent="PersonalCenter" /> }
                 <div className="personal-center_tab-title-container">
                     {
                         test_tabTitles.map((title, index) => {
@@ -86,5 +90,5 @@ class PersonalCenter extends React.Component {
     }
 }
 
-const PersonalCenterPage = withRouter(withAlert(PersonalCenter));
+const PersonalCenterPage = withAlert()(withRouter(PersonalCenter));
 export default PersonalCenterPage;

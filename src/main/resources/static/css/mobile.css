@@ -27,6 +27,13 @@
     height: 0.22rem;
 }
 
+.login_item_error_msg {
+    color: #FF3B3B;
+    font-size: .1rem;
+    line-height: .12rem;
+    padding-left: .1rem;
+}
+
 .login_item_field_verify {
     align-items: flex-end;
     width: .53rem;
@@ -35,10 +42,11 @@
 
 .login_item_note {
     font-size: .1rem;
-    margin: .1rem .06rem .18rem .12rem;
+    margin: .1rem .06rem 0 .12rem;
 }
 
 .login_item_submit-btn {
+    margin-top: .18rem;
     padding-left: .2rem;
     padding-right: .2rem;
     height: .24rem;

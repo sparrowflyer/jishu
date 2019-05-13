@@ -39,6 +39,10 @@ html, body {
     align-items: center;
 }
 
+.login_item_field_error {
+    border-bottom: 1px solid #FF3B3B;
+}
+
 .login_item_field input {
     display: inline-block;
     border: none;

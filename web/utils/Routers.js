@@ -4,8 +4,8 @@ import { HomePage } from '../page/Home.jsx';
 import { UniversityList } from '../page/UniversityList.jsx';
 import {UniversityDetail} from "../page/UniversityDetail.jsx";
 import { StudentDetail } from '../page/StudentDetail/index.js';
-import { PersonalCenter } from '../page/PersonalCenter.js';
-import { Login } from '../page/Login.js';
+import PersonalCenterPage from '../page/PersonalCenter.js';
+import LoginPage from '../page/Login.js';
 
 export function Routers() {
     return (
@@ -14,10 +14,16 @@ export function Routers() {
                 <Switch>
                     <Route exact path='/' component={ HomePage } />
                     <Route path='/college' component={ UniversityList } />
-                    <Route path='/collegeDetail/:id' component={ UniversityDetail } />
-                    <Route path='/StudentDetail' component={ StudentDetail } />
-                    <Route path='/PersonalCenter' component={ PersonalCenter } />
-                    <Route path='/login' component={ Login } />
+                    <Route path='/collegeDetail' component={ UniversityDetail } />
+                    <Route path='/StudentDetail/:userID' render={
+                        (props) => (<StudentDetail key={props.match.params.userID} {...props} />)
+                    } />
+                    <Route path='/PersonalCenter' component={ PersonalCenterPage } />
+                    {
+                        ['login', 'register', 'forgetPwd'].map((name) =>
+                            <Route key={name} path={'/' + name} component={ LoginPage } />
+                        )
+                    }
                 </Switch>
             </div>
         </Router>

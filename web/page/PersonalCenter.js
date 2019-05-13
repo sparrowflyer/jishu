@@ -6,7 +6,7 @@ import { withAlert } from 'react-alert';
 import { Item } from '../component/Item.js';
 import { getUser } from '../utils/http.js';
 
-const test_tabTitles = ['粉丝列表','我的关注','我的订单','我的课程','我的帖子','我的收藏'];
+const test_tabTitles = ['粉丝列表','我的关注','我的订单',/*'我的课程','我的帖子',*/'我的收藏'];
 const contents = [0,1,2,3,4];
 
 class PersonalCenter extends React.Component {

@@ -27,6 +27,7 @@ export function getSchoolById(param) {
 export function getUsersBySchool(param) {
     return axios.post(baseUrl + '/getUsersBySchool',param);
 }
+
 export function getSMSCode(phoneNum) {
     return axios.get(`${baseUrl}/getCellphoneCode?phoneNumber=${phoneNum}`);
 }

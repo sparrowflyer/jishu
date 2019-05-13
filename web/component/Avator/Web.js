@@ -1,17 +1,23 @@
 import React from 'react';
+import { getBg } from '../../utils/utils.jsx';
 
 export function Avator(props) {
-    props.headImage && props.
     return (
         <div>
             <div className="avator_bg"></div>
-            <div className="avator" style={props.headImage || {backgroundImage: 'htt'}}>
-                <span className="avator_note">4.7</span>
+            <div className="avator" style={getBg(props.headImage)}>
+                {
+                    props.parent === 'StudentDetail' &&
+                        <span className="avator_note">4.7</span>
+                }
             </div>
             <div className="user">
-                <div className="user_name">Robert</div>
+                <div className="user_name">{props.nickName || ''}</div>
                 <div className="user_know-btn">认识他</div>
-                { /* <div className="jee-edit user_edit-icon"></div> */ }
+                {
+                    props.parent === 'PersonalCenter' &&
+                        <div className="jee-edit user_edit-icon"></div>
+                }
             </div>
             <div className="school">圣安得鲁斯大学</div>
             <div className="desc-container">

@@ -59,6 +59,7 @@ public class UserController {
 		ResultDTO result = new ResultDTO();
 		try {
 			User user = userService.findById(id);
+			user.setUserStudentInfo(userStudentInfoService.findByUserId(id));
 			UserDTO userDTO = new UserDTO(user);
 			result.setData(userDTO);
 			return result;

@@ -66,10 +66,6 @@ public class SchoolController {
 			String schoolNamePart = jsonParams.getString("schoolNamePart");
 			int pageNo = jsonParams.getInteger("pageNo");
 			int pageAmount = jsonParams.getInteger("pageAmount");
-			System.out.println(country);
-			System.out.println(schoolNamePart);
-			System.out.println(pageNo);
-			System.out.println(pageAmount);
 			
 			List<School> schools = schoolService.findAll(country, schoolNamePart, pageNo, pageAmount);
 			Map<String, Object> resultMap = new HashMap<String, Object>();

@@ -9,6 +9,20 @@
 		<result property="likeType" column="LIKE_TYPE"/>
 	</resultMap>
 	
+	<resultMap id="userResultMap" type="com.wanmoxing.jishu.bean.User">
+		<id property="id" column="ID"/>
+		<result property="nickName" column="NICK_NAME"/>
+		<result property="email" column="EMAIL"/>
+		<result property="cellPhone" column="CELL_PHONE"/>
+		<result property="password" column="PASSWORD"/>
+		<result property="headImage" column="HEAD_IMAGE"/>
+		<result property="type" column="TYPE"/>
+		<result property="status" column="STATUS"/>
+		<result property="likeAmount" column="LIKE_AMOUNT"/>
+		<result property="createdTime" column="CREATED_TIME"/>
+		<result property="updatedTime" column="UPDATED_TIME"/>
+	</resultMap>
+	
 	<insert id="insert" parameterType="com.wanmoxing.jishu.bean.UserLike">
         INSERT INTO jishu.T_USER_LIKE(USER_ID,LIKE_ID,LIKE_TYPE) 
         VALUES(#{userId},#{likeId},#{likeType})
@@ -17,5 +31,14 @@
 	<delete id="delete" parameterType="com.wanmoxing.jishu.bean.UserLike">
         DELETE FROM jishu.T_USER_LIKE WHERE USER_ID=#{userId} and LIKE_ID=#{likeId} and LIKE_TYPE=#{likeType}
     </delete>
+    
+    <select id="getLikeStudentUserList" parameterType="java.util.Map" resultMap="userResultMap">
+        SELECT * FROM jishu.T_USER
+        WHERE ID in (SELECT USER_ID FROM jishu.T_USER_LIKE WHERE LIKE_ID = #{likeStudentId} and LIKE_TYPE = 'student')
+        ORDER BY LIKE_AMOUNT
+        <if test=" pageStart &gt;= 0 and pageAmount &gt; 0 ">
+        LIMIT #{pageStart}, #{pageAmount}
+        </if>
+    </select>
     
 </mapper>

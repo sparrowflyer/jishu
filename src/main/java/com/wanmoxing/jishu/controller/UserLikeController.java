@@ -1,5 +1,7 @@
 package com.wanmoxing.jishu.controller;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 
@@ -183,6 +185,39 @@ public class UserLikeController {
 			student.setLikeAmount(oldLikeAmount-1);
 			userService.update(student);
 			
+			return result;
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus(ResultDTOStatus.ERROR.getStatus());
+			result.setErrorMsg("Exception occured!");
+			return result;
+		}
+	}
+	
+	/**
+	 * 根据学生id获取关注该学生的用户列表
+	 {
+	 	"likeStudentId":18,
+	 	"pageNo": 1,
+	 	"pageAmount": 1
+	 }
+	 * @return
+	 */
+	@RequestMapping(value = "/likeStudentUserList", method = RequestMethod.POST)
+	public ResultDTO likeStudentUserList(HttpSession session, @RequestBody JSONObject jsonParams) {
+		ResultDTO result = new ResultDTO();
+		try {
+			if (!CommonConstants.DEV_MODE && !CommUtil.isUserLogined(session)) {
+				result.setStatus(ResultDTOStatus.ERROR.getStatus());
+				result.setErrorMsg("用户未登录!");
+			}
+			
+			int likeStudentId = jsonParams.getInteger("likeStudentId");
+			int pageNo = jsonParams.getInteger("pageNo");
+			int pageAmount = jsonParams.getInteger("pageAmount");
+			
+			List<User> likeStudentUserList = userLikeService.getLikeStudentUserList(likeStudentId,pageNo,pageAmount);
+			result.setData(likeStudentUserList);
 			return result;
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -280,49 +280,65 @@ public class PurchaseContactController {
 					
 					// TODO 生成随机码
 					String randomCode = VerifyCodeUtil.generateVerifyCode(6);
-					
-					StringBuffer messageToNotifyAdmin = new StringBuffer();
-					messageToNotifyAdmin.append("订单类型： 购买联系方式\n")
-										.append("订单ID： ").append(purchaseContact.getId()).append("\n")
-										.append("订单时间： ").append(purchaseContact.getCreatedTime()).append("\n")
-										.append("订单金额： ").append(purchaseContact.getPaymentAmount()).append("\n")
-										.append("卖家ID： ").append(purchaseContact.getSellerId()).append("\n")
-										.append("买家ID： ").append(purchaseContact.getBuyerId()).append("\n")
-										.append("随机码： ").append(randomCode).append("\n");
-					EmailUtil.sendEmail(CommonConstants.ADMIN_EMAIL_ADDRESS, "有新的购买联系方式订单！", messageToNotifyAdmin.toString());
-					
 					User seller = userService.findById(purchaseContact.getSellerId());
-					User buyer = userService.findById(purchaseContact.getBuyerId());
-					StringBuffer messageToNotifySeller = new StringBuffer();
-					messageToNotifySeller.append("订单类型： 购买联系方式\n")
-										.append("订单ID： ").append(purchaseContact.getId()).append("\n")
-										.append("订单时间： ").append(purchaseContact.getCreatedTime()).append("\n")
-										.append("订单金额： ").append(purchaseContact.getPaymentAmount()).append("\n")
-										.append("买家： ").append(buyer.getNickName()).append("\n")
-										.append("随机码： ").append(randomCode).append("\n");
-					
 					String sellerEmail = seller.getEmail();
-					if (sellerEmail != null && sellerEmail != "") {
-						EmailUtil.sendEmail(sellerEmail, "您有新的购买联系方式订单！", messageToNotifySeller.toString());
+					User buyer = userService.findById(purchaseContact.getBuyerId());
+					
+					// 给管理员发送通知
+					try {
+						StringBuffer messageToNotifyAdmin = new StringBuffer();
+						messageToNotifyAdmin.append("订单类型： 购买联系方式\n")
+											.append("订单ID： ").append(purchaseContact.getId()).append("\n")
+											.append("订单时间： ").append(purchaseContact.getCreatedTime()).append("\n")
+											.append("订单金额： ").append(purchaseContact.getPaymentAmount()).append("\n")
+											.append("卖家ID： ").append(purchaseContact.getSellerId()).append("\n")
+											.append("买家ID： ").append(purchaseContact.getBuyerId()).append("\n")
+											.append("随机码： ").append(randomCode).append("\n");
+						EmailUtil.sendEmail(CommonConstants.ADMIN_EMAIL_ADDRESS, "有新的购买联系方式订单！", messageToNotifyAdmin.toString());
+					} catch (Exception e) {
+						e.printStackTrace();
 					}
-					String sellerCellphone = seller.getCellPhone();
-					if (sellerCellphone != null && sellerCellphone != "") {
-						//CellphoneUtil.sendSms(sellerCellphone, messageToNotifySeller.toString());
+					
+					//给卖家发送通知
+					try {
+						StringBuffer messageToNotifySeller = new StringBuffer();
+						messageToNotifySeller.append("订单类型： 购买联系方式\n")
+											.append("订单ID： ").append(purchaseContact.getId()).append("\n")
+											.append("订单时间： ").append(purchaseContact.getCreatedTime()).append("\n")
+											.append("订单金额： ").append(purchaseContact.getPaymentAmount()).append("\n")
+											.append("买家： ").append(buyer.getNickName()).append("\n")
+											.append("随机码： ").append(randomCode).append("\n");
+						
+						if (sellerEmail != null && sellerEmail != "") {
+							EmailUtil.sendEmail(sellerEmail, "您有新的购买联系方式订单！", messageToNotifySeller.toString());
+						}
+						String sellerCellphone = seller.getCellPhone();
+						if (sellerCellphone != null && sellerCellphone != "") {
+							//CellphoneUtil.sendSms(sellerCellphone, messageToNotifySeller.toString());
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
 					}
-					StringBuffer messageToNotifyBuyer = new StringBuffer();
-					messageToNotifyBuyer.append("订单类型： 购买联系方式\n")
-										.append("订单ID： ").append(purchaseContact.getId()).append("\n")
-										.append("订单时间： ").append(purchaseContact.getCreatedTime()).append("\n")
-										.append("订单金额： ").append(purchaseContact.getPaymentAmount()).append("\n")
-										.append("卖家： ").append(seller.getNickName()).append("\n")
-										.append("随机码： ").append(randomCode).append("\n");
-					String buyerEmail = buyer.getEmail();
-					if (buyerEmail != null && buyerEmail != "") {
-						EmailUtil.sendEmail(sellerEmail, "购买联系方式成功！", messageToNotifyBuyer.toString());
-					}
-					String buyerCellphone = buyer.getCellPhone();
-					if (buyerCellphone != null && buyerCellphone != "") {
-						//CellphoneUtil.sendSms(buyerCellphone, messageToNotifyBuyer.toString());
+					
+					//给买家发送通知
+					try {
+						StringBuffer messageToNotifyBuyer = new StringBuffer();
+						messageToNotifyBuyer.append("订单类型： 购买联系方式\n")
+											.append("订单ID： ").append(purchaseContact.getId()).append("\n")
+											.append("订单时间： ").append(purchaseContact.getCreatedTime()).append("\n")
+											.append("订单金额： ").append(purchaseContact.getPaymentAmount()).append("\n")
+											.append("卖家： ").append(seller.getNickName()).append("\n")
+											.append("随机码： ").append(randomCode).append("\n");
+						String buyerEmail = buyer.getEmail();
+						if (buyerEmail != null && buyerEmail != "") {
+							EmailUtil.sendEmail(sellerEmail, "购买联系方式成功！", messageToNotifyBuyer.toString());
+						}
+						String buyerCellphone = buyer.getCellPhone();
+						if (buyerCellphone != null && buyerCellphone != "") {
+							//CellphoneUtil.sendSms(buyerCellphone, messageToNotifyBuyer.toString());
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
 					}
 					
 					

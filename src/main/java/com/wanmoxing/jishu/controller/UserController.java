@@ -26,6 +26,7 @@ import com.wanmoxing.jishu.dto.UpdateUserNicknameDTO;
 import com.wanmoxing.jishu.dto.UserDTO;
 import com.wanmoxing.jishu.service.ArticleService;
 import com.wanmoxing.jishu.service.PurchaseContactService;
+import com.wanmoxing.jishu.service.SchoolService;
 import com.wanmoxing.jishu.service.UserNotificationService;
 import com.wanmoxing.jishu.service.UserService;
 import com.wanmoxing.jishu.service.UserStudentInfoService;
@@ -39,6 +40,8 @@ public class UserController {
 
 	@Resource
 	private UserService userService;
+	@Resource
+	private SchoolService schoolService;
 	@Resource
 	private UserStudentInfoService userStudentInfoService;
 	@Resource
@@ -60,6 +63,7 @@ public class UserController {
 		try {
 			User user = userService.findById(id);
 			user.setUserStudentInfo(userStudentInfoService.findByUserId(id));
+			user.setSchool(schoolService.findStudentSchool(user.getId()));
 			UserDTO userDTO = new UserDTO(user);
 			result.setData(userDTO);
 			return result;

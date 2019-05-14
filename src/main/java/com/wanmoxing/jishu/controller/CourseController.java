@@ -105,6 +105,8 @@ public class CourseController {
 			}
 			Course course = addCourseDTO.transferToCourse(author);
 			courseService.insert(course);
+			author.setCourseAmount(author.getCourseAmount()+1);
+			userService.update(author);
 			return result;
 		} catch (Exception e) {
 			e.printStackTrace();

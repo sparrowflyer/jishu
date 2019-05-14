@@ -22,12 +22,32 @@ public class User {
 	
 	private int likeAmount;
 	
+	private int courseAmount;
+	
 	private Timestamp createdTime;
 	
 	private Timestamp updatedTime;
 	
 	private UserStudentInfo userStudentInfo;
 	
+	private School school;
+	
+
+	public School getSchool() {
+		return school;
+	}
+
+	public void setSchool(School school) {
+		this.school = school;
+	}
+
+	public int getCourseAmount() {
+		return courseAmount;
+	}
+
+	public void setCourseAmount(int courseAmount) {
+		this.courseAmount = courseAmount;
+	}
 
 	public UserStudentInfo getUserStudentInfo() {
 		return userStudentInfo;

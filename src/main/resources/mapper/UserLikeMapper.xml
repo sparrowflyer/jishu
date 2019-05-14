@@ -19,6 +19,7 @@
 		<result property="type" column="TYPE"/>
 		<result property="status" column="STATUS"/>
 		<result property="likeAmount" column="LIKE_AMOUNT"/>
+		<result property="courseAmount" column="COURSE_AMOUNT"/>
 		<result property="createdTime" column="CREATED_TIME"/>
 		<result property="updatedTime" column="UPDATED_TIME"/>
 	</resultMap>

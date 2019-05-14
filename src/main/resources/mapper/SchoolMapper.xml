@@ -70,4 +70,10 @@
         </if>
     </select>
     
+    <select id="findStudentSchool" parameterType="int" resultMap="schoolResultMap">
+    	SELECT *
+    	FROM jishu.T_SCHOOL
+    	WHERE ID = (select school_id from jishu.T_SCHOOL_USER where user_id = #{studentId})
+    </select>
+    
 </mapper>

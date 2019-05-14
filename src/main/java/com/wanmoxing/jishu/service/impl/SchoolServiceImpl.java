@@ -58,4 +58,9 @@ public class SchoolServiceImpl implements SchoolService {
 		return schoolMapper.findAll(conditions);
 	}
 
+	@Override
+	public School findStudentSchool(int studentId) {
+		return schoolMapper.findStudentSchool(studentId);
+	}
+
 }

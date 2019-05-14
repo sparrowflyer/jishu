@@ -5,6 +5,7 @@
 
 	<resultMap id="userStudentInfoResultMap" type="com.wanmoxing.jishu.bean.UserStudentInfo">
 		<id property="userId" column="USER_ID"/>
+		<result property="description" column="DESCRIPTION"/>
 		<result property="major" column="MAJOR"/>
 		<result property="topics" column="TOPICS"/>
 		<result property="honors" column="HONORS"/>
@@ -17,7 +18,7 @@
 	
 	<update id="update" parameterType="com.wanmoxing.jishu.bean.UserStudentInfo">
         UPDATE jishu.T_USER_STUDENT_INFO 
-        SET MAJOR=#{major},TOPICS=#{topics},HONORS=#{honors},CONTACTS=#{contacts},
+        SET DESCRIPTION=#{description},MAJOR=#{major},TOPICS=#{topics},HONORS=#{honors},CONTACTS=#{contacts},
         	CONTACTS_PRICE=#{contactsPrice},SCORE_RESPONSE=#{scoreResponse},
         	SCORE_ATTITUDE=#{scoreAttitude},SCORE_PROFESSIONAL=#{scoreProfessional}
         WHERE USER_ID=#{userId}

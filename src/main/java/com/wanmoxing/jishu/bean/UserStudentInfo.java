@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 public class UserStudentInfo {
 	
 	private int userId;
+	private String description;
 	private String major;
 	private String topics;
 	private String honors;
@@ -14,6 +15,12 @@ public class UserStudentInfo {
 	private BigDecimal scoreAttitude;
 	private BigDecimal scoreProfessional;
 	
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
 	public BigDecimal getContactsPrice() {
 		return contactsPrice;
 	}

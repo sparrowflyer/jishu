@@ -2,7 +2,9 @@ package com.wanmoxing.jishu.dto;
 
 import java.sql.Timestamp;
 
+import com.wanmoxing.jishu.bean.School;
 import com.wanmoxing.jishu.bean.User;
+import com.wanmoxing.jishu.bean.UserStudentInfo;
 
 public class UserDTO {
 	
@@ -20,9 +22,17 @@ public class UserDTO {
 	
 	private String status;
 	
+	private int likeAmount;
+	
+	private int courseAmount;
+	
 	private Timestamp createdTime;
 	
 	private Timestamp updatedTime;
+	
+	private UserStudentInfo userStudentInfo;
+	
+	private School school;
 	
 	public UserDTO(User user) {
 		this.id = user.getId();
@@ -32,8 +42,12 @@ public class UserDTO {
 		this.headImage = user.getHeadImage();
 		this.type = user.getType();
 		this.status = user.getStatus();
+		this.likeAmount = user.getLikeAmount();
+		this.courseAmount = user.getCourseAmount();
 		this.createdTime = user.getCreatedTime();
 		this.updatedTime = user.getUpdatedTime();
+		this.userStudentInfo = user.getUserStudentInfo();
+		this.school = user.getSchool();
 	}
 
 	public int getId() {
@@ -106,6 +120,38 @@ public class UserDTO {
 
 	public void setUpdatedTime(Timestamp updatedTime) {
 		this.updatedTime = updatedTime;
+	}
+
+	public int getLikeAmount() {
+		return likeAmount;
+	}
+
+	public void setLikeAmount(int likeAmount) {
+		this.likeAmount = likeAmount;
+	}
+
+	public int getCourseAmount() {
+		return courseAmount;
+	}
+
+	public void setCourseAmount(int courseAmount) {
+		this.courseAmount = courseAmount;
+	}
+
+	public UserStudentInfo getUserStudentInfo() {
+		return userStudentInfo;
+	}
+
+	public void setUserStudentInfo(UserStudentInfo userStudentInfo) {
+		this.userStudentInfo = userStudentInfo;
+	}
+
+	public School getSchool() {
+		return school;
+	}
+
+	public void setSchool(School school) {
+		this.school = school;
 	}
 	
 	

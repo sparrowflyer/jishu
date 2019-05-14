@@ -18,4 +18,6 @@ public interface SchoolService {
 	
 	public List<School> findAll(String country, String schoolNamePart, int pageNo, int pageAmount);
 	
+	public School findStudentSchool(int studentId);
+	
 }

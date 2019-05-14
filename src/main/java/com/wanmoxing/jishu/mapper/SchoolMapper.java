@@ -22,4 +22,6 @@ public interface SchoolMapper {
 	
 	public List<School> findAll(Map<String, Object> conditions);
 	
+	public School findStudentSchool(int studentId);
+	
 }

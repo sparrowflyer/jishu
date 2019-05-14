@@ -13,11 +13,14 @@ export class UniversityDetail extends React.Component {
         this.state = {
             schoolData:{},
             schoolId:"",
-            stuList:[]
+            stuList:[],
+            id: ""
         }
     }
     componentDidMount(){
-        let id = this.props.params.id;
+        console.log(this.props)
+        let id = this.props.match.params.id;
+
        this.setState({
            schoolId: id
        }) ;

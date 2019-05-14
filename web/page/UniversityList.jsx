@@ -73,7 +73,7 @@ export class UniversityList extends React.Component {
     searchSchool(event){
         let value = event.target.value;
         // setTimeout(()=>{
-            this.setState({searchValue: value});
+            this.setState({searchValue: value,page:1});
             this.getUniversityList(1,"", value);
         // },1000);
     }
@@ -103,14 +103,15 @@ export class UniversityList extends React.Component {
         for( let uni of uniList){
             elS.push(
                 <div className="col-l-4 col-s-2" key={uni.id}>
-                    <div className="card">
-                        <link to={"/collegeDetail/" + uni.id}/>
+                    {/*<div className="card">*/}
+                    <Link to={`/collegeDetail/${uni.id}`} className="card">
                         <img src={uni.iconImage} alt=""/>
                         <div className="card-name">
                             {uni.cnName}
                             <div className="card-eName">{uni.enName}</div>
                         </div>
-                    </div>
+                    </Link>
+                    {/*</div>*/}
                 </div>
             )
         }
@@ -163,9 +164,9 @@ export class UniversityList extends React.Component {
             <div className="container">{elS}</div>
             {/* 换页签*/}
             <div className="page-feed">
-                <span className="page-num page-pre arrow-left" onClick={this.go.bind(this,page-1)}></span>
+                <span className="page-num page-pre jee-arrow-left" onClick={this.go.bind(this,page-1)}></span>
                 {pageNum}
-                <span className="page-num page-next arrow-right" onClick={this.go.bind(this,page+1)}></span>
+                <span className="page-num page-next jee-arrow-right" onClick={this.go.bind(this,page+1)}></span>
             </div>
                 <Footer></Footer>
             </div>

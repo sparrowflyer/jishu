@@ -61,7 +61,6 @@ export class UniversityList extends React.Component {
     }
     //换页
     go(page){
-        console.log("go")
         page = page<1 ? 1 :page;
         if(page === this.state.page){
             return;

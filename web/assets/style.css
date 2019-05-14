@@ -209,7 +209,11 @@ ul, li {
     display: flex;
     align-items: flex-start;
 }
+.uni-desc .jee-quote-left , .uni-desc .jee-quote-right{
+    color: rgba(255,226,1,1);
+}
 .nui-text{
+    white-space: normal;
     font-weight:400;
     color:rgba(255,255,255,1);
 }
@@ -421,6 +425,9 @@ ul, li {
         font-size:.2rem;
         line-height:.28rem;
         margin: 0 .3rem;
+    }
+    .uni-desc .jee-quote-left,.uni-desc .jee-quote-right{
+        font-size: .4rem;
     }
 
     /* 学生信息卡 */
@@ -638,6 +645,9 @@ ul, li {
         font-size:.06rem;
         line-height:.09rem;
         margin:0 .1rem;
+    }
+    .uni-desc .jee-quote-left,.uni-desc .jee-quote-right{
+        font-size: .3rem;
     }
 
     /* 学生信息卡 */

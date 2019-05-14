@@ -111,7 +111,7 @@ public class UserController {
 			return result;
 		}
 	}
-
+	
 	/**
 	 * 更新昵称 { "id":"1", "nickName":"testname" }
 	 * 

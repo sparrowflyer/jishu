@@ -91,4 +91,15 @@
 	        </foreach>
     </select>
     
+    <select id="findCommentedOrders" parameterType="java.util.Map" resultMap="purchaseContactResultMap">
+    	SELECT *
+		FROM jishu.T_PURCHASE_CONTACT 
+		WHERE SELLER_ID = #{sellerId}
+			AND COMMENT IS NOT NULL
+		ORDER BY ID
+		<if test=" pageStart &gt;= 0 and pageAmount &gt; 0 ">
+        LIMIT #{pageStart}, #{pageAmount}
+        </if>
+    </select>
+    
 </mapper>

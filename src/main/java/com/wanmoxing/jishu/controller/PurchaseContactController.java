@@ -3,8 +3,10 @@ package com.wanmoxing.jishu.controller;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -410,6 +412,45 @@ public class PurchaseContactController {
 				userStudentInfoService.update(sellerStudentInfo);
 			}
 			
+			return result;
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus(ResultDTOStatus.ERROR.getStatus());
+			result.setErrorMsg("Exception occured!");
+			return result;
+		}
+	}
+	
+	/**
+	 * 分页获取已经评论过的所有订单信息，同时附上给出评论的用户的相关信息
+	   {
+	   		"studentId": 1,
+	   		"pageNo": 1,
+	   		"pageAmount": 1
+	   }
+	 * @param jsonParams
+	 * @return
+	 */
+	@RequestMapping(value = "/getCommentedPurchaseContacts", method = RequestMethod.POST)
+	public ResultDTO getCommentedPurchaseContacts(@RequestBody JSONObject jsonParams) {
+		ResultDTO result = new ResultDTO();
+		try {
+			int studentId = jsonParams.getInteger("studentId");
+			int pageNo = jsonParams.getInteger("pageNo");
+			int pageAmount = jsonParams.getInteger("pageAmount");
+			
+			List<PurchaseContact> commentedOrders = purchaseContactService.findCommentedOrders(studentId, pageNo, pageAmount);
+			List<Map<String, Object>> commentedPurchaseContacts = new ArrayList<Map<String, Object>>();
+			for (PurchaseContact commentedOrder : commentedOrders) {
+				Map<String, Object> commentedPurchaseContact = new HashMap<String, Object>();
+				commentedPurchaseContact.put("comment", commentedOrder.getComment());
+				commentedPurchaseContact.put("scoreResponse", commentedOrder.getScoreResponse());
+				commentedPurchaseContact.put("scoreAttitude", commentedOrder.getScoreAttitude());
+				commentedPurchaseContact.put("scoreProfessional", commentedOrder.getScoreProfessional());
+				commentedPurchaseContact.put("buyer", userService.findById(commentedOrder.getBuyerId()));
+				commentedPurchaseContacts.add(commentedPurchaseContact);
+			}
+			result.setData(commentedPurchaseContacts);
 			return result;
 		} catch (Exception e) {
 			e.printStackTrace();

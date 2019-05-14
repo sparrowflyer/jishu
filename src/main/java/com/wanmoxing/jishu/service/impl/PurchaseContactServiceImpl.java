@@ -63,4 +63,13 @@ public class PurchaseContactServiceImpl implements PurchaseContactService {
 		return purchaseContactMapper.findAvgScoresForSeller(conditions);
 	}
 
+	@Override
+	public List<PurchaseContact> findCommentedOrders(int sellerId, int pageNo, int pageAmount) {
+		Map<String, Object> conditions = new HashMap<String, Object>();
+		conditions.put("sellerId", sellerId);
+		conditions.put("pageStart", (pageNo-1)*pageAmount);
+		conditions.put("pageAmount", pageAmount);
+		return purchaseContactMapper.findCommentedOrders(conditions);
+	}
+
 }

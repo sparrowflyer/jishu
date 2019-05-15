@@ -1,7 +1,5 @@
 package com.wanmoxing.jishu.util;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
 
 import javax.mail.Message;
@@ -71,7 +69,7 @@ public class EmailUtil {
 		Transport transport = session.getTransport();
 		transport.connect("smtp.mxhichina.com",sendFrom,password);
 
-		List<String> list=new ArrayList<>();
+		//List<String> list=new ArrayList<>();
 		//实现群发，下面的方法也是可以实现群发，但是不太理想
 		transport.sendMessage(msg, InternetAddress.parse(to));
 

@@ -14,7 +14,7 @@ export function Routers() {
                 <Switch>
                     <Route exact path='/' component={ HomePage } />
                     <Route path='/college' component={ UniversityList } />
-                    <Route path='/collegeDetail' component={ UniversityDetail } />
+                    <Route path='/collegeDetail/:id' component={ UniversityDetail } />
                     <Route path='/StudentDetail/:userID' render={
                         (props) => (<StudentDetail key={props.match.params.userID} {...props} />)
                     } />

@@ -190,6 +190,7 @@
 /* 图片轮播 */
 .carousel-wrap{
     position: relative;
+    width: 100%;
 }
 .next-btn,.pre-btn{
     position: absolute;

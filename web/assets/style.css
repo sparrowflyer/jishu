@@ -157,9 +157,17 @@ ul, li {
     justify-content: flex-start;
     text-align: center;
 }
+.container .card {
+    display: inline-block;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
 .card-name,.card-eName{
     font-weight:400;
-    line-height:.28rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .card-name{
     color:rgba(48,48,48,1);
@@ -189,13 +197,27 @@ ul, li {
     background:rgba(255,226,1,1);
 }
 
-/* 想学校详情 */
+/* 学校详情 */
 .uni-banner{
     width: 100%;
     text-align: center;
+    background: #303030;
+    position: relative;
+}
+.headbg-wrap{
+    position: absolute;
+    top:0;
+    left:0;
+}
+.headcnt-wrap{
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
+    position: absolute;
+    top: 0;
+    left:0;
+    z-index: 9999;
+    width: 100%;
 }
 .uni-name{
     font-weight:500;
@@ -224,12 +246,17 @@ ul, li {
     background:rgba(255,255,255,1);
 }
 .left-pic{
-    height: 100%;
-    width: auto;
     border-radius: .2rem;
+    background: #848484;
+    overflow: hidden;
+}
+.left-pic img{
+    width: 100%;
+    height: auto;
 }
 .right-info{
     position: relative;
+    flex-grow: 1;
 }
 .info-name{
     font-weight:400;
@@ -252,7 +279,7 @@ ul, li {
 }
 
 /*媒体查询：@media 设备类型 and (设备特性)｛样式代码｝*/
-@media (min-width: 769px) {
+@media (min-width: 1024px) {
     .stShow-title{
         margin-top: .6rem;
         font-size:.43rem;
@@ -383,6 +410,7 @@ ul, li {
     .card{
         display: inline-block;
         margin-bottom: .77rem;
+        width: 2.67rem;
     }
     .card img{
         width: 1.1rem;
@@ -390,6 +418,7 @@ ul, li {
     }
     .card-name,.card-eName{
         font-size:.2rem;
+        line-height:.28rem;
     }
     .card-name{
         margin:.2rem auto 0;
@@ -409,6 +438,9 @@ ul, li {
 
     /* 学校详情 */
     .uni-banner{
+        height: 5.16rem;
+    }
+    .headcnt-wrap{
         height: 5.16rem;
         padding: 1.3rem 4.44rem .94rem;
     }
@@ -445,6 +477,7 @@ ul, li {
     .left-pic{
         border-radius: .2rem;
         margin-right: .5rem;
+        width:3.36rem;
     }
     .right-info>.info-name{
         margin: .5rem 0 .12rem;
@@ -482,7 +515,7 @@ ul, li {
     }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1023px) {
     .stShow-title{
         margin-top: .21rem;
 
@@ -605,6 +638,8 @@ ul, li {
         border-radius:.06rem;
         padding: .16rem .22rem;
         margin: .16rem .135rem;
+        width: 1.5rem;
+        height: 1.5rem;
     }
     .card img{
         width: .67rem;
@@ -612,10 +647,12 @@ ul, li {
     }
     .card-name{
         font-size: 12px;
+        line-height: .18rem;
         /*margin:.11rem auto 0;*/
     }
     .card-eName{
         font-size: 10px;
+        line-height: .18rem;
         /*margin-top: .1rem;*/
     }
     /*换页签*/
@@ -629,6 +666,9 @@ ul, li {
     }
     /* 学校详情 */
     .uni-banner{
+        height: 1.4rem;
+    }
+    .headcnt-wrap{
         height: 1.4rem;
         padding: .33rem .46rem .25rem;
     }
@@ -661,6 +701,7 @@ ul, li {
     .left-pic{
         border-radius: .09rem;
         margin-right: .22rem;
+        width:1.44rem;
     }
     .right-info>.info-name{
         margin: .22rem 0 .05rem;

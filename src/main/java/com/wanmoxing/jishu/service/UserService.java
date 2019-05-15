@@ -1,6 +1,7 @@
 package com.wanmoxing.jishu.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.wanmoxing.jishu.bean.User;
 import com.wanmoxing.jishu.constant.enums.UserType;
@@ -32,5 +33,9 @@ public interface UserService {
     public void delete(int id);
     
     public String getUserDisplayName(int userId);
+    //获取关注某学生的所有用户
+    public List<User> getLikeStudentUserList(int likeStudentId, int pageNo, int pageAmount);
+    //获取某学生关注的所有用户
+	public List<User> getStudentLikeUserList(int studentId, int pageNo, int pageAmount);
 
 }

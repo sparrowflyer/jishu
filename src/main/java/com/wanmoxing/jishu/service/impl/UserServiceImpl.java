@@ -99,5 +99,23 @@ public class UserServiceImpl implements UserService {
 	public int findTotalAmountBySchool(int schoolId) {
 		return userMapper.findTotalAmountBySchool(schoolId);
 	}
+	
+	@Override
+	public List<User> getLikeStudentUserList(int likeStudentId, int pageNo, int pageAmount) {
+		Map<String, Object> conditions = new HashMap<String, Object>();
+		conditions.put("likeStudentId", likeStudentId);
+		conditions.put("pageStart", (pageNo-1)*pageAmount);
+		conditions.put("pageAmount", pageAmount);
+		return userMapper.getLikeStudentUserList(conditions);
+	}
+
+	@Override
+	public List<User> getStudentLikeUserList(int studentId, int pageNo, int pageAmount) {
+		Map<String, Object> conditions = new HashMap<String, Object>();
+		conditions.put("studentId", studentId);
+		conditions.put("pageStart", (pageNo-1)*pageAmount);
+		conditions.put("pageAmount", pageAmount);
+		return userMapper.getStudentLikeUserList(conditions);
+	}
 
 }

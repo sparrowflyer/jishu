@@ -195,11 +195,11 @@ public class UserLikeController {
 	}
 	
 	/**
-	 * 根据学生id获取关注该学生的用户列表
+	 * 获取关注某学生的用户列表
 	 {
 	 	"likeStudentId":18,
 	 	"pageNo": 1,
-	 	"pageAmount": 1
+	 	"pageAmount": 2
 	 }
 	 * @return
 	 */
@@ -210,14 +210,49 @@ public class UserLikeController {
 			if (!CommonConstants.DEV_MODE && !CommUtil.isUserLogined(session)) {
 				result.setStatus(ResultDTOStatus.ERROR.getStatus());
 				result.setErrorMsg("用户未登录!");
+				return result;
 			}
 			
 			int likeStudentId = jsonParams.getInteger("likeStudentId");
 			int pageNo = jsonParams.getInteger("pageNo");
 			int pageAmount = jsonParams.getInteger("pageAmount");
 			
-			List<User> likeStudentUserList = userLikeService.getLikeStudentUserList(likeStudentId,pageNo,pageAmount);
+			List<User> likeStudentUserList = userService.getLikeStudentUserList(likeStudentId,pageNo,pageAmount);
 			result.setData(likeStudentUserList);
+			return result;
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus(ResultDTOStatus.ERROR.getStatus());
+			result.setErrorMsg("Exception occured!");
+			return result;
+		}
+	}
+	
+	/**
+	 * 获取某学生关注的用户列表
+	 {
+	 	"studentId":19,
+	 	"pageNo": 1,
+	 	"pageAmount": 1
+	 }
+	 * @return
+	 */
+	@RequestMapping(value = "/studentLikeUserList", method = RequestMethod.POST)
+	public ResultDTO studentLikeUserList(HttpSession session, @RequestBody JSONObject jsonParams) {
+		ResultDTO result = new ResultDTO();
+		try {
+			if (!CommonConstants.DEV_MODE && !CommUtil.isUserLogined(session)) {
+				result.setStatus(ResultDTOStatus.ERROR.getStatus());
+				result.setErrorMsg("用户未登录!");
+				return result;
+			}
+			
+			int studentId = jsonParams.getInteger("studentId");
+			int pageNo = jsonParams.getInteger("pageNo");
+			int pageAmount = jsonParams.getInteger("pageAmount");
+			
+			List<User> studentLikeUserList = userService.getStudentLikeUserList(studentId,pageNo,pageAmount);
+			result.setData(studentLikeUserList);
 			return result;
 		} catch (Exception e) {
 			e.printStackTrace();

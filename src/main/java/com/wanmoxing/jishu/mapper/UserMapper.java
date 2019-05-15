@@ -25,7 +25,7 @@ public interface UserMapper {
 	public int findTotalAmountBySchool(int schoolId);
 	
 	public List<User> findBySchool(Map<String, Object> conditions);
-
+	
     public User existenceByEmail(@Param("email")String email);
     
     public User existenceByPhoneNumber(@Param("phoneNumber")String phoneNumber);
@@ -35,5 +35,9 @@ public interface UserMapper {
     public void update(User user);
     
     public void delete(int id);
+    
+    public List<User> getLikeStudentUserList(Map<String, Object> conditions);
+    
+	public List<User> getStudentLikeUserList(Map<String, Object> conditions);
 	
 }

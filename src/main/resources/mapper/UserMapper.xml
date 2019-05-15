@@ -60,7 +60,7 @@
         LIMIT #{pageStart}, #{pageAmount}
         </if>
     </select>
-
+    
     <select id="existenceByEmail" parameterType="java.lang.String" resultMap="userResultMap">
         SELECT * FROM jishu.T_USER WHERE EMAIL=#{email}
     </select>
@@ -72,5 +72,23 @@
     <delete id="delete" parameterType="int">
         DELETE FROM jishu.T_USER WHERE ID=#{0}
     </delete>
+    
+    <select id="getLikeStudentUserList" parameterType="java.util.Map" resultMap="userResultMap">
+        SELECT * FROM jishu.T_USER
+        WHERE ID in (SELECT USER_ID FROM jishu.T_USER_LIKE WHERE LIKE_ID = #{likeStudentId} and LIKE_TYPE = 'student')
+        ORDER BY LIKE_AMOUNT
+        <if test=" pageStart &gt;= 0 and pageAmount &gt; 0 ">
+        LIMIT #{pageStart}, #{pageAmount}
+        </if>
+    </select>
+    
+    <select id="getStudentLikeUserList" parameterType="java.util.Map" resultMap="userResultMap">
+        SELECT * FROM jishu.T_USER
+        WHERE ID in (SELECT LIKE_ID FROM jishu.T_USER_LIKE WHERE USER_ID = #{studentId} and LIKE_TYPE = 'student')
+        ORDER BY LIKE_AMOUNT
+        <if test=" pageStart &gt;= 0 and pageAmount &gt; 0 ">
+        LIMIT #{pageStart}, #{pageAmount}
+        </if>
+    </select>
     
 </mapper>

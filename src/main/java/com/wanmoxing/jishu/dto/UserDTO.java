@@ -26,6 +26,8 @@ public class UserDTO {
 	
 	private int courseAmount;
 	
+	private String comment;
+	
 	private Timestamp createdTime;
 	
 	private Timestamp updatedTime;
@@ -44,6 +46,7 @@ public class UserDTO {
 		this.status = user.getStatus();
 		this.likeAmount = user.getLikeAmount();
 		this.courseAmount = user.getCourseAmount();
+		this.comment = user.getComment();
 		this.createdTime = user.getCreatedTime();
 		this.updatedTime = user.getUpdatedTime();
 		this.userStudentInfo = user.getUserStudentInfo();
@@ -136,6 +139,14 @@ public class UserDTO {
 
 	public void setCourseAmount(int courseAmount) {
 		this.courseAmount = courseAmount;
+	}
+	
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
 	}
 
 	public UserStudentInfo getUserStudentInfo() {

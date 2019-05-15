@@ -14,16 +14,17 @@
 		<result property="status" column="STATUS"/>
 		<result property="likeAmount" column="LIKE_AMOUNT"/>
 		<result property="courseAmount" column="COURSE_AMOUNT"/>
+		<result property="comment" column="COMMENT"/>
 		<result property="createdTime" column="CREATED_TIME"/>
 		<result property="updatedTime" column="UPDATED_TIME"/>
 	</resultMap>
 
     <insert id="insert" parameterType="com.wanmoxing.jishu.bean.User" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO jishu.T_USER(NICK_NAME,EMAIL,CELL_PHONE,PASSWORD,HEAD_IMAGE,TYPE,STATUS,LIKE_AMOUNT,COURSE_AMOUNT,CREATED_TIME,UPDATED_TIME) VALUES(#{nickName},#{email},#{cellPhone},#{password},#{headImage},#{type},#{status},#{likeAmount},#{courseAmount},#{createdTime},#{updatedTime});
+        INSERT INTO jishu.T_USER(NICK_NAME,EMAIL,CELL_PHONE,PASSWORD,HEAD_IMAGE,TYPE,STATUS,LIKE_AMOUNT,COURSE_AMOUNT,COMMENT,CREATED_TIME,UPDATED_TIME) VALUES(#{nickName},#{email},#{cellPhone},#{password},#{headImage},#{type},#{status},#{likeAmount},#{courseAmount},#{comment},#{createdTime},#{updatedTime});
     </insert>
     
     <update id="update" parameterType="com.wanmoxing.jishu.bean.User">
-        UPDATE jishu.T_USER SET NICK_NAME=#{nickName},EMAIL=#{email},CELL_PHONE=#{cellPhone},PASSWORD=#{password},HEAD_IMAGE=#{headImage},TYPE=#{type},STATUS=#{status},LIKE_AMOUNT=#{likeAmount},COURSE_AMOUNT=#{courseAmount},CREATED_TIME=#{createdTime},UPDATED_TIME=#{updatedTime} WHERE ID=#{id}
+        UPDATE jishu.T_USER SET NICK_NAME=#{nickName},EMAIL=#{email},CELL_PHONE=#{cellPhone},PASSWORD=#{password},HEAD_IMAGE=#{headImage},TYPE=#{type},STATUS=#{status},LIKE_AMOUNT=#{likeAmount},COURSE_AMOUNT=#{courseAmount},COMMENT=#{comment},CREATED_TIME=#{createdTime},UPDATED_TIME=#{updatedTime} WHERE ID=#{id}
     </update>
     
     <select id="findById" parameterType="int" resultMap="userResultMap">

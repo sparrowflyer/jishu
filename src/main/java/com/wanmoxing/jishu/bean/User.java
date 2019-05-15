@@ -24,6 +24,8 @@ public class User {
 	
 	private int courseAmount;
 	
+	private String comment;
+	
 	private Timestamp createdTime;
 	
 	private Timestamp updatedTime;
@@ -119,6 +121,14 @@ public class User {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
 	}
 
 	public Timestamp getCreatedTime() {

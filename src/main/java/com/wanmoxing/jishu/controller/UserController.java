@@ -21,6 +21,7 @@ import com.wanmoxing.jishu.constant.CommonConstants;
 import com.wanmoxing.jishu.constant.enums.PurchaseContactStatus;
 import com.wanmoxing.jishu.constant.enums.ResultDTOStatus;
 import com.wanmoxing.jishu.dto.ResultDTO;
+import com.wanmoxing.jishu.dto.UpdateUserCommentDTO;
 import com.wanmoxing.jishu.dto.UpdateUserHeadImageDTO;
 import com.wanmoxing.jishu.dto.UpdateUserNicknameDTO;
 import com.wanmoxing.jishu.dto.UserDTO;
@@ -181,6 +182,41 @@ public class UserController {
 			e.printStackTrace();
 			result.setStatus(ResultDTOStatus.ERROR.getStatus());
 			result.setErrorMsg("Exception occured!");
+			return result;
+		}
+	}
+	
+	/**
+	 * 更新个人签名 { "id":"1", "comment":"我爱叽叔" }
+	 * 
+	 * @param session
+	 * @param UpdateUserCommentDTO
+	 * @return
+	 */
+	@RequestMapping(value = "updateUserComment", method = RequestMethod.POST)
+	public ResultDTO updateUserComment(HttpSession session,
+			@RequestBody UpdateUserCommentDTO updateUserCommentDTO) {
+		ResultDTO result = new ResultDTO();
+		try {
+			if (!CommonConstants.DEV_MODE && !CommUtil.isUserLogined(session)) {
+				result.setStatus(ResultDTOStatus.ERROR.getStatus());
+				result.setErrorMsg("User not logined!");
+				return result;
+			}
+			User userInSession = (User) session.getAttribute("user");
+			if (userInSession.getId() != updateUserCommentDTO.getId()) {
+				result.setStatus(ResultDTOStatus.ERROR.getStatus());
+				result.setErrorMsg("不能更新别人的签名!");
+				return result;
+			}
+			User user = userService.findById(updateUserCommentDTO.getId());
+			user.setComment(updateUserCommentDTO.getComment());
+			userService.update(user);
+			return result;
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus(ResultDTOStatus.ERROR.getStatus());
+			result.setErrorMsg("更新签名时出错，请联系管理员!");
 			return result;
 		}
 	}

@@ -4,7 +4,6 @@ import {Header} from '../component/common/Header.jsx';
 import '../assets/style.css';
 import { Link } from 'react-router-dom';
 import {getUsersBySchool,getSchoolById} from "../utils/http.js" ;
-import {getBg} from "../utils/utils.jsx";
 
 export class UniversityDetail extends React.Component {
     constructor(props) {
@@ -23,14 +22,14 @@ export class UniversityDetail extends React.Component {
         }
     }
     componentWillMount (){
-        // console.log(this.props)
-        // let data = JSON.parse(this.props.match.params.data);
-        let id = this.props.match.params.id;
-        // let img = data.img;
-
+        let id ="";
+      if(this.props.match.params.id) {
+          id = this.props.match.params.id;
+          window.sessionStorage.setItem("schoolId",id);
+      }
+      id = window.sessionStorage.getItem("schoolId");
        this.setState({
            schoolId: id,
-           // img:data.img,
        }) ;
         this.getSchoolById(id);
         this.getUsersBySchool(id,1);
@@ -77,7 +76,7 @@ export class UniversityDetail extends React.Component {
         const pageNum = [];
         for (let i = 1;i <= pageSize; i++){
             pageNum.push(
-                <span onClick={this.go.bind(this,i) } className={this.state.page === i ? "active page-num" : "page-num"} key={i}>{i}</span>
+                <span onClick={this.go.bind(this,i)} className={this.state.page === i ? "active page-num" : "page-num"} key={i}>{i}</span>
             )
         }
         return (
@@ -108,7 +107,7 @@ export class UniversityDetail extends React.Component {
                 </div>
                 <div className="stus-container">
                     {stuList.map(stu => {
-                        return <div className="stu-info fl" key={stu.id}>
+                        return <Link className="stu-info fl" key={stu.id}>
                             <div className="left-pic">
                                 <img src={`http://${stu.headImage}`} alt=""/>
                             </div>
@@ -127,7 +126,7 @@ export class UniversityDetail extends React.Component {
                                 {/*</div>*/}
                                 <div className="corner-fraction">{stu.userStudentInfo.scoreResponse}</div>
                             </div>
-                        </div>
+                        </Link>
                     })}
                     <div className="page-feed clearfloat">
                         <span className="page-num page-pre jee-arrow-left" onClick={this.go.bind(this,page-1)}></span>

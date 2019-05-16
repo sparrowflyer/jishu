@@ -316,7 +316,13 @@ public class PurchaseContactController {
 						}
 						String sellerCellphone = seller.getCellPhone();
 						if (sellerCellphone != null && sellerCellphone != "") {
-							//CellphoneUtil.sendSms(sellerCellphone, messageToNotifySeller.toString());
+							Map<String, String> smsParams = new HashMap<String, String>();
+							smsParams.put("purchaseContactId", purchaseContact.getId());
+							smsParams.put("purchaseContactCreatedTime", purchaseContact.getCreatedTime().toString());
+							smsParams.put("purchaseContactPaymentAmount", String.valueOf(purchaseContact.getPaymentAmount()));
+							smsParams.put("buyer", buyer.getNickName());
+							smsParams.put("randomCode", randomCode);
+							//CellphoneUtil.sendSmsByTemplate(sellerCellphone, "tempateCode(need to be modified)", smsParams);
 						}
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -337,7 +343,13 @@ public class PurchaseContactController {
 						}
 						String buyerCellphone = buyer.getCellPhone();
 						if (buyerCellphone != null && buyerCellphone != "") {
-							//CellphoneUtil.sendSms(buyerCellphone, messageToNotifyBuyer.toString());
+							Map<String, String> smsParams = new HashMap<String, String>();
+							smsParams.put("purchaseContactId", purchaseContact.getId());
+							smsParams.put("purchaseContactCreatedTime", purchaseContact.getCreatedTime().toString());
+							smsParams.put("purchaseContactPaymentAmount", String.valueOf(purchaseContact.getPaymentAmount()));
+							smsParams.put("seller", seller.getNickName());
+							smsParams.put("randomCode", randomCode);
+							//CellphoneUtil.sendSmsByTemplate(buyerCellphone, "tempateCode(need to be modified)", smsParams);
 						}
 					} catch (Exception e) {
 						e.printStackTrace();

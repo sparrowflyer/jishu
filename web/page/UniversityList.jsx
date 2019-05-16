@@ -50,10 +50,10 @@ export class UniversityList extends React.Component {
         getSchools(params).then( resp => {
                 if(resp.status === 200){
                     console.log("getSchools",resp);
-                    const page = resp.data.data && resp.data.data.totalAmount && resp.data.data.totalAmount /12;
+                    let page = resp.data.data && resp.data.data.totalAmount && resp.data.data.totalAmount /12;
                     this.setState({
                         uniList: resp.data.data.schools,
-                        pageSize: page < 1 ? 1 : page
+                        pageSize: Math.ceil(page || 1)
                     });
 
                 }
@@ -62,7 +62,7 @@ export class UniversityList extends React.Component {
     //换页
     go(page){
         page = page<1 ? 1 :page;
-        if(page === this.state.page){
+        if(page === this.state.page || page > this.state.pageSize){
             return;
         }
         this.setState({page: page});

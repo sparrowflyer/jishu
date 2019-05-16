@@ -23,6 +23,8 @@ public interface PurchaseContactMapper {
     
     public List<PurchaseContact> findByStatuses(@Param(value="statuses") List<String> statuses, int userId);
     
+    public List<PurchaseContact> findAllByStatuses(@Param(value="statuses") List<String> statuses);
+
     public Map<String, Object> findAvgScoresForSeller(Map<String, Object> conditions);
     
     public List<PurchaseContact> findCommentedOrders(Map<String, Object> conditions);

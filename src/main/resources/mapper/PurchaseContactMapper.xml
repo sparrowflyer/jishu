@@ -78,6 +78,16 @@
 	        </foreach>
     </select>
     
+     <select id="findAllByStatuses"  resultMap="purchaseContactResultMap">
+    	select *
+    	from jishu.T_PURCHASE_CONTACT
+    	where status in
+    		<foreach collection="statuses" index="index" item="item"
+	            open="(" separator="," close=")">
+	            #{item}
+	        </foreach>
+    </select>
+    
     <select id="findAvgScoresForSeller" parameterType="java.util.Map" resultType="java.util.Map">
     	select AVG(SCORE_RESPONSE) as AVG_SCORE_RESPONSE, 
     			AVG(SCORE_ATTITUDE) as AVG_SCORE_ATTITUDE, 

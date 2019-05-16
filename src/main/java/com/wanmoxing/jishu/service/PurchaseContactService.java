@@ -19,6 +19,8 @@ public interface PurchaseContactService {
     
     public List<PurchaseContact> findByStatuses(List<String> statuses, int userId);
     
+    public List<PurchaseContact> findAllByStatuses(List<String> statuses);
+    
     public Map<String, Object> findAvgScoresForSeller(int sellerId);
     
     public List<PurchaseContact> findCommentedOrders(int sellerId, int pageNo, int pageAmount);

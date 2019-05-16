@@ -51,6 +51,11 @@ public class PurchaseContactServiceImpl implements PurchaseContactService {
 	public List<PurchaseContact> findByStatuses(List<String> statuses,int userId) {
 		return purchaseContactMapper.findByStatuses(statuses, userId);
 	}
+	
+	@Override
+	public List<PurchaseContact> findAllByStatuses(List<String> statuses) {
+		return purchaseContactMapper.findAllByStatuses(statuses);
+	}
 
 	@Override
 	public Map<String, Object> findAvgScoresForSeller(int sellerId) {

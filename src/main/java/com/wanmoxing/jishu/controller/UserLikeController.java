@@ -49,11 +49,22 @@ public class UserLikeController {
 			if (!CommonConstants.DEV_MODE && !CommUtil.isUserLogined(session)) {
 				result.setStatus(ResultDTOStatus.ERROR.getStatus());
 				result.setErrorMsg("用户未登录!");
+				return result;
 			}
 			
 			int userId = jsonParams.getInteger("userId");
 			int likeId = jsonParams.getInteger("likeId");
 			School school = schoolService.findById(likeId);
+			if (school == null) {
+				result.setStatus(ResultDTOStatus.ERROR.getStatus());
+				result.setErrorMsg("学校不存在!");
+				return result;
+			}
+			if (userLikeService.checkExist(userId, likeId, UserLikeType.SCHOOL)) {
+				result.setStatus(ResultDTOStatus.ERROR.getStatus());
+				result.setErrorMsg("您已经给该学校点过赞，无需重复点赞!");
+				return result;
+			}
 			
 			UserLike userLike = new UserLike();
 			userLike.setUserId(userId);
@@ -89,11 +100,22 @@ public class UserLikeController {
 			if (!CommonConstants.DEV_MODE && !CommUtil.isUserLogined(session)) {
 				result.setStatus(ResultDTOStatus.ERROR.getStatus());
 				result.setErrorMsg("用户未登录!");
+				return result;
 			}
 			
 			int userId = jsonParams.getInteger("userId");
 			int likeId = jsonParams.getInteger("likeId");
 			School school = schoolService.findById(likeId);
+			if (school == null) {
+				result.setStatus(ResultDTOStatus.ERROR.getStatus());
+				result.setErrorMsg("学校不存在!");
+				return result;
+			}
+			if (!userLikeService.checkExist(userId, likeId, UserLikeType.SCHOOL)) {
+				result.setStatus(ResultDTOStatus.ERROR.getStatus());
+				result.setErrorMsg("您没有给该学校点过赞!");
+				return result;
+			}
 			
 			UserLike userLike = new UserLike();
 			userLike.setUserId(userId);
@@ -129,11 +151,22 @@ public class UserLikeController {
 			if (!CommonConstants.DEV_MODE && !CommUtil.isUserLogined(session)) {
 				result.setStatus(ResultDTOStatus.ERROR.getStatus());
 				result.setErrorMsg("用户未登录!");
+				return result;
 			}
 			
 			int userId = jsonParams.getInteger("userId");
 			int likeId = jsonParams.getInteger("likeId");
 			User student = userService.findById(likeId);
+			if (student == null) {
+				result.setStatus(ResultDTOStatus.ERROR.getStatus());
+				result.setErrorMsg("学生不存在!");
+				return result;
+			}
+			if (userLikeService.checkExist(userId, likeId, UserLikeType.STUDENT)) {
+				result.setStatus(ResultDTOStatus.ERROR.getStatus());
+				result.setErrorMsg("您已经给该学生点过赞，无需重复点赞!");
+				return result;
+			}
 			
 			UserLike userLike = new UserLike();
 			userLike.setUserId(userId);
@@ -169,11 +202,22 @@ public class UserLikeController {
 			if (!CommonConstants.DEV_MODE && !CommUtil.isUserLogined(session)) {
 				result.setStatus(ResultDTOStatus.ERROR.getStatus());
 				result.setErrorMsg("用户未登录!");
+				return result;
 			}
 			
 			int userId = jsonParams.getInteger("userId");
 			int likeId = jsonParams.getInteger("likeId");
 			User student = userService.findById(likeId);
+			if (student == null) {
+				result.setStatus(ResultDTOStatus.ERROR.getStatus());
+				result.setErrorMsg("学生不存在!");
+				return result;
+			}
+			if (!userLikeService.checkExist(userId, likeId, UserLikeType.STUDENT)) {
+				result.setStatus(ResultDTOStatus.ERROR.getStatus());
+				result.setErrorMsg("您没有给该学生点过赞!");
+				return result;
+			}
 			
 			UserLike userLike = new UserLike();
 			userLike.setUserId(userId);

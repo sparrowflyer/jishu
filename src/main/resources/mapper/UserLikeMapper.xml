@@ -18,4 +18,19 @@
         DELETE FROM jishu.T_USER_LIKE WHERE USER_ID=#{userId} and LIKE_ID=#{likeId} and LIKE_TYPE=#{likeType}
     </delete>
     
+    <select id="find" parameterType="java.util.Map" resultMap="userLikeResultMap">
+    	SELECT *
+    	FROM jishu.T_USER_LIKE
+    	WHERE 1 = 1
+    	<if test=" userId != null ">
+        	and USER_ID = #{userId}
+        </if>
+        <if test=" likeId != null ">
+        	and LIKE_ID = #{likeId}
+        </if>
+        <if test=" likeType != null and likeType != '' ">
+        	and LIKE_TYPE = #{likeType}
+        </if>
+    </select>
+    
 </mapper>

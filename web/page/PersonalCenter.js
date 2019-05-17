@@ -1,12 +1,10 @@
 import React from 'react';
-import { Avator as AvatorWeb } from '../component/Avator/Web.js';
-import { Avator as AvatorMobile } from '../component/Avator/Mobile.js';
 import { withRouter } from 'react-router';
 import { withAlert } from 'react-alert';
+import { Avator } from '../component/Avator.js';
 import { Item } from '../component/Item.js';
-import { getUser } from '../utils/http.js';
+import { postUrl } from '../utils/http.js';
 
-const test_tabTitles = ['粉丝列表','我的关注','我的订单'/*,'我的课程','我的帖子','我的收藏'*/];
 const contents = [0,1,2,3,4];
 
 class PersonalCenter extends React.Component {
@@ -14,28 +12,11 @@ class PersonalCenter extends React.Component {
         super(props);
         this.state = {
             width: document.documentElement.clientWidth || document.body.clientWidth || window.innerWidth,
-            avator: {}
+            userID: '',
+            following: [],
+            fans: []
         };
-        this.getUser = this.getUser.bind(this);
         this.updateDimensions = this.updateDimensions.bind(this);
-    }
-    getUser(userID) {
-        getUser(userID)
-            .then(response => {
-                let data = response.data;
-                if (data.status === 'success') {
-                    this.setState((state) => {
-                        return {
-                            ...state,
-                            avator: data.data
-                        }
-                    });
-                } else {
-                    this.props.alert.error(`获取${userID}的个人信息失败,原因为${data.errorMsg || `${response.status}${response.statusText}`}`);
-                }
-            }).catch(error => {
-                console.error('获取个人信息', error);
-            });
     }
     componentDidMount() {
         let userID = '';
@@ -45,7 +26,9 @@ class PersonalCenter extends React.Component {
             sessionStorage.removeItem('jeeUser');
         }
         if (userID) {
-            this.getUser(userID);
+            this.setState((state) => {
+               return { ...state, userID }
+            });
             window.addEventListener('resize', this.updateDimensions);
         } else {
             this.props.history.push('/');
@@ -54,10 +37,31 @@ class PersonalCenter extends React.Component {
     updateDimensions() {
         var width = document.documentElement.clientWidth || document.body.clientWidth || window.innerWidth;
         this.setState((state) => {
-            return {
-                ...state,
-                width
-            };
+            return { ...state, width };
+        });
+    }
+    getFans(likeStudentId, pageNo, pageAmount) {
+        this.setState((state) => {
+           return {
+               ...state,
+               fans: []
+           }
+        });
+        postUrl('/likeStudentUserList', {
+            likeStudentId,
+            pageNo,
+            pageAmount
+        }).then((response) => {
+            if (response.status === 200) {
+                this.setState((state) => {
+                    return {
+                        ...state,
+                        fans: response
+                    }
+                });
+            }
+        }).catch((error) => {
+            console.error('获取粉丝列表：', error);
         });
     }
     componentWillUnmount() {
@@ -66,15 +70,11 @@ class PersonalCenter extends React.Component {
     render() {
         return (
             <div>
-                { this.state.width > 768 ? <AvatorWeb {...this.state.avator} parent="PersonalCenter" /> : <AvatorMobile {...this.state.avator} parent="PersonalCenter" /> }
+                <Avator parent="PersonalCenter" isWeb={this.state.width > 768} userID={this.state.userID} />
                 <div className="personal-center_tab-title-container">
-                    {
-                        test_tabTitles.map((title, index) => {
-                            return (
-                                <span key={title} className={index === 0 ? 'tab-title__selected' : 'tab-title'}>{title}</span>
-                            );
-                        })
-                    }
+                    <span className='tab-title__selected' onClick=''>粉丝列表</span>
+                    <span className='tab-title' onClick=''>我的关注</span>
+                    <span className='tab-title' onClick=''>我的订单</span>
                 </div>
                 <div className="personal-center-content">
                     {

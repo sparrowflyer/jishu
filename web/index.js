@@ -10,6 +10,7 @@ const alertOptions = {
     transition: 'scale'
 };
 
+//redux
 const Root = () => (
     <AlertProvider template={AlertTemplate} {...alertOptions}>
         <Routers />

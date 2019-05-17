@@ -130,7 +130,7 @@
 .desc:before {
     font-family: 'icomoon';
     color: #FFE201;
-    content: "\e977";
+    content: "\e979";
     font-size: .11rem;
     position: absolute;
     left: -.4rem;
@@ -140,7 +140,7 @@
 .desc:after {
     font-family: 'icomoon';
     color: #FFE201;
-    content: "\e978";
+    content: "\e97a";
     font-size: .11rem;
     position: absolute;
     right: -.4rem;

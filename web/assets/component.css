@@ -190,7 +190,9 @@
 /* 图片轮播 */
 .carousel-wrap{
     position: relative;
+    overflow: hidden;
     width: 100%;
+    color:rgba(255,255,255,1);
 }
 .next-btn,.pre-btn{
     position: absolute;
@@ -198,6 +200,17 @@
 }
 .next-btn img,.pre-btn img{
     width:100%;
+    height: auto;
+}
+.img-list{
+    position: absolute;
+    top: 0;
+    height: 100%;
+    display: flex;
+}
+.item-wrap{
+    position: relative;
+    height:100%;
 }
 
 .next-btn .active,.pre-btn .active{
@@ -218,6 +231,19 @@
 .img-list img{
     width: 100%;
     height: auto;
+}
+
+.itemCnt-wrap{
+    position: absolute;
+}
+.item-title{
+    font-weight:600;
+}
+.item-time,.item-desc{
+    font-weight:600;
+}
+.arrows{
+    z-index: 111;
 }
 .circle-btn{
     position:absolute;
@@ -301,6 +327,9 @@
     }
 
     /* 图片轮播 */
+    .carousel-wrap{
+        height: 10.8rem;
+    }
     .next-btn,.pre-btn{
         width: 0.91rem;
         height: 0.91rem;
@@ -308,11 +337,29 @@
     .pre-btn{
         left:.85rem;
     }
-
+    .arrows{
+        width: .91rem;
+        height: .91rem;
+    }
     .next-btn{
         right:.84rem;
     }
-
+    .itemCnt-wrap{
+        top: 2.99rem;
+        right: 1.49rem;
+        width: 8.11rem;
+    }
+    .item-title{
+        font-size:.64rem;
+        line-height:.9rem;
+    }
+    .item-time,.item-desc{
+        font-size:.3rem;
+        line-height:.42rem;
+    }
+    .item-time{
+        margin: .31rem 0 .58rem;
+    }
     .circle-btn button{
         width:16px;
         height:16px;
@@ -363,6 +410,9 @@
         font-size:.05em;
     }
     /* 图片轮播 */
+    .carousel-wrap{
+        height: 2.11rem;
+    }
     .next-btn,.pre-btn{
         width: 0.18rem;
         height: 0.18rem;
@@ -373,7 +423,26 @@
     .next-btn{
         right:.13rem;
     }
-
+    .arrows{
+        width: .18rem;
+        height: .18rem;
+    }
+    .itemCnt-wrap{
+        top: .55rem;
+        right: .31rem;
+        width: 1.56rem;
+    }
+    .item-title{
+        font-size:.17rem;
+        line-height:.24rem;
+    }
+    .item-time,.item-desc{
+        font-size:.08rem;
+        line-height:.11rem;
+    }
+    .item-time{
+        margin: .03rem 0 .08rem;
+    }
     .circle-btn button{
         width:.03rem;
         height:.03rem;

@@ -59,18 +59,20 @@ export class HomePage extends React.Component {
                     </div>
                     <div className="cards-wrap">
                         <ul className="card-list">
-                            {studentArr.map(stu => {
-                                return <li>
-                                    <div className="person-pic">
-                                        <img src={stu.img} alt=""/>
-                                        <div className="stu-desc">{stu.desc}</div>
-                                    </div>
-                                    <div className="person-name">
-                                        <Link to="/StudentDetail">{stu.name}</Link>
-                                        <div className="person-uni"><Link to="/collegeDetail">{stu.university}</Link></div>
-                                    </div>
-                                 </li>
-                            })}
+                            {
+                                studentArr.map((stu,idx) => {
+                                    return <li key={idx}>
+                                        <div className="person-pic">
+                                            <img src={stu.img} alt=""/>
+                                            <div className="stu-desc">{stu.desc}</div>
+                                        </div>
+                                        <div className="person-name">
+                                            <Link to="/StudentDetail">{stu.name}</Link>
+                                            <div className="person-uni"><Link to="/collegeDetail">{stu.university}</Link></div>
+                                        </div>
+                                     </li>
+                                })
+                            }
                         </ul>
                     </div>
                     <div className="ta-center">

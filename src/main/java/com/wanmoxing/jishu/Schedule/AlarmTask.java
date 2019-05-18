@@ -109,17 +109,17 @@ public class AlarmTask {
 							smsParams.put("purchaseContactPaymentAmount", String.valueOf(purchaseContact.getPaymentAmount()));
 							smsParams.put("seller", seller.getNickName());
 							smsParams.put("randomCode", purchaseContact.getRandomCode());
-							CellphoneUtil.sendSmsByTemplate(user.getCellPhone(), "SMS_164513455", smsParams);
+							CellphoneUtil.sendSmsByTemplate(user.getCellPhone(), "SMS_164508423", smsParams);
 						} else if(!CommUtil.isEmptyOrNull(user.getEmail())) {
 							StringBuffer messageToNotifySeller = new StringBuffer();
-							messageToNotifySeller.append("您有一个新的订单需要您完成\n")
+							messageToNotifySeller.append("订单超过12小时仍未完成\n")
 												.append("订单类型： 购买联系方式\n")
 												.append("订单ID： ").append(purchaseContact.getId()).append("\n")
 												.append("订单时间： ").append(purchaseContact.getCreatedTime()).append("\n")
 												.append("订单金额： ").append(purchaseContact.getPaymentAmount()).append("\n")
 												.append("卖家ID： ").append(seller.getNickName()).append("\n")
 												.append("随机码： ").append(purchaseContact.getRandomCode()).append("\n");
-							EmailUtil.sendEmail(user.getEmail(), "您有一个新的订单需要您完成！", messageToNotifySeller.toString());
+							EmailUtil.sendEmail(user.getEmail(), "订单超过12小时仍未完成！", messageToNotifySeller.toString());
 						}
 				    }
 				}

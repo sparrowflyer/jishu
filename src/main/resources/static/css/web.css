@@ -72,8 +72,28 @@
     margin: -1rem auto .4rem auto;
     background: #eee no-repeat center;
     position: relative;
+    overflow: hidden;
 }
-
+.avator-img{
+    width:100%;
+    height:100%;
+    /*-webkit-border-radius: 50%;*/
+    /*-moz-border-radius: 50%;*/
+    /*border-radius: 50%;*/
+}
+.avator-edit{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    font-size: .24rem;
+    background: #999;
+    opacity: .8;
+    line-height: .6rem;
+    width: 100%;
+    color: #fff;
+    text-align: center;
+    height: .6rem;
+}
 .avator_note {
     width: .8rem;
     height: .6rem;
@@ -125,6 +145,7 @@
     margin: .35rem auto 0 auto;
     color: #848484;
     position: relative;
+    min-height: .28rem;
 }
 
 .desc:before {
@@ -362,23 +383,25 @@
     justify-content: space-between;
     align-items: center;
 }
-
-.tab-title {
+.tab-title__selected,.tab-title{
+    display: inline-block;
+    width: 1.8rem;
+    height: .6rem;
+    text-align: center;
+    box-sizing: border-box;
     font-size: .24rem;
-    line-height: .33rem;
+    line-height: .6rem;
+}
+.tab-title {
+    /*line-height: .33rem;*/
     color: #848484;
 }
 
 .tab-title__selected {
-    display: inline-block;
-    width: 1.8rem;
-    height: .6rem;
     background-color: #FFE201;
     color: #303030;
     border-radius: .44rem;
-    font-size: .24rem;
-    line-height: .6rem;
-    text-align: center;
+    /*line-height: .6rem;*/
 }
 
 .personal-center-content {

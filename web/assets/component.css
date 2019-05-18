@@ -72,6 +72,7 @@
 }
 
 .header-user{
+    display: inline-block;
     font-weight:400;
     color:rgba(48,48,48,1);
 }
@@ -230,7 +231,7 @@
 
 .img-list img{
     width: 100%;
-    height: auto;
+    /*height: auto;*/
 }
 
 .itemCnt-wrap{
@@ -344,6 +345,9 @@
     .next-btn{
         right:.84rem;
     }
+    .img-list img{
+        height:10.8rem;
+    }
     .itemCnt-wrap{
         top: 2.99rem;
         right: 1.49rem;
@@ -426,6 +430,9 @@
     .arrows{
         width: .18rem;
         height: .18rem;
+    }
+    .img-list img{
+        height:2.11rem;
     }
     .itemCnt-wrap{
         top: .55rem;

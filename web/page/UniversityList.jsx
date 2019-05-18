@@ -40,15 +40,18 @@ export class UniversityList extends React.Component {
 
     getUniversityList(page,country,school){
         const params = { 
-            "country": country || this.state.country,
+            "country": country === "none" ? "" : !country ? this.state.country : country,
             "pageNo": page || 1,
             "pageAmount": 12,
-            "schoolNamePart": school || "",
+            "schoolNamePart": school || this.state.searchValue,
             "needTotalAmount": "Y"
              };
 
         getSchools(params).then( resp => {
                 if(resp.status === 200){
+                    if(school) this.setState({
+                        searchValue:""
+                    });
                     console.log("getSchools",resp);
                     let page = resp.data.data && resp.data.data.totalAmount && resp.data.data.totalAmount /12;
                     this.setState({
@@ -84,10 +87,11 @@ export class UniversityList extends React.Component {
 
     //国家切换
     changeCountry (coun){
-        if(coun === this.state.country) {
+        let c = coun === "none" ? "" : coun;
+        if(c === this.state.country) {
             return;
         }
-        this.setState({country:coun,page:1});
+        this.setState({country:c,page:1});
         this.getUniversityList(1,coun);
     }
 
@@ -127,7 +131,7 @@ export class UniversityList extends React.Component {
                 <div className="filter-wrap">
                     <ul className="nation-list">
                         <li  className="nation-title">国家</li>
-                        <li className={country==='' ? "nation-item active" : "nation-item"} onClick={this.changeCountry.bind(this,"")}>
+                        <li className={country==='' ? "nation-item active" : "nation-item"} onClick={this.changeCountry.bind(this,"none")}>
                             <img src={require("./../assets/images/diqiu@2x.png")} alt=""/>
                             不限
                         </li>
@@ -154,7 +158,7 @@ export class UniversityList extends React.Component {
                         <li className="clearfloat"></li>
                     </ul>
                     <div className="search-wrap">
-                        <input className={this.state.searchBlock ? 'active': ''} onBlur={this.searchSchool}  defaultValue={this.state.searchValue} placeholder="输入大学名称搜索" type="text"/>
+                        <input className={this.state.searchBlock ? 'active': ''} onBlur={this.searchSchool} value={this.state.searchValue} placeholder="输入大学名称搜索" type="text"/>
                         <img onClick={this.resize} src={require("./../assets/images/搜索@2x.png")} alt=""/>
                     </div>
                     {/*<div className="clearfloat"></div>*/}

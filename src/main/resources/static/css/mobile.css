@@ -392,6 +392,24 @@
     justify-content: space-between;
     align-content: space-between;
 }
+.personal-center-content-fan {
+    margin: 0 .16rem;
+}
+
+.personal-center-fan{
+    margin-bottom: .2rem;
+}
+.personal-center-fan img{
+    width: .5rem;
+    height: .5rem;
+    border-radius: 50%;
+}
+.personal-center-fan span{
+    font-size: .14rem;
+    line-height: .5rem;
+    margin-left: .1rem;
+    color: #333;
+}
 
 .item-container {
     width: 1.65rem;

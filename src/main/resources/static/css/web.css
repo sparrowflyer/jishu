@@ -411,6 +411,24 @@
     justify-content: space-between;
     align-content: space-between;
 }
+.personal-center-content-fan {
+    margin: 0 2.95rem;
+}
+
+.personal-center-fan{
+    margin-bottom: .2rem;
+}
+.personal-center-fan img{
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+}
+.personal-center-fan span{
+    font-size: .3rem;
+    line-height: 1.5rem;
+    margin-left: .8rem;
+    color: #333;
+}
 
 .item-container {
     width: 4.1rem;

@@ -162,31 +162,39 @@ class PersonalCenter extends React.Component {
                         <span className={activeType===1?'tab-title__selected':'tab-title'} onClick={this.checkType.bind(this,1)}>已完成</span>
                     </div>
                 }
-                <div className="personal-center-content">
+                <div className={activeTab===2?"personal-center-content":"personal-center-content-fan"}>
                     {
                         activeTab===0 && fList.map((fan,index)=>{
-                        return <div key={index}>
-                            <img src={fan.img} alt=""/>
-                            <span>{fan.name||"--"}</span>
-                        </div>
+                            return <div className="personal-center-fan" key={index}>
+                                <img src={fan.img} alt=""/>
+                                <span>{fan.name||"--"}</span>
+                            </div>
                         })
                     }
                     {
                         activeTab===1 && fList.map((fol,index)=>{
-                            return <div key={index}>
+                            return <div className="personal-center-fan" key={index}>
                                 <img src={fol.img} alt=""/>
                                 <span>{fol.name}</span>
                             </div>
                         })
                     }
                     {
-                        activeTab===2 && contents.map((index) => {
-                            return (
-                                <Item key={index}/>
-                            );
-                        })
+                        activeTab===2 &&
+                            contents.map((index) => {
+                                return (
+                                    <Item key={index}/>
+                                );
+                            })
                     }
                 </div>
+                {
+                    activeTab!==2&&<div className="personal-center-content-fan">
+
+                    </div>
+                }
+
+
                 {
                     this.state.width > 768 ? <ModalWeb visible={visible} type={"Advisory"}/> : <ModalMobile visible={visible} type={"Advisory"}/>
                 }

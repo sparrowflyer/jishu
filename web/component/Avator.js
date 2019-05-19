@@ -127,8 +127,7 @@ export class Avator extends React.Component {
         return (
             <div>
                 <div className="avator_bg"></div>
-                <div className="avator">
-                    <img className="avator-img" src={"http://" + this.props.userInfo.headImage} alt=""/>
+                <div className="avator" style={{backgroundImage: 'url(http://' + this.props.userInfo.headImage +')'}}>
                     {
                         this.state.canEdit && <div className="avator-edit" onClick={this.onChangeImg}>
                             <input type="file" ref="fileInput" onChange={this.onChangeImg.bind(this)}/>
@@ -150,7 +149,7 @@ export class Avator extends React.Component {
                     }
                     {
                         !this.props.isCenter &&
-                            <div className="user_know-btn">认识他</div>
+                            <div className="user_know-btn" onClick={this.props.knowHim}>认识他</div>
                     }
                     {
                         this.props.parent === 'PersonalCenter' &&
@@ -191,7 +190,7 @@ export class Avator extends React.Component {
     }
 }
 
-Avator.PropTypes = {
+Avator.propTypes = {
     parent: PropTypes.oneOf(['PersonalCenter', 'StudentDetail']),
     isWeb: PropTypes.bool
 };

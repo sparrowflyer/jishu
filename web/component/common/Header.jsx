@@ -6,32 +6,37 @@ export class Header extends React.Component {
         super(props);
         this.state = {
             userInfo: {},
+            pathName:""
         };
+
     }
     componentDidMount() {
-        let user = localStorage.getItem("jeeUser") || sessionStorage.getItem("jeeUser");
-        if(!user)return;
+       let pathName = window.location.pathname;
+        let userInfo = sessionStorage.getItem("jeeUser");
+        // if(!userInfo)return;
         this.setState({
-            userInfo: JSON.parse(user)
+            userInfo: userInfo ? JSON.parse(userInfo) : {},
+            pathName: pathName
         })
+        console.log(userInfo)
     }
     render() {
-        const {userInfo} = this.state;
+        let userInfo = this.props.userInfo || this.state.userInfo;
         return (
             <div>
                 <div className="header-wrap">
                     {/* 登陆与否 */}
                     {
-                        userInfo ? <Link className="header-user fr" to="/PersonalCenter">
+                        userInfo.id ? <Link className="header-user fr" to="/PersonalCenter">
                             <img src={"http://" + userInfo.headImage} alt=""/>
                             <span>{userInfo.nickName}</span>
-                        </Link> : <div className="header-btn fr" to="/login">登录/注册</div>
+                        </Link> : <Link className="header-btn fr" to="/login">登录/注册</Link>
                     }
                     <ul className="header-menu fr">
-                        <li className="active">
+                        <li className={this.state.pathName==="/"?"active":""}>
                             <Link to="/">主页</Link>
                         </li>
-                        <li>
+                        <li className={this.state.pathName.indexOf("college")>0?"active":""}>
                             <Link to="/college">择校服务</Link>
                         </li>
                         {

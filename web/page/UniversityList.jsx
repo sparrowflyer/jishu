@@ -49,9 +49,9 @@ export class UniversityList extends React.Component {
 
         getSchools(params).then( resp => {
                 if(resp.status === 200){
-                    if(school) this.setState({
-                        searchValue:""
-                    });
+                    // if(school) this.setState({
+                    //     searchValue:""
+                    // });
                     console.log("getSchools",resp);
                     let page = resp.data.data && resp.data.data.totalAmount && resp.data.data.totalAmount /12;
                     this.setState({
@@ -158,7 +158,7 @@ export class UniversityList extends React.Component {
                         <li className="clearfloat"></li>
                     </ul>
                     <div className="search-wrap">
-                        <input className={this.state.searchBlock ? 'active': ''} onBlur={this.searchSchool} value={this.state.searchValue} placeholder="输入大学名称搜索" type="text"/>
+                        <input className={this.state.searchBlock ? 'active': ''} onChange={this.searchSchool} value={this.state.searchValue} placeholder="输入大学名称搜索" type="text"/>
                         <img onClick={this.resize} src={require("./../assets/images/搜索@2x.png")} alt=""/>
                     </div>
                     {/*<div className="clearfloat"></div>*/}

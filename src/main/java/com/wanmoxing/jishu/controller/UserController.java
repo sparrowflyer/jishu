@@ -31,7 +31,9 @@ import com.wanmoxing.jishu.service.SchoolService;
 import com.wanmoxing.jishu.service.UserNotificationService;
 import com.wanmoxing.jishu.service.UserService;
 import com.wanmoxing.jishu.service.UserStudentInfoService;
+import com.wanmoxing.jishu.util.CellphoneUtil;
 import com.wanmoxing.jishu.util.CommUtil;
+import com.wanmoxing.jishu.util.EmailUtil;
 
 @RestController
 @RequestMapping("/jishu")
@@ -368,6 +370,29 @@ public class UserController {
 				return result;
 			}
 			purchaseContactService.updateStatus(PurchaseContactStatus.SERVICED.getStatus(), purchaseContact.getId());
+			
+			User buyer =userService.findById(purchaseContact.getBuyerId());
+			User seller =userService.findById(purchaseContact.getSellerId());
+
+			if (CommUtil.isEmptyOrNull(buyer.getCellPhone())) {
+				Map<String, String> smsParams = new HashMap<String, String>();
+				smsParams.put("purchaseContactId", purchaseContact.getId());
+				smsParams.put("purchaseContactCreatedTime", purchaseContact.getCreatedTime().toString());
+				smsParams.put("purchaseContactPaymentAmount", String.valueOf(purchaseContact.getPaymentAmount()));
+				smsParams.put("seller", seller.getNickName());
+				smsParams.put("randomCode", purchaseContact.getRandomCode());
+				CellphoneUtil.sendSmsByTemplate(buyer.getCellPhone(), "SMS_164508423", smsParams);
+			} else if(!CommUtil.isEmptyOrNull(buyer.getEmail())) {
+				StringBuffer messageToNotifySeller = new StringBuffer();
+				messageToNotifySeller.append("您有一个新的订单需要您评价\n")
+									.append("订单类型： 购买联系方式\n")
+									.append("订单ID： ").append(purchaseContact.getId()).append("\n")
+									.append("订单时间： ").append(purchaseContact.getCreatedTime()).append("\n")
+									.append("订单金额： ").append(purchaseContact.getPaymentAmount()).append("\n")
+									.append("卖家ID： ").append(seller.getNickName()).append("\n")
+									.append("随机码： ").append(purchaseContact.getRandomCode()).append("\n");
+				EmailUtil.sendEmail(buyer.getEmail(), "您有一个新的订单需要您评价！", messageToNotifySeller.toString());
+			}
 			return result;
 		} catch (Exception e) {
 			e.printStackTrace();

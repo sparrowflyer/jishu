@@ -72,8 +72,28 @@
     margin: -1rem auto .4rem auto;
     background: #eee no-repeat center;
     position: relative;
+    overflow: hidden;
 }
-
+.avator-img{
+    width:100%;
+    height:100%;
+    /*-webkit-border-radius: 50%;*/
+    /*-moz-border-radius: 50%;*/
+    /*border-radius: 50%;*/
+}
+.avator-edit{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    font-size: .24rem;
+    background: #999;
+    opacity: .8;
+    line-height: .6rem;
+    width: 100%;
+    color: #fff;
+    text-align: center;
+    height: .6rem;
+}
 .avator_note {
     width: .8rem;
     height: .6rem;
@@ -125,6 +145,7 @@
     margin: .35rem auto 0 auto;
     color: #848484;
     position: relative;
+    min-height: .28rem;
 }
 
 .desc:before {
@@ -362,23 +383,25 @@
     justify-content: space-between;
     align-items: center;
 }
-
-.tab-title {
+.tab-title__selected,.tab-title{
+    display: inline-block;
+    width: 1.8rem;
+    height: .6rem;
+    text-align: center;
+    box-sizing: border-box;
     font-size: .24rem;
-    line-height: .33rem;
+    line-height: .6rem;
+}
+.tab-title {
+    /*line-height: .33rem;*/
     color: #848484;
 }
 
 .tab-title__selected {
-    display: inline-block;
-    width: 1.8rem;
-    height: .6rem;
     background-color: #FFE201;
     color: #303030;
     border-radius: .44rem;
-    font-size: .24rem;
-    line-height: .6rem;
-    text-align: center;
+    /*line-height: .6rem;*/
 }
 
 .personal-center-content {
@@ -387,6 +410,24 @@
     flex-wrap: wrap;
     justify-content: space-between;
     align-content: space-between;
+}
+.personal-center-content-fan {
+    margin: 0 2.95rem;
+}
+
+.personal-center-fan{
+    margin-bottom: .2rem;
+}
+.personal-center-fan img{
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+}
+.personal-center-fan span{
+    font-size: .3rem;
+    line-height: 1.5rem;
+    margin-left: .8rem;
+    color: #333;
 }
 
 .item-container {

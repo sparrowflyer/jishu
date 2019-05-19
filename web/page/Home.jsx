@@ -67,7 +67,7 @@ export class HomePage extends React.Component {
                                             <div className="stu-desc">{stu.desc}</div>
                                         </div>
                                         <div className="person-name">
-                                            <Link to="/StudentDetail">{stu.name}</Link>
+                                            <Link to={"/StudentDetail/"+stu.id}>{stu.name}</Link>
                                             <div className="person-uni"><Link to="/collegeDetail">{stu.university}</Link></div>
                                         </div>
                                      </li>

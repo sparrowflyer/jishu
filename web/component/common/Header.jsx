@@ -2,16 +2,31 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 export class Header extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            userInfo: {},
+        };
+    }
+    componentDidMount() {
+        let user = localStorage.getItem("jeeUser") || sessionStorage.getItem("jeeUser");
+        if(!user)return;
+        this.setState({
+            userInfo: JSON.parse(user)
+        })
+    }
     render() {
+        const {userInfo} = this.state;
         return (
             <div>
                 <div className="header-wrap">
                     {/* 登陆与否 */}
-                    {/*<div className="header-btn fr">登录/注册</div>*/}
-                    <div className="header-user fr">
-                        <img src={require("../../assets/images/GB@2x.png")} alt=""/>
-                        <span>name</span>
-                    </div>
+                    {
+                        userInfo ? <Link className="header-user fr" to="/PersonalCenter">
+                            <img src={"http://" + userInfo.headImage} alt=""/>
+                            <span>{userInfo.nickName}</span>
+                        </Link> : <div className="header-btn fr" to="/login">登录/注册</div>
+                    }
                     <ul className="header-menu fr">
                         <li className="active">
                             <Link to="/">主页</Link>

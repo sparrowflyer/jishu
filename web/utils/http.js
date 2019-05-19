@@ -43,3 +43,14 @@ export function postUrl(url, params) {
 export function getUser(userID) {
     return axios.get(`${baseUrl}/user?id=${userID}`);
 }
+
+//个人中心
+//获取未完成订单列表
+export function getUnOrder(params) {
+    return axios.post(baseUrl + '/getUncompletePerchaseContactOrder',params)
+
+}
+//获取已完成订单列表
+export function getDoOrder(params) {
+    return axios.post(baseUrl + '/getCompletedPerchaseContactOrder',params)
+}

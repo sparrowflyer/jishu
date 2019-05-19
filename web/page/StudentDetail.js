@@ -51,9 +51,9 @@ class StudentDetail extends React.Component {
                 <Avator parent="StudentDetail" isWeb={this.state.width > 768} userID={props.match.params.userID} />
                 <SubTitle cn="他的话题" en="Topic of conversation" top={spacing[0]} bottom={spacing[1]} />
                 <div className="conversation-container">
-                    <Conversation title="专业" desc={} />
-                    <Conversation title="话题" desc={} />
-                    <Conversation title="荣誉" desc={} />
+                    <Conversation title="专业" desc={""} />
+                    <Conversation title="话题" desc={""} />
+                    <Conversation title="荣誉" desc={""} />
                 </div>
                 <SubTitle cn="他的评价" en="Evaluation" top={spacing[2]} bottom={spacing[3]} />
                 <div className="evaluation-container">

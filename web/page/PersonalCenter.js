@@ -3,9 +3,29 @@ import { withRouter } from 'react-router';
 import { withAlert } from 'react-alert';
 import { Avator } from '../component/Avator.js';
 import { Item } from '../component/Item.js';
-import { postUrl } from '../utils/http.js';
+import { postUrl ,getUnOrder,getDoOrder} from '../utils/http.js';
+import  { ModalMobile } from '../component/Modal/Mobile.jsx';
+import  { ModalWeb } from '../component/Modal/Web.jsx';
+import {Footer} from '../component/common/Footer.jsx';
+import {Header} from '../component/common/Header.jsx';
 
-const contents = [0,1,2,3,4];
+const contents = [0,1,2,3,4],
+         fList = [{
+            name:"这是个假数据",
+            img:"http://cdn.unclejee.cn/20190118215849_614.jpg",
+        },{
+            name:"这是个假数据",
+            img:"http://cdn.unclejee.cn/20190118215849_614.jpg",
+        },{
+            name:"这是个假数据",
+            img:"http://cdn.unclejee.cn/20190118215849_614.jpg",
+        },{
+            name:"这是个假数据",
+            img:"http://cdn.unclejee.cn/20190118215849_614.jpg",
+        },{
+            name:"这是个假数据",
+            img:"http://cdn.unclejee.cn/20190118215849_614.jpg",
+        }];
 
 class PersonalCenter extends React.Component {
     constructor(props) {
@@ -14,21 +34,31 @@ class PersonalCenter extends React.Component {
             width: document.documentElement.clientWidth || document.body.clientWidth || window.innerWidth,
             userID: '',
             following: [],
-            fans: []
+            fans: [],
+            userInfo:{},
+            visible:false,
+            activeTab:2,
+            activeType:0,
+            orders:[],
         };
+        this.showModal = this.showModal.bind(this);
         this.updateDimensions = this.updateDimensions.bind(this);
+        this.getFans = this.getFans.bind(this);
+        this.getUncompleteOrder = this.getUncompleteOrder.bind(this);
+        this.getCompleteOrder = this.getCompleteOrder.bind(this);
     }
     componentDidMount() {
-        let userID = '';
+        let userInfo = '';
         try {
-            userID = JSON.parse(sessionStorage.getItem('jeeUser')).id
+            userInfo = JSON.parse(sessionStorage.getItem('jeeUser'))
         } catch (e) {
             sessionStorage.removeItem('jeeUser');
         }
-        if (userID) {
+        if (userInfo) {
             this.setState((state) => {
-               return { ...state, userID }
+               return { ...state, userInfo , userID:userInfo.id}
             });
+            // this.getFans(userInfo.id,1,10);
             window.addEventListener('resize', this.updateDimensions);
         } else {
             this.props.history.push('/');
@@ -53,10 +83,11 @@ class PersonalCenter extends React.Component {
             pageAmount
         }).then((response) => {
             if (response.status === 200) {
+                console.log("fans",response);
                 this.setState((state) => {
                     return {
                         ...state,
-                        fans: response
+                        fans: response.data
                     }
                 });
             }
@@ -64,27 +95,110 @@ class PersonalCenter extends React.Component {
             console.error('获取粉丝列表：', error);
         });
     }
+    getUncompleteOrder(id){
+        getUnOrder({id:id||this.state.userID}).then(resp=>{
+            console.log("获取未完成订单",resp)
+            if(resp.status === 200 && resp.data){
+                this.setState({
+                    orders: resp.data
+                })
+            }
+
+        }).catch(err=>{
+            console.log("获取未完成订单报错",err)
+        })
+    }
+    getCompleteOrder(id){
+        getDoOrder({id:id||this.state.userID}).then(resp=>{
+            console.log("获取已完成订单",resp)
+            if(resp.status === 200 && resp.data){
+                this.setState({
+                    orders: resp.data
+                })
+            }
+        }).catch(err=>{
+            console.log("获取已完成订单报错",err)
+        })
+    }
     componentWillUnmount() {
         window.removeEventListener('resize', this.updateDimensions);
     }
+    checkTab(i){
+        this.setState({
+            activeTab: i
+        })
+        if(i===0){
+            this.getFans(this.state.userID,1,10);
+        }
+    }
+    checkType(idx){
+        this.setState({
+            activeType: idx
+        })
+        idx===0 ? this.getUncompleteOrder():this.getCompleteOrder();
+    }
+    showModal() {
+        this.setState(state => {
+            return {
+                ...state,
+                visible: true
+            }
+        })
+    }
     render() {
+        const {userInfo,userID,visible,activeTab,fans,following,activeType} = this.state;
         return (
             <div>
-                <Avator parent="PersonalCenter" isWeb={this.state.width > 768} userID={this.state.userID} />
+                <Header></Header>
+                <Avator parent="PersonalCenter" showModal={this.showModal} isCenter={true} isWeb={this.state.width > 768} userInfo={userInfo} userID={userID} />
                 <div className="personal-center_tab-title-container">
-                    <span className='tab-title__selected' onClick=''>粉丝列表</span>
-                    <span className='tab-title' onClick=''>我的关注</span>
-                    <span className='tab-title' onClick=''>我的订单</span>
+                    <span className={activeTab===0?'tab-title__selected':'tab-title'} onClick={this.checkTab.bind(this,0)}>粉丝列表</span>
+                    <span className={activeTab===1?'tab-title__selected':'tab-title'} onClick={this.checkTab.bind(this,1)}>我的关注</span>
+                    <span className={activeTab===2?'tab-title__selected':'tab-title'} onClick={this.checkTab.bind(this,2)}>我的订单</span>
                 </div>
-                <div className="personal-center-content">
+                {
+                    activeTab === 2 &&  <div className="personal-center_tab-title-container" style={{justifyContent: "flex-start"}}>
+                        <span style={{marginRight:".2rem",}} className={activeType===0?'tab-title__selected':'tab-title'} onClick={this.checkType.bind(this,0)}>未完成</span>
+                        <span className={activeType===1?'tab-title__selected':'tab-title'} onClick={this.checkType.bind(this,1)}>已完成</span>
+                    </div>
+                }
+                <div className={activeTab===2?"personal-center-content":"personal-center-content-fan"}>
                     {
-                        contents.map((content, index) => {
-                            return (
-                                <Item key={index} />
-                            );
+                        activeTab===0 && fList.map((fan,index)=>{
+                            return <div className="personal-center-fan" key={index}>
+                                <img src={fan.img} alt=""/>
+                                <span>{fan.name||"--"}</span>
+                            </div>
                         })
                     }
+                    {
+                        activeTab===1 && fList.map((fol,index)=>{
+                            return <div className="personal-center-fan" key={index}>
+                                <img src={fol.img} alt=""/>
+                                <span>{fol.name}</span>
+                            </div>
+                        })
+                    }
+                    {
+                        activeTab===2 &&
+                            contents.map((index) => {
+                                return (
+                                    <Item key={index}/>
+                                );
+                            })
+                    }
                 </div>
+                {
+                    activeTab!==2&&<div className="personal-center-content-fan">
+
+                    </div>
+                }
+
+
+                {
+                    this.state.width > 768 ? <ModalWeb visible={visible} type={"Advisory"}/> : <ModalMobile visible={visible} type={"Advisory"}/>
+                }
+                <Footer></Footer>
             </div>
         );
     }

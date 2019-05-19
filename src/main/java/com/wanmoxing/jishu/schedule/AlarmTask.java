@@ -1,4 +1,4 @@
-package com.wanmoxing.jishu.Schedule;
+package com.wanmoxing.jishu.schedule;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;

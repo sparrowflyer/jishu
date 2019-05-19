@@ -40,3 +40,4 @@ hs_err_pid*
 # idea config files
 .idea/*
 jishu.iml
+/target/

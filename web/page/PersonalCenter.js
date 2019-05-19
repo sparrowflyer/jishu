@@ -8,6 +8,7 @@ import  { ModalMobile } from '../component/Modal/Mobile.jsx';
 import  { ModalWeb } from '../component/Modal/Web.jsx';
 import {Footer} from '../component/common/Footer.jsx';
 import {Header} from '../component/common/Header.jsx';
+import {getUser} from "../utils/http";
 
 const contents = [0,1,2,3,4],
          fList = [{
@@ -46,6 +47,7 @@ class PersonalCenter extends React.Component {
         this.getFans = this.getFans.bind(this);
         this.getUncompleteOrder = this.getUncompleteOrder.bind(this);
         this.getCompleteOrder = this.getCompleteOrder.bind(this);
+        this.getUser = this.getUser.bind(this);
     }
     componentDidMount() {
         let userInfo = '';
@@ -58,7 +60,7 @@ class PersonalCenter extends React.Component {
             this.setState((state) => {
                return { ...state, userInfo , userID:userInfo.id}
             });
-            // this.getFans(userInfo.id,1,10);
+            this.getUser(userInfo.id);
             window.addEventListener('resize', this.updateDimensions);
         } else {
             this.props.history.push('/');
@@ -120,6 +122,27 @@ class PersonalCenter extends React.Component {
             console.log("获取已完成订单报错",err)
         })
     }
+    getUser(userID) {
+        // if (!userID) return;
+        getUser(userID||this.state.userID)
+            .then(response => {
+                let data = response.data;
+                if (data.status === 'success') {
+                    this.setState((state) => {
+                        return {
+                            ...state,
+                            userInfo: data.data
+                        }
+                    });
+                    sessionStorage.removeItem("jeeUser");
+                    sessionStorage.setItem("jeeUser",JSON.stringify(data.data));
+                } else {
+                    this.alert.error(`获取${userID}的个人信息失败,原因为${data.errorMsg || `${response.status}${response.statusText}`}`);
+                }
+            }).catch(error => {
+            console.error('获取个人信息', error);
+        });
+    }
     componentWillUnmount() {
         window.removeEventListener('resize', this.updateDimensions);
     }
@@ -146,11 +169,11 @@ class PersonalCenter extends React.Component {
         })
     }
     render() {
-        const {userInfo,userID,visible,activeTab,fans,following,activeType} = this.state;
+        const {userInfo,userID,visible,activeTab,activeType} = this.state;
         return (
             <div>
-                <Header></Header>
-                <Avator parent="PersonalCenter" showModal={this.showModal} isCenter={true} isWeb={this.state.width > 768} userInfo={userInfo} userID={userID} />
+                <Header userInfo={userInfo}></Header>
+                <Avator parent="PersonalCenter" showModal={this.showModal} isCenter={true} updateUserInfo={this.getUser} isWeb={this.state.width > 768} userInfo={userInfo} userID={userID} />
                 <div className="personal-center_tab-title-container">
                     <span className={activeTab===0?'tab-title__selected':'tab-title'} onClick={this.checkTab.bind(this,0)}>粉丝列表</span>
                     <span className={activeTab===1?'tab-title__selected':'tab-title'} onClick={this.checkTab.bind(this,1)}>我的关注</span>
@@ -193,7 +216,6 @@ class PersonalCenter extends React.Component {
 
                     </div>
                 }
-
 
                 {
                     this.state.width > 768 ? <ModalWeb visible={visible} type={"Advisory"}/> : <ModalMobile visible={visible} type={"Advisory"}/>

@@ -37,10 +37,16 @@ export class HomePage extends React.Component {
         super(props);
         this.state = {
             width: document.documentElement.clientWidth || document.body.clientWidth || window.innerWidth,
-            studentList: students
+            studentList: students,
         };
     }
-    componentDidMount() {}
+    // componentDidMount() {
+    //     let userInfo = localStorage.getItem("jeeUser") || sessionStorage.getItem("jeeUser");
+    //     if(!userInfo)return;
+    //     this.setState({
+    //         userInfo: JSON.parse(userInfo)
+    //     })
+    // }
 
     render() {
         const {studentList,width} = this.state;

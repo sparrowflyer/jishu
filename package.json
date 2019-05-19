@@ -11,6 +11,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "prop-types": "^15.7.2",
+    "qiniu-js": "^2.5.4",
     "react": "^16.8.6",
     "react-alert": "^5.5.0",
     "react-alert-template-basic": "^1.0.0",

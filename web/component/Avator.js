@@ -1,63 +1,111 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { getUser } from '../utils/http.js';
+import { getUser,updateUserHeadImage,updateUserComment,updateUserNickname,uploadImage } from '../utils/http.js';
 import { getBg, getIterativeValue } from '../utils/utils.jsx';
 
 export class Avator extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            avator: null,
-            // userInfo: {},
+            // avator: null,
             canEdit:false,
             imgFile: '',
+            editName:'',
+            editComment:'',
             renderState:'',
         };
-        this.getUser = this.getUser.bind(this);
         this.getAverageScore = this.getAverageScore.bind(this);
         this.onChangeImg = this.onChangeImg.bind(this);
         this.editInfo = this.editInfo.bind(this);
+        this.updateUserHeadImage = this.updateUserHeadImage.bind(this);
+        this.updateUserComment = this.updateUserComment.bind(this);
+        this.updateUserNickname = this.updateUserNickname.bind(this);
+        this.onChangeComment = this.onChangeComment.bind(this);
     }
-    getUser(userID) {
-        if (!userID) return;
-        getUser(userID)
-            .then(response => {
-                let data = response.data;
-                if (data.status === 'success') {
-                    this.setState((state) => {
-                        return {
-                            ...state,
-                            avator: data.data
-                        }
-                    });
-                } else {
-                    this.props.alert.error(`获取${userID}的个人信息失败,原因为${data.errorMsg || `${response.status}${response.statusText}`}`);
-                }
-            }).catch(error => {
-                console.error('获取个人信息', error);
-            });
-    }
-    editInfo(){
+    editInfo(bool){
+        let {imgFile,editName,editComment} = this.state;
         this.setState((state) => {
             return {
                 ...state,
-                canEdit:true
+                canEdit: !bool
+            }
+        });
+        if(bool){
+            imgFile && this.updateUserHeadImage(imgFile);
+            editName && this.updateUserNickname(editName);
+            editComment && this.updateUserComment(editComment);
+            // this.props.updateUserInfo();
+        }
+    }
+    onChangeImg(e){ //选择上传图片
+        let file = e.target.files[0];
+        this.setState((state) => {
+            return {
+                ...state,
+                imgFile: file
             }
         });
     }
-    onChangeImg(){ //选择上传图片
-        this.previewImg();
+    onChangeName(e){
+        // let value = e.target.value;
+        this.setState({
+            editName: e.target.value
+        })
+        // this.updateUserNickname(value);
     }
-    previewImg() {//本地预览
-        const that = this;
-        const file = this.state.imgFile;
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = function (e) {
-            that.setState({ renderState: "upload", imgSrc: this.result })
+    onChangeComment(e){
+        this.setState({
+            editComment:e.target.value
+        })
+    }
+    updateUserHeadImage(img){ //更新头像
+        if(img){
+            // let url=null;
+            uploadImage(img).then(res=> {
+                if(res.data.data){
+                    // url=res.data;
+                    updateUserHeadImage({
+                        id: this.props.userID,
+                        headImage: res.data.data
+                    }).then(resp=>{
+                        console.log("更新头像",resp)
+                        if(resp.data.status==="success"){
+                            this.props.updateUserInfo();
+                        }
+                    }).catch(err=>{
+                        console.log("更新头像报错",err)
+                    })
+                }
+            }).catch(err=>{console.log("上传头像报错",err)});
         }
-    }
 
+    }
+    updateUserComment(cnt){ //更新签名
+        updateUserComment({
+            id: this.props.userID,
+            comment: cnt
+        }).then(response=>{
+            console.log("更新签名",response)
+            if(response.data.status==="success"){
+                this.props.updateUserInfo();
+            }
+        }).catch(err=>{
+            console.log("更新签名报错",err)
+        })
+    }
+    updateUserNickname(name){ //更新昵称
+        updateUserNickname({
+            id: this.props.userID,
+            nickName: name
+        }).then(response=>{
+            console.log("更新昵称",response)
+            if(response.data.status==="success"){
+                this.props.updateUserInfo();
+            }
+        }).catch(err=>{
+            console.log("更新昵称报错",err)
+        })
+    }
 
     getAverageScore(student) {
         if (!student) return '0.0';
@@ -71,6 +119,9 @@ export class Avator extends React.Component {
         if (this.props.userID !== prevProps.userID) {
             getUser(this.props.userID);
         }
+        // if(this.props.userInfo !== prevProps.userInfo){
+        //     sessionStorage.setItem()
+        // }
     }
     render(){
         return (
@@ -80,8 +131,8 @@ export class Avator extends React.Component {
                     <img className="avator-img" src={"http://" + this.props.userInfo.headImage} alt=""/>
                     {
                         this.state.canEdit && <div className="avator-edit" onClick={this.onChangeImg}>
-                            <input type="file" ref="fileInput" onChange={this.onChangeImg}/>
-                            更新照片
+                            <input type="file" ref="fileInput" onChange={this.onChangeImg.bind(this)}/>
+                           <div>更新照片</div>
                         </div> 
                     }
                     {/*<FileInput btnValue={"更新照片"} className={"avator-edit"} onChange={this.onChangeImg} multiple={false} />*/}
@@ -92,21 +143,30 @@ export class Avator extends React.Component {
                     }
                 </div>
                 <div className="user">
-                    <div className="user_name">{this.props.userInfo.nickName || ''}</div>
+                    {
+                        this.state.canEdit ? <div className="user_name">
+                            <input type="text" defaultValue={this.props.userInfo.nickName} onChange={this.onChangeName.bind(this)}/>
+                        </div> : <div className="user_name">{this.props.userInfo.nickName || ''}</div>
+                    }
                     {
                         !this.props.isCenter &&
                             <div className="user_know-btn">认识他</div>
                     }
                     {
                         this.props.parent === 'PersonalCenter' &&
-                            <div className="jee-edit user_edit-icon" onClick={this.editInfo}></div>
+                        (this.state.canEdit ? <div className="user_edit-icon tab-title__selected" onClick={this.editInfo.bind(this,true)}>确认修改</div>:
+                            <div className="jee-edit user_edit-icon" onClick={this.editInfo.bind(this,false)}></div>)
+
                     }
                 </div>
                 <div className="school">{getIterativeValue(this.props.userInfo, 'school.cnNameisExistInVariable')}</div>
                 {
                     this.props.isWeb &&
                         <div className="desc-container">
-                            <span className="desc">{this.props.userInfo.comment || "暂无个人简介"}</span>
+                            {
+                                this.state.canEdit ? <input type="text" defaultValue={this.props.userInfo.comment} onChange={this.onChangeComment.bind(this)}/> :
+                                <span className="desc">{this.props.userInfo.comment || "暂无签名"}</span>
+                            }
                             {/*{getIterativeValue(this.props.userInfo, 'userStudentInfo.description')}*/}
                         </div>
                 }

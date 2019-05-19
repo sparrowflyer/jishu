@@ -54,3 +54,21 @@ export function getUnOrder(params) {
 export function getDoOrder(params) {
     return axios.post(baseUrl + '/getCompletedPerchaseContactOrder',params)
 }
+// 更新头像
+export function updateUserHeadImage(params) {
+    return axios.post(baseUrl + '/updateUserHeadImage',params)
+}
+//更新签名
+export function updateUserComment(params) {
+    return axios.post(baseUrl + '/updateUserComment',params)
+}
+//更新昵称
+export function updateUserNickname(params) {
+    return axios.post(baseUrl + '/updateUserNickname',params)
+}
+//获取头像图片的url
+export function uploadImage(file) {
+    let fileData = new FormData();
+    fileData.append('file', file);
+    return axios.post(baseUrl + '/upload',fileData)
+}

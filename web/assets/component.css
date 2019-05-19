@@ -76,6 +76,10 @@
     font-weight:400;
     color:rgba(48,48,48,1);
 }
+.header-user img {
+    border-radius: 50%;
+    vertical-align: middle;
+}
 
 .header-menu-small{
     position: relative;
@@ -292,8 +296,6 @@
         width: .4rem;
         height: .4rem;
         margin-right: .1rem;
-        border-radius: 50%;
-        vertical-align: middle;
     }
 
     .footer-list, .footer-contact{

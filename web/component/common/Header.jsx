@@ -73,10 +73,11 @@ export class Header extends React.Component {
                         {/*<img src={utils.resizeIcon("./../assets/images/UNCLEJEE.png")} alt=""/>*/}
                         <img src={require("../../assets/images/UNCLEJEE.png")} alt=""/>
                     </div>
-                    {/*<div className="header-btn-small">登录/注册</div>*/}
-                    <div className="header-user">
-                        <img src={require("../../assets/images/GB.png")} alt=""/>
-                    </div>
+                    {
+                        userInfo.id ? <Link className="header-user" to="/PersonalCenter">
+                            <img src={"http://" + userInfo.headImage} alt=""/>
+                        </Link> : <Link className="header-btn-small" to="/login">登录/注册</Link>
+                    }
                 </div>
             </div>
 

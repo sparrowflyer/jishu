@@ -37,6 +37,11 @@ public class SchoolController {
 	public ResultDTO getSchoolById(@RequestBody JSONObject jsonParams) {
 		ResultDTO result = new ResultDTO();
 		try {
+			if (jsonParams.getInteger("id") == null) {
+				result.setStatus(ResultDTOStatus.ERROR.getStatus());
+				result.setErrorMsg("参数错误!");
+				return result;
+			}
 			School school = schoolService.findById(jsonParams.getInteger("id"));
 			result.setData(school);
 			return result;
@@ -64,8 +69,13 @@ public class SchoolController {
 		try {
 			String country = jsonParams.getString("country");
 			String schoolNamePart = jsonParams.getString("schoolNamePart");
-			int pageNo = jsonParams.getInteger("pageNo");
-			int pageAmount = jsonParams.getInteger("pageAmount");
+			Integer pageNo = jsonParams.getInteger("pageNo");
+			Integer pageAmount = jsonParams.getInteger("pageAmount");
+			if (country == null || pageNo == null || pageAmount == null) {
+				result.setStatus(ResultDTOStatus.ERROR.getStatus());
+				result.setErrorMsg("参数错误!");
+				return result;
+			}
 			
 			List<School> schools = schoolService.findAll(country, schoolNamePart, pageNo, pageAmount);
 			Map<String, Object> resultMap = new HashMap<String, Object>();

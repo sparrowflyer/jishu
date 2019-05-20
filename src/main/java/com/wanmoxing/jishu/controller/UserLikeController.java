@@ -52,12 +52,23 @@ public class UserLikeController {
 				return result;
 			}
 			
-			int userId = jsonParams.getInteger("userId");
-			int likeId = jsonParams.getInteger("likeId");
+			Integer userId = jsonParams.getInteger("userId");
+			Integer likeId = jsonParams.getInteger("likeId");
+			if (userId == null || likeId == null) {
+				result.setStatus(ResultDTOStatus.ERROR.getStatus());
+				result.setErrorMsg("参数错误!");
+				return result;
+			}
 			School school = schoolService.findById(likeId);
 			if (school == null) {
 				result.setStatus(ResultDTOStatus.ERROR.getStatus());
 				result.setErrorMsg("学校不存在!");
+				return result;
+			}
+			User user = userService.findById(userId);
+			if (user == null) {
+				result.setStatus(ResultDTOStatus.ERROR.getStatus());
+				result.setErrorMsg("用户不存在!");
 				return result;
 			}
 			if (userLikeService.checkExist(userId, likeId, UserLikeType.SCHOOL)) {
@@ -103,12 +114,23 @@ public class UserLikeController {
 				return result;
 			}
 			
-			int userId = jsonParams.getInteger("userId");
-			int likeId = jsonParams.getInteger("likeId");
+			Integer userId = jsonParams.getInteger("userId");
+			Integer likeId = jsonParams.getInteger("likeId");
+			if (userId == null || likeId == null) {
+				result.setStatus(ResultDTOStatus.ERROR.getStatus());
+				result.setErrorMsg("参数错误!");
+				return result;
+			}
 			School school = schoolService.findById(likeId);
 			if (school == null) {
 				result.setStatus(ResultDTOStatus.ERROR.getStatus());
 				result.setErrorMsg("学校不存在!");
+				return result;
+			}
+			User user = userService.findById(userId);
+			if (user == null) {
+				result.setStatus(ResultDTOStatus.ERROR.getStatus());
+				result.setErrorMsg("用户不存在!");
 				return result;
 			}
 			if (!userLikeService.checkExist(userId, likeId, UserLikeType.SCHOOL)) {
@@ -154,12 +176,23 @@ public class UserLikeController {
 				return result;
 			}
 			
-			int userId = jsonParams.getInteger("userId");
-			int likeId = jsonParams.getInteger("likeId");
+			Integer userId = jsonParams.getInteger("userId");
+			Integer likeId = jsonParams.getInteger("likeId");
+			if (userId == null || likeId == null) {
+				result.setStatus(ResultDTOStatus.ERROR.getStatus());
+				result.setErrorMsg("参数错误!");
+				return result;
+			}
 			User student = userService.findById(likeId);
 			if (student == null) {
 				result.setStatus(ResultDTOStatus.ERROR.getStatus());
 				result.setErrorMsg("学生不存在!");
+				return result;
+			}
+			User user = userService.findById(userId);
+			if (user == null) {
+				result.setStatus(ResultDTOStatus.ERROR.getStatus());
+				result.setErrorMsg("用户不存在!");
 				return result;
 			}
 			if (userLikeService.checkExist(userId, likeId, UserLikeType.STUDENT)) {
@@ -205,12 +238,23 @@ public class UserLikeController {
 				return result;
 			}
 			
-			int userId = jsonParams.getInteger("userId");
-			int likeId = jsonParams.getInteger("likeId");
+			Integer userId = jsonParams.getInteger("userId");
+			Integer likeId = jsonParams.getInteger("likeId");
+			if (userId == null || likeId == null) {
+				result.setStatus(ResultDTOStatus.ERROR.getStatus());
+				result.setErrorMsg("参数错误!");
+				return result;
+			}
 			User student = userService.findById(likeId);
 			if (student == null) {
 				result.setStatus(ResultDTOStatus.ERROR.getStatus());
 				result.setErrorMsg("学生不存在!");
+				return result;
+			}
+			User user = userService.findById(userId);
+			if (user == null) {
+				result.setStatus(ResultDTOStatus.ERROR.getStatus());
+				result.setErrorMsg("用户不存在!");
 				return result;
 			}
 			if (!userLikeService.checkExist(userId, likeId, UserLikeType.STUDENT)) {
@@ -257,9 +301,14 @@ public class UserLikeController {
 				return result;
 			}
 			
-			int likeStudentId = jsonParams.getInteger("likeStudentId");
-			int pageNo = jsonParams.getInteger("pageNo");
-			int pageAmount = jsonParams.getInteger("pageAmount");
+			Integer likeStudentId = jsonParams.getInteger("likeStudentId");
+			Integer pageNo = jsonParams.getInteger("pageNo");
+			Integer pageAmount = jsonParams.getInteger("pageAmount");
+			if (likeStudentId == null || pageNo == null || pageAmount == null) {
+				result.setStatus(ResultDTOStatus.ERROR.getStatus());
+				result.setErrorMsg("参数错误!");
+				return result;
+			}
 			
 			List<User> likeStudentUserList = userService.getLikeStudentUserList(likeStudentId,pageNo,pageAmount);
 			result.setData(likeStudentUserList);
@@ -291,9 +340,14 @@ public class UserLikeController {
 				return result;
 			}
 			
-			int studentId = jsonParams.getInteger("studentId");
-			int pageNo = jsonParams.getInteger("pageNo");
-			int pageAmount = jsonParams.getInteger("pageAmount");
+			Integer studentId = jsonParams.getInteger("studentId");
+			Integer pageNo = jsonParams.getInteger("pageNo");
+			Integer pageAmount = jsonParams.getInteger("pageAmount");
+			if (studentId == null || pageNo == null || pageAmount == null) {
+				result.setStatus(ResultDTOStatus.ERROR.getStatus());
+				result.setErrorMsg("参数错误!");
+				return result;
+			}
 			
 			List<User> studentLikeUserList = userService.getStudentLikeUserList(studentId,pageNo,pageAmount);
 			result.setData(studentLikeUserList);

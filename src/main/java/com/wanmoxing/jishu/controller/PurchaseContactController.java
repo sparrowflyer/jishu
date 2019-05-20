@@ -40,9 +40,11 @@ import com.wanmoxing.jishu.service.PurchaseContactService;
 import com.wanmoxing.jishu.service.UserNotificationService;
 import com.wanmoxing.jishu.service.UserService;
 import com.wanmoxing.jishu.service.UserStudentInfoService;
+import com.wanmoxing.jishu.util.CellphoneUtil;
 import com.wanmoxing.jishu.util.CommUtil;
 import com.wanmoxing.jishu.util.EmailUtil;
 import com.wanmoxing.jishu.util.IdGenerator;
+import com.wanmoxing.jishu.util.TimeUtil;
 import com.wanmoxing.jishu.util.VerifyCodeUtil;
 
 @RestController
@@ -91,7 +93,7 @@ public class PurchaseContactController {
 			User buyer = userService.findById(Integer.valueOf(buyerId));
 			if (buyer == null) {
 				result.setStatus(ResultDTOStatus.ERROR.getStatus());
-				result.setErrorMsg("购买者不存在！！！购买失败");
+				result.setErrorMsg("买家不存在！！！购买失败");
 			}
 			
 			return result;
@@ -108,7 +110,7 @@ public class PurchaseContactController {
 	 * /purchaseContact?sellerId=18&buyerId=19&questions=xxxx
 	 */
 	@RequestMapping(value = "/purchaseContact", method = RequestMethod.GET)
-	public void purchaseContact(HttpServletResponse response, 
+	public void purchaseContact(HttpSession session, HttpServletResponse response, 
 			@RequestParam String sellerId, 
 			@RequestParam String buyerId,
 			@RequestParam String questions) {
@@ -296,7 +298,7 @@ public class PurchaseContactController {
 						StringBuffer messageToNotifyAdmin = new StringBuffer();
 						messageToNotifyAdmin.append("订单类型： 购买联系方式\n")
 											.append("订单ID： ").append(purchaseContact.getId()).append("\n")
-											.append("订单时间： ").append(purchaseContact.getCreatedTime()).append("\n")
+											.append("订单时间： ").append(TimeUtil.formatTimestamp(purchaseContact.getCreatedTime())).append("\n")
 											.append("订单金额： ").append(purchaseContact.getPaymentAmount()).append("\n")
 											.append("卖家ID： ").append(purchaseContact.getSellerId()).append("\n")
 											.append("买家ID： ").append(purchaseContact.getBuyerId()).append("\n")
@@ -311,7 +313,7 @@ public class PurchaseContactController {
 						StringBuffer messageToNotifyBuyer = new StringBuffer();
 						messageToNotifyBuyer.append("订单类型： 购买联系方式\n")
 											.append("订单ID： ").append(purchaseContact.getId()).append("\n")
-											.append("订单时间： ").append(purchaseContact.getCreatedTime()).append("\n")
+											.append("订单时间： ").append(TimeUtil.formatTimestamp(purchaseContact.getCreatedTime())).append("\n")
 											.append("订单金额： ").append(purchaseContact.getPaymentAmount()).append("\n")
 											.append("卖家： ").append(seller.getNickName()).append("\n")
 											.append("随机码： ").append(randomCode).append("\n");
@@ -323,11 +325,11 @@ public class PurchaseContactController {
 						if (buyerCellphone != null && buyerCellphone != "") {
 							Map<String, String> smsParams = new HashMap<String, String>();
 							smsParams.put("purchaseContactId", purchaseContact.getId());
-							smsParams.put("purchaseContactCreatedTime", purchaseContact.getCreatedTime().toString());
+							smsParams.put("purchaseContactCreatedTime", TimeUtil.formatTimestamp(purchaseContact.getCreatedTime()));
 							smsParams.put("purchaseContactPaymentAmount", String.valueOf(purchaseContact.getPaymentAmount()));
 							smsParams.put("seller", seller.getNickName());
 							smsParams.put("randomCode", randomCode);
-							//CellphoneUtil.sendSmsByTemplate(buyerCellphone, "tempateCode(need to be modified)", smsParams);
+							CellphoneUtil.sendSmsByTemplate(buyerCellphone, "SMS_165676292", smsParams);
 						}
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -338,7 +340,7 @@ public class PurchaseContactController {
 						StringBuffer messageToNotifySeller = new StringBuffer();
 						messageToNotifySeller.append("订单类型： 购买联系方式\n")
 											.append("订单ID： ").append(purchaseContact.getId()).append("\n")
-											.append("订单时间： ").append(purchaseContact.getCreatedTime()).append("\n")
+											.append("订单时间： ").append(TimeUtil.formatTimestamp(purchaseContact.getCreatedTime())).append("\n")
 											.append("订单金额： ").append(purchaseContact.getPaymentAmount()).append("\n")
 											.append("买家： ").append(buyer.getNickName()).append("\n")
 											.append("随机码： ").append(randomCode).append("\n");
@@ -350,11 +352,11 @@ public class PurchaseContactController {
 						if (sellerCellphone != null && sellerCellphone != "") {
 							Map<String, String> smsParams = new HashMap<String, String>();
 							smsParams.put("purchaseContactId", purchaseContact.getId());
-							smsParams.put("purchaseContactCreatedTime", purchaseContact.getCreatedTime().toString());
+							smsParams.put("purchaseContactCreatedTime", TimeUtil.formatTimestamp(purchaseContact.getCreatedTime()));
 							smsParams.put("purchaseContactPaymentAmount", String.valueOf(purchaseContact.getPaymentAmount()));
 							smsParams.put("buyer", buyer.getNickName());
 							smsParams.put("randomCode", randomCode);
-							//CellphoneUtil.sendSmsByTemplate(sellerCellphone, "tempateCode(need to be modified)", smsParams);
+							CellphoneUtil.sendSmsByTemplate(sellerCellphone, "SMS_165690997", smsParams);
 						}
 					} catch (Exception e) {
 						e.printStackTrace();

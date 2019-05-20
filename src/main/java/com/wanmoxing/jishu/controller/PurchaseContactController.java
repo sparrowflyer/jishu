@@ -79,11 +79,16 @@ public class PurchaseContactController {
 			}
 			
 			User seller = userService.findById(Integer.valueOf(sellerId));
-			User buyer = userService.findById(Integer.valueOf(buyerId));
 			if (seller == null) {
 				result.setStatus(ResultDTOStatus.ERROR.getStatus());
 				result.setErrorMsg("学生不存在！！！购买失败");
 			}
+			UserStudentInfo userStudentInfo = userStudentInfoService.findByUserId(Integer.valueOf(sellerId));
+			if (userStudentInfo == null) {
+				result.setStatus(ResultDTOStatus.ERROR.getStatus());
+				result.setErrorMsg("卖家没有学生信息！！！购买失败");
+			}
+			User buyer = userService.findById(Integer.valueOf(buyerId));
 			if (buyer == null) {
 				result.setStatus(ResultDTOStatus.ERROR.getStatus());
 				result.setErrorMsg("购买者不存在！！！购买失败");

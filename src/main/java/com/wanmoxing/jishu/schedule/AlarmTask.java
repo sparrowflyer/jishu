@@ -24,6 +24,7 @@ import com.wanmoxing.jishu.service.UserService;
 import com.wanmoxing.jishu.util.CellphoneUtil;
 import com.wanmoxing.jishu.util.CommUtil;
 import com.wanmoxing.jishu.util.EmailUtil;
+import com.wanmoxing.jishu.util.TimeUtil;
 
 @Component
 @EnableScheduling
@@ -55,14 +56,14 @@ public class AlarmTask {
 			    boolean isNotOverThirteenHour = (past - now) / 1000 / 60 / 60 < 13 ? true : false;
 				//卖家两个小时未点击完成订单，通知卖家
 			    if(isOverTwoHour && isNotOverThreeHour) {
-				    if (CommUtil.isEmptyOrNull(seller.getCellPhone())) {
+				    if (!CommUtil.isEmptyOrNull(seller.getCellPhone())) {
 						Map<String, String> smsParams = new HashMap<String, String>();
 						smsParams.put("purchaseContactId", purchaseContact.getId());
-						smsParams.put("purchaseContactCreatedTime", purchaseContact.getCreatedTime().toString());
+						smsParams.put("purchaseContactCreatedTime", TimeUtil.formatTimestamp(purchaseContact.getCreatedTime()));
 						smsParams.put("purchaseContactPaymentAmount", String.valueOf(purchaseContact.getPaymentAmount()));
 						smsParams.put("buyer", buyer.getNickName());
 						smsParams.put("randomCode", purchaseContact.getRandomCode());
-						CellphoneUtil.sendSmsByTemplate(seller.getCellPhone(), "SMS_164513455", smsParams);
+						CellphoneUtil.sendSmsByTemplate(seller.getCellPhone(), "SMS_165676293", smsParams);
 					} else if(!CommUtil.isEmptyOrNull(seller.getEmail())) {
 						StringBuffer messageToNotifySeller = new StringBuffer();
 						messageToNotifySeller.append("您有一个新的订单需要您完成\n")
@@ -79,14 +80,14 @@ public class AlarmTask {
 			  //卖家12个小时未点击完成订单，再次通知卖家，并且通知jishu管理员
 			    if(isOverTwelveHour && isNotOverThirteenHour) {
 			    	//通知卖家
-				    if (CommUtil.isEmptyOrNull(seller.getCellPhone())) {
+				    if (!CommUtil.isEmptyOrNull(seller.getCellPhone())) {
 						Map<String, String> smsParams = new HashMap<String, String>();
 						smsParams.put("purchaseContactId", purchaseContact.getId());
-						smsParams.put("purchaseContactCreatedTime", purchaseContact.getCreatedTime().toString());
+						smsParams.put("purchaseContactCreatedTime", TimeUtil.formatTimestamp(purchaseContact.getCreatedTime()));
 						smsParams.put("purchaseContactPaymentAmount", String.valueOf(purchaseContact.getPaymentAmount()));
 						smsParams.put("buyer", buyer.getNickName());
 						smsParams.put("randomCode", purchaseContact.getRandomCode());
-						CellphoneUtil.sendSmsByTemplate(seller.getCellPhone(), "SMS_164513455", smsParams);
+						CellphoneUtil.sendSmsByTemplate(seller.getCellPhone(), "SMS_165676293", smsParams);
 					} else if(!CommUtil.isEmptyOrNull(seller.getEmail())) {
 						StringBuffer messageToNotifySeller = new StringBuffer();
 						messageToNotifySeller.append("您有一个新的订单需要您完成\n")
@@ -102,14 +103,14 @@ public class AlarmTask {
 				    //通知jishu管理员
 				    List<User> users = userService.findByType(UserType.SYSADMIN);
 				    for(User user: users) {
-				    	if (CommUtil.isEmptyOrNull(user.getCellPhone())) {
+				    	if (!CommUtil.isEmptyOrNull(user.getCellPhone())) {
 							Map<String, String> smsParams = new HashMap<String, String>();
 							smsParams.put("purchaseContactId", purchaseContact.getId());
-							smsParams.put("purchaseContactCreatedTime", purchaseContact.getCreatedTime().toString());
+							smsParams.put("purchaseContactCreatedTime", TimeUtil.formatTimestamp(purchaseContact.getCreatedTime()));
 							smsParams.put("purchaseContactPaymentAmount", String.valueOf(purchaseContact.getPaymentAmount()));
 							smsParams.put("seller", seller.getNickName());
 							smsParams.put("randomCode", purchaseContact.getRandomCode());
-							CellphoneUtil.sendSmsByTemplate(user.getCellPhone(), "SMS_164508423", smsParams);
+							CellphoneUtil.sendSmsByTemplate(user.getCellPhone(), "SMS_165690999", smsParams);
 						} else if(!CommUtil.isEmptyOrNull(user.getEmail())) {
 							StringBuffer messageToNotifySeller = new StringBuffer();
 							messageToNotifySeller.append("订单超过12小时仍未完成\n")

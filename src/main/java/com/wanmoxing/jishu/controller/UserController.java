@@ -1,5 +1,7 @@
 package com.wanmoxing.jishu.controller;
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -34,6 +36,7 @@ import com.wanmoxing.jishu.service.UserStudentInfoService;
 import com.wanmoxing.jishu.util.CellphoneUtil;
 import com.wanmoxing.jishu.util.CommUtil;
 import com.wanmoxing.jishu.util.EmailUtil;
+import com.wanmoxing.jishu.util.TimeUtil;
 
 @RestController
 @RequestMapping("/jishu")
@@ -374,23 +377,24 @@ public class UserController {
 			User buyer =userService.findById(purchaseContact.getBuyerId());
 			User seller =userService.findById(purchaseContact.getSellerId());
 
-			if (CommUtil.isEmptyOrNull(buyer.getCellPhone())) {
+			PurchaseContact purchaseContactfromDatabase = purchaseContactService.find(purchaseContact.getId());
+			if (!CommUtil.isEmptyOrNull(buyer.getCellPhone())) {
 				Map<String, String> smsParams = new HashMap<String, String>();
-				smsParams.put("purchaseContactId", purchaseContact.getId());
-				smsParams.put("purchaseContactCreatedTime", purchaseContact.getCreatedTime().toString());
-				smsParams.put("purchaseContactPaymentAmount", String.valueOf(purchaseContact.getPaymentAmount()));
+				smsParams.put("purchaseContactId", purchaseContactfromDatabase.getId());
+				smsParams.put("purchaseContactCreatedTime", TimeUtil.formatTimestamp(purchaseContactfromDatabase.getCreatedTime()));
+				smsParams.put("purchaseContactPaymentAmount", String.valueOf(purchaseContactfromDatabase.getPaymentAmount()));
 				smsParams.put("seller", seller.getNickName());
-				smsParams.put("randomCode", purchaseContact.getRandomCode());
-				CellphoneUtil.sendSmsByTemplate(buyer.getCellPhone(), "SMS_164508423", smsParams);
+				smsParams.put("randomCode", purchaseContactfromDatabase.getRandomCode());
+				CellphoneUtil.sendSmsByTemplate(buyer.getCellPhone(), "SMS_165690991", smsParams);
 			} else if(!CommUtil.isEmptyOrNull(buyer.getEmail())) {
 				StringBuffer messageToNotifySeller = new StringBuffer();
 				messageToNotifySeller.append("您有一个新的订单需要您评价\n")
 									.append("订单类型： 购买联系方式\n")
-									.append("订单ID： ").append(purchaseContact.getId()).append("\n")
-									.append("订单时间： ").append(purchaseContact.getCreatedTime()).append("\n")
-									.append("订单金额： ").append(purchaseContact.getPaymentAmount()).append("\n")
+									.append("订单ID： ").append(purchaseContactfromDatabase.getId()).append("\n")
+									.append("订单时间： ").append(purchaseContactfromDatabase.getCreatedTime()).append("\n")
+									.append("订单金额： ").append(purchaseContactfromDatabase.getPaymentAmount()).append("\n")
 									.append("卖家ID： ").append(seller.getNickName()).append("\n")
-									.append("随机码： ").append(purchaseContact.getRandomCode()).append("\n");
+									.append("随机码： ").append(purchaseContactfromDatabase.getRandomCode()).append("\n");
 				EmailUtil.sendEmail(buyer.getEmail(), "您有一个新的订单需要您评价！", messageToNotifySeller.toString());
 			}
 			return result;

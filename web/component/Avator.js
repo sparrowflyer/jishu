@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { getUser,updateUserHeadImage,updateUserComment,updateUserNickname,uploadImage } from '../utils/http.js';
-import { getBg, getIterativeValue } from '../utils/utils.jsx';
+import { getIterativeValue } from '../utils/utils.jsx';
 
 export class Avator extends React.Component {
     constructor(props) {
@@ -134,8 +134,6 @@ export class Avator extends React.Component {
                            <div>更新照片</div>
                         </div> 
                     }
-                    {/*<FileInput btnValue={"更新照片"} className={"avator-edit"} onChange={this.onChangeImg} multiple={false} />*/}
-                    {/*style={getBg(this.state.avator.headImage)}*/}
                     {
                         this.props.parent === 'StudentDetail' &&
                             <span className="avator_note">{this.getAverageScore(this.props.userInfo.userStudentInfo)}</span>

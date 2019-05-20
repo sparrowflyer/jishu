@@ -696,3 +696,86 @@ ul.li-style{
     color:rgba(14,14,14,1);
     line-height:.42rem;
 }
+
+.home-carousel-container {
+    position: relative;
+    height: 6.8rem;
+    overflow: hidden;
+}
+
+.home-carousel-image {
+    height: 6.8rem;
+    background: #eee no-repeat center;
+    background-size: cover;
+}
+
+.home-carousel-btns {
+    position: absolute;
+    width: 100%;
+    bottom: .3rem;
+    left: 0;
+    text-align: center;
+}
+
+.home-carousel-btns button {
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+    outline: 0;
+    width: .2rem;
+    height: .2rem;
+    background: rgba(0, 0, 0, 0.3);
+    box-shadow: 0 .02rem .02rem 0 rgba(45, 45, 45, 0.21);
+    border-radius: 50%;
+    border: 0;
+    margin-right: .3rem;
+}
+
+.home-carousel-btns button.selected {
+    background: #FFE201;
+}
+
+.left-btn {
+    outline: none;
+    width: .9rem;
+    height: .9rem;
+    position: absolute;
+    top: 50%;
+    left: 85px;
+    background: url("../image/left.png") no-repeat center;
+    background-size: cover;
+}
+
+.left-btn:hover {
+    outline: none;
+    background: url("../image/left_hover.png");
+    background-size: cover;
+}
+
+.right-btn {
+    outline: none;
+    width: .9rem;
+    height: .9rem;
+    position: absolute;
+    top: 50%;
+    right: 85px;
+    background: url("../image/right.png") no-repeat center;
+    background-size: cover;
+}
+
+.right-btn:hover {
+    outline: none;
+    background: url("../image/right_hover.png");
+    background-size: cover;
+}
+
+.home-see-more {
+    display: inline-block;
+    color: #0E0E0E;
+    background-color: #FFE201;
+    font-size: .24rem;
+    line-height: .32rem;
+    padding: .1rem .2rem;
+    text-align: center;
+    border-radius: .6rem;
+}

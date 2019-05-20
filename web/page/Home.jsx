@@ -40,13 +40,6 @@ export class HomePage extends React.Component {
             studentList: students,
         };
     }
-    // componentDidMount() {
-    //     let userInfo = localStorage.getItem("jeeUser") || sessionStorage.getItem("jeeUser");
-    //     if(!userInfo)return;
-    //     this.setState({
-    //         userInfo: JSON.parse(userInfo)
-    //     })
-    // }
 
     render() {
         const {studentList,width} = this.state;

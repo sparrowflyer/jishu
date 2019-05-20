@@ -521,7 +521,7 @@
     right: 0;
     bottom: 0;
     margin: auto;
-    overflow: hidden;
+    overflow: auto;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
@@ -559,6 +559,9 @@
 }
 .mb25{
     margin-bottom:.25rem;
+}
+.mb28{
+    margin-bottom:.28rem;
 }
 .mb30{
     margin-bottom:.3rem;
@@ -630,6 +633,7 @@ ul.li-style{
 
 .add-line{
     width:100%;
+    position: relative;
 }
 
 .add-line img{
@@ -637,6 +641,14 @@ ul.li-style{
     width:.33rem;
     height:.33rem;
     margin-bottom: .19rem;
+    position: relative;
+    z-index: 10;
+}
+.add-line input{
+    /*float: left;*/
+    position: absolute;
+    top:0;
+    left: 0;
 }
 
 .add-line:after{

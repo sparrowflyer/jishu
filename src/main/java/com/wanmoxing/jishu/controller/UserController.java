@@ -66,6 +66,11 @@ public class UserController {
 		ResultDTO result = new ResultDTO();
 		try {
 			User user = userService.findById(id);
+			if (user == null) {
+				result.setStatus(ResultDTOStatus.ERROR.getStatus());
+				result.setErrorMsg("用户不存在！");
+				return result;
+			}
 			user.setUserStudentInfo(userStudentInfoService.findByUserId(id));
 			user.setSchool(schoolService.findStudentSchool(user.getId()));
 			UserDTO userDTO = new UserDTO(user);

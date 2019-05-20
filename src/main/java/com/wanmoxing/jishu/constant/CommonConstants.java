@@ -21,6 +21,6 @@ public class CommonConstants {
 	 */
 	public static final int DEFAULT_PAGE_SIZE = 8;
 	
-	public static final String ADMIN_EMAIL_ADDRESS = "ylf989@163.com";
+	public static final String ADMIN_EMAIL_ADDRESS = "jishu@unclejee.cn";
 
 }

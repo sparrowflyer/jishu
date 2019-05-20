@@ -296,34 +296,7 @@ public class PurchaseContactController {
 											.append("卖家ID： ").append(purchaseContact.getSellerId()).append("\n")
 											.append("买家ID： ").append(purchaseContact.getBuyerId()).append("\n")
 											.append("随机码： ").append(randomCode).append("\n");
-						EmailUtil.sendEmail(CommonConstants.ADMIN_EMAIL_ADDRESS, "有新的购买联系方式订单！", messageToNotifyAdmin.toString());
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-					
-					//给卖家发送通知
-					try {
-						StringBuffer messageToNotifySeller = new StringBuffer();
-						messageToNotifySeller.append("订单类型： 购买联系方式\n")
-											.append("订单ID： ").append(purchaseContact.getId()).append("\n")
-											.append("订单时间： ").append(purchaseContact.getCreatedTime()).append("\n")
-											.append("订单金额： ").append(purchaseContact.getPaymentAmount()).append("\n")
-											.append("买家： ").append(buyer.getNickName()).append("\n")
-											.append("随机码： ").append(randomCode).append("\n");
-						
-						if (sellerEmail != null && sellerEmail != "") {
-							EmailUtil.sendEmail(sellerEmail, "您有新的购买联系方式订单！", messageToNotifySeller.toString());
-						}
-						String sellerCellphone = seller.getCellPhone();
-						if (sellerCellphone != null && sellerCellphone != "") {
-							Map<String, String> smsParams = new HashMap<String, String>();
-							smsParams.put("purchaseContactId", purchaseContact.getId());
-							smsParams.put("purchaseContactCreatedTime", purchaseContact.getCreatedTime().toString());
-							smsParams.put("purchaseContactPaymentAmount", String.valueOf(purchaseContact.getPaymentAmount()));
-							smsParams.put("buyer", buyer.getNickName());
-							smsParams.put("randomCode", randomCode);
-							//CellphoneUtil.sendSmsByTemplate(sellerCellphone, "tempateCode(need to be modified)", smsParams);
-						}
+						EmailUtil.sendEmailCommon(CommonConstants.ADMIN_EMAIL_ADDRESS, "有新的购买联系方式订单！", messageToNotifyAdmin.toString());
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -339,7 +312,7 @@ public class PurchaseContactController {
 											.append("随机码： ").append(randomCode).append("\n");
 						String buyerEmail = buyer.getEmail();
 						if (buyerEmail != null && buyerEmail != "") {
-							EmailUtil.sendEmail(sellerEmail, "购买联系方式成功！", messageToNotifyBuyer.toString());
+							EmailUtil.sendEmailCommon(buyerEmail, "购买联系方式成功！", messageToNotifyBuyer.toString());
 						}
 						String buyerCellphone = buyer.getCellPhone();
 						if (buyerCellphone != null && buyerCellphone != "") {
@@ -355,6 +328,32 @@ public class PurchaseContactController {
 						e.printStackTrace();
 					}
 					
+					//给卖家发送通知
+					try {
+						StringBuffer messageToNotifySeller = new StringBuffer();
+						messageToNotifySeller.append("订单类型： 购买联系方式\n")
+											.append("订单ID： ").append(purchaseContact.getId()).append("\n")
+											.append("订单时间： ").append(purchaseContact.getCreatedTime()).append("\n")
+											.append("订单金额： ").append(purchaseContact.getPaymentAmount()).append("\n")
+											.append("买家： ").append(buyer.getNickName()).append("\n")
+											.append("随机码： ").append(randomCode).append("\n");
+						
+						if (sellerEmail != null && sellerEmail != "") {
+							EmailUtil.sendEmailCommon(sellerEmail, "您有新的购买联系方式订单！", messageToNotifySeller.toString());
+						}
+						String sellerCellphone = seller.getCellPhone();
+						if (sellerCellphone != null && sellerCellphone != "") {
+							Map<String, String> smsParams = new HashMap<String, String>();
+							smsParams.put("purchaseContactId", purchaseContact.getId());
+							smsParams.put("purchaseContactCreatedTime", purchaseContact.getCreatedTime().toString());
+							smsParams.put("purchaseContactPaymentAmount", String.valueOf(purchaseContact.getPaymentAmount()));
+							smsParams.put("buyer", buyer.getNickName());
+							smsParams.put("randomCode", randomCode);
+							//CellphoneUtil.sendSmsByTemplate(sellerCellphone, "tempateCode(need to be modified)", smsParams);
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 					
 					purchaseContact.setRandomCode(randomCode);
 					purchaseContact.setPaymentAdditionalInfo(trade_no); //设置支付宝订单号

@@ -151,6 +151,17 @@ public class LoginController {
 			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
 			return resultDTO;
 		}
+		
+		if(!CommUtil.isEmptyOrNull(email) && !CommUtil.isEmail(email)) {
+			resultDTO.setErrorMsg("注册失败，邮箱不合法");
+			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+			return resultDTO;
+		}
+		if(!CommUtil.isEmptyOrNull(phoneNumber) && !CommUtil.isCNPhone(phoneNumber)) {
+			resultDTO.setErrorMsg("注册失败，手机不合法");
+			resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
+			return resultDTO;
+		}
 
 		try {
 			//验证码和账户判断

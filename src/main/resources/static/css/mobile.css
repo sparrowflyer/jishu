@@ -273,6 +273,7 @@
     height: .39rem;
     border-radius: 50%;
     background: #eee no-repeat center;
+    background-size: cover;
 }
 
 .evaluation-item_username {
@@ -334,6 +335,7 @@
     height: .43rem;
     border-radius: 50%;
     background: #eee no-repeat center;
+    background-size: cover;
 }
 
 .evaluation-item_username__active {

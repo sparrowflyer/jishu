@@ -4,6 +4,8 @@ import {Header} from '../component/common/Header.jsx';
 import '../assets/style.css';
 import { Link } from 'react-router-dom';
 import { getCountryList, getSchools} from '../utils/http.js';
+import { isArray } from '../utils/utils.jsx';
+import { NoContent } from '../component/NoContent.js';
 
 // const uniList = [{name:"爱丁堡大学",ename:"University of Edinburgh",img:"./../assets/images/lhover@2x.png"},
 //     {name:"爱丁堡大学",ename:"University of Edinburgh",img:"./../assets/images/lhover@2x.png"},
@@ -55,7 +57,7 @@ export class UniversityList extends React.Component {
                     console.log("getSchools",resp);
                     let page = resp.data.data && resp.data.data.totalAmount && resp.data.data.totalAmount /12;
                     this.setState({
-                        uniList: resp.data.data.schools,
+                        uniList: resp.data.data ? resp.data.data.schools : [],
                         pageSize: Math.ceil(page || 1)
                     });
 
@@ -101,23 +103,7 @@ export class UniversityList extends React.Component {
         console.log("searchBlock",this.state.searchBlock);
     }
     render() {
-        const elS = [];
          let { page,pageSize,uniList,country} = this.state;
-        for( let uni of uniList){
-            elS.push(
-                <div className="col-l-4 col-s-2" key={uni.id}>
-                    {/*<div className="card">*/}
-                    <Link to={`/collegeDetail/${uni.id}`} className="card">
-                        <img src={uni.iconImage} alt=""/>
-                        <div className="card-name">
-                            {uni.cnName}
-                            <div className="card-eName">{uni.enName}</div>
-                        </div>
-                    </Link>
-                    {/*</div>*/}
-                </div>
-            )
-        }
         const pageNum = [];
         for (let i = 1;i <= pageSize; i++){
             pageNum.push(
@@ -163,14 +149,36 @@ export class UniversityList extends React.Component {
                     </div>
                     {/*<div className="clearfloat"></div>*/}
                 </div>
-            {/* 学校列表 */}
-            <div className="container">{elS}</div>
-            {/* 换页签*/}
-            <div className="page-feed">
-                <span className="page-num page-pre jee-arrow-left" onClick={this.go.bind(this,page-1)}></span>
-                {pageNum}
-                <span className="page-num page-next jee-arrow-right" onClick={this.go.bind(this,page+1)}></span>
-            </div>
+                {/* 学校列表 */}
+                {
+                    isArray(uniList) && uniList.length > 0 &&
+                        <div className="container">
+                            {
+                                uniList.map((uni) => {
+                                    return (
+                                        <div className="col-l-4 col-s-2" key={uni.id}>
+                                            <Link to={`/collegeDetail/${uni.id}`} className="card">
+                                                <img src={uni.iconImage} alt=""/>
+                                                <div className="card-name">
+                                                    {uni.cnName}
+                                                    <div className="card-eName">{uni.enName}</div>
+                                                </div>
+                                            </Link>
+                                        </div>
+                                    );
+                                })
+                            }
+                        </div>
+                }
+                {/* 换页签*/}
+                {
+                    isArray(uniList) && uniList.length > 0 ?
+                        <div className="page-feed">
+                            <span className="page-num page-pre jee-arrow-left" onClick={this.go.bind(this,page-1)}></span>
+                                {pageNum}
+                            <span className="page-num page-next jee-arrow-right" onClick={this.go.bind(this,page+1)}></span>
+                        </div> : <div style={{paddingTop: '30px', paddingBottom: '20px'}}><NoContent desc="暂无数据" /></div>
+                }
                 <Footer></Footer>
             </div>
         );

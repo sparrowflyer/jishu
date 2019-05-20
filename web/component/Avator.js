@@ -148,7 +148,7 @@ export class Avator extends React.Component {
                         </div> : <div className="user_name">{this.props.userInfo.nickName || ''}</div>
                     }
                     {
-                        !this.props.isCenter &&
+                        !this.props.isCenter && this.props.isWeb &&
                             <div className="user_know-btn" onClick={this.props.knowHim}>认识他</div>
                     }
                     {

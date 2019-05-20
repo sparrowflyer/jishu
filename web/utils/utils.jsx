@@ -10,6 +10,10 @@ function isString(unknown) {
     return Object.prototype.toString.call(unknown) === '[object String]';
 }
 
+export function isArray(unknown) {
+    return Object.prototype.toString.call(unknown) === '[object Array]';
+}
+
 export function getIterativeValue(variable, next, replace) {
     if (!variable) return variable;
     if (!isString(next)) return variable;

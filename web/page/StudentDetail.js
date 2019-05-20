@@ -7,8 +7,9 @@ import { Conversation } from '../component/Conversation.js';
 import { Evaluation } from '../component/Evaluation.js';
 import  { ModalMobile } from '../component/Modal/Mobile.jsx';
 import  { ModalWeb } from '../component/Modal/Web.jsx';
+import { Footer } from '../component/common/Footer.jsx';
 import { getUser, postUrl } from '../utils/http.js';
-import { getIterativeValue } from '../utils/utils.jsx';
+import { getIterativeValue, isArray } from '../utils/utils.jsx';
 
 class StudentDetail extends React.Component {
     constructor(props) {
@@ -16,8 +17,10 @@ class StudentDetail extends React.Component {
         this.state = {
             width: document.documentElement.clientWidth || document.body.clientWidth || window.innerWidth,
             evaluations: [],
+            indexInEvaluations: 0,
             visible: false,
-            userInfo: {}
+            userInfo: {},
+            loginUserInfo: {}
         };
         this.getUser = this.getUser.bind(this);
         this.updateDimensions = this.updateDimensions.bind(this);
@@ -25,33 +28,50 @@ class StudentDetail extends React.Component {
     }
     componentDidMount() {
         if (this.props.match.params.userID) {
-            window.addEventListener('resize', this.updateDimensions);
+            let loginUserInfo = '';
+            try {
+                loginUserInfo = JSON.parse(sessionStorage.getItem('jeeUser'))
+            } catch (e) {
+                sessionStorage.removeItem('jeeUser');
+            }
+            this.setState((state) => {
+                return { ...state, loginUserInfo}
+            });
             this.getUser(this.props.match.params.userID);
+            this.getComment(this.props.match.params.userID, 1, 10);
+            window.addEventListener('resize', this.updateDimensions);
         } else {
             this.props.history.push('/');
         }
     }
     getUser(userID) {
+        let userInfo = {};
         getUser(userID)
             .then(response => {
                 let data = response.data;
                 if (data.status === 'success') {
-                    this.setState((state) => {
-                        return {
-                            ...state,
-                            userInfo: data.data
-                        }
-                    });
+                    userInfo = data.data || {};
                 } else {
-                    this.alert.error(`获取${userID}的个人信息失败,原因为${data.errorMsg || `${response.status}${response.statusText}`}`);
+                    console.error(`获取${userID}的个人信息:${data.errorMsg || `${response.status}${response.statusText}`}`);
                 }
+                this.setState((state) => {
+                    return {
+                        ...state,
+                        userInfo
+                    }
+                });
             }).catch(error => {
-                console.error('获取个人信息', error);
+                console.error(`获取个人信息${error}`);
+                this.setState((state) => {
+                    return {
+                        ...state,
+                        userInfo
+                    }
+                });
             });
     }
     knowHim() {
-        console.log('Hello');
-        this.setState((state) => {
+        this.setState(state => {
             return {
                 ...state,
                 visible: true
@@ -59,12 +79,36 @@ class StudentDetail extends React.Component {
         });
     }
     getComment(studentId, pageNo, pageAmount) {
+        let comments = [];
         postUrl('/getCommentedPurchaseContacts', {studentId, pageNo, pageAmount})
             .then((response) => {
-
+                let data = response.data;
+                if (data.status === 'success') {
+                    comments = isArray(data.data) ? data.data : [];
+                } else {
+                    console.error(`获取评价信息:${data.errorMsg || `${response.status}${response.statusText}`}`);
+                }
+                this.setState((state) => {
+                    return {
+                        ...state,
+                        evaluations: comments
+                    }
+                });
             }).catch((error) => {
-                console.error('获取评价信息:', error);
+                console.error(`获取评价信息:${error}`);
+                this.setState((state) => {
+                    return {
+                        ...state,
+                        evaluations: comments
+                    }
+                });
             });
+    }
+    goBack() {
+
+    }
+    goNext() {
+        
     }
     updateDimensions() {
         var width = document.documentElement.clientWidth || document.body.clientWidth || window.innerWidth;
@@ -79,22 +123,13 @@ class StudentDetail extends React.Component {
         window.removeEventListener('resize', this.updateDimensions);
     }
 
-    showModal() {
-        this.setState(state => {
-            return {
-                ...state,
-                visible: true
-            }
-        })
-    }
-
     render() {
         const { visible } = this.state;
         const spacing = this.state.width > 768 ? [80, 50, 80, 75] : [15, 16, 24, 16];
         return (
             <div>
-                <Header userInfo={this.state.userInfo}></Header>
-                <Avator parent="StudentDetail" isWeb={this.state.width > 768} userID={this.props.match.params.userID} userInfo={this.state.userInfo} knowHim={this.knowHim.bind(this)}/>
+                <Header userInfo={this.state.loginUserInfo}></Header>
+                <Avator parent="StudentDetail" isWeb={this.state.width > 768} userID={this.props.match.params.userID} userInfo={this.state.userInfo} knowHim={this.knowHim.bind(this)} isCenter={false}/>
                 <SubTitle cn="他的话题" en="Topic of conversation" top={spacing[0]} bottom={spacing[1]} />
                 <div className="conversation-container">
                     <Conversation title="专业" desc={getIterativeValue(this.state.userInfo, 'userStudentInfo.major')} />
@@ -104,11 +139,13 @@ class StudentDetail extends React.Component {
                 <SubTitle cn="他的评价" en="Evaluation" top={spacing[2]} bottom={spacing[3]} />
                 <div className="evaluation-container">
                     {
-                        this.state.evaluations.map((evaluation, index) => {
-                            return (
-                                <Evaluation key={evaluation.name} {...evaluation} isActive={index === 1}/>
-                            );
-                        })
+                        this.state.evaluations.slice(this.state.indexInEvaluations, (this.state.width > 768 ? 4 : 2))
+                            .map((evaluation, index) => {
+                                return (
+                                    <Evaluation key={index} name={getIterativeValue(evaluation, 'buyer.nickname')} desc={evaluation.comment || ''} professionalScore={evaluation.scoreProfessional || '0.0'} responseScore={evaluation.scoreResponse || '0.0'} attitudeScore={evaluation.scoreAttitude || '0.0'}
+                                        headImage={getIterativeValue(evaluation, 'buyer.headImage')} isActive={index === 1}/>
+                                );
+                            })
                     }
                 </div>
                 {
@@ -118,6 +155,7 @@ class StudentDetail extends React.Component {
                 {
                     this.state.width > 768 ? <ModalWeb visible={this.state.visible} type={"PaySuccess"}/> : <ModalMobile visible={visible} type={"PaySuccess"}/>
                 }
+                <Footer />
             </div>
         );
     }

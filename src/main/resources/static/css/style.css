@@ -206,6 +206,6 @@ html, body {
 }
 
 .no-content-desc {
-    font-size: 30px;
+    font-size: .3rem;
     color: #848484;
 }

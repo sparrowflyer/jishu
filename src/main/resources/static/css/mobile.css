@@ -536,7 +536,7 @@
     margin-bottom: .46rem;
 }
 .modal {
-    overflow: hidden;
+    overflow: auto;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
@@ -592,7 +592,7 @@
 .add-line{
     width:100%;
 }
-.add-line img{
+.add-line img,.less-btn{
     float: right;
     width:.18rem;
     height:.18rem;

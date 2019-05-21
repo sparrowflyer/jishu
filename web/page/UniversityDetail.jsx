@@ -82,9 +82,8 @@ export class UniversityDetail extends React.Component {
         return (
             <div>
                 <Header></Header>
-                <div className="uni-banner">
-                    <div className="headbg-wrap">
-                        <img src={`http://${schoolData.homeImage}`} alt=""/>
+                <div className="uni-banner" style={{backgroundImage: 'url(' + schoolData.homeImage +')'}}>
+                    <div className="">
                     </div>
                     <div className="headcnt-wrap">
                         <div className="uni-name">{schoolData.cnName}</div>
@@ -108,8 +107,7 @@ export class UniversityDetail extends React.Component {
                 <div className="stus-container">
                     {stuList.map(stu => {
                         return <Link className="stu-info fl" key={stu.id} to={"/StudentDetail/"+stu.id}>
-                            <div className="left-pic">
-                                <img src={`http://${stu.headImage}`} alt=""/>
+                            <div className="left-pic" style={{backgroundImage: `url(http://${stu.headImage})`}}>
                             </div>
                             <div className="right-info">
                                 <div className="info-name">{stu.nickName}</div>

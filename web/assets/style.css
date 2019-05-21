@@ -203,11 +203,8 @@ ul, li {
     text-align: center;
     background: #303030;
     position: relative;
-}
-.headbg-wrap{
-    position: absolute;
-    top:0;
-    left:0;
+    background: #eee no-repeat center;
+    background-size: cover;
 }
 .headcnt-wrap{
     -webkit-box-sizing: border-box;
@@ -247,12 +244,9 @@ ul, li {
 }
 .left-pic{
     border-radius: .2rem;
-    background: #848484;
+    background: #848484 no-repeat center;
+    background-size: cover; 
     overflow: hidden;
-}
-.left-pic img{
-    width: 100%;
-    height: auto;
 }
 .right-info{
     position: relative;

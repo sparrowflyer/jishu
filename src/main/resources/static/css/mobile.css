@@ -423,6 +423,12 @@
     color: #333;
 }
 
+.personal-center-image-submit,.personal-center-image-cancel{
+    width: .6rem;
+    height: .25rem;
+    font-size: .09rem;
+    line-height: .25rem;
+}
 .item-container {
     width: 1.65rem;
     height: 1.55rem;

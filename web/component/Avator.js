@@ -10,9 +10,7 @@ export class Avator extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            width: document.documentElement.clientWidth || document.body.clientWidth || window.innerWidth,
-            height: document.documentElement.clientHeight || document.body.clientHeight || window.innerHeight,
-            // avator: null,
+           // avator: null,
             canEdit:false,
             editName:'',
             editComment:'',
@@ -116,6 +114,7 @@ export class Avator extends React.Component {
                 <div className="avator" style={{backgroundImage: 'url(http://' + this.props.userInfo.headImage +')'}}>
                     {
                         this.state.canEdit && <label className="add-img-btn">
+                            {/*<span>更新头像</span>*/}
                             <input style={iptStyle} type="file" accept="image/jpeg,image/jpg,image/png"
                                    onChange={this.onChangeImgFile}/>
                         </label>

@@ -32,6 +32,7 @@ class PersonalCenter extends React.Component {
         super(props);
         this.state = {
             width: document.documentElement.clientWidth || document.body.clientWidth || window.innerWidth,
+            height: document.documentElement.clientHeight || document.body.clientHeight || window.innerHeight,
             userID: '',
             following: [],
             fans: [],
@@ -51,6 +52,7 @@ class PersonalCenter extends React.Component {
         this.cancelImg = this.cancelImg.bind(this);
         this.handleFileChange = this.handleFileChange.bind(this);
         this.updateUserHeadImage = this.updateUserHeadImage.bind(this);
+        this.dataURLtoFile = this.dataURLtoFile.bind(this);
     }
     componentDidMount() {
         let userInfo = '';
@@ -140,7 +142,7 @@ class PersonalCenter extends React.Component {
                     sessionStorage.removeItem("jeeUser");
                     sessionStorage.setItem("jeeUser",JSON.stringify(data.data));
                 } else {
-                    this.alert.error(`获取${userID}的个人信息失败,原因为${data.errorMsg || `${response.status}${response.statusText}`}`);
+                    this.props.alert.error(`获取${userID}的个人信息失败,原因为${data.errorMsg || `${response.status}${response.statusText}`}`);
                 }
             }).catch(error => {
             console.error('获取个人信息', error);
@@ -160,14 +162,12 @@ class PersonalCenter extends React.Component {
     checkType(idx){
         this.setState({
             activeType: idx
-        })
+        });
         idx===0 ? this.getUncompleteOrder():this.getCompleteOrder();
     }
     //更新头像
     handleFileChange(file){
         if (file) {
-            // console.log(file.size,this.state.editImageModalVisible);
-            // if (file.size <= MAX_FILE_SIZE) {
             this.setState({
                 selectedImageFile: file,
             },()=>{
@@ -181,13 +181,6 @@ class PersonalCenter extends React.Component {
                 this.setState({src: dataURL})
             };
             fileReader.readAsDataURL(file);
-
-            console.log(this.state.selectedImageFile)
-            // } else {
-            // const alert = useAlert();
-            // alert("文件过大");
-            // alert.error("文件过大");
-            // }
         }
     }
     cancelImg(){
@@ -195,10 +188,21 @@ class PersonalCenter extends React.Component {
             editImageModalVisible: false
         })
     }
+    dataURLtoFile(dataurl, filename) {//将base64转换为文件
+        var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+            bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+        while(n--){
+            u8arr[n] = bstr.charCodeAt(n);
+        }
+        return new File([u8arr], filename, {type:mime});
+    }
     updateUserHeadImage(){ //更新头像
+        let imgRes = this.cropper.getCroppedCanvas().toDataURL();
         let imgFile = this.state.selectedImageFile;
-        if(imgFile){
-            uploadImage(imgFile).then(res=> {
+        let img = this.dataURLtoFile(imgRes,imgFile.name);
+        console.log(img,imgFile)
+            // 上传图片
+            uploadImage(img).then(res=> {
                 if(res.data.data){
                     updateUserHeadImage({
                         id: this.state.userID,
@@ -206,10 +210,10 @@ class PersonalCenter extends React.Component {
                     }).then(resp=>{
                         console.log("更新头像",resp)
                         if(resp.data.status==="success"){
-                            this.props.alert.success('头像更新成功！');
-                            this.state.getUser(this.state.userID);
+                            // this.props.alert.success(<div style={{fontSize: '12px'}}>头像更新成功！</div>);
+                            this.getUser(this.state.userID);
                         }else{
-                            this.props.alert.error(resp.data.errorMsg || '头像更新失败！');
+                            // this.props.alert.error(<div style={{fontSize: '12px'}}>{resp.data.errorMsg || '头像更新失败！'}</div>);
                         }
                         this.setState({
                             editImageModalVisible: false
@@ -218,29 +222,23 @@ class PersonalCenter extends React.Component {
                         this.setState({
                             editImageModalVisible: false
                         });
-                        this.props.alert.error('头像更新报错'+err);
+                        // this.props.alert.error(<div style={{fontSize: '12px'}}>{'头像更新报错:' + err}</div>);
                         console.log("更新头像报错",err)
                     })
                 }
             }).catch(err=>{
-                this.props.alert.error('图片上传失败：'+err);
+                // this.props.alert.error(<div style={{fontSize: '12px'}}>{'图片上传失败:'+err}</div>);
                 console.log("上传头像报错",err)
             });
-        }
     }
 
     render() {
-        let {editImageModalVisible,src,userInfo,userID,activeTab,activeType} = this.state;
+        let {editImageModalVisible,src,userInfo,userID,activeTab,activeType,height} = this.state;
         const copperStyle = {
             width: '100%',
-            height: this.state.height - 40
+            height: height
         }, wrapStyle = {
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: this.state.height,
-            zIndex:999
+            height: height,
         };
         return (
             <div>
@@ -290,17 +288,19 @@ class PersonalCenter extends React.Component {
                 }
                 {
                     editImageModalVisible &&
-                    <div style={{wrapStyle}}>
+                    <div className="personal-center-image-upload" style={{wrapStyle}}>
                         <Cropper
-                            ref='cropper'
+                            // ref='cropper'
                             src={src}
                             style={{copperStyle}}
-                            // ref={cropper => this.cropper = cropper}
+                            ref={cropper => this.cropper = cropper}
                             aspectRatio={3/4}
                             guides={false}/>
-                        <div className="user_know-btn tab-title__selected fl" onClick={this.updateUserHeadImage}>确认</div>
-                        <div className="user_know-btn tab-title__selected fl ml10" style={{backgroundColor:'#fff',border:'1px solid #0E0E0E'}} onClick={this.cancelImg}>取消</div>
-                    </div>
+                        <div className="personal-center-btn-wrap">
+                            <div className="personal-center-image-submit" onClick={this.updateUserHeadImage}>确认</div>
+                            <div className="personal-center-image-cancel" style={{backgroundColor:'#fff',border:'1px solid #0E0E0E'}} onClick={this.cancelImg}>取消</div>
+                        </div>
+                       </div>
 
                 }
                 <Footer></Footer>

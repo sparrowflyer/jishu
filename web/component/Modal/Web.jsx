@@ -50,6 +50,7 @@ export class ModalWeb extends React.Component {
         }).then(response =>{
             // console.log(response)
             if(response.data.status === "success"){
+                // window.open("/jishu/purchaseContact?sellerId="+this.props.userID+"&buyerId="+this.props.loginUserID+"&questions="+this.state.resQuestions.join(","),"_blank");
                 window.location.href= "/jishu/purchaseContact?sellerId="+this.props.userID+"&buyerId="+this.props.loginUserID+"&questions="+this.state.resQuestions.join(",");
                 return;
             }

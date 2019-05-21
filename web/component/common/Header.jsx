@@ -1,36 +1,68 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { hashHistory } from 'react-router'
+import {getUnreadNotificaitonCount} from "../../utils/http"
 
 export class Header extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             userInfo: {},
-            pathName:""
+            pathName: "",
+            notice: 0,
         };
+        this.loginOut = this.loginOut.bind(this);
+        this.getNotice = this.getNotice.bind(this);
 
     }
-    componentDidMount() {
+    componentDidMount(){
        let pathName = window.location.pathname;
         let userInfo = sessionStorage.getItem("jeeUser");
-        // if(!userInfo)return;
         this.setState({
             userInfo: userInfo ? JSON.parse(userInfo) : {},
             pathName: pathName
-        })
-        console.log(userInfo)
+        });
+        this.getNotice()
+    }
+    getNotice(){
+        //TODO:获取通知接口不对
+        getUnreadNotificaitonCount().then(resp=>{
+            console.log(resp)
+        }).catch(err=>{})
+    }
+    loginOut(){
+        sessionStorage.removeItem("jeeUser");
+        this.setState({userInfo:{}});
+        try {
+            hashHistory.push('/')
+        } catch(e){
+            window.location.pathname='/';
+        }
     }
     render() {
         let userInfo = this.props.userInfo || this.state.userInfo;
+        let {notice} = this.state;
         return (
             <div>
                 <div className="header-wrap">
                     {/* 登陆与否 */}
                     {
-                        userInfo.id ? <Link className="header-user fr" to="/PersonalCenter">
+                        userInfo.id ? <div className="header-user fr">
                             <img src={"http://" + userInfo.headImage} alt=""/>
                             <span>{userInfo.nickName}</span>
-                        </Link> : <Link className="header-btn fr" to="/login">登录/注册</Link>
+                            <ul className="header-personal-list">
+                                <li className="mb20">
+                                    <Link to="/PersonalCenter">个人中心</Link>
+                                </li>
+                                <li className="mb20">
+                                    <Link to="/PersonalCenter">消息通知
+                                    <span className="header-notice">10</span>
+                                    </Link>
+                                    {/*{notice>0 && <span>{notice}</span>}*/}
+                                </li>
+                                <li onClick={this.loginOut}>退出登录</li>
+                            </ul>
+                        </div> : <Link className="header-btn fr" to="/login">登录/注册</Link>
                     }
                     <ul className="header-menu fr">
                         <li className={this.state.pathName==="/"?"active":""}>
@@ -74,9 +106,22 @@ export class Header extends React.Component {
                         <img src={require("../../assets/images/UNCLEJEE.png")} alt=""/>
                     </div>
                     {
-                        userInfo.id ? <Link className="header-user" to="/PersonalCenter">
+                        userInfo.id ? <div className="header-user header-menu-small" >
                             <img src={"http://" + userInfo.headImage} alt=""/>
-                        </Link> : <Link className="header-btn-small" to="/login">登录/注册</Link>
+                            <ul className="header-personal-list">
+                                <li className="mb10">
+                                    <Link to="/PersonalCenter">个人中心</Link>
+                                </li>
+                                <li className="mb10">
+                                    <Link to="/PersonalCenter">
+                                        消息通知
+                                        <span className="header-notice">10</span>
+                                    </Link>
+                                    {/*{notice>0 && <span>{notice}</span>}*/}
+                                </li>
+                                <li onClick={this.loginOut}>退出登录</li>
+                            </ul>
+                        </div> : <Link className="header-btn-small" to="/login">登录/注册</Link>
                     }
                 </div>
             </div>

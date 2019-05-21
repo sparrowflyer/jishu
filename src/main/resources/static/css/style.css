@@ -232,4 +232,34 @@ html, body {
     transition: opacity 500ms ease-in-out;
 }
 
-
+.personal-center-image-upload{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    z-index: 9999;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    background: rgba(0,0,0,0.5);
+}
+.personal-center-btn-wrap{
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+}
+.personal-center-image-submit,.personal-center-image-cancel{
+    text-align: center;
+    box-sizing: border-box;
+    background-color: #FFE201;
+    color: #303030;
+    /*float: left;*/
+    border-radius: .44rem;
+}
+div.personal-center-image-cancel{
+    background-color: #fff;
+    border: 1px solid #303030;
+    margin-left: .2rem;
+}

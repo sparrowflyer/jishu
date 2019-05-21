@@ -87,3 +87,7 @@ export function purchaseContactCheck(params) {
 //     }
 //     return axios.get(baseUrl + '/purchaseContact'+string);
 // }
+// }获取所有未读通知数量
+export function getUnreadNotificaitonCount(params) {
+    return axios.get(baseUrl + '/getUnreadNotificaitonCount',params)
+}

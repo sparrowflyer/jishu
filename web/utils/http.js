@@ -72,3 +72,14 @@ export function uploadImage(file) {
     fileData.append('file', file);
     return axios.post(baseUrl + '/upload',fileData)
 }
+//购买学生联系方式前的校验 {
+// "sellerId": 1,
+// "buyerId": 2
+// }
+export function purchaseContactCheck(params) {
+    return axios.post(baseUrl + '/purchaseContactCheck',params)
+}
+//购买学生联系方式 purchaseContact?sellerId=18&buyerId=19&questions=xxxx
+export function purchaseContact(params) {
+    return axios.get(baseUrl + '/purchaseContact'+params)
+}

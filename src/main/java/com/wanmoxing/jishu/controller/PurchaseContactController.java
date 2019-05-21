@@ -330,6 +330,7 @@ public class PurchaseContactController {
 							smsParams.put("seller", seller.getNickName());
 							smsParams.put("randomCode", randomCode);
 							CellphoneUtil.sendSmsByTemplate(buyerCellphone, "SMS_165676292", smsParams);
+							System.out.println("订单"+purchaseContact.getId()+"给买家的短信发送成功！");
 						}
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -357,6 +358,7 @@ public class PurchaseContactController {
 							smsParams.put("buyer", buyer.getNickName());
 							smsParams.put("randomCode", randomCode);
 							CellphoneUtil.sendSmsByTemplate(sellerCellphone, "SMS_165690997", smsParams);
+							System.out.println("订单"+purchaseContact.getId()+"给卖家的短信发送成功！");
 						}
 					} catch (Exception e) {
 						e.printStackTrace();

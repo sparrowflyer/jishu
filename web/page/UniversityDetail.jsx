@@ -113,9 +113,9 @@ export class UniversityDetail extends React.Component {
                             </div>
                             <div className="right-info">
                                 <div className="info-name">{stu.nickName}</div>
-                                <div className="info-intro subject">{stu.userStudentInfo.major}</div>
+                                <div className="info-intro subject">{(stu.userStudentInfo && stu.userStudentInfo.major)||"--"}</div>
                                 {/*<div className="info-intro subject-en">School of Geography & Geosciences</div>*/}
-                                <div className="info-intro intro">{stu.userStudentInfo.description}</div>
+                                <div className="info-intro intro">{(stu.userStudentInfo && stu.userStudentInfo.description)||"--"}</div>
                                 <div className="info-data fl">
                                     <div className="info-name">{stu.likeAmount||0}</div>
                                     <div className="info-intro">粉丝数</div>
@@ -124,7 +124,7 @@ export class UniversityDetail extends React.Component {
                                 {/*<div className="info-name">89%</div>*/}
                                 {/*<div className="info-intro">通过率</div>*/}
                                 {/*</div>*/}
-                                <div className="corner-fraction">{stu.userStudentInfo.scoreResponse}</div>
+                                <div className="corner-fraction">{(stu.userStudentInfo && stu.userStudentInfo.scoreResponse)||"--"}</div>
                             </div>
                         </Link>
                     })}

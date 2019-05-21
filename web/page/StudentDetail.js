@@ -20,11 +20,14 @@ class StudentDetail extends React.Component {
             indexInEvaluations: 0,
             visible: false,
             userInfo: {},
-            loginUserInfo: {}
+            loginUserInfo: {},
+            modalType:"Advisory",//弹窗类别 PaySuccess & WillPay & Advisory
         };
         this.getUser = this.getUser.bind(this);
         this.updateDimensions = this.updateDimensions.bind(this);
         this.getComment = this.getComment.bind(this);
+        this.knowHim = this.knowHim.bind(this);
+        this.changeModalType = this.changeModalType.bind(this);
     }
     componentDidMount() {
         if (this.props.match.params.userID) {
@@ -70,15 +73,17 @@ class StudentDetail extends React.Component {
                 });
             });
     }
-    knowHim() {
+    knowHim(value) {
         this.setState(state => {
             return {
                 ...state,
-                visible: true
+                visible: value
             }
         });
+        console.log(this.state.visible)
     }
     getComment(studentId, pageNo, pageAmount) {
+        let that = this;
         let comments = [];
         postUrl('/getCommentedPurchaseContacts', {studentId, pageNo, pageAmount})
             .then((response) => {
@@ -88,7 +93,7 @@ class StudentDetail extends React.Component {
                 } else {
                     console.error(`获取评价信息:${data.errorMsg || `${response.status}${response.statusText}`}`);
                 }
-                this.setState((state) => {
+                that.setState((state) => {
                     return {
                         ...state,
                         evaluations: comments
@@ -96,7 +101,7 @@ class StudentDetail extends React.Component {
                 });
             }).catch((error) => {
                 console.error(`获取评价信息:${error}`);
-                this.setState((state) => {
+                that.setState((state) => {
                     return {
                         ...state,
                         evaluations: comments
@@ -109,6 +114,16 @@ class StudentDetail extends React.Component {
     }
     goNext() {
         
+    }
+    close(value){
+        this.setState({
+            visible:value
+        })
+    }
+    changeModalType(value){
+        this.setState({
+            modalType:value
+        })
     }
     updateDimensions() {
         var width = document.documentElement.clientWidth || document.body.clientWidth || window.innerWidth;
@@ -124,7 +139,7 @@ class StudentDetail extends React.Component {
     }
 
     render() {
-        const { visible } = this.state;
+        const { visible,modalType,userInfo,loginUserInfo } = this.state;
         const spacing = this.state.width > 768 ? [80, 50, 80, 75] : [15, 16, 24, 16];
         return (
             <div>
@@ -150,10 +165,12 @@ class StudentDetail extends React.Component {
                 </div>
                 {
                     this.state.width <= 768
-                        && <button className="know-btn" onClick={this.knowHim}>认识他</button>
+                        && <button className="know-btn" onClick={this.knowHim(true)}>认识他</button>
                 }
                 {
-                    this.state.width > 768 ? <ModalWeb visible={this.state.visible} type={"PaySuccess"}/> : <ModalMobile visible={visible} type={"PaySuccess"}/>
+                    this.state.width > 768 ?
+                        <ModalWeb close={this.close} handleChangeType={this.changeModalType} loginUserID={loginUserInfo.id} userID={userInfo.id} visible={visible} type={modalType}/> :
+                        <ModalMobile close={this.close} handleChangeType={this.changeModalType} loginUserID={loginUserInfo.id} userID={userInfo.id} visible={visible} type={modalType}/>
                 }
                 <Footer />
             </div>

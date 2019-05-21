@@ -218,7 +218,7 @@ class PersonalCenter extends React.Component {
                 }
 
                 {
-                    this.state.width > 768 ? <ModalWeb visible={visible} type={"Advisory"}/> : <ModalMobile visible={visible} type={"Advisory"}/>
+                    this.state.width > 768 ? <ModalWeb visible={visible} type={"Advisory"}/> : <ModalMobile visible={true} type={"Advisory"}/>
                 }
                 <Footer></Footer>
             </div>

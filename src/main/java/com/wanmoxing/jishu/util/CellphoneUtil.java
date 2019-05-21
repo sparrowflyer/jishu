@@ -2,6 +2,11 @@ package com.wanmoxing.jishu.util;
 
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.boot.configurationprocessor.json.JSONException;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
+
 import com.aliyuncs.CommonRequest;
 import com.aliyuncs.CommonResponse;
 import com.aliyuncs.DefaultAcsClient;
@@ -13,7 +18,8 @@ import com.aliyuncs.profile.DefaultProfile;
 
 public class CellphoneUtil {
 
-	
+	private static Logger logger = LoggerFactory.getLogger(CellphoneUtil.class);
+
 	private static final String accessKeyID = "LTAIk9Yduza9gtuL";
 	private static final String	accessKeySecret = "Cq7To1isupCapKfxfXcWtS8UVKXcNF";
 	private static final String signName = "叽叔";
@@ -37,6 +43,16 @@ public class CellphoneUtil {
         CommonResponse response = new CommonResponse();
         try {
             response = client.getCommonResponse(request);
+            try {
+				JSONObject jsonObject = new JSONObject(response.getData());
+				if("OK".equals(jsonObject.get("Message"))) {
+					logger.info("短信发送成功");
+				} else {
+					logger.info("短信发送失败: " + jsonObject.get("Message"));
+				}
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
         } catch (ServerException e) {
             e.printStackTrace();
         } catch (ClientException e) {
@@ -63,6 +79,17 @@ public class CellphoneUtil {
         CommonResponse response = new CommonResponse();
         try {
             response = client.getCommonResponse(request);
+            try {
+				JSONObject jsonObject = new JSONObject(response.getData());
+				if("OK".equals(jsonObject.get("Message"))) {
+					logger.info("短信发送成功");
+				} else {
+					logger.info("短信发送失败: " + jsonObject.get("Message"));
+				}
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+            
         } catch (ServerException e) {
             e.printStackTrace();
         } catch (ClientException e) {

@@ -221,12 +221,12 @@ html, body {
     transition: all 500ms ease-in-out;
 }
 
-.carousel-leave {
+.carousel-exit {
     opacity: 1;
     transform: translate(0%);
 }
 
-.carousel-leave.carousel-leave-active {
+.carousel-exit.carousel-exit-active {
     opacity: 0.1;
     transform: translate(-100%);
     transition: all 500ms ease-in-out;

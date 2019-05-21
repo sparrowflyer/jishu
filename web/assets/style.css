@@ -203,8 +203,10 @@ ul, li {
     text-align: center;
     background: #303030;
     position: relative;
+    overflow: hidden;
 }
 .headbg-wrap{
+    width: 100%;
     position: absolute;
     top:0;
     left:0;

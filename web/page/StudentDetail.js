@@ -28,6 +28,7 @@ class StudentDetail extends React.Component {
         this.getComment = this.getComment.bind(this);
         this.knowHim = this.knowHim.bind(this);
         this.changeModalType = this.changeModalType.bind(this);
+        this.close = this.close.bind(this);
     }
     componentDidMount() {
         if (this.props.match.params.userID) {
@@ -80,7 +81,7 @@ class StudentDetail extends React.Component {
                 visible: value
             }
         });
-        console.log(this.state.visible)
+        // console.log(this.state.visible)
     }
     getComment(studentId, pageNo, pageAmount) {
         let that = this;
@@ -109,15 +110,16 @@ class StudentDetail extends React.Component {
                 });
             });
     }
-    goBack() {
-
-    }
-    goNext() {
-        
-    }
-    close(value){
+    // goBack() {
+    //
+    // }
+    // goNext() {
+    //
+    // }
+    close(value,type){
         this.setState({
-            visible:value
+            visible:value,
+            modalType:type,
         })
     }
     changeModalType(value){
@@ -139,17 +141,17 @@ class StudentDetail extends React.Component {
     }
 
     render() {
-        const { visible,modalType,userInfo,loginUserInfo } = this.state;
+        let { visible,modalType,userInfo,loginUserInfo } = this.state;
         const spacing = this.state.width > 768 ? [80, 50, 80, 75] : [15, 16, 24, 16];
         return (
             <div>
-                <Header userInfo={this.state.loginUserInfo}></Header>
-                <Avator parent="StudentDetail" isWeb={this.state.width > 768} userID={this.props.match.params.userID} userInfo={this.state.userInfo} knowHim={this.knowHim.bind(this)} isCenter={false}/>
+                <Header userInfo={loginUserInfo}></Header>
+                <Avator parent="StudentDetail" isWeb={this.state.width > 768} userID={this.props.match.params.userID} userInfo={userInfo} knowHim={this.knowHim.bind(this)} isCenter={false}/>
                 <SubTitle cn="他的话题" en="Topic of conversation" top={spacing[0]} bottom={spacing[1]} />
                 <div className="conversation-container">
-                    <Conversation title="专业" desc={getIterativeValue(this.state.userInfo, 'userStudentInfo.major')} />
-                    <Conversation title="话题" desc={getIterativeValue(this.state.userInfo, 'userStudentInfo.topics')} />
-                    <Conversation title="荣誉" desc={getIterativeValue(this.state.userInfo, 'userStudentInfo.honors')} />
+                    <Conversation title="专业" desc={getIterativeValue(userInfo, 'userStudentInfo.major')} />
+                    <Conversation title="话题" desc={getIterativeValue(userInfo, 'userStudentInfo.topics')} />
+                    <Conversation title="荣誉" desc={getIterativeValue(userInfo, 'userStudentInfo.honors')} />
                 </div>
                 <SubTitle cn="他的评价" en="Evaluation" top={spacing[2]} bottom={spacing[3]} />
                 <div className="evaluation-container">
@@ -169,8 +171,8 @@ class StudentDetail extends React.Component {
                 }
                 {
                     this.state.width > 768 ?
-                        <ModalWeb close={this.close} handleChangeType={this.changeModalType} loginUserID={loginUserInfo.id} userID={userInfo.id} visible={visible} type={modalType}/> :
-                        <ModalMobile close={this.close} handleChangeType={this.changeModalType} loginUserID={loginUserInfo.id} userID={userInfo.id} visible={visible} type={modalType}/>
+                    <ModalWeb onClose={this.close} handleChangeType={this.changeModalType} loginUserID={loginUserInfo.id} userID={userInfo.id} visible={visible} type={modalType}/>:
+                <ModalMobile onClose={this.close} handleChangeType={this.changeModalType} loginUserID={loginUserInfo.id} userID={userInfo.id} visible={visible} type={modalType}/>
                 }
                 <Footer />
             </div>

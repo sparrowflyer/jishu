@@ -2,17 +2,20 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {purchaseContactCheck,purchaseContact} from "../../utils/http";
 
+let timer = null;
+
 export class ModalWeb extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            visible: false,
+            // visible: false,
             payType: 0,
             questions:[],
-            money:"¥30"
+            resQuestions:[],
+            money:"¥30",
+            alertShow:false,
+            alertText:""
         };
-        this.closeModal = this.closeModal.bind(this);
-        this.maskClick = this.maskClick.bind(this);
         this.goPay = this.goPay.bind(this);
         this.handleType = this.handleType.bind(this);
         this.changeType = this.changeType.bind(this);
@@ -21,38 +24,38 @@ export class ModalWeb extends React.Component {
         this.setMoney = this.setMoney.bind(this);
         this.setQusetions = this.setQusetions.bind(this);
         this.propsClose= this.propsClose.bind(this);
-    }
-    // 点击取消更新modal中的visible状态
-    closeModal() {
-        const { onClose } = this.props;
-        onClose && onClose()
-        this.setState({ visible: false })
-        this.propsClose()
-    }
-    maskClick() {
-        this.setState({ visible: false})
-        this.propsClose()
+        this.setAlert= this.setAlert.bind(this);
     }
     propsClose(){
-        this.props.close(false);
+        this.props.onClose(false,"Advisory");
+    }
+    setAlert(value){
+        this.setState({
+            alertShow:true,
+            alertText: value
+        });
+        clearTimeout(timer);
+        timer = null;
+        timer = setTimeout(()=>{
+            this.setState({
+                alertShow: false,
+            });
+        },3000);
+
     }
     goPay(){
         purchaseContactCheck({
             "sellerId": this.props.loginUserID,
             "buyerId": this.props.userID,
         }).then(response =>{
-            console.log(response)
+            // console.log(response)
             if(response.data.status === "success"){
-                purchaseContact(
-                    "?sellerId="+this.props.loginUserID+
-                    "&buyerId="+ this.props.userID+
-                    "&questions="+ this.state.questions.join(",")
-                ).then(resp =>{
-                    if(resp.status === "success"){
-                        this.changeType("PaySuccess");
-                    }
-                })
+                window.location.href= "/jishu/purchaseContact?sellerId="+this.props.userID+"&buyerId="+this.props.loginUserID+"&questions="+this.state.resQuestions.join(",");
+                return;
             }
+            this.setAlert(response.data.errorMsg);
+        }).catch(error=>{
+            this.setAlert("无法检测用户支付情况！");
         })
     }
     handleType(e){ //更换支付类型
@@ -61,7 +64,15 @@ export class ModalWeb extends React.Component {
         });
     }
     changeType(value){ //更换弹窗类型
-        this.props.handleChangeType(value);
+        if(value==="willpay"){
+            this.setState({
+                resQuestions:this.state.questions,
+                questions:[]
+            })
+        }
+        setTimeout(()=>{
+            this.props.handleChangeType(value);
+        },200)
     }
     setQusetions(e){
         console.log(this.state.questions);
@@ -90,26 +101,27 @@ export class ModalWeb extends React.Component {
             money:e.target.value
         })
     }
-    componentDidUpdate(preProps) {
-        if(preProps.visible !== this.props.visible) this.setState({ visible: this.props.visible });
-    }
+    // componentDidUpdate(preProps) {
+    //     if(preProps.visible !== this.props.visible) this.setState({ visible: this.props.visible });
+    // }
 
     render() {
         // 通过父组件传递的visile控制显隐
-        let {questions,money} = this.state,{type,visible}= this.props;
+        let {questions,money,alertShow,alertText} = this.state,{type,visible}= this.props;
         let styleObj= {
-            height: (type==="Advisory") ? '' : (type==="PaySuccess") ? '4.62rem' : '4.25rem'
+            height: (type==="Advisory") ? '' : (type==="PaySuccess") ? '4.62rem' : '4.25rem',
+            overflow: (type==="Advisory") ? 'auto' :'hidden'
         };
         return visible && <div className="modal-wrapper">
             <div style={styleObj} className="modal">
-                <div className="close-topRight" onClick={this.closeModal}>
+                {
+                    alertShow &&  <div className="alert-text">{alertText}</div>
+                }
+                <div className="close-topRight" onClick={this.propsClose}>
                     <img src={require("../../assets/images/guanbi1.png")} alt=""/>
                 </div>
                 <div className="modal-content">
-                    {/* onUpdata={(data) => {$this.ChildrenFunc(data)}}*/}
-                    {/*{ (type==="Advisory") ? <Advisory questions={questions} setMoney={this.setMoney} lessQuestions={this.lessQuestions} addQuestions={this.addQuestions} changeType={this.changeType} setQusetions={this.setQusetions}/> :*/}
-                        {/*(type==="PaySuccess") ? <PaySuccess closeModal={this.maskClick}/> : <WillPay payType={payType} goPay={this.goPay} setPayType={this.handleType}/>}*/}
-                    {
+                     {
                         type==="Advisory" ? <div>
                                 <div className="l-text mb25">他的承诺</div>
                                 <div className="m-text mb20">如果我同意了你的认识，我承诺</div>
@@ -124,7 +136,7 @@ export class ModalWeb extends React.Component {
                                 </div>}
                                 {
                                     questions.length > 1 && questions.map((item,index)=>{
-                                        if(index>0) return <div className="add-line mb28">
+                                        if(index>0) return <div className="add-line mb28" key={index}>
                                             <input placeholder="问题占位符" name={index} value={item} onChange={this.setQusetions} className="ph-text" type="text"/>
                                             <img onClick={this.lessQuestions} className="less-btn" src={require("../../assets/images/guanbi1@2x.png")} alt=""/>
                                         </div>
@@ -147,7 +159,7 @@ export class ModalWeb extends React.Component {
                                         <div className="ta-center">支付成功</div>
                                     </div>
                                     <div className="mt42">
-                                        <button className="m-button" onClick={this.maskClick}>完成</button>
+                                        <button className="m-button" onClick={this.propsClose}>完成</button>
                                     </div>
                                 </div> :
                                 <div className="radio-wrap">
@@ -170,11 +182,11 @@ export class ModalWeb extends React.Component {
                     }
                 </div>
             </div>
-            <div className="mask" onClick={this.maskClick}></div>
+            <div className="mask" onClick={this.propsClose}></div>
         </div>
     }
 }
 
 ModalWeb.propTypes = {
-    type: PropTypes.string.isRequired
+    type: PropTypes.string.isRequired,
 };

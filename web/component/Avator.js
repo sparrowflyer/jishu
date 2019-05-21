@@ -1,29 +1,38 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useAlert } from 'react-alert';
 import { getUser,updateUserHeadImage,updateUserComment,updateUserNickname,uploadImage } from '../utils/http.js';
 import { getIterativeValue } from '../utils/utils.jsx';
-
+import Cropper from 'react-cropper';
+import 'cropperjs/dist/cropper.css';
+// const MAX_FILE_SIZE = 2 * 1024;
 export class Avator extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            width: document.documentElement.clientWidth || document.body.clientWidth || window.innerWidth,
+            height: document.documentElement.clientHeight || document.body.clientHeight || window.innerHeight,
             // avator: null,
             canEdit:false,
-            imgFile: '',
             editName:'',
             editComment:'',
             renderState:'',
         };
         this.getAverageScore = this.getAverageScore.bind(this);
-        this.onChangeImg = this.onChangeImg.bind(this);
         this.editInfo = this.editInfo.bind(this);
-        this.updateUserHeadImage = this.updateUserHeadImage.bind(this);
         this.updateUserComment = this.updateUserComment.bind(this);
         this.updateUserNickname = this.updateUserNickname.bind(this);
         this.onChangeComment = this.onChangeComment.bind(this);
+        this.onChangeImgFile = this.onChangeImgFile.bind(this);
+
+    }
+    onChangeImgFile(e){
+        const file = e.target.files[0];
+        this.props.handleFileChange(file);
+        e.target.value = '';
     }
     editInfo(bool){
-        let {imgFile,editName,editComment} = this.state;
+        let {editName,editComment} = this.state;
         this.setState((state) => {
             return {
                 ...state,
@@ -31,20 +40,10 @@ export class Avator extends React.Component {
             }
         });
         if(bool){
-            imgFile && this.updateUserHeadImage(imgFile);
             editName && this.updateUserNickname(editName);
             editComment && this.updateUserComment(editComment);
             // this.props.updateUserInfo();
         }
-    }
-    onChangeImg(e){ //选择上传图片
-        let file = e.target.files[0];
-        this.setState((state) => {
-            return {
-                ...state,
-                imgFile: file
-            }
-        });
     }
     onChangeName(e){
         // let value = e.target.value;
@@ -57,28 +56,6 @@ export class Avator extends React.Component {
         this.setState({
             editComment:e.target.value
         })
-    }
-    updateUserHeadImage(img){ //更新头像
-        if(img){
-            // let url=null;
-            uploadImage(img).then(res=> {
-                if(res.data.data){
-                    // url=res.data;
-                    updateUserHeadImage({
-                        id: this.props.userID,
-                        headImage: res.data.data
-                    }).then(resp=>{
-                        console.log("更新头像",resp)
-                        if(resp.data.status==="success"){
-                            this.props.updateUserInfo();
-                        }
-                    }).catch(err=>{
-                        console.log("更新头像报错",err)
-                    })
-                }
-            }).catch(err=>{console.log("上传头像报错",err)});
-        }
-
     }
     updateUserComment(cnt){ //更新签名
         updateUserComment({
@@ -106,7 +83,6 @@ export class Avator extends React.Component {
             console.log("更新昵称报错",err)
         })
     }
-
     getAverageScore(student) {
         if (!student) return '0.0';
         let nextNameArr = ['scoreResponse', 'scoreAttitude', 'scoreProfessional'];
@@ -123,16 +99,26 @@ export class Avator extends React.Component {
         //     sessionStorage.setItem()
         // }
     }
+
     render(){
+        const iptStyle = {
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            zIndex: 9999,
+            opacity: 0,
+        };
         return (
             <div>
                 <div className="avator_bg"></div>
                 <div className="avator" style={{backgroundImage: 'url(http://' + this.props.userInfo.headImage +')'}}>
                     {
-                        this.state.canEdit && <div className="avator-edit" onClick={this.onChangeImg}>
-                            <input type="file" ref="fileInput" onChange={this.onChangeImg.bind(this)}/>
-                           <div>更新照片</div>
-                        </div> 
+                        this.state.canEdit && <label className="add-img-btn">
+                            <input style={iptStyle} type="file" accept="image/jpeg,image/jpg,image/png"
+                                   onChange={this.onChangeImgFile}/>
+                        </label>
                     }
                     {
                         this.props.parent === 'StudentDetail' &&

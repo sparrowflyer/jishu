@@ -1,18 +1,21 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {purchaseContactCheck,purchaseContact} from "../../utils/http";
+import {purchaseContactCheck} from "../../utils/http";
+
+let timer = null;
 
 export class ModalMobile extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            visible: false,
+            // visible: false,
             payType: 0,
             questions:[],
-            money:"¥30"
+            resQuestions:[],
+            money:"¥30",
+            alertShow:false,
+            alertText:""
         };
-        this.closeModal = this.closeModal.bind(this);
-        this.maskClick = this.maskClick.bind(this);
         this.goPay = this.goPay.bind(this);
         this.handleType = this.handleType.bind(this);
         this.changeType = this.changeType.bind(this);
@@ -21,39 +24,38 @@ export class ModalMobile extends React.Component{
         this.setMoney = this.setMoney.bind(this);
         this.setQusetions = this.setQusetions.bind(this);
         this.propsClose= this.propsClose.bind(this);
-
-    }
-    // 点击取消更新modal中的visible状态
-    closeModal() {
-        const { onClose } = this.props;
-        onClose && onClose()
-        this.setState({ visible: false })
-        this.propsClose()
-    }
-    maskClick() {
-        this.setState({ visible: false})
-        this.propsClose()
+        this.setAlert= this.setAlert.bind(this);
     }
     propsClose(){
-        this.props.close(false);
+        this.props.onClose(false,"Advisory");
+    }
+    setAlert(value){
+        this.setState({
+            alertShow: true,
+            alertText: value
+        });
+        clearTimeout(timer);
+        timer = null;
+        timer = setTimeout(()=>{
+            this.setState({
+                alertShow: false,
+            });
+        },3000);
+
     }
     goPay(){
         purchaseContactCheck({
             "sellerId": this.props.loginUserID,
             "buyerId": this.props.userID,
         }).then(response =>{
-            console.log(response)
+            // console.log(response)
             if(response.data.status === "success"){
-                purchaseContact(
-                    "?sellerId="+this.props.loginUserID+
-                    "&buyerId="+ this.props.userID+
-                    "&questions="+ this.state.questions.join(",")
-                ).then(resp =>{
-                    if(resp.status === "success"){
-                        this.changeType("PaySuccess");
-                    }
-                })
+                window.location.href= "/jishu/purchaseContact?sellerId="+this.props.userID+"&buyerId="+this.props.loginUserID+"&questions="+this.state.resQuestions.join(",");
+            return;
             }
+            this.setAlert(response.data.errorMsg);
+        }).catch(error=>{
+            this.setAlert("无法检测用户支付情况！");
         })
     }
     handleType(e){ //更换支付类型
@@ -62,7 +64,15 @@ export class ModalMobile extends React.Component{
         });
     }
     changeType(value){ //更换弹窗类型
-        this.props.handleChangeType(value);
+        if(value==="willpay"){
+            this.setState({
+                resQuestions:this.state.questions,
+                questions:[]
+            })
+        }
+        setTimeout(()=>{
+            this.props.handleChangeType(value);
+        },200)
     }
     setQusetions(e){
         let arr = this.state.questions,index = Number(e.target.name) || 0;
@@ -79,32 +89,32 @@ export class ModalMobile extends React.Component{
         })
     }
     lessQuestions(){
-            let arr = this.state.questions;
-            arr.pop();
-            this.setState({
-                questions:arr
-            })
+        let arr = this.state.questions;
+        arr.pop();
+        this.setState({
+            questions:arr
+        })
     }
     setMoney(e){
         this.setState({
             money:e.target.value
         })
     }
-    componentDidUpdate(preProps) {
-        if(preProps.visible !== this.props.visible) this.setState({ visible: this.props.visible });
-    }
+    // componentDidUpdate(preProps) {}
     render() {
         // 通过父组件传递的visile控制显隐
-        let {questions,money} = this.state,{type,visible}= this.props;
+        let {questions,money,alertShow,alertText} = this.state,{type,visible}= this.props;
         let styleObj= {
-            height: (type!=="Advisory") ? '2.06rem' :''
+            height: (type==="Advisory") ? '' :'2.06rem',
+            overflow: (type==="Advisory") ? 'auto' :'hidden'
         };
         return visible && <div className="modal-wrapper">
             <div className="modal-contain">
                 <div style={styleObj} className="modal">
+                    {
+                        alertShow &&  <div className="alert-text">{alertText}</div>
+                    }
                     <div className="modal-content">
-                        {/*{ type === "Advisory" ? <Advisory questions={questions} setMoney={this.setMoney} lessQuestions={this.lessQuestions} addQuestions={this.addQuestions} changeType={this.changeType} setQusetions={this.setQusetions}/> :*/}
-                            {/*type === "PaySuccess" ? <PaySuccess closeModal={this.maskClick}/> : <WillPay payType={payType} goPay={this.goPay} setPayType={this.handleType}/>}*/}
                         {
                             type === "Advisory" ? <div>
                                     <div className="l-text mb10">他的承诺</div>
@@ -114,13 +124,13 @@ export class ModalMobile extends React.Component{
                                     </ul>
                                     <div className="l-text mb16">对他提问（最多五个）</div>
                                     {questions.length >= 1 &&
-                                        <input placeholder="问题占位符" name="0" value={questions[0]} onChange={this.setQusetions}
+                                    <input placeholder="问题占位符" name="0" value={questions[0]} onChange={this.setQusetions}
                                            className="ph-text" type="text"/>
                                     }
                                     <div className="ipt-line mb13"></div>
                                     {
                                         questions.length > 1 && questions.map((item,index)=>{
-                                            if(index>0)   return <div className="add-line mb13">
+                                            if(index>0)   return <div className="add-line mb13" key={index}>
                                                 <img onClick={this.lessQuestions} className="less-btn" src={require("../../assets/images/guanbi1@2x.png")} alt=""/>
                                                 <input placeholder="问题占位符" name={index} value={item} onChange={this.setQusetions} className="ph-text" type="text"/>
                                             </div>
@@ -137,14 +147,14 @@ export class ModalMobile extends React.Component{
                                     </div>
                                 </div>  :
                                 type === "PaySuccess" ? <div className="ta-center">
-                                    <div className="paysuc-contain">
-                                        <img src={require("../../assets/images/chenggong.png")} alt=""/>
-                                        <div className="ta-center">支付成功</div>
-                                    </div>
-                                    <div className="ta-center">
-                                        <button className="m-button" onClick={this.maskClick}>完成</button>
-                                    </div>
-                                </div> :
+                                        <div className="paysuc-contain">
+                                            <img src={require("../../assets/images/chenggong.png")} alt=""/>
+                                            <div className="ta-center">支付成功</div>
+                                        </div>
+                                        <div className="ta-center">
+                                            <button className="m-button" onClick={this.propsClose}>完成</button>
+                                        </div>
+                                    </div> :
                                     <div className="radio-wrap">
                                         <label className="modal-radio">
                                             <input checked type="radio" name="payWay" onChange={this.handleType} value="0"/>
@@ -166,13 +176,14 @@ export class ModalMobile extends React.Component{
                     </div>
                 </div>
                 <div className="close-bottom">
-                    <img onClick={this.maskClick} src={require("../../assets/images/guanbi1@2x.png")} alt=""/>
+                    <img onClick={this.propsClose} src={require("../../assets/images/guanbi1@2x.png")} alt=""/>
                 </div>
             </div>
-            <div className="mask" onClick={this.maskClick}></div>
+            <div className="mask" onClick={this.propsClose}></div>
         </div>
     }
 }
+
 ModalMobile.propTypes = {
     type: PropTypes.string.isRequired
 };

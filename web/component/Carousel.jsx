@@ -1,5 +1,4 @@
 import React from 'react';
-import { CSSTransitionGroup } from 'react-transition-group';
 
 export class Carousel extends React.Component {
     constructor(props) {
@@ -61,13 +60,8 @@ export class Carousel extends React.Component {
     render() {
         return (
             <div className="home-carousel-container" onMouseEnter={this.removeTimer} onMouseLeave={this.createTimer}>
-                <CSSTransitionGroup
-                    transitionName="carousel"
-                    transitionEnterTimeout={500}
-                    transitionLeaveTimeout={500}>
-                    <div className="home-carousel-image" style={{backgroundImage: `url(${this.state.imgList[this.state.currentIndex]})`}} key={this.state.currentIndex}>
-                    </div>
-                </CSSTransitionGroup>
+                <div className="home-carousel-image" style={{backgroundImage: `url(${this.state.imgList[this.state.currentIndex]})`}}>
+                </div>
                 <button className="left-btn" onClick={this.go.bind(this, true)}></button>
                 <button className="right-btn" onClick={this.go.bind(this, false)}></button>
                 <div className="home-carousel-btns">

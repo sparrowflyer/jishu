@@ -4,7 +4,6 @@ import { Carousel } from '../component/Carousel.jsx';
 import { SubTitle } from '../component/SubTitle.js';
 import { Header } from '../component/common/Header.jsx';
 import { Link } from 'react-router-dom';
-import { CSSTransitionGroup } from 'react-transition-group';
 
 const students = [
     {

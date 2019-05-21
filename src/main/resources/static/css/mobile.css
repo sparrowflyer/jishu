@@ -781,12 +781,75 @@
     background-size: cover;
 }
 
+.home-student-container .student-image {
+    width: .68rem;
+    height: .91rem;
+    border-radius: .04rem;
+    display: block;
+    background: #eee no-repeat center;
+    background-size: cover;
+}
+
+.home-students {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.home-student-container .student-name {
+    display: block;
+    font-size: .06rem;
+    line-height: .08rem;
+    color: #040404;
+    margin-top: .07rem;
+    margin-bottom: .03rem;
+    text-align: center;
+}
+
+.home-student-container .student-college {
+    display: block;
+    font-size: .05rem;
+    line-height: .08rem;
+    color: #848484;
+    text-align: center;
+}
+
+.home-student-container:hover .student-image{
+    width: .86rem;
+    height: 1.14rem;
+    border-radius: .05rem;
+    position: relative;
+}
+
+.student-desc {
+    display: none;
+}
+
+.home-student-container:hover .student-desc{
+    display: block;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    border-radius: 0 0 .05rem .05rem;
+    background: rgba(63, 63, 63, .52);
+    box-shadow: 0 .01rem .05rem 0 rgba(123, 123, 123, 0.5);
+    padding: .06rem .08rem;
+    font-size: .05rem;
+    line-height: .07rem;
+    color: white;
+}
+
+.home-see-more-container {
+    text-align: center;
+    font-size: .04rem;
+    line-height: .05rem;
+    margin-top: .12rem;
+}
+
 .home-see-more {
     display: inline-block;
     color: #0E0E0E;
     background-color: #FFE201;
-    font-size: .12rem;
-    line-height: .14rem;
     padding: .06rem .12rem;
     text-align: center;
     border-radius: .2rem;

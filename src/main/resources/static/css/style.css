@@ -229,7 +229,27 @@ html, body {
 .carousel-leave.carousel-leave-active {
     opacity: 0.1;
     transform: translate(-100%);
-    transition: opacity 500ms ease-in-out;
+    transition: all 500ms ease-in-out;
 }
 
+.studentDesc-enter {
+    opacity: 0;
+    transform: translate(-90%);
+}
 
+.studentDesc-enter.studentDesc-enter-active {
+    transform: translate(90%);
+    opacity: 1;
+    transition: all 500ms ease-in-out;
+}
+
+.studentDesc-leave {
+    opacity: 1;
+    transform: translate(90%);
+}
+
+.studentDesc-leave.studentDesc-leave-active {
+    opacity: 0;
+    transform: translate(-90%);
+    transition: all 500ms ease-in-out;
+}

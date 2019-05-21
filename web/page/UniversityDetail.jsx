@@ -83,8 +83,6 @@ export class UniversityDetail extends React.Component {
             <div>
                 <Header></Header>
                 <div className="uni-banner" style={{backgroundImage: 'url(' + schoolData.homeImage +')'}}>
-                    <div className="">
-                    </div>
                     <div className="headcnt-wrap">
                         <div className="uni-name">{schoolData.cnName}</div>
                         <div className="uni-ename">{schoolData.enName}</div>

@@ -191,7 +191,7 @@
 .desc:before {
     font-family: 'icomoon';
     color: #FFE201;
-    content: "\e977";
+    content: "\e979";
     font-size: .07rem;
     position: absolute;
     left: -.17rem;
@@ -201,7 +201,7 @@
 .desc:after {
     font-family: 'icomoon';
     color: #FFE201;
-    content: "\e978";
+    content: "\e97a";
     font-size: .07rem;
     position: absolute;
     right: -.12rem;
@@ -707,4 +707,87 @@
     width: .49rem;
     height: .35rem;
     margin-bottom: .19rem;
+}
+
+.home-carousel-container {
+    position: relative;
+    height: 2rem;
+    overflow: hidden;
+}
+
+.home-carousel-image {
+    height: 2rem;
+    background: #eee no-repeat center;
+    background-size: cover;
+}
+
+.home-carousel-btns {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    text-align: center;
+}
+
+.home-carousel-btns button {
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+    outline: 0;
+    width: .06rem;
+    height: .06rem;
+    background: rgba(0, 0, 0, 0.3);
+    box-shadow: 0 .08rem .08rem 0 rgba(45, 45, 45, 0.21);
+    border-radius: 50%;
+    border: 0;
+    margin-right: .12rem;
+}
+
+.home-carousel-btns button.selected {
+    background: #FFE201;
+}
+
+.left-btn {
+    outline: none;
+    width: .18rem;
+    height: .18rem;
+    position: absolute;
+    top: 50%;
+    left: 15px;
+    background: url("../image/left.png") no-repeat center;
+    background-size: cover;
+}
+
+.left-btn:hover {
+    outline: none;
+    background: url("../image/left_hover.png");
+    background-size: cover;
+}
+
+.right-btn {
+    outline: none;
+    width: .18rem;
+    height: .18rem;
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    background: url("../image/right.png") no-repeat center;
+    background-size: cover;
+}
+
+.right-btn:hover {
+    outline: none;
+    background: url("../image/right_hover.png");
+    background-size: cover;
+}
+
+.home-see-more {
+    display: inline-block;
+    color: #0E0E0E;
+    background-color: #FFE201;
+    font-size: .12rem;
+    line-height: .14rem;
+    padding: .06rem .12rem;
+    text-align: center;
+    border-radius: .2rem;
 }

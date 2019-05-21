@@ -53,6 +53,7 @@ class Login extends React.Component {
         this.registerSubmit = this.registerSubmit.bind(this);
         this.forgetPwdSubmit = this.forgetPwdSubmit.bind(this);
         this.isEmail = this.isEmail.bind(this);
+        this.togglePwdChecked = this.togglePwdChecked.bind(this);
     }
     handleInputChange(event) {
         const name = event.target.name;
@@ -106,26 +107,26 @@ class Login extends React.Component {
             getEmailCode(this.state.username)
                 .then((response) => {
                     if (response.status === 200) {
-                        this.props.alert.success('成功发送邮箱验证码，请查收');
+                        this.props.alert.success(<div style={{fontSize: '12px'}}>成功发送邮箱验证码，请查收</div>);
                     } else {
-                        this.props.alert.error('邮箱验证码发送失败，请重新发送');
+                        this.props.alert.error(<div style={{fontSize: '12px'}}>邮箱验证码发送失败，请重新发送</div>);
                     }
                 })
                 .catch((error) => {
-                    this.props.alert.error('短信验证码发送失败，请重新发送');
+                    this.props.alert.error(<div style={{fontSize: '12px'}}>短信验证码发送失败，请重新发送</div>);
                     console.error('获取邮箱验证码：', error);
                 });
         } else {
             getSMSCode(this.state.username)
                 .then((response) => {
                     if (response.status === 200) {
-                        this.props.alert.success('成功发送短信验证码，请查收');
+                        this.props.alert.success(<div style={{fontSize: '12px'}}>成功发送短信验证码，请查收</div>);
                     } else {
-                        this.props.alert.error('短信验证码发送失败，请重新发送');
+                        this.props.alert.error(<div style={{fontSize: '12px'}}>短信验证码发送失败，请重新发送</div>);
                     }
                 })
                 .catch((error) => {
-                    this.props.alert.error('短信验证码发送失败，请重新发送');
+                    this.props.alert.error(<div style={{fontSize: '12px'}}>短信验证码发送失败，请重新发送</div>);
                     console.error('获取短信验证码：', error);
                 });
         }
@@ -174,12 +175,14 @@ class Login extends React.Component {
                     sessionStorage.setItem('jeeUser', JSON.stringify(data.data));
                     this.props.history.push('/');
                 } else {
-                    this.props.alert.error(`登录失败，原因为${data.errorMsg || `${response.status}${response.statusText}`}`);
+                    this.getImageCode();
+                    this.props.alert.error(<div style={{fontSize: '12px'}}>登录失败，{data.errorMsg || (response.status + response.statusText)}</div>);
                 }
             })
             .catch(error => {
                 console.error('登录', error);
-                this.props.alert.error('登录失败，请重新登录');
+                this.getImageCode();
+                this.props.alert.error(<div style={{fontSize: '12px'}}>登录失败，请重新登录</div>);
             });
     }
     registerSubmit() {
@@ -216,12 +219,12 @@ class Login extends React.Component {
                 if (data.status === 'success') {
                     this.props.history.push('/login');
                 } else {
-                    this.props.alert.error(`注册失败，原因为${data.errorMsg || `${response.status}${response.statusText}`}`);
+                    this.props.alert.error(<div style={{fontSize: '12px'}}>注册失败，{data.errorMsg || (response.status + response.statusText)}</div>);
                 }
             })
             .catch(error => {
                 console.error('注册', error);
-                this.props.alert.error('注册失败，请重新注册');
+                this.props.alert.error(<div style={{fontSize: '12px'}}>注册失败，请重新注册</div>);
             });
     }
     forgetPwdSubmit() {
@@ -257,12 +260,12 @@ class Login extends React.Component {
                 if (data.status === 'success') {
                     this.props.history.push('/login');
                 } else {
-                    this.props.alert.error(`修改密码失败，原因为${data.errorMsg || `${response.status}${response.statusText}`}`);
+                    this.props.alert.error(<div style={{fontSize: '12px'}}>修改密码失败，{data.errorMsg || (response.status + response.statusText)}</div>);
                 }
             })
             .catch(error => {
                 console.error('修改密码', error);
-                this.props.alert.error('修改密码失败，请重新修改');
+                this.props.alert.error(<div style={{fontSize: '12px'}}>修改密码失败，请重新修改</div>);
             });
     }
     isEmail(unknown) {
@@ -330,7 +333,7 @@ class Login extends React.Component {
                         this.props.match.path === '/register' &&
                             <div className="login_item_note">
                                 <label className="checkbox-label">
-                                    <input type="checkbox" checked />
+                                    <input type="checkbox" defaultChecked={true} />
                                     <span className="checkbox-custom"></span>
                                 </label>
                                 <span>同意</span>

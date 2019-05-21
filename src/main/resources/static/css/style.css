@@ -209,3 +209,27 @@ html, body {
     font-size: .3rem;
     color: #848484;
 }
+
+.carousel-enter {
+    opacity: 0.1;
+    transform: translate(100%);
+}
+
+.carousel-enter.carousel-enter-active {
+    transform: translate(0%);
+    opacity: 1;
+    transition: all 500ms ease-in-out;
+}
+
+.carousel-leave {
+    opacity: 1;
+    transform: translate(0%);
+}
+
+.carousel-leave.carousel-leave-active {
+    opacity: 0.1;
+    transform: translate(-100%);
+    transition: opacity 500ms ease-in-out;
+}
+
+

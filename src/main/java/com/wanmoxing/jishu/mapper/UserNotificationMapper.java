@@ -14,7 +14,7 @@ public interface UserNotificationMapper {
 	
 	public List<UserNotification> findByUserId(int userId);
 	
-	public int findNotificationCount(int userId, String status);
+	public int findNotificationCount(@Param("userId")int userId, @Param("status")String status);
 	
 	public List<UserNotification> findByUserIdAndTypeId(@Param("userId")int userId, @Param("typeId")int typeId);
 

@@ -359,6 +359,7 @@ div.personal-center-image-cancel{
 .header-title-small img{
     width: 0.92rem;
     height: auto;
+    margin-top: .06rem;
     vertical-align: middle;
 }
 

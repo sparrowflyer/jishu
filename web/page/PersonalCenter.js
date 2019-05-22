@@ -233,7 +233,7 @@ class PersonalCenter extends React.Component {
     }
 
     render() {
-        let {editImageModalVisible,src,userInfo,userID,activeTab,activeType,height} = this.state;
+        let {editImageModalVisible,src,userInfo,userID,activeTab,activeType,height,orders} = this.state;
         const copperStyle = {
             width: '100%',
             height: height
@@ -274,9 +274,9 @@ class PersonalCenter extends React.Component {
                     }
                     {
                         activeTab===2 &&
-                            contents.map((index) => {
+                            orders.map((item,index) => {
                                 return (
-                                    <Item key={index}/>
+                                    <Item key={index} item={item}/>
                                 );
                             })
                     }

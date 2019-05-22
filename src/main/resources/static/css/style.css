@@ -4,6 +4,55 @@ html, body {
     padding: 0;
     font-size: 62.5%;
 }
+/*resize start*/
+*{ margin: 0; padding: 0; list-style: none; border: none;    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box; }
+a{
+    text-decoration: none;
+}
+a:focus, a:hover {
+
+    text-decoration: none;
+}
+img{
+    border: none;
+    vertical-align: top;
+}
+body,html{
+    width: 100%;
+}
+
+.fl{
+    float: left;
+}
+.fr{
+    float: right;
+}
+.clearfloat:after{
+    display:block;
+    clear:both;
+    content:"";
+}
+.clearfloat{
+    zoom: 1;
+}
+table {
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+input, textarea {
+    outline: none;
+    border: none;
+}
+
+textarea {
+    resize: none;
+    overflow: auto;
+}
+h1, h2, h3, h4, h5, h6{font-weight:normal;}
+/*resize end*/
 
 #app {
     width: 100%;
@@ -284,4 +333,612 @@ div.personal-center-image-cancel{
     background-color: #fff;
     border: 1px solid #303030;
     margin-left: .2rem;
+}
+
+/* 顶部导航栏*/
+.mb20{
+    margin-bottom: .2rem;
+}
+.mb10{
+    margin-bottom: .1rem;
+}
+.header-wrap{
+    margin: 0.22rem 1.08rem;
+    height: .4rem;
+}
+.header-wrap-small{
+    margin: .36rem .16rem .17rem;
+    font-size: .05em;
+}
+
+.header-title img{
+    margin-top: 0.04rem;
+    max-width: 1.48rem;
+    height: auto;
+}
+.header-title-small img{
+    width: 0.92rem;
+    height: auto;
+    vertical-align: middle;
+}
+
+.header-menu{
+    margin-top: .04rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+.header-menu li{
+    margin-right: .5rem;
+    height:.23rem;
+    font-size: .16rem;
+    font-weight:400;
+    color:rgba(132,132,132,1);
+    line-height:.23rem;
+}
+
+.header-menu li.active{
+    color:rgba(48,48,48,1);
+    position: relative;
+}
+
+.header-menu li.active:after{
+    content:"";
+    display: block;
+    z-index: -1;
+    width:100%;
+    height:0.06rem;
+    background:rgba(255,226,1,1);
+    position: absolute;
+    bottom: 0;
+    left:0;
+}
+
+.header-btn{
+    background:rgba(255,226,1,1);
+    border-radius:.25rem;
+    font-size:.14em;
+    font-weight:500;
+    padding: 0.083rem .258rem;
+    color:rgba(14,14,14,1);
+    margin-left: .1rem;
+}
+.header-btn-small{
+    background:rgba(255,226,1,1);
+    border-radius: .08rem;
+    padding: .05rem .08rem .04rem .09rem;
+    font-size: .05em;
+    font-weight:500;
+    color:rgba(14,14,14,1);
+}
+
+.header-user{
+    display: inline-block;
+    font-weight:400;
+    color:rgba(48,48,48,1);
+}
+.header-user img {
+    border-radius: 50%;
+    vertical-align: middle;
+}
+
+.header-menu-small{
+    position: relative;
+}
+.header-menu-small .header-menu-icon img{
+    width:.14rem;
+    margin-top:.05rem;
+}
+/*.header-menu-small .header-menu-icon div{*/
+/*width: .14rem;*/
+/*height: 2px;*/
+/*background:rgba(48,48,48,1);*/
+/*border-radius:1px;*/
+/*}*/
+.menu-list{
+    display: none;
+    background:rgba(255,255,255,1);
+    border-radius:0 0 .1rem 0;
+    position: absolute;
+    z-index:10;
+    top: .24rem;
+    left: -.16rem;
+    padding: .1rem .32rem;
+}
+.menu-list li{
+    margin-bottom: .1rem;
+    white-space: nowrap;
+}
+.menu-list li.active{
+    color:rgba(48,48,48,1);
+    position: relative;
+}
+
+.menu-list li.active:after{
+    content:"";
+    display: block;
+    z-index: -1;
+    width:100%;
+    height:0.02rem;
+    background:rgba(255,226,1,1);
+    position: absolute;
+    bottom: 0;
+    left:0;
+}
+.header-menu-small:hover .menu-list,.header-menu-small:visited .menu-list {
+    display: block;
+    animation: 0.5s ease-out forwards menuShow;
+}
+
+.header-menu-small:hover .header-menu-icon,.header-menu-small:visited .header-menu-icon{
+    -webkit-transform: rotate(90deg);
+    transform: rotate(90deg);
+    -webkit-transition: -webkit-transform .5s linear;
+    transition: transform .5s linear;
+    /*-webkit-animation: spin 1s linear 1s 5 alternate;*/
+    /*animation: spin 1s linear infinite;*/
+}
+
+.header-notice{
+    display: inline-block;
+    width: .3rem;
+    background: rgba(255,226,1,1);
+    border-radius: .1rem;
+    font-size: .14rem;
+    font-weight: 400;
+    color: rgba(48,48,48,1);
+    line-height: .2rem;
+    margin-left: .1rem;
+    text-align: center;
+}
+.header-personal-list{
+    display: none;
+    background: rgba(255,255,255,1);
+    border-radius: .14rem;
+    position: absolute;
+    box-shadow:0 0 .2rem 0 rgba(228,228,228,0.5);
+    z-index: 222222;
+    font-weight:400;
+    color:rgba(132,132,132,1);
+    box-sizing: border-box;
+}
+.header-user.fr{
+    position: relative;
+}
+.header-user.header-menu-small:hover .header-personal-list,.header-user.fr:hover .header-personal-list{
+    display: block;
+    animation: 0.5s ease-out forwards menuShow;
+}
+
+
+/* 底部导航条等 */
+.footer-contain {
+    /*position: fixed;*/
+    /*position: absolute;*/
+    /*bottom: 0;*/
+    /*left: 0;*/
+    width: 100%;
+    background: rgba(48, 48, 48, 1);
+    text-align: center;
+}
+
+.footer-list, .footer-contact {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    font-weight: 400;
+    color: rgba(159, 159, 159, 1);
+}
+.footer-list li:nth-child(odd), .footer-contact li:nth-child(odd){
+    white-space:nowrap;
+}
+.footer-list li:nth-child(even), .footer-contact li:nth-child(even) {
+    width:1px;
+    opacity:0.35729999999999995;
+    background: rgba(255,255,255,1);
+}
+
+.footer-line {
+    height: 1px;
+    width: 85%;
+    background: rgba(159, 159, 159, 1);
+}
+
+.footer-contact .img-big {
+    max-width: .22rem;
+    vertical-align: middle;
+    height: auto;
+    margin-right: .2rem;
+}
+.footer-contact .img-small {
+    width: .15rem;
+    height: auto;
+    vertical-align: middle;
+    margin-right: .1rem;
+}
+.footer-desc{
+    font-weight:400;
+    color:rgba(159,159,159,1);
+}
+
+/* 图片轮播 */
+.carousel-wrap{
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    color:rgba(255,255,255,1);
+}
+.next-btn,.pre-btn{
+    position: absolute;
+    top: 48%;
+}
+.next-btn img,.pre-btn img{
+    width:100%;
+    height: auto;
+}
+.img-list{
+    position: absolute;
+    top: 0;
+    height: 100%;
+    display: flex;
+}
+.item-wrap{
+    position: relative;
+    height:100%;
+}
+
+.next-btn .active,.pre-btn .active{
+    display: none;
+}
+.next-btn img:first-child,.pre-btn img:first-child{
+    display: block;
+}
+
+.next-btn:hover .active,.pre-btn:hover .active,.next-btn:visited .active,.pre-btn:visited .active{
+    display: block;
+}
+
+.next-btn:hover img:first-child,.pre-btn:hover img:first-child,.next-btn:visited img:first-child,.pre-btn:visited img:first-child{
+    display: none;
+}
+
+.img-list img{
+    width: 100%;
+    /*height: auto;*/
+}
+
+.itemCnt-wrap{
+    position: absolute;
+}
+.item-title{
+    font-weight:600;
+}
+.item-time,.item-desc{
+    font-weight:600;
+}
+.arrows{
+    z-index: 111;
+}
+.circle-btn{
+    position:absolute;
+    bottom:15px;
+    text-align:center;
+    left:0;
+    display:table;
+    margin:0 auto;
+    width:100%;
+}
+.circle-btn button{
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+    outline: 0;
+    border: 0;
+    border-radius: 50%;
+    background:rgba(0,0,0,0.3);
+    box-shadow:0 2px 2px 0 rgba(45,45,45,0.21);
+    overflow: hidden;
+    transition: all .6s;
+    cursor: pointer;
+    width:16px;
+    height:16px;
+    margin-right: .27rem;
+}
+.circle-btn button.active {
+    background: rgba(255, 226, 1, 1);
+}
+
+
+html,body{
+    /*font-size: 10px;*/
+    overflow: auto;
+}
+
+ul, li {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.fr{
+    float:right;
+}
+.fl{
+    float: left;
+}
+.ta-center{
+    text-align: center;
+}
+
+.flex-box{
+    display: flex;
+    justify-content: space-between;
+}
+
+.stShow-title,.stShow-subtitle{
+    font-weight:600;
+    margin: 0 auto;
+    text-align: center;
+}
+.stShow-title{
+    color:rgba(48,48,48,1);
+}
+
+.stShow-subtitle{
+    color:rgba(132,132,132,1);
+}
+
+.stShow-subtitle:after{
+    content: "";
+    display: block;
+    background:rgba(255,226,1,1);
+}
+
+.person-pic{
+    overflow: hidden;
+    position: relative;
+    border:1px solid rgba(151,151,151,1);
+}
+
+.person-pic img{
+    width:100%;
+}
+
+.person-pic:hover .stu-desc{
+    bottom: 0;
+    transition:all 0.5s linear;
+}
+
+.stu-desc{
+    text-align: center;
+    background:rgba(63,63,63,0.52);
+    font-weight:400;
+    color:rgba(255,255,255,1);
+    position: absolute;
+}
+
+.cards-wrap{
+    width: 100%;
+    overflow: auto;
+}
+
+.card-list{
+    /*overflow-x: auto;*/
+    display: flex;
+    justify-content: space-between;
+}
+.card-list li{
+    text-align: center;
+    /*float: left;*/
+}
+
+/*.card-list li.active{*/
+.cards-wrap .card-list li:hover{
+    padding-top: 0;
+}
+
+.person-name{
+    font-weight:400;
+    color:rgba(4,4,4,1);
+}
+.person-uni{
+    font-weight:400;
+    color:rgba(132,132,132,1);
+}
+
+.cards-more{
+    background:rgba(255,226,1,1);
+    font-weight:500;
+    color:rgba(14,14,14,1);
+    text-align: center;
+}
+
+
+/* 学校列表 */
+.filter-wrap{
+    margin: .5rem 1.3rem .68rem 1.3rem;
+}
+
+.nation-title,.nation-item{
+    float: left;
+    font-weight:400;
+    color:rgba(132,132,132,1);
+    background:rgba(255,255,255,1);
+}
+.nation-title{
+    color:rgba(48,48,48,1);
+}
+.nation-item img{
+    vertical-align: middle;
+}
+.nation-item.active{
+    color:rgba(48,48,48,1);
+}
+.search-wrap{
+    cursor: pointer;
+    position: relative;
+}
+
+.search-wrap input{
+    float: left;
+    caret-color: rgba(246,218,3,1);/* 光标颜色 */
+    background: rgba(255,255,255,1);
+    box-shadow: 0 0 .08rem 0 rgba(197,197,197,0.5);
+    font-weight: 400;
+    color: rgba(132,132,132,1);
+    position: relative;
+    box-sizing: border-box;
+}
+
+.search-wrap img{
+    position: absolute;
+    right: 0;
+    top: 0;
+    border-radius: 50%;
+}
+/* 学校列表 */
+.container{
+    width: 100%;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    text-align: center;
+}
+.container .card {
+    display: inline-block;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.card-name,.card-eName{
+    font-weight:400;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.card-name{
+    color:rgba(48,48,48,1);
+}
+.card-eName{
+    color:rgba(132,132,132,1);
+}
+/* 换页签*/
+.page-feed{
+    width:100%;
+    display: flex;
+    justify-content: center;
+    flex-wrap: nowrap;
+}
+.page-num{
+    background:rgba(241,241,241,1);
+    border-radius:.06rem;
+    text-align: center;
+    box-sizing: border-box;
+    color:rgba(132,132,132,1);
+}
+.page-num.active{
+    background:rgba(255,226,1,1);
+    color:rgba(48,48,48,1);
+}
+.page-num.page-next:hover,.page-num.page-pre:hover{
+    background:rgba(255,226,1,1);
+}
+
+/* 学校详情 */
+.uni-banner{
+    width: 100%;
+    text-align: center;
+    background: #303030;
+    position: relative;
+    background: #eee no-repeat center;
+    background-size: cover;
+}
+.headcnt-wrap{
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    position: absolute;
+    top: 0;
+    left:0;
+    z-index: 9999;
+    width: 100%;
+}
+.uni-name{
+    font-weight:500;
+    color:rgba(255,255,255,1);
+}
+.uni-ename{
+    font-weight:400;
+    color:rgba(255,255,255,1);
+}
+.uni-desc{
+    display: flex;
+    align-items: flex-start;
+}
+.uni-desc .jee-quote-left , .uni-desc .jee-quote-right{
+    color: rgba(255,226,1,1);
+}
+.nui-text{
+    white-space: normal;
+    font-weight:400;
+    color:rgba(255,255,255,1);
+}
+
+/* 学生信息卡 */
+.stu-info{
+    display: flex;
+    background:rgba(255,255,255,1);
+}
+.left-pic{
+    border-radius: .2rem;
+    background: #848484 no-repeat center;
+    background-size: cover;
+    overflow: hidden;
+}
+.right-info{
+    position: relative;
+    flex-grow: 1;
+}
+.info-name{
+    font-weight:400;
+    color:rgba(4,4,4,1);
+}
+.info-intro{
+    font-weight:400;
+    color:rgba(132,132,132,1);
+}
+
+
+.corner-fraction{
+    background:rgba(255,226,1,1);
+    font-weight:500;
+    text-align: center;
+    color:rgba(48,48,48,1);
+    position: absolute;
+    right: 0;
+    top:0;
+}
+
+/* 动画 */
+@-webkit-keyframes menuShow {
+    0% {
+        top: 0;
+    }
+
+    100% {
+        top: .24rem;
+    }
+}
+
+@keyframes menuShow {
+    0% {
+        top: 0;
+    }
+
+    100% {
+        top: .24rem;
+    }
 }

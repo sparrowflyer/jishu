@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {purchaseContactCheck,purchaseContact} from "../../utils/http";
+import {purchaseContactCheck} from "../../utils/http";
 
 let timer = null;
 

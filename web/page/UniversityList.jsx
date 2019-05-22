@@ -1,7 +1,6 @@
 import React from 'react';
 import {Footer} from '../component/common/Footer.jsx';
 import {Header} from '../component/common/Header.jsx';
-import '../assets/style.css';
 import { Link } from 'react-router-dom';
 import { getCountryList, getSchools} from '../utils/http.js';
 import { isArray } from '../utils/utils.jsx';

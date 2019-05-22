@@ -509,6 +509,11 @@ div.personal-center-image-cancel{
     color:rgba(132,132,132,1);
     box-sizing: border-box;
 }
+.header-personal-list li a {
+    display: flex;
+    white-space: nowrap;
+    flex-wrap: nowrap;
+}
 .header-personal-list li a,.header-menu li a,.menu-list li a{
     color:rgba(132,132,132,1);
 }

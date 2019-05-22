@@ -27,7 +27,11 @@ export class Header extends React.Component {
     getNotice(){
         //TODO:获取通知接口不对
         getUnreadNotificaitonCount().then(resp=>{
-            console.log(resp)
+            if(resp.status === "success"){
+                this.setState({
+                    notice : resp.data.data
+                })
+            }
         }).catch(err=>{})
     }
     loginOut(){
@@ -56,9 +60,8 @@ export class Header extends React.Component {
                                 </li>
                                 <li className="mb20">
                                     <Link to="/PersonalCenter">消息通知
-                                    <span className="header-notice">10</span>
+                                        {notice > 0 && <span className="header-notice">{notice}</span>}
                                     </Link>
-                                    {/*{notice>0 && <span>{notice}</span>}*/}
                                 </li>
                                 <li onClick={this.loginOut}>退出登录</li>
                             </ul>
@@ -115,9 +118,10 @@ export class Header extends React.Component {
                                 <li className="mb10">
                                     <Link to="/PersonalCenter">
                                         消息通知
-                                        <span className="header-notice">10</span>
+                                        {/*<span className="header-notice">10</span>*/}
+                                        {notice>0 && <span className="header-notice">{notice}</span>}
                                     </Link>
-                                    {/*{notice>0 && <span>{notice}</span>}*/}
+
                                 </li>
                                 <li onClick={this.loginOut}>退出登录</li>
                             </ul>

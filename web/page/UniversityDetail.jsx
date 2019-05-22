@@ -9,6 +9,7 @@ export class UniversityDetail extends React.Component {
     constructor(props) {
         super(props);
         this.getUsersBySchool = this.getUsersBySchool.bind(this);
+        this.getAverageScore = this.getAverageScore.bind(this);
         this.getSchoolById = this.getSchoolById.bind(this);
         this.go = this.go.bind(this);
         this.state = {
@@ -22,17 +23,31 @@ export class UniversityDetail extends React.Component {
         }
     }
     componentWillMount (){
-        let id ="";
       if(this.props.match.params.id) {
-          id = this.props.match.params.id;
-          window.sessionStorage.setItem("schoolId",id);
+          let id ="";
+          try{
+              id = this.props.match.params.id;
+              window.sessionStorage.setItem("schoolId",id);
+          }catch(e){
+              id = window.sessionStorage.getItem("schoolId");
+
+          }
+          this.setState({
+              schoolId: id,
+          }) ;
+          this.getSchoolById(id);
+          this.getUsersBySchool(id,1);
+      } else {
+          this.props.history.push('/college');
       }
-      id = window.sessionStorage.getItem("schoolId");
-       this.setState({
-           schoolId: id,
-       }) ;
-        this.getSchoolById(id);
-        this.getUsersBySchool(id,1);
+
+    }
+    getAverageScore(student) {
+        if (!student) return '0.0';
+        let nextNameArr = ['scoreResponse', 'scoreAttitude', 'scoreProfessional'];
+        return (nextNameArr.reduce((acc, cur) => {
+            return (acc + (student[cur] || 0));
+        }, 0) / nextNameArr.length).toFixed(1);
     }
     getSchoolById(id){
         getSchoolById({
@@ -120,7 +135,7 @@ export class UniversityDetail extends React.Component {
                                 {/*<div className="info-name">89%</div>*/}
                                 {/*<div className="info-intro">通过率</div>*/}
                                 {/*</div>*/}
-                                <div className="corner-fraction">{(stu.userStudentInfo && stu.userStudentInfo.scoreResponse)||"--"}</div>
+                                <div className="corner-fraction">{this.getAverageScore(stu.userStudentInfo)}</div>
                             </div>
                         </Link>
                     })}

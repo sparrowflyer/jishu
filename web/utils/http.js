@@ -80,6 +80,14 @@ export function purchaseContactCheck(params) {
     return axios.post(baseUrl + '/purchaseContactCheck',params)
 }
 //购买学生联系方式 purchaseContact?sellerId=18&buyerId=19&questions=xxxx
-export function purchaseContact(params) {
-    return axios.get(baseUrl + '/purchaseContact'+params)
+// export function purchaseContact(params) {
+//     let string = "?";
+//     for(let key in params){
+//         string += key + "=" + params[key] + "&";
+//     }
+//     return axios.get(baseUrl + '/purchaseContact'+string);
+// }
+// }获取所有未读通知数量
+export function getUnreadNotificaitonCount(params) {
+    return axios.get(baseUrl + '/getUnreadNotificaitonCount',params)
 }

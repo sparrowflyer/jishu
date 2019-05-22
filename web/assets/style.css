@@ -245,7 +245,7 @@ ul, li {
 .left-pic{
     border-radius: .2rem;
     background: #848484 no-repeat center;
-    background-size: cover; 
+    background-size: cover;
     overflow: hidden;
 }
 .right-info{

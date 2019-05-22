@@ -4,11 +4,10 @@ import { withAlert } from 'react-alert';
 import { Avator } from '../component/Avator.js';
 import { Item } from '../component/Item.js';
 import { postUrl ,getUnOrder,getDoOrder} from '../utils/http.js';
-import  { ModalMobile } from '../component/Modal/Mobile.jsx';
-import  { ModalWeb } from '../component/Modal/Web.jsx';
 import {Footer} from '../component/common/Footer.jsx';
 import {Header} from '../component/common/Header.jsx';
-import {getUser} from "../utils/http";
+import {getUser, updateUserHeadImage, uploadImage} from "../utils/http";
+import Cropper from "react-cropper";
 
 const contents = [0,1,2,3,4],
          fList = [{
@@ -33,21 +32,27 @@ class PersonalCenter extends React.Component {
         super(props);
         this.state = {
             width: document.documentElement.clientWidth || document.body.clientWidth || window.innerWidth,
+            height: document.documentElement.clientHeight || document.body.clientHeight || window.innerHeight,
             userID: '',
             following: [],
             fans: [],
             userInfo:{},
-            visible:false,
             activeTab:2,
             activeType:0,
             orders:[],
+            selectedImageFile: '',//更新头像 存储
+            editImageModalVisible: false, //裁剪框显示
+            src:"", //裁剪图src
         };
-        this.showModal = this.showModal.bind(this);
         this.updateDimensions = this.updateDimensions.bind(this);
         this.getFans = this.getFans.bind(this);
         this.getUncompleteOrder = this.getUncompleteOrder.bind(this);
         this.getCompleteOrder = this.getCompleteOrder.bind(this);
         this.getUser = this.getUser.bind(this);
+        this.cancelImg = this.cancelImg.bind(this);
+        this.handleFileChange = this.handleFileChange.bind(this);
+        this.updateUserHeadImage = this.updateUserHeadImage.bind(this);
+        this.dataURLtoFile = this.dataURLtoFile.bind(this);
     }
     componentDidMount() {
         let userInfo = '';
@@ -137,7 +142,7 @@ class PersonalCenter extends React.Component {
                     sessionStorage.removeItem("jeeUser");
                     sessionStorage.setItem("jeeUser",JSON.stringify(data.data));
                 } else {
-                    this.alert.error(`获取${userID}的个人信息失败,原因为${data.errorMsg || `${response.status}${response.statusText}`}`);
+                    this.props.alert.error(`获取${userID}的个人信息失败,原因为${data.errorMsg || `${response.status}${response.statusText}`}`);
                 }
             }).catch(error => {
             console.error('获取个人信息', error);
@@ -157,23 +162,88 @@ class PersonalCenter extends React.Component {
     checkType(idx){
         this.setState({
             activeType: idx
-        })
+        });
         idx===0 ? this.getUncompleteOrder():this.getCompleteOrder();
     }
-    showModal() {
-        this.setState(state => {
-            return {
-                ...state,
-                visible: true
-            }
+    //更新头像
+    handleFileChange(file){
+        if (file) {
+            this.setState({
+                selectedImageFile: file,
+            },()=>{
+                this.setState({
+                    editImageModalVisible: true,
+                });
+            });
+            const fileReader = new FileReader();
+            fileReader.onload = (ev) => {
+                const dataURL = ev.target.result;
+                this.setState({src: dataURL})
+            };
+            fileReader.readAsDataURL(file);
+        }
+    }
+    cancelImg(){
+        this.setState({
+            editImageModalVisible: false
         })
     }
+    dataURLtoFile(dataurl, filename) {//将base64转换为文件
+        var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+            bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+        while(n--){
+            u8arr[n] = bstr.charCodeAt(n);
+        }
+        return new File([u8arr], filename, {type:mime});
+    }
+    updateUserHeadImage(){ //更新头像
+        let imgRes = this.cropper.getCroppedCanvas().toDataURL();
+        let imgFile = this.state.selectedImageFile;
+        let img = this.dataURLtoFile(imgRes,imgFile.name);
+        console.log(img,imgFile)
+            // 上传图片
+            uploadImage(img).then(res=> {
+                if(res.data.data){
+                    updateUserHeadImage({
+                        id: this.state.userID,
+                        headImage: res.data.data
+                    }).then(resp=>{
+                        console.log("更新头像",resp)
+                        if(resp.data.status==="success"){
+                            // this.props.alert.success(<div style={{fontSize: '12px'}}>头像更新成功！</div>);
+                            this.getUser(this.state.userID);
+                        }else{
+                            // this.props.alert.error(<div style={{fontSize: '12px'}}>{resp.data.errorMsg || '头像更新失败！'}</div>);
+                        }
+                        this.setState({
+                            editImageModalVisible: false
+                        });
+                    }).catch(err=>{
+                        this.setState({
+                            editImageModalVisible: false
+                        });
+                        // this.props.alert.error(<div style={{fontSize: '12px'}}>{'头像更新报错:' + err}</div>);
+                        console.log("更新头像报错",err)
+                    })
+                }
+            }).catch(err=>{
+                // this.props.alert.error(<div style={{fontSize: '12px'}}>{'图片上传失败:'+err}</div>);
+                console.log("上传头像报错",err)
+            });
+    }
+
     render() {
-        const {userInfo,userID,visible,activeTab,activeType} = this.state;
+        let {editImageModalVisible,src,userInfo,userID,activeTab,activeType,height} = this.state;
+        const copperStyle = {
+            width: '100%',
+            height: height
+        }, wrapStyle = {
+            height: height,
+        };
         return (
             <div>
                 <Header userInfo={userInfo}></Header>
-                <Avator parent="PersonalCenter" showModal={this.showModal} isCenter={true} updateUserInfo={this.getUser} isWeb={this.state.width > 768} userInfo={userInfo} userID={userID} />
+                <Avator handleFileChange={this.handleFileChange} parent="PersonalCenter" showModal={this.showModal} isCenter={true} updateUserInfo={this.getUser} isWeb={this.state.width > 768} userInfo={userInfo} userID={userID} />
                 <div className="personal-center_tab-title-container">
                     <span className={activeTab===0?'tab-title__selected':'tab-title'} onClick={this.checkTab.bind(this,0)}>粉丝列表</span>
                     <span className={activeTab===1?'tab-title__selected':'tab-title'} onClick={this.checkTab.bind(this,1)}>我的关注</span>
@@ -216,9 +286,22 @@ class PersonalCenter extends React.Component {
 
                     </div>
                 }
-
                 {
-                    this.state.width > 768 ? <ModalWeb visible={visible} type={"Advisory"}/> : <ModalMobile visible={true} type={"Advisory"}/>
+                    editImageModalVisible &&
+                    <div className="personal-center-image-upload" style={{wrapStyle}}>
+                        <Cropper
+                            // ref='cropper'
+                            src={src}
+                            style={{copperStyle}}
+                            ref={cropper => this.cropper = cropper}
+                            aspectRatio={3/4}
+                            guides={false}/>
+                        <div className="personal-center-btn-wrap">
+                            <div className="personal-center-image-submit" onClick={this.updateUserHeadImage}>确认</div>
+                            <div className="personal-center-image-cancel" style={{backgroundColor:'#fff',border:'1px solid #0E0E0E'}} onClick={this.cancelImg}>取消</div>
+                        </div>
+                       </div>
+
                 }
                 <Footer></Footer>
             </div>

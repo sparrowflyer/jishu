@@ -94,11 +94,14 @@ class PersonalCenter extends React.Component {
                 this.setState((state) => {
                     return {
                         ...state,
-                        fans: response.data
+                        fans: response.data.data
                     }
                 });
+            }else{
+                this.props.alert.error(<div style={{fontSize: '12px'}}>{response.data.errorMsg || '获取粉丝列表异常！'}</div>);
             }
         }).catch((error) => {
+            this.props.alert.error(<div style={{fontSize: '12px'}}>获取粉丝列表异常！</div>);
             console.error('获取粉丝列表：', error);
         });
     }
@@ -107,11 +110,14 @@ class PersonalCenter extends React.Component {
             console.log("获取未完成订单",resp)
             if(resp.status === 200 && resp.data){
                 this.setState({
-                    orders: resp.data
+                    orders: resp.data.data
                 })
+            }else{
+                this.props.alert.error(<div style={{fontSize: '12px'}}>{resp.data.errorMsg || '获取未完成订单异常！'}</div>);
             }
 
         }).catch(err=>{
+            this.props.alert.error(<div style={{fontSize: '12px'}}> 获取未完成订单异常！</div>);
             console.log("获取未完成订单报错",err)
         })
     }
@@ -120,10 +126,14 @@ class PersonalCenter extends React.Component {
             console.log("获取已完成订单",resp)
             if(resp.status === 200 && resp.data){
                 this.setState({
-                    orders: resp.data
+                    orders: resp.data.data
                 })
+            } else {
+                this.props.alert.error(<div style={{fontSize: '12px'}}>{resp.data.errorMsg || '获取已完成订单异常！'}</div>);
             }
+
         }).catch(err=>{
+            this.props.alert.error(<div style={{fontSize: '12px'}}>获取已完成订单异常！</div>);
             console.log("获取已完成订单报错",err)
         })
     }
@@ -145,6 +155,7 @@ class PersonalCenter extends React.Component {
                     this.props.alert.error(`获取${userID}的个人信息失败,原因为${data.errorMsg || `${response.status}${response.statusText}`}`);
                 }
             }).catch(error => {
+            this.props.alert.error('获取个人信息失败！');
             console.error('获取个人信息', error);
         });
     }
@@ -210,10 +221,10 @@ class PersonalCenter extends React.Component {
                     }).then(resp=>{
                         console.log("更新头像",resp)
                         if(resp.data.status==="success"){
-                            // this.props.alert.success(<div style={{fontSize: '12px'}}>头像更新成功！</div>);
+                            this.props.alert.success(<div style={{fontSize: '12px'}}>头像更新成功！</div>);
                             this.getUser(this.state.userID);
                         }else{
-                            // this.props.alert.error(<div style={{fontSize: '12px'}}>{resp.data.errorMsg || '头像更新失败！'}</div>);
+                            this.props.alert.error(<div style={{fontSize: '12px'}}>{resp.data.errorMsg || '头像更新失败！'}</div>);
                         }
                         this.setState({
                             editImageModalVisible: false
@@ -222,18 +233,18 @@ class PersonalCenter extends React.Component {
                         this.setState({
                             editImageModalVisible: false
                         });
-                        // this.props.alert.error(<div style={{fontSize: '12px'}}>{'头像更新报错:' + err}</div>);
+                        this.props.alert.error(<div style={{fontSize: '12px'}}>{'头像更新报错:' + err}</div>);
                         console.log("更新头像报错",err)
                     })
                 }
             }).catch(err=>{
-                // this.props.alert.error(<div style={{fontSize: '12px'}}>{'图片上传失败:'+err}</div>);
+                this.props.alert.error(<div style={{fontSize: '12px'}}>{'图片上传失败:'+err}</div>);
                 console.log("上传头像报错",err)
             });
     }
 
     render() {
-        let {editImageModalVisible,src,userInfo,userID,activeTab,activeType,height,orders} = this.state;
+        let {editImageModalVisible,src,userInfo,userID,activeTab,activeType,height,orders,fans,following} = this.state;
         const copperStyle = {
             width: '100%',
             height: height
@@ -257,7 +268,7 @@ class PersonalCenter extends React.Component {
                 }
                 <div className={activeTab===2?"personal-center-content":"personal-center-content-fan"}>
                     {
-                        activeTab===0 && fList.map((fan,index)=>{
+                        activeTab===0 && fans && fans.map((fan,index)=>{
                             return <div className="personal-center-fan" key={index}>
                                 <img src={fan.img} alt=""/>
                                 <span>{fan.name||"--"}</span>
@@ -265,7 +276,7 @@ class PersonalCenter extends React.Component {
                         })
                     }
                     {
-                        activeTab===1 && fList.map((fol,index)=>{
+                        activeTab===1 && following && following.map((fol,index)=>{
                             return <div className="personal-center-fan" key={index}>
                                 <img src={fol.img} alt=""/>
                                 <span>{fol.name}</span>
@@ -273,7 +284,7 @@ class PersonalCenter extends React.Component {
                         })
                     }
                     {
-                        activeTab===2 &&
+                        activeTab===2 && orders &&
                             orders.map((item,index) => {
                                 return (
                                     <Item key={index} item={item}/>

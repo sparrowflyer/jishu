@@ -1,5 +1,6 @@
 import React from 'react';
 import { withRouter } from 'react-router';
+import { withAlert } from 'react-alert';
 import { Header } from '../component/common/Header.jsx';
 import { Avator } from '../component/Avator.js';
 import { SubTitle } from '../component/SubTitle.js';
@@ -75,6 +76,10 @@ class StudentDetail extends React.Component {
             });
     }
     knowHim(value) {
+        if(!this.state.loginUserInfo){
+            this.props.alert.error(<div style={{fontSize: '12px'}}>请先登录！</div>)
+            return;
+        }
         this.setState(state => {
             return {
                 ...state,
@@ -110,12 +115,6 @@ class StudentDetail extends React.Component {
                 });
             });
     }
-    // goBack() {
-    //
-    // }
-    // goNext() {
-    //
-    // }
     close(value,type){
         this.setState({
             visible:value,
@@ -171,8 +170,8 @@ class StudentDetail extends React.Component {
                 }
                 {
                     this.state.width > 768 ?
-                    <ModalWeb onClose={this.close} handleChangeType={this.changeModalType} loginUserID={loginUserInfo.id} userID={userInfo.id} visible={visible} type={modalType}/>:
-                <ModalMobile onClose={this.close} handleChangeType={this.changeModalType} loginUserID={loginUserInfo.id} userID={userInfo.id} visible={visible} type={modalType}/>
+                    <ModalWeb onClose={this.close} handleChangeType={this.changeModalType} loginUserID={loginUserInfo&&loginUserInfo.id||null} userID={userInfo.id} visible={visible} type={modalType}/>:
+                <ModalMobile onClose={this.close} handleChangeType={this.changeModalType} loginUserID={loginUserInfo&&loginUserInfo.id||null} userID={userInfo.id} visible={visible} type={modalType}/>
                 }
                 <Footer />
             </div>
@@ -180,5 +179,5 @@ class StudentDetail extends React.Component {
     }
 }
 
-const StudentDetailPage = withRouter(StudentDetail);
+const StudentDetailPage = withAlert()(withRouter(StudentDetail));
 export default StudentDetailPage;

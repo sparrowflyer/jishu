@@ -347,7 +347,7 @@ div.personal-center-image-cancel{
     height: .4rem;
 }
 .header-wrap-small{
-    margin: .36rem .16rem .17rem;
+    margin: .16rem .17rem;
     font-size: .05em;
 }
 
@@ -370,11 +370,11 @@ div.personal-center-image-cancel{
 
 .header-menu li{
     margin-right: .5rem;
-    height:.23rem;
-    font-size: .16rem;
-    font-weight:400;
-    color:rgba(132,132,132,1);
-    line-height:.23rem;
+    height: .23rem;
+    font-size: .2rem;
+    font-weight: 400;
+    color: rgba(132,132,132,1);
+    line-height: .28rem;
 }
 
 .header-menu li.active{
@@ -417,6 +417,12 @@ div.personal-center-image-cancel{
     font-weight:400;
     color:rgba(48,48,48,1);
 }
+.header-user.fr span{
+    font-size: .2rem;
+    font-weight: 400;
+    color: rgba(48,48,48,1);
+    line-height: .28rem;
+}
 .header-user img {
     border-radius: 50%;
     vertical-align: middle;
@@ -441,8 +447,9 @@ div.personal-center-image-cancel{
     border-radius:0 0 .1rem 0;
     position: absolute;
     z-index:10;
-    top: .24rem;
-    left: -.16rem;
+    /*top: .24rem;*/
+    left: -.17rem;
+    margin-top: .14rem;
     padding: .1rem .32rem;
 }
 .menu-list li{
@@ -501,6 +508,13 @@ div.personal-center-image-cancel{
     font-weight:400;
     color:rgba(132,132,132,1);
     box-sizing: border-box;
+}
+.header-personal-list li a,.header-menu li a,.menu-list li a{
+    color:rgba(132,132,132,1);
+}
+.header-personal-list li.active a,.header-menu li.active a,.menu-list li.active a{
+    font-weight:600;
+    color:rgba(48,48,48,1);
 }
 .header-user.fr{
     position: relative;

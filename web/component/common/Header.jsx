@@ -93,10 +93,10 @@ export class Header extends React.Component {
                             <img src={require("../../assets/images/分组9@2x.png")} alt=""/>
                         </div>
                         <ul className="menu-list">
-                            <li className="active">
+                            <li className={this.state.pathName==="/"?"active":""}>
                                 <Link to="/">主页</Link>
                             </li>
-                            <li>
+                            <li className={this.state.pathName.indexOf("college")>0?"active":""}>
                                 <Link to="/college">择校服务</Link>
                             </li>
                         </ul>
@@ -109,7 +109,7 @@ export class Header extends React.Component {
                         userInfo.id ? <div className="header-user header-menu-small" >
                             <img src={"http://" + userInfo.headImage} alt=""/>
                             <ul className="header-personal-list">
-                                <li className="mb10">
+                                <li className={this.state.pathName==="PersonalCenter"?"active mb10":"mb10"}>
                                     <Link to="/PersonalCenter">个人中心</Link>
                                 </li>
                                 <li className="mb10">

@@ -14,7 +14,7 @@ public class IdGenerator {
 				.append(addZeroByLength(String.valueOf(now.get(Calendar.MINUTE)), 2))
 				.append(addZeroByLength(String.valueOf(now.get(Calendar.SECOND)), 2))
 				.append(addZeroByLength(String.valueOf(now.get(Calendar.MILLISECOND)), 3))
-				.append(addZeroByLength((int) (Math.random() * 10000), 4));
+				.append(addZeroByLength((int) (Math.random() * 1000), 3));
 		return id.toString();
 	}
 

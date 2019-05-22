@@ -853,3 +853,339 @@ ul.li-style{
     text-align: center;
     border-radius: .6rem;
 }
+
+.header-wrap-small{
+    display: none;
+}
+.header-wrap{
+    display: block;
+}
+.header-user{
+    margin-left: .1rem;
+    font-size:.2rem;
+    line-height:.28rem;
+}
+.header-user img{
+    width: .4rem;
+    height: .4rem;
+    margin-right: .1rem;
+}
+.header-personal-list{
+    width: 1.8rem;
+    height: 1.46rem;
+    /*top: .5rem;*/
+    margin-top: .3rem;
+    left: -.2rem;
+    padding: .2rem .38rem;
+    font-size: .16rem;
+    line-height: .22rem;
+}
+
+.footer-list, .footer-contact{
+    font-size: .2em;
+    line-height: .2rem;
+    margin-bottom: .3rem;
+}
+.footer-contain {
+    margin-top: .72rem;
+    padding: .5rem 0 .2rem 0;
+}
+.footer-contact li:nth-child(even){
+    margin: 0 .5rem;
+}
+.footer-line {
+    margin: 0 auto .3rem;
+}
+.footer-desc{
+    font-size:.16em;
+    margin-bottom: .16rem;
+    line-height: .18rem;
+}
+.footer-list li:nth-child(even), .footer-contact li:nth-child(even){
+    height:.2rem;
+    margin: 0 .21rem;
+}
+.footer-contact .img-big{
+    display: inline-block;
+}
+.footer-contact .img-small{
+    display: none;
+}
+
+/* 图片轮播 */
+.carousel-wrap{
+    height: 10.8rem;
+}
+.next-btn,.pre-btn{
+    width: 0.91rem;
+    height: 0.91rem;
+}
+.pre-btn{
+    left:.85rem;
+}
+.arrows{
+    width: .91rem;
+    height: .91rem;
+}
+.next-btn{
+    right:.84rem;
+}
+.img-list img{
+    height:10.8rem;
+}
+.itemCnt-wrap{
+    top: 2.99rem;
+    right: 1.49rem;
+    width: 8.11rem;
+}
+.item-title{
+    font-size:.64rem;
+    line-height:.9rem;
+}
+.item-time,.item-desc{
+    font-size:.3rem;
+    line-height:.42rem;
+}
+.item-time{
+    margin: .31rem 0 .58rem;
+}
+.circle-btn button{
+    width:16px;
+    height:16px;
+    margin-right: .27rem;
+}
+
+.stShow-title{
+    margin-top: .6rem;
+    font-size:.43rem;
+    line-height:.6rem;
+}
+
+.stShow-subtitle{
+    margin-top: .16rem;
+    font-size:.31rem;
+    line-height:.42rem;
+}
+
+.stShow-subtitle:after{
+    height:.11rem;
+    max-width: 2.5rem;
+    margin: -.15rem auto .6rem;
+}
+
+.person-pic{
+    width:2.68rem;
+    height:3.58rem;
+    border-radius:.16rem;
+}
+.stu-desc{
+    padding: .21rem .35rem .18rem .32rem;
+    box-shadow:0 .02rem .2rem 0 rgba(123,123,123,0.5);
+    border-radius:0 0 .2rem .2rem;
+    font-size:.2rem;
+    line-height:.29rem;
+    bottom: -2rem;
+}
+.card-list{
+    /*max-width: 125%;*/
+    margin-bottom: .63rem;
+    /*margin-left: -12%;*/
+}
+.card-list li{
+    margin: 0 .3rem;
+    padding-top: .45rem;
+}
+/*.card-list li.active .person-pic{*/
+.card-list li:hover .person-pic{
+    width:3.36rem;
+    height:4.48rem;
+}
+
+.person-name{
+    white-space: nowrap;
+    margin-top: .21rem;
+    font-size:.3rem;
+    line-height:.42rem;
+    color: #000;
+}
+.person-uni{
+    margin-top: .1rem;
+    font-size:.2rem;
+    line-height:.29rem;
+}
+
+.cards-more{
+    white-space: nowrap;
+    padding: .11rem .23rem;
+    border-radius:.31rem;
+    font-size:.2rem;
+    line-height: .28rem;
+    margin: 0 auto .72rem;
+    max-width: 1.27rem;
+}
+
+/* 学校列表-筛选搜索栏 */
+.filter-wrap{
+    margin: .5rem 1.3rem .68rem 1.3rem;
+}
+
+.nation-list{
+    float: left;
+}
+.nation-title,.nation-item{
+    padding: .15rem .2rem;
+    font-size:.16rem;
+    line-height:.22rem;
+    margin-right: .12rem;
+}
+.nation-title{
+    padding:.15rem 0;
+    font-size:.2rem;
+    margin-right: .15rem;
+}
+.nation-item img{
+    margin-right: .05rem;
+    width:.2rem;
+    height:.2rem;
+}
+.nation-item.active{
+    box-shadow:0 .02rem .1rem 0 rgba(209,209,209,0.5);
+    border-radius:25px;
+}
+.search-wrap{
+    float: right;
+    /*position: absolute;*/
+    /*top: 0;*/
+    /*right: 0;*/
+}
+
+.search-wrap input{
+    width: 0;
+    box-shadow: 0 0 .08rem 0 rgba(197,197,197,0.5);
+    border-radius:.3rem;
+    padding: .09rem .2rem;
+    font-size: .16rem;
+    line-height: .22rem;
+    transition: all .5s linear;
+}
+.search-wrap input.active{
+    width: auto;
+}
+
+.search-wrap img{
+    width:.4rem;
+    height: .4rem;
+}
+/* 学校列表 */
+.container{
+    padding: .71rem 1.57rem .8rem 1.93rem;
+}
+.col-l-4{
+    width: 25%;
+}
+.card{
+    display: inline-block;
+    margin-bottom: .77rem;
+    width: 2.67rem;
+}
+.card img{
+    width: 1.1rem;
+    height: 1.1rem;
+}
+.card-name,.card-eName{
+    font-size:.2rem;
+    line-height:.28rem;
+}
+.card-name{
+    margin:.2rem auto 0;
+}
+.card-eName{
+    margin-top: .09rem;
+}
+/*换页签*/
+.page-num{
+    font-size: .16rem;
+    min-width:.38rem;
+    min-height: .38rem;
+    padding:.08rem .16rem;
+    line-height: .22rem;
+    margin: 0 .05rem;
+}
+
+/* 学校详情 */
+.uni-banner{
+    height: 5.16rem;
+}
+.headcnt-wrap{
+    height: 5.16rem;
+    padding: 1.3rem 4.44rem .94rem;
+}
+.uni-name{
+    font-size:.45rem;
+    line-height:.63rem;
+}
+.uni-ename{
+    font-size:.42rem;
+    line-height:.59rem;
+    margin: .2rem 0 .6rem;
+}
+.nui-text{
+    font-size:.2rem;
+    line-height:.28rem;
+    margin: 0 .3rem;
+}
+.uni-desc .jee-quote-left,.uni-desc .jee-quote-right{
+    font-size: .4rem;
+}
+
+/* 学生信息卡 */
+
+.stus-container{
+    padding: 0 1rem;
+}
+.stu-info{
+    width:8rem;
+    height:4.48rem;
+    box-shadow:0 .02rem .2rem 0 rgba(203,203,203,0.5);
+    border-radius:.2rem;
+    margin: 0 .3rem .6rem;
+}
+.left-pic{
+    border-radius: .2rem;
+    margin-right: .5rem;
+    width:3.36rem;
+}
+.right-info>.info-name{
+    margin: .5rem 0 .12rem;
+}
+.info-name{
+    font-size:.3rem;
+    line-height:.42rem;
+}
+.info-data .info-name,.fl .info-name{
+    margin-top:.34rem;
+}
+.info-intro{
+    font-size:.2rem;
+    line-height:.28rem;
+}
+.subject{
+    margin-bottom: .1rem;
+}
+.subject-en{
+    margin-bottom: .3rem;
+}
+.intro{
+    margin-bottom: .34rem;
+    margin-right: .61rem;
+}
+.info-data{
+    margin-right: .78rem;
+}
+.corner-fraction{
+    width:.8rem;
+    height:.6rem;
+    border-radius:0 .2rem 0 .2rem;
+    font-size:.3rem;
+    line-height:.6rem;
+}

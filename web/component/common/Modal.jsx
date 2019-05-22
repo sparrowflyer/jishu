@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import './../../assets/component.css';
 export class Modal extends React.Component {
     render() {
         return <div className="modal-wrapper">

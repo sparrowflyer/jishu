@@ -359,6 +359,7 @@ div.personal-center-image-cancel{
 .header-title-small img{
     width: 0.92rem;
     height: auto;
+    margin-top: .06rem;
     vertical-align: middle;
 }
 
@@ -508,6 +509,11 @@ div.personal-center-image-cancel{
     font-weight:400;
     color:rgba(132,132,132,1);
     box-sizing: border-box;
+}
+.header-personal-list li a {
+    display: flex;
+    white-space: nowrap;
+    flex-wrap: nowrap;
 }
 .header-personal-list li a,.header-menu li a,.menu-list li a{
     color:rgba(132,132,132,1);

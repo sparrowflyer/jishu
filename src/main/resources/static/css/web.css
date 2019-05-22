@@ -871,11 +871,10 @@ ul.li-style{
     margin-right: .1rem;
 }
 .header-personal-list{
-    width: 1.8rem;
-    height: 1.46rem;
-    /*top: .5rem;*/
-    margin-top: .3rem;
-    left: -.2rem;
+    /*width: 1.8rem;*/
+    /*height: 1.46rem;*/
+    margin-top: .34rem;
+    left: -.4rem;
     padding: .2rem .38rem;
     font-size: .16rem;
     line-height: .22rem;

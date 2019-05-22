@@ -27,7 +27,11 @@ export class Header extends React.Component {
     getNotice(){
         //TODO:获取通知接口不对
         getUnreadNotificaitonCount().then(resp=>{
-            console.log(resp)
+            if(resp.status === "success"){
+                this.setState({
+                    notice : resp.data.data
+                })
+            }
         }).catch(err=>{})
     }
     loginOut(){
@@ -41,7 +45,7 @@ export class Header extends React.Component {
     }
     render() {
         let userInfo = this.props.userInfo || this.state.userInfo;
-        let {notice} = this.state;
+        let {notice,pathName} = this.state;
         return (
             <div>
                 <div className="header-wrap">
@@ -51,24 +55,23 @@ export class Header extends React.Component {
                             <img src={"http://" + userInfo.headImage} alt=""/>
                             <span>{userInfo.nickName}</span>
                             <ul className="header-personal-list">
-                                <li className="mb20">
+                                <li className={pathName==="/PersonalCenter"?"active mb20":"mb20"}>
                                     <Link to="/PersonalCenter">个人中心</Link>
                                 </li>
                                 <li className="mb20">
                                     <Link to="/PersonalCenter">消息通知
-                                    <span className="header-notice">10</span>
+                                        {notice > 0 && <span className="header-notice">{notice}</span>}
                                     </Link>
-                                    {/*{notice>0 && <span>{notice}</span>}*/}
                                 </li>
                                 <li onClick={this.loginOut}>退出登录</li>
                             </ul>
                         </div> : <Link className="header-btn fr" to="/login">登录/注册</Link>
                     }
                     <ul className="header-menu fr">
-                        <li className={this.state.pathName==="/"?"active":""}>
+                        <li className={pathName==="/"?"active":""}>
                             <Link to="/">主页</Link>
                         </li>
-                        <li className={this.state.pathName.indexOf("college")>0?"active":""}>
+                        <li className={pathName.indexOf("college")>0?"active":""}>
                             <Link to="/college">择校服务</Link>
                         </li>
                         {
@@ -93,10 +96,10 @@ export class Header extends React.Component {
                             <img src={require("../../assets/images/分组9@2x.png")} alt=""/>
                         </div>
                         <ul className="menu-list">
-                            <li className={this.state.pathName==="/"?"active":""}>
+                            <li className={pathName==="/"?"active":""}>
                                 <Link to="/">主页</Link>
                             </li>
-                            <li className={this.state.pathName.indexOf("college")>0?"active":""}>
+                            <li className={pathName.indexOf("college")>0?"active":""}>
                                 <Link to="/college">择校服务</Link>
                             </li>
                         </ul>
@@ -109,15 +112,15 @@ export class Header extends React.Component {
                         userInfo.id ? <div className="header-user header-menu-small" >
                             <img src={"http://" + userInfo.headImage} alt=""/>
                             <ul className="header-personal-list">
-                                <li className={this.state.pathName==="PersonalCenter"?"active mb10":"mb10"}>
-                                    <Link to="/PersonalCenter">个人中心</Link>
+                                <li className={pathName==="/PersonalCenter"?"active mb10":"mb10"}>
+                                        <Link to="/PersonalCenter">个人中心</Link>
                                 </li>
                                 <li className="mb10">
                                     <Link to="/PersonalCenter">
                                         消息通知
-                                        <span className="header-notice">10</span>
+                                        {/*<span className="header-notice">10</span>*/}
+                                        {notice>0 && <span className="header-notice">{notice}</span>}
                                     </Link>
-                                    {/*{notice>0 && <span>{notice}</span>}*/}
                                 </li>
                                 <li onClick={this.loginOut}>退出登录</li>
                             </ul>

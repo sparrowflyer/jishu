@@ -15,7 +15,8 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, 'src/main/resources/templates'),
         filename: '[name].[hash].js',
-        chunkFilename: '[name].[chunkhash].js'
+        chunkFilename: '[name].[chunkhash].js',
+        publicPath: '../templates'
     },
     module: {
         rules: [

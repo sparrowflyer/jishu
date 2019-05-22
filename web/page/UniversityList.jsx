@@ -170,14 +170,11 @@ export class UniversityList extends React.Component {
                         </div>
                 }
                 {/* 换页签*/}
-                {
-                    isArray(uniList) && uniList.length > 0 ?
-                        <div className="page-feed">
-                            <span className="page-num page-pre jee-arrow-left" onClick={this.go.bind(this,page-1)}></span>
-                                {pageNum}
-                            <span className="page-num page-next jee-arrow-right" onClick={this.go.bind(this,page+1)}></span>
-                        </div> : <div style={{paddingTop: '30px', paddingBottom: '20px'}}><NoContent desc="暂无数据" /></div>
-                }
+                <div className="page-feed">
+                    <span className="page-num page-pre jee-arrow-left" onClick={this.go.bind(this,page-1)}></span>
+                    {pageNum}
+                    <span className="page-num page-next jee-arrow-right" onClick={this.go.bind(this,page+1)}></span>
+                </div>
                 <Footer></Footer>
             </div>
         );

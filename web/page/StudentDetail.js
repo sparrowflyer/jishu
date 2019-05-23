@@ -27,7 +27,6 @@ class StudentDetail extends React.Component {
         this.getUser = this.getUser.bind(this);
         this.updateDimensions = this.updateDimensions.bind(this);
         this.getComment = this.getComment.bind(this);
-        this.knowHim = this.knowHim.bind(this);
         this.changeModalType = this.changeModalType.bind(this);
         this.close = this.close.bind(this);
     }
@@ -116,14 +115,20 @@ class StudentDetail extends React.Component {
             });
     }
     close(value,type){
-        this.setState({
-            visible:value,
-            modalType:type,
+        this.setState((state) => {
+            return {
+                ...state,
+                visible:value,
+                modalType:type
+            }
         })
     }
     changeModalType(value){
-        this.setState({
-            modalType:value
+        this.setState((state) => {
+            return {
+                ...state,
+                modalType:value
+            }
         })
     }
     updateDimensions() {
@@ -143,36 +148,38 @@ class StudentDetail extends React.Component {
         let { visible,modalType,userInfo,loginUserInfo } = this.state;
         const spacing = this.state.width > 768 ? [80, 50, 80, 75] : [15, 16, 24, 16];
         return (
-            <div>
-                <Header userInfo={loginUserInfo}></Header>
-                <Avator parent="StudentDetail" isWeb={this.state.width > 768} userID={this.props.match.params.userID} userInfo={userInfo} knowHim={this.knowHim.bind(this)} isCenter={false}/>
-                <SubTitle cn="他的话题" en="Topic of conversation" top={spacing[0]} bottom={spacing[1]} />
-                <div className="conversation-container">
-                    <Conversation title="专业" desc={getIterativeValue(userInfo, 'userStudentInfo.major')} />
-                    <Conversation title="话题" desc={getIterativeValue(userInfo, 'userStudentInfo.topics')} />
-                    <Conversation title="荣誉" desc={getIterativeValue(userInfo, 'userStudentInfo.honors')} />
-                </div>
-                <SubTitle cn="他的评价" en="Evaluation" top={spacing[2]} bottom={spacing[3]} />
-                <div className="evaluation-container">
+            <div className="container-with-footer">
+                <div>
+                    <Header userInfo={loginUserInfo}></Header>
+                    <Avator parent="StudentDetail" isWeb={this.state.width > 768} userID={this.props.match.params.userID} userInfo={userInfo} knowHim={this.knowHim.bind(this)} isCenter={false}/>
+                    <SubTitle cn="他的话题" en="Topic of conversation" top={spacing[0]} bottom={spacing[1]} />
+                    <div className="conversation-container">
+                        <Conversation title="专业" desc={getIterativeValue(userInfo, 'userStudentInfo.major')} />
+                        <Conversation title="话题" desc={getIterativeValue(userInfo, 'userStudentInfo.topics')} />
+                        <Conversation title="荣誉" desc={getIterativeValue(userInfo, 'userStudentInfo.honors')} />
+                    </div>
+                    <SubTitle cn="他的评价" en="Evaluation" top={spacing[2]} bottom={spacing[3]} />
+                    <div className="evaluation-container">
+                        {
+                            this.state.evaluations.slice(this.state.indexInEvaluations, (this.state.width > 768 ? 4 : 2))
+                                .map((evaluation, index) => {
+                                    return (
+                                        <Evaluation key={index} name={getIterativeValue(evaluation, 'buyer.nickname')} desc={evaluation.comment || ''} professionalScore={evaluation.scoreProfessional || '0.0'} responseScore={evaluation.scoreResponse || '0.0'} attitudeScore={evaluation.scoreAttitude || '0.0'}
+                                                    headImage={getIterativeValue(evaluation, 'buyer.headImage')} isActive={index === 1}/>
+                                    );
+                                })
+                        }
+                    </div>
                     {
-                        this.state.evaluations.slice(this.state.indexInEvaluations, (this.state.width > 768 ? 4 : 2))
-                            .map((evaluation, index) => {
-                                return (
-                                    <Evaluation key={index} name={getIterativeValue(evaluation, 'buyer.nickname')} desc={evaluation.comment || ''} professionalScore={evaluation.scoreProfessional || '0.0'} responseScore={evaluation.scoreResponse || '0.0'} attitudeScore={evaluation.scoreAttitude || '0.0'}
-                                        headImage={getIterativeValue(evaluation, 'buyer.headImage')} isActive={index === 1}/>
-                                );
-                            })
+                        this.state.width <= 768
+                        && <button className="know-btn" onClick={this.knowHim.bind(this, true)}>认识他</button>
+                    }
+                    {
+                        this.state.width > 768 ?
+                            <ModalWeb onClose={this.close} handleChangeType={this.changeModalType} loginUserID={loginUserInfo&&loginUserInfo.id||null} userID={userInfo.id} visible={visible} type={modalType}/>:
+                            <ModalMobile onClose={this.close} handleChangeType={this.changeModalType} loginUserID={loginUserInfo&&loginUserInfo.id||null} userID={userInfo.id} visible={visible} type={modalType}/>
                     }
                 </div>
-                {
-                    this.state.width <= 768
-                        && <button className="know-btn" onClick={this.knowHim(true)}>认识他</button>
-                }
-                {
-                    this.state.width > 768 ?
-                    <ModalWeb onClose={this.close} handleChangeType={this.changeModalType} loginUserID={loginUserInfo&&loginUserInfo.id||null} userID={userInfo.id} visible={visible} type={modalType}/>:
-                <ModalMobile onClose={this.close} handleChangeType={this.changeModalType} loginUserID={loginUserInfo&&loginUserInfo.id||null} userID={userInfo.id} visible={visible} type={modalType}/>
-                }
                 <Footer />
             </div>
         );

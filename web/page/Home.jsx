@@ -73,31 +73,33 @@ export class HomePage extends React.Component {
     render() {
         const studentTitleSpacing = this.state.width > 768 ? 60 : 20;
         return (
-            <div>
-                <Header />
-                <Carousel />
-                <SubTitle cn="学生展示" en="Student Show" top={studentTitleSpacing} bottom={studentTitleSpacing} />
-                <div className="home-students">
-                    {
-                        this.state.studentList.slice(0, (this.state.width >768 ? 7 : 5))
-                            .map((student) => {
-                                return (
-                                    <div className="home-student-container" key={student.id}>
-                                        <Link
-                                            className="student-image"
-                                            style={{backgroundImage: 'url(' + student.img +')'}}
-                                            to={'/StudentDetail/' + student.id}>
-                                            <div className="student-desc">{student.desc}</div>
-                                        </Link>
-                                        <Link className="student-name" to={'/StudentDetail/' + student.id}>{student.name}</Link>
-                                        <Link className="student-college" to={'/StudentDetail/' + student.id}>{student.university}</Link>
-                                    </div>
-                                );
-                            })
-                    }
-                </div>
-                <div className="home-see-more-container">
-                    <Link to="/college" className="home-see-more">查看更多</Link>
+            <div className="container-with-footer">
+                <div>
+                    <Header />
+                    <Carousel />
+                    <SubTitle cn="学生展示" en="Student Show" top={studentTitleSpacing} bottom={studentTitleSpacing} />
+                    <div className="home-students">
+                        {
+                            this.state.studentList.slice(0, (this.state.width >768 ? 6 : 4))
+                                .map((student) => {
+                                    return (
+                                        <div className="home-student-container" key={student.id}>
+                                            <Link
+                                                className="student-image"
+                                                style={{backgroundImage: 'url(' + student.img +')'}}
+                                                to={'/StudentDetail/' + student.id}>
+                                                <div className="student-desc">{student.desc}</div>
+                                            </Link>
+                                            <Link className="student-name" to={'/StudentDetail/' + student.id}>{student.name}</Link>
+                                            <Link className="student-college" to={'/StudentDetail/' + student.id}>{student.university}</Link>
+                                        </div>
+                                    );
+                                })
+                        }
+                    </div>
+                    <div className="home-see-more-container">
+                        <Link to="/college" className="home-see-more">查看更多</Link>
+                    </div>
                 </div>
                 <Footer />
             </div>

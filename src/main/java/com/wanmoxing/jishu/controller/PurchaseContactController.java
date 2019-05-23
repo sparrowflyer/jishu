@@ -323,6 +323,10 @@ public class PurchaseContactController {
 						if (buyerEmail != null && buyerEmail != "") {
 							EmailUtil.sendEmailCommon(buyerEmail, "购买联系方式成功！", messageToNotifyBuyer.toString());
 						}
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					try {
 						String buyerCellphone = buyer.getCellPhone();
 						if (buyerCellphone != null && buyerCellphone != "") {
 							Map<String, String> smsParams = new HashMap<String, String>();
@@ -352,6 +356,10 @@ public class PurchaseContactController {
 						if (sellerEmail != null && sellerEmail != "") {
 							EmailUtil.sendEmailCommon(sellerEmail, "您有新的购买联系方式订单！", messageToNotifySeller.toString());
 						}
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					try {
 						String sellerCellphone = seller.getCellPhone();
 						if (sellerCellphone != null && sellerCellphone != "") {
 							Map<String, String> smsParams = new HashMap<String, String>();

@@ -108,9 +108,10 @@ export class Avator extends React.Component {
             zIndex: 9999,
             opacity: 0,
         };
+        const avatorPageBg = (this.props.parent === 'PersonalCenter' ? '../static/image/temp/personalCenter_bg.png' : '../static/image/temp/studentDetail_bg.png');
         return (
             <div>
-                <div className="avator_bg"></div>
+                <div className="avator_bg" style={{backgroundImage: 'url(' + avatorPageBg +')'}}></div>
                 <div className="avator" style={{backgroundImage: 'url(http://' + this.props.userInfo.headImage +')'}}>
                     {
                         this.state.canEdit && <label className="add-img-btn">

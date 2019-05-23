@@ -110,47 +110,48 @@ export class UniversityList extends React.Component {
             )
         }
         return (
-            <div>
-                <Header></Header>
-            {/* 筛选搜索栏 */}
-                <div className="filter-wrap">
-                    <ul className="nation-list">
-                        <li  className="nation-title">国家</li>
-                        <li className={country==='' ? "nation-item active" : "nation-item"} onClick={this.changeCountry.bind(this,"none")}>
-                            <img src={require("./../assets/images/diqiu@2x.png")} alt=""/>
-                            不限
-                        </li>
-                        {/*{countryList.map((item,index) => {*/}
+            <div className="container-with-footer">
+                <div>
+                    <Header></Header>
+                    {/* 筛选搜索栏 */}
+                    <div className="filter-wrap">
+                        <ul className="nation-list">
+                            <li  className="nation-title">国家</li>
+                            <li className={country==='' ? "nation-item active" : "nation-item"} onClick={this.changeCountry.bind(this,"none")}>
+                                <img src={require("./../assets/images/diqiu@2x.png")} alt=""/>
+                                不限
+                            </li>
+                            {/*{countryList.map((item,index) => {*/}
                             {/*return (*/}
-                                {/*<li  className={country===item.name ? "nation-item active" : "nation-item"} key={index}>*/}
-                                    {/*<img src={item.logo} alt=""/>*/}
-                                    {/*{item.name}*/}
-                                {/*</li>*/}
+                            {/*<li  className={country===item.name ? "nation-item active" : "nation-item"} key={index}>*/}
+                            {/*<img src={item.logo} alt=""/>*/}
+                            {/*{item.name}*/}
+                            {/*</li>*/}
                             {/*)*/}
-                        {/*})}*/}
-                        <li className={country==='英国' ? "nation-item active" : "nation-item"} onClick={this.changeCountry.bind(this,"英国")}>
-                            <img src={require("./../assets/images/GB@2x.png")} alt=""/>
-                            英国
-                        </li>
-                        {/*<li className="nation-item" onClick={this.changeCountry("美国")}>*/}
+                            {/*})}*/}
+                            <li className={country==='英国' ? "nation-item active" : "nation-item"} onClick={this.changeCountry.bind(this,"英国")}>
+                                <img src={require("./../assets/images/GB@2x.png")} alt=""/>
+                                英国
+                            </li>
+                            {/*<li className="nation-item" onClick={this.changeCountry("美国")}>*/}
                             {/*<img src={require("./../assets/images/GB@2x.png")} alt=""/>*/}
                             {/*美国*/}
-                        {/*</li>*/}
-                        {/*<li className="nation-item" onClick={this.changeCountry("加拿大")}>*/}
+                            {/*</li>*/}
+                            {/*<li className="nation-item" onClick={this.changeCountry("加拿大")}>*/}
                             {/*<img src={require("./../assets/images/ca@2x.png")} alt=""/>*/}
                             {/*加拿大*/}
-                        {/*</li>*/}
-                        <li className="clearfloat"></li>
-                    </ul>
-                    <div className="search-wrap">
-                        <input className={this.state.searchBlock ? 'active': ''} onChange={this.searchSchool} value={this.state.searchValue} placeholder="输入大学名称搜索" type="text"/>
-                        <img onClick={this.resize} src={require("./../assets/images/搜索@2x.png")} alt=""/>
+                            {/*</li>*/}
+                            <li className="clearfloat"></li>
+                        </ul>
+                        <div className="search-wrap">
+                            <input className={this.state.searchBlock ? 'active': ''} onChange={this.searchSchool} value={this.state.searchValue} placeholder="输入大学名称搜索" type="text"/>
+                            <img onClick={this.resize} src={require("./../assets/images/搜索@2x.png")} alt=""/>
+                        </div>
+                        {/*<div className="clearfloat"></div>*/}
                     </div>
-                    {/*<div className="clearfloat"></div>*/}
-                </div>
-                {/* 学校列表 */}
-                {
-                    isArray(uniList) && uniList.length > 0 &&
+                    {/* 学校列表 */}
+                    {
+                        isArray(uniList) && uniList.length > 0 &&
                         <div className="container">
                             {
                                 uniList.map((uni) => {
@@ -168,12 +169,13 @@ export class UniversityList extends React.Component {
                                 })
                             }
                         </div>
-                }
-                {/* 换页签*/}
-                <div className="page-feed">
-                    <span className="page-num page-pre jee-arrow-left" onClick={this.go.bind(this,page-1)}></span>
-                    {pageNum}
-                    <span className="page-num page-next jee-arrow-right" onClick={this.go.bind(this,page+1)}></span>
+                    }
+                    {/* 换页签*/}
+                    <div className="page-feed">
+                        <span className="page-num page-pre jee-arrow-left" onClick={this.go.bind(this,page-1)}></span>
+                        {pageNum}
+                        <span className="page-num page-next jee-arrow-right" onClick={this.go.bind(this,page+1)}></span>
+                    </div>
                 </div>
                 <Footer></Footer>
             </div>

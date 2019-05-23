@@ -5,7 +5,7 @@ export class Carousel extends React.Component {
         super(props);
         this.state = {
             currentIndex: 0,
-            imgList: ['./image/temp/carousel.png', './image/bg.png', './image/temp/bg2.png']
+            imgList: ['./image/temp/carousel.png', './image/temp/personalCenter_bg.png', './image/temp/studentDetail_bg.png']
         };
         this.timer = null;
         this.createTimer = this.createTimer.bind(this);

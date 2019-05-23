@@ -61,7 +61,8 @@
 .avator_bg {
     width: 100%;
     height: .59rem;
-    background: #B8E0EA url('../image/temp/personalCenter_bg.png') no-repeat center;
+    background: #B8E0EA no-repeat center;
+    background-size: cover;
 }
 
 .avator {

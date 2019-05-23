@@ -103,13 +103,14 @@ public class CommentController {
 			commentNotification.setUserId(userId);
 			commentNotification.setTitle("您有一位新评论！");
 			
-			String userURL = "http://www.unclejee.cn/user/" + user.getId();
+			int userCommentId = user.getId();
 			String userName = user.getNickName();
 			String userImg = user.getHeadImage();
-			String secondURL = "http://www.unclejee.cn/blog/" + articleDatabase.getAid();
+			String secondType = "article";
+			String secondId = String.valueOf(articleDatabase.getAid());
 			String secondName = articleDatabase.getTitle();
 			String contentJson = " 评论了文章：";
-			commentNotification.setContent(CommUtil.generateJSONContent(userURL, userName, userImg, secondURL, secondName, contentJson));
+			commentNotification.setContent(CommUtil.generateJSONContent(userCommentId, userName, userImg, secondType, secondId, secondName, contentJson));
 
 			userNotificationService.insert(commentNotification);
 			return resultDTO;

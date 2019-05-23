@@ -3,6 +3,7 @@ package com.wanmoxing.jishu.service;
 import java.util.List;
 import java.util.Map;
 
+import com.github.pagehelper.PageInfo;
 import com.wanmoxing.jishu.bean.PurchaseContact;
 
 public interface PurchaseContactService {
@@ -17,7 +18,7 @@ public interface PurchaseContactService {
 
     public PurchaseContact find(String purchaseContactId);
     
-    public List<PurchaseContact> findByStatuses(List<String> statuses, int userId);
+    public PageInfo<PurchaseContact> findByStatuses(List<String> statuses,int userId, int page, int pageSize);
     
     public List<PurchaseContact> findAllByStatuses(List<String> statuses);
     

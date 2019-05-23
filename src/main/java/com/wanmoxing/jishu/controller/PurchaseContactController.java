@@ -388,11 +388,11 @@ public class PurchaseContactController {
 					newBuyerNotification.setUserId(purchaseContact.getSellerId());
 					newBuyerNotification.setTitle("您的联系方式有新购买者！");
 					
-					String userURL = "http://www.unclejee.cn/user/" + buyer.getId();
+					int userId = buyer.getId();
 					String userName = buyer.getNickName();
 					String userImg = buyer.getHeadImage();
 					String content = " 购买了您的联系方式！";
-					newBuyerNotification.setContent(CommUtil.generatePurchaseContactNotificationJSONContent(userURL, userName, userImg, content));
+					newBuyerNotification.setContent(CommUtil.generatePurchaseContactNotificationJSONContent(userId, userName, userImg, content));
 					
 					userNotificationService.insert(newBuyerNotification);
 					

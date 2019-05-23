@@ -291,7 +291,7 @@ public class UserController {
 	 * @return
 	 */
 	@RequestMapping(value = "/getUncompletePerchaseContactOrder", method = RequestMethod.POST)
-	public ResultDTO getUncompletePerchaseContactOrder(HttpSession session, @RequestBody User user) {
+	public ResultDTO getUncompletePerchaseContactOrder(HttpSession session, @RequestBody JSONObject jsonParams) {
 		ResultDTO result = new ResultDTO();
 		try {
 			if (!CommonConstants.DEV_MODE && !CommUtil.isUserLogined(session)) {
@@ -300,14 +300,17 @@ public class UserController {
 				return result;
 			}
 			User userInSession = (User) session.getAttribute("user");
-			if(userInSession.getId() != user.getId()) {
+		    int userId = jsonParams.getIntValue("userId");
+			int page = jsonParams.getIntValue("page");
+			int pageSize = jsonParams.getIntValue("pageSize");
+			if(userInSession.getId() != userId) {
 				result.setStatus(ResultDTOStatus.ERROR.getStatus());
 				result.setErrorMsg("只能查看自己的订单!");
 				return result;
 			}
 			List<String> statuses = new ArrayList<>();
 			statuses.add(PurchaseContactStatus.PAYED.getStatus());
-			result.setData(purchaseContactService.findByStatuses(statuses, user.getId()));
+			result.setData(purchaseContactService.findByStatuses(statuses, userId, page, pageSize));
 			return result;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -325,7 +328,7 @@ public class UserController {
 	 * @return
 	 */
 	@RequestMapping(value = "/getCompletedPerchaseContactOrder", method = RequestMethod.POST)
-	public ResultDTO getCompletedPerchaseContactOrder(HttpSession session, @RequestBody User user) {
+	public ResultDTO getCompletedPerchaseContactOrder(HttpSession session, @RequestBody JSONObject jsonParams) {
 		ResultDTO result = new ResultDTO();
 		try {
 			if (!CommonConstants.DEV_MODE && !CommUtil.isUserLogined(session)) {
@@ -334,7 +337,10 @@ public class UserController {
 				return result;
 			}
 			User userInSession = (User) session.getAttribute("user");
-			if(userInSession.getId() != user.getId()) {
+			int userId = jsonParams.getIntValue("userId");
+			int page = jsonParams.getIntValue("page");
+			int pageSize = jsonParams.getIntValue("pageSize");
+			if(userInSession.getId() != userId) {
 				result.setStatus(ResultDTOStatus.ERROR.getStatus());
 				result.setErrorMsg("只能查看自己的订单!");
 				return result;
@@ -343,7 +349,7 @@ public class UserController {
 			statuses.add(PurchaseContactStatus.SERVICED.getStatus());
 			statuses.add(PurchaseContactStatus.COMMENTED.getStatus());
 			statuses.add(PurchaseContactStatus.ENDED.getStatus());
-			result.setData(purchaseContactService.findByStatuses(statuses, user.getId()));
+			result.setData(purchaseContactService.findByStatuses(statuses, userId, page, pageSize));
 			return result;
 		} catch (Exception e) {
 			e.printStackTrace();

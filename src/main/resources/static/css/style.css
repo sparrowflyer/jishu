@@ -63,6 +63,7 @@ h1, h2, h3, h4, h5, h6{
 }
 
 .container-with-footer {
+    position: relative;
     min-height: 100%;
     display: flex;
     flex-direction: column;
@@ -314,11 +315,12 @@ h1, h2, h3, h4, h5, h6{
 }
 
 .personal-center-image-upload{
-    position: fixed;
+    /*position: fixed;*/
+    position: absolute;
     top: 0;
     left: 0;
-    right: 0;
-    bottom: 0;
+    /*right: 0;*/
+    /*bottom: 0;*/
     width: 100%;
     z-index: 9999;
     -webkit-box-sizing: border-box;
@@ -408,7 +410,7 @@ div.personal-center-image-cancel{
 .header-btn{
     background:rgba(255,226,1,1);
     border-radius:.25rem;
-    font-size:.14em;
+    font-size:.14rem;
     font-weight:500;
     padding: 0.083rem .258rem;
     color:rgba(14,14,14,1);
@@ -418,7 +420,7 @@ div.personal-center-image-cancel{
     background:rgba(255,226,1,1);
     border-radius: .08rem;
     padding: .05rem .08rem .04rem .09rem;
-    font-size: .05em;
+    font-size: .05rem;
     font-weight:500;
     color:rgba(14,14,14,1);
 }

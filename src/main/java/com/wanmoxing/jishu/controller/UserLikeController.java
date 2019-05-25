@@ -159,6 +159,43 @@ public class UserLikeController {
 	}
 	
 	/**
+	 * 检查某用户是否关注了某学校
+	 {
+	 	"userId":1,
+	 	"schoolId": 2
+	 }
+	 * @param session
+	 * @param jsonParams
+	 * @return
+	 */
+	@RequestMapping(value = "/checkLikeSchool", method = RequestMethod.POST)
+	public ResultDTO checkLikeSchool(HttpSession session, @RequestBody JSONObject jsonParams) {
+		ResultDTO result = new ResultDTO();
+		try {
+			if (!CommonConstants.DEV_MODE && !CommUtil.isUserLogined(session)) {
+				result.setData(false);
+				return result;
+			}
+			
+			Integer userId = jsonParams.getInteger("userId");
+			Integer schoolId = jsonParams.getInteger("schoolId");
+			if (userId == null || schoolId == null) {
+				result.setData(false);
+				return result;
+			}
+			
+			result.setData(userLikeService.checkExist(userId, schoolId, UserLikeType.SCHOOL));
+			return result;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus(ResultDTOStatus.ERROR.getStatus());
+			result.setErrorMsg("Exception occured!");
+			return result;
+		}
+	}
+	
+	/**
 	 {
 	 	"userId":18,
 	 	"likeId":1
@@ -274,6 +311,43 @@ public class UserLikeController {
 			userService.update(student);
 			
 			return result;
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus(ResultDTOStatus.ERROR.getStatus());
+			result.setErrorMsg("Exception occured!");
+			return result;
+		}
+	}
+	
+	/**
+	 * 检查某用户是否关注了某学生
+	 {
+	 	"userId":1,
+	 	"studentId": 2
+	 }
+	 * @param session
+	 * @param jsonParams
+	 * @return
+	 */
+	@RequestMapping(value = "/checkLikeStudent", method = RequestMethod.POST)
+	public ResultDTO checkLikeStudent(HttpSession session, @RequestBody JSONObject jsonParams) {
+		ResultDTO result = new ResultDTO();
+		try {
+			if (!CommonConstants.DEV_MODE && !CommUtil.isUserLogined(session)) {
+				result.setData(false);
+				return result;
+			}
+			
+			Integer userId = jsonParams.getInteger("userId");
+			Integer studentId = jsonParams.getInteger("studentId");
+			if (userId == null || studentId == null) {
+				result.setData(false);
+				return result;
+			}
+			
+			result.setData(userLikeService.checkExist(userId, studentId, UserLikeType.STUDENT));
+			return result;
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			result.setStatus(ResultDTOStatus.ERROR.getStatus());

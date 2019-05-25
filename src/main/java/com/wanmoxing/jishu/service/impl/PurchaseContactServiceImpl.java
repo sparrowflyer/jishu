@@ -1,8 +1,6 @@
 package com.wanmoxing.jishu.service.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,9 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.wanmoxing.jishu.bean.Article;
 import com.wanmoxing.jishu.bean.PurchaseContact;
-import com.wanmoxing.jishu.constant.CommonConstants;
 import com.wanmoxing.jishu.constant.enums.PurchaseContactStatus;
 import com.wanmoxing.jishu.mapper.PurchaseContactMapper;
 import com.wanmoxing.jishu.service.PurchaseContactService;

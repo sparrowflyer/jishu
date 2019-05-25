@@ -76,7 +76,7 @@ class StudentDetail extends React.Component {
     }
     knowHim(value) {
         if(!this.state.loginUserInfo){
-            this.props.alert.error(<div style={{fontSize: '12px'}}>请先登录！</div>)
+            this.props.alert.error(<div style={{fontSize: '12px'}}>请先登录！</div>);
             return;
         }
         this.setState(state => {

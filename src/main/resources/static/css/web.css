@@ -168,6 +168,7 @@
     text-align: center;
     color: #0E0E0E;
     background-color: #FFE201;
+    cursor: pointer;
 }
 
 .school {
@@ -809,6 +810,7 @@ ul.li-style{
     outline: none;
     background: url("../image/left_hover.png");
     background-size: cover;
+    cursor: pointer;
 }
 
 .right-btn {
@@ -826,6 +828,7 @@ ul.li-style{
     outline: none;
     background: url("../image/right_hover.png");
     background-size: cover;
+    cursor: pointer;
 }
 
 .home-student-container .student-image {
@@ -1100,6 +1103,7 @@ ul.li-style{
     border-radius:25px;
 }
 .search-wrap{
+    cursor: pointer;
     float: right;
     /*position: absolute;*/
     /*top: 0;*/
@@ -1121,7 +1125,7 @@ ul.li-style{
 
 .search-wrap img{
     width:.4rem;
-    height: .4rem;
+    height: 100%;
 }
 /* 学校列表 */
 .container{
@@ -1155,7 +1159,7 @@ ul.li-style{
     min-width:.38rem;
     min-height: .38rem;
     padding:.08rem .16rem;
-    line-height: .22rem;
+    line-height: .22rem !important;
     margin: 0 .05rem;
 }
 
@@ -1235,6 +1239,28 @@ ul.li-style{
     border-radius:0 .2rem 0 .2rem;
     font-size:.3rem;
     line-height:.6rem;
+}
+
+.pay_result-desc {
+    color: #0E0E0E;
+    font-size: .3rem;
+    line-height: .42rem;
+    margin-top: .3rem;
+    margin-bottom: .8rem;
+    text-align: center;
+}
+
+.back_home-btn {
+    display: block;
+    color: #0E0E0E;
+    background-color: #FFE201;
+    font-size: .2rem;
+    line-height: .5rem;
+    width: 1.3rem;
+    height: .5rem;
+    border-radius: .3rem;
+    text-align: center;
+    margin: 0 auto;
 }
 
 /*cropper*/

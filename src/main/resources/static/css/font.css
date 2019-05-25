@@ -63,12 +63,6 @@
 .jee-menu:before {
   content: "\e904";
 }
-.jee-success:before {
-  content: "\e902";
-}
-.jee-menu:before {
-  content: "\e904";
-}
 .jee-arrow-left:before {
   content: "\ea40";
 }

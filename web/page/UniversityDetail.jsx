@@ -3,6 +3,7 @@ import {Footer} from '../component/common/Footer.jsx';
 import {Header} from '../component/common/Header.jsx';
 import { Link } from 'react-router-dom';
 import {getUsersBySchool,getSchoolById} from "../utils/http.js" ;
+import { isArray } from '../utils/utils.jsx';
 
 export class UniversityDetail extends React.Component {
     constructor(props) {
@@ -12,13 +13,13 @@ export class UniversityDetail extends React.Component {
         this.getSchoolById = this.getSchoolById.bind(this);
         this.go = this.go.bind(this);
         this.state = {
-            schoolData:{},
-            schoolId:"",
+            schoolData: {},
+            schoolId: "",
             stuList:[],
             id: "",
             pageSize: 1,
             page: 1,
-            img:"",
+            img: ""
         }
     }
     componentWillMount (){
@@ -86,7 +87,7 @@ export class UniversityDetail extends React.Component {
         this.getUsersBySchool(page);
     }
     render() {
-        let {pageSize,schoolData,page,stuList,img} = this.state;
+        let {pageSize, schoolData, page, stuList} = this.state;
         const pageNum = [];
         for (let i = 1;i <= pageSize; i++){
             pageNum.push(
@@ -103,10 +104,8 @@ export class UniversityDetail extends React.Component {
                             <div className="uni-ename">{schoolData.enName}</div>
                             <div className="uni-desc">
                                 <span className="left-mark jee-quote-left"></span>
-                                {/*src={require("./../assets/images/左引号@2x.png")} */}
                                 <div className="nui-text">{schoolData.description}</div>
                                 <span className="right-mark jee-quote-right"></span>
-                                {/*src={require("./../assets/images/右引号@2x.png")} */}
                                 <div className="clearfloat"></div>
                             </div>
                         </div>
@@ -118,32 +117,38 @@ export class UniversityDetail extends React.Component {
                         </p>
                     </div>
                     <div className="stus-container">
-                        {stuList.map(stu => {
-                            return <Link className="stu-info fl" key={stu.id} to={"/StudentDetail/"+stu.id}>
-                                <div className="left-pic" style={{backgroundImage: `url(http://${stu.headImage})`}}>
+                        {
+                            isArray(stuList) && stuList.map(stu => {
+                                return (
+                                    <Link className="stu-info fl" key={stu.id} to={"/StudentDetail/"+stu.id}>
+                                        <div className="left-pic" style={{backgroundImage: `url(http://${stu.headImage})`}}></div>
+                                        <div className="right-info">
+                                            <div className="info-name">{stu.nickName}</div>
+                                            <div className="info-intro subject">{(stu.userStudentInfo && stu.userStudentInfo.major)||"--"}</div>
+                                            {/*<div className="info-intro subject-en">School of Geography & Geosciences</div>*/}
+                                            <div className="info-intro intro">{(stu.userStudentInfo && stu.userStudentInfo.description)||"--"}</div>
+                                            <div className="info-data fl">
+                                                <div className="info-name">{stu.likeAmount||0}</div>
+                                                <div className="info-intro">粉丝数</div>
+                                            </div>
+                                            {/*<div className="fl">*/}
+                                            {/*<div className="info-name">89%</div>*/}
+                                            {/*<div className="info-intro">通过率</div>*/}
+                                            {/*</div>*/}
+                                            <div className="corner-fraction">{this.getAverageScore(stu.userStudentInfo)}</div>
+                                        </div>
+                                    </Link>
+                                )
+                            })
+                        }
+                        {
+                            isArray(stuList) && stuList.length > 0 &&
+                                <div className="page-feed clearfloat">
+                                    <span className="page-num page-pre jee-arrow-left" onClick={this.go.bind(this, page-1)}></span>
+                                    {pageNum}
+                                    <span className="page-num page-next jee-arrow-right" onClick={this.go.bind(this, page+1)}></span>
                                 </div>
-                                <div className="right-info">
-                                    <div className="info-name">{stu.nickName}</div>
-                                    <div className="info-intro subject">{(stu.userStudentInfo && stu.userStudentInfo.major)||"--"}</div>
-                                    {/*<div className="info-intro subject-en">School of Geography & Geosciences</div>*/}
-                                    <div className="info-intro intro">{(stu.userStudentInfo && stu.userStudentInfo.description)||"--"}</div>
-                                    <div className="info-data fl">
-                                        <div className="info-name">{stu.likeAmount||0}</div>
-                                        <div className="info-intro">粉丝数</div>
-                                    </div>
-                                    {/*<div className="fl">*/}
-                                    {/*<div className="info-name">89%</div>*/}
-                                    {/*<div className="info-intro">通过率</div>*/}
-                                    {/*</div>*/}
-                                    <div className="corner-fraction">{this.getAverageScore(stu.userStudentInfo)}</div>
-                                </div>
-                            </Link>
-                        })}
-                        <div className="page-feed clearfloat">
-                            <span className="page-num page-pre jee-arrow-left" onClick={this.go.bind(this,page-1)}></span>
-                            {pageNum}
-                            <span className="page-num page-next jee-arrow-right" onClick={this.go.bind(this,page+1)}></span>
-                        </div>
+                        }
                     </div>
                 </div>
                 <Footer></Footer>

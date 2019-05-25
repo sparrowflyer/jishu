@@ -119,6 +119,7 @@ h1, h2, h3, h4, h5, h6{
     display: block;
     margin: 0 auto;
     border: 0;
+    cursor: pointer;
 }
 
 .login_item_info {
@@ -213,6 +214,10 @@ h1, h2, h3, h4, h5, h6{
 
 .ml10 {
     margin-left: 10px;
+}
+
+.gesture {
+    cursor: pointer;
 }
 
 .clearfix {
@@ -799,12 +804,17 @@ ul, li {
     margin: .5rem 1.3rem .68rem 1.3rem;
 }
 
-.nation-title,.nation-item{
+.nation-title, .nation-item{
     float: left;
     font-weight:400;
     color:rgba(132,132,132,1);
     background:rgba(255,255,255,1);
 }
+
+.nation-item {
+    cursor: pointer;
+}
+
 .nation-title{
     color:rgba(48,48,48,1);
 }
@@ -812,10 +822,9 @@ ul, li {
     vertical-align: middle;
 }
 .nation-item.active{
-    color:rgba(48,48,48,1);
+    color: rgba(48,48,48,1);
 }
 .search-wrap{
-    cursor: pointer;
     position: relative;
 }
 
@@ -873,17 +882,18 @@ ul, li {
     flex-wrap: nowrap;
 }
 .page-num{
-    background:rgba(241,241,241,1);
-    border-radius:.06rem;
+    cursor: pointer;
+    background: rgba(241,241,241,1);
+    border-radius: .06rem;
     text-align: center;
     box-sizing: border-box;
-    color:rgba(132,132,132,1);
+    color: rgba(132,132,132,1);
 }
 .page-num.active{
-    background:rgba(255,226,1,1);
-    color:rgba(48,48,48,1);
+    background: rgba(255,226,1,1);
+    color: rgba(48,48,48,1);
 }
-.page-num.page-next:hover,.page-num.page-pre:hover{
+.page-num.page-next:hover, .page-num.page-pre:hover{
     background:rgba(255,226,1,1);
 }
 

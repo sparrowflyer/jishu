@@ -761,6 +761,7 @@ ul.li-style{
     outline: none;
     background: url("../image/left_hover.png");
     background-size: cover;
+    cursor: pointer;
 }
 
 .right-btn {
@@ -778,6 +779,7 @@ ul.li-style{
     outline: none;
     background: url("../image/right_hover.png");
     background-size: cover;
+    cursor: pointer;
 }
 
 .home-student-container .student-image {
@@ -1052,6 +1054,7 @@ ul.li-style{
     border-radius:25px;
 }
 .search-wrap{
+    cursor: pointer;
     float: right;
     /*position: absolute;*/
     /*top: 0;*/
@@ -1073,7 +1076,7 @@ ul.li-style{
 
 .search-wrap img{
     width:.4rem;
-    height: .4rem;
+    height: 100%;
 }
 /* 学校列表 */
 .container{
@@ -1107,7 +1110,7 @@ ul.li-style{
     min-width:.38rem;
     min-height: .38rem;
     padding:.08rem .16rem;
-    line-height: .22rem;
+    line-height: .22rem !important;
     margin: 0 .05rem;
 }
 

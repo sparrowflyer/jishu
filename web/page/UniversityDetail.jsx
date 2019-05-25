@@ -103,10 +103,8 @@ export class UniversityDetail extends React.Component {
                             <div className="uni-ename">{schoolData.enName}</div>
                             <div className="uni-desc">
                                 <span className="left-mark jee-quote-left"></span>
-                                {/*src={require("./../assets/images/左引号@2x.png")} */}
                                 <div className="nui-text">{schoolData.description}</div>
                                 <span className="right-mark jee-quote-right"></span>
-                                {/*src={require("./../assets/images/右引号@2x.png")} */}
                                 <div className="clearfloat"></div>
                             </div>
                         </div>

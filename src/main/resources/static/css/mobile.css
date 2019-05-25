@@ -768,6 +768,7 @@
     outline: none;
     background: url("../image/left_hover.png");
     background-size: cover;
+    cursor: pointer;
 }
 
 .right-btn {
@@ -785,6 +786,7 @@
     outline: none;
     background: url("../image/right_hover.png");
     background-size: cover;
+    cursor: pointer;
 }
 
 .home-student-container .student-image {
@@ -1104,7 +1106,7 @@
     min-width:.23rem;
     min-height: .23rem;
     padding:.05rem .1rem;
-    line-height: .13rem;
+    line-height: .13rem !important;
     margin: 0 .03rem;
 }
 /* 学校详情 */

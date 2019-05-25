@@ -328,11 +328,7 @@ h1, h2, h3, h4, h5, h6{
     box-sizing: border-box;
     background: rgba(0,0,0,0.5);
 }
-.personal-center-btn-wrap{
-    width: 100%;
-    display: flex;
-    justify-content: flex-end;
-}
+
 .personal-center-image-submit,.personal-center-image-cancel{
     text-align: center;
     box-sizing: border-box;

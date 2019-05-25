@@ -6,8 +6,10 @@ import { Item } from '../component/Item.js';
 import { postUrl ,getUnOrder,getDoOrder} from '../utils/http.js';
 import {Footer} from '../component/common/Footer.jsx';
 import {Header} from '../component/common/Header.jsx';
-import {getUser, updateUserHeadImage, uploadImage} from "../utils/http";
+import {getUser, updateUserHeadImage, uploadImage,getUrl} from "../utils/http";
 import Cropper from "react-cropper";
+import { isArray } from '../utils/utils.jsx';
+import { NoContent } from '../component/NoContent.js';
 
 const contents = [0,1,2,3,4],
          fList = [{
@@ -37,9 +39,13 @@ class PersonalCenter extends React.Component {
             following: [],
             fans: [],
             userInfo:{},
-            activeTab:2,
-            activeType:0,
-            orders:[],
+            activeTab: 3,
+            activeOrderType:0, //订单列表active
+            activeNoticeType:0, //消息列表active
+            noticeType:[], //消息类型
+            notices:[],//通知列表
+            showDelete: null,
+            orders:contents || [],
             selectedImageFile: '',//更新头像 存储
             editImageModalVisible: false, //裁剪框显示
             src:"", //裁剪图src
@@ -53,6 +59,8 @@ class PersonalCenter extends React.Component {
         this.handleFileChange = this.handleFileChange.bind(this);
         this.updateUserHeadImage = this.updateUserHeadImage.bind(this);
         this.dataURLtoFile = this.dataURLtoFile.bind(this);
+        this.getNotificationByTypeId = this.getNotificationByTypeId.bind(this);
+        this.getNotificationType = this.getNotificationType.bind(this);
     }
     componentDidMount() {
         let userInfo = '';
@@ -66,6 +74,7 @@ class PersonalCenter extends React.Component {
                return { ...state, userInfo , userID:userInfo.id}
             });
             this.getUser(userInfo.id);
+            this.getFans(userInfo.id,1,10);
             window.addEventListener('resize', this.updateDimensions);
         } else {
             this.props.history.push('/');
@@ -75,6 +84,22 @@ class PersonalCenter extends React.Component {
         var width = document.documentElement.clientWidth || document.body.clientWidth || window.innerWidth;
         this.setState((state) => {
             return { ...state, width };
+        });
+    }
+    getNotificationType(){  //获取通知消息类型
+        getUrl("/getNotificationType".then(resp =>{
+            console.log("getNotificationType",resp)
+        })).catch(error=>{});
+    }
+    //  根据类型获取通知消息
+    getNotificationByTypeId(id){
+        getUrl("/getNotificationByTypeId?typeId=" + id).then(response=>{
+            console.log("getNotificationByTypeId",response)
+        })
+    }
+    showDeleteMenu(idx){
+        this.setState({
+            showDelete: idx === this.state.showDelete ? null : idx
         });
     }
     getFans(likeStudentId, pageNo, pageAmount) {
@@ -165,14 +190,32 @@ class PersonalCenter extends React.Component {
     checkTab(i){
         this.setState({
             activeTab: i
-        })
-        if(i===0){
-            this.getFans(this.state.userID,1,10);
+        });
+        switch (i){
+            case 0:
+                this.getFans(this.state.userID,1,10);
+                break;
+            case 1:
+                console.log(i);
+                break;
+            case 2:
+                this.getNotificationByTypeId(this.state.activeNoticeType);
+                break;
+            case 3:
+                this.state.activeOrderType===0 ? this.getUncompleteOrder():this.getCompleteOrder();
+                break;
         }
     }
-    checkType(idx){
+    checkType(idx,type){
+        if(type==="notice"){
+            this.setState({
+                activeNoticeType: idx
+            });
+            this.getNotificationByTypeId(idx);
+            return;
+        }
         this.setState({
-            activeType: idx
+            activeOrderType: idx
         });
         idx===0 ? this.getUncompleteOrder():this.getCompleteOrder();
     }
@@ -244,13 +287,7 @@ class PersonalCenter extends React.Component {
     }
 
     render() {
-        let {editImageModalVisible,src,userInfo,userID,activeTab,activeType,height,orders,fans,following} = this.state;
-        const copperStyle = {
-            width: '100%',
-            height: height
-        }, wrapStyle = {
-            height: height,
-        };
+        let {editImageModalVisible,src,userInfo,userID,activeTab,activeOrderType,activeNoticeType,orders,fans,following,notices,showDelete} = this.state;
         return (
             <div className="container-with-footer">
                 <div>
@@ -259,17 +296,24 @@ class PersonalCenter extends React.Component {
                     <div className="personal-center_tab-title-container">
                         <span className={activeTab===0?'tab-title__selected':'tab-title'} onClick={this.checkTab.bind(this,0)}>粉丝列表</span>
                         <span className={activeTab===1?'tab-title__selected':'tab-title'} onClick={this.checkTab.bind(this,1)}>我的关注</span>
-                        <span className={activeTab===2?'tab-title__selected':'tab-title'} onClick={this.checkTab.bind(this,2)}>我的订单</span>
+                        <span className={activeTab===2?'tab-title__selected':'tab-title'} onClick={this.checkTab.bind(this,2)}>消息中心</span>
+                        <span className={activeTab===3?'tab-title__selected':'tab-title'} onClick={this.checkTab.bind(this,3)}>我的订单</span>
                     </div>
                     {
-                        activeTab === 2 &&  <div className="personal-center_tab-title-container" style={{justifyContent: "flex-start"}}>
-                            <span style={{marginRight:".2rem",}} className={activeType===0?'tab-title__selected':'tab-title'} onClick={this.checkType.bind(this,0)}>未完成</span>
-                            <span className={activeType===1?'tab-title__selected':'tab-title'} onClick={this.checkType.bind(this,1)}>已完成</span>
+                        activeTab === 2 &&  <div className="personal-center_small-tabs">
+                            <span className={activeNoticeType===0?'tab-title__selected':'tab-title'} onClick={this.checkType.bind(this,0,"notice")}>关注通知</span>
+                            <span className={activeNoticeType===1?'tab-title__selected':'tab-title'} onClick={this.checkType.bind(this,1,"notice")}>订单通知</span>
+                        </div>
+                    }
+                    {
+                        activeTab === 3 &&  <div className="personal-center_small-tabs">
+                            <span className={activeOrderType===0?'tab-title__selected':'tab-title'} onClick={this.checkType.bind(this,0)}>未付款</span>
+                            <span className={activeOrderType===1?'tab-title__selected':'tab-title'} onClick={this.checkType.bind(this,1)}>已完成</span>
                         </div>
                     }
                     <div className={activeTab===2?"personal-center-content":"personal-center-content-fan"}>
                         {
-                            activeTab===0 && fans && fans.map((fan,index)=>{
+                            activeTab===0 && isArray(fans) && fans.map((fan,index)=>{
                                 return <div className="personal-center-fan" key={index}>
                                     <img src={fan.img} alt=""/>
                                     <span>{fan.name||"--"}</span>
@@ -277,7 +321,7 @@ class PersonalCenter extends React.Component {
                             })
                         }
                         {
-                            activeTab===1 && following && following.map((fol,index)=>{
+                            activeTab===1 && isArray(following) && following.map((fol,index)=>{
                                 return <div className="personal-center-fan" key={index}>
                                     <img src={fol.img} alt=""/>
                                     <span>{fol.name}</span>
@@ -285,35 +329,113 @@ class PersonalCenter extends React.Component {
                             })
                         }
                         {
-                            activeTab===2 && orders &&
-                            orders.map((item,index) => {
+                            activeTab===2
+                             && <div className="notice-contain" onClick={this.showDeleteMenu.bind(this,0)}>
+                                <div className="notice-person">
+                                    <img src={require("../assets/images/ca.png")} alt=""/>
+                                    <span className="notice-name">Rodrigo</span>
+                                    <span className="notice-oper">关注了你</span>
+                                </div>
+                                <span>2019.05.01 18:00</span>
+                                {
+                                 showDelete && showDelete===0 && <ul className="notice-delete">
+                                        <li>删除</li>
+                                        <li>全部删除</li>
+                                    </ul>
+                                }
+                            </div>
+                            // && isArray(notices) &&
+                            // notices.map((item,index) => {
+                            //     return (
+                            //         <div className="notice-contain">
+                            //             <div className="notive-person">
+                            //                 <img src={require("../assets/images/ca.png")} alt=""/>
+                            //                 <span>Rodrigo</span>
+                            //                 <span>关注了你</span>
+                            //             </div>
+                            //             <span>2019.05.01 18:00</span>
+                            //         </div>
+                            //     );
+                            // })
+                        }
+                        {
+                            activeTab===3 && isArray(orders) &&
+                            contents.map((item,index) => {
                                 return (
-                                    <Item key={index} item={item}/>
+                                   <div className="order-contain">
+                                        <div className="order-title">
+                                            <span>20190523001</span>
+                                            <span>2019.05.23 18:00</span>
+                                        </div>
+                                        <div className="order-content">
+                                            <div>
+                                                <span className="line-label">买家姓名</span>
+                                                <span className="line-content">阎杰</span>
+                                            </div>
+                                            <div className="order-question-contain">
+                                                <span className="line-label">买家问题</span>
+                                                <ul>
+                                                    <li className="order-question">问题占位符问题占位符问题占位符问题占位符</li>
+                                                    <li className="order-question">问题占位符问题占位符问题占位符问题占位符</li>
+                                                    {/*<li>问题占位符问题占位符问题占位符问题占位符</li>*/}
+                                                    <li className="question-forMore">剩余两条内容，点击查看详情</li>
+                                                </ul>
+                                            </div>
+                                            <div className="last-item">
+                                                <span className="line-label">订单金额 </span>
+                                                <span className="line-content">¥52</span>
+                                             </div>
+                                        </div>
+                                        <button>待评价</button>
+                                    </div>
                                 );
                             })
                         }
                     </div>
                     {
-                        activeTab!==2&&<div className="personal-center-content-fan">
-
+                        this.state.width > 768 && editImageModalVisible && <div className="class-cropper-modal">
+                            <div className="modal-panel">
+                                <div className="cropper-container-container">
+                                    <div className="cropper-container">
+                                        <Cropper
+                                            src={src}
+                                            className="cropper"
+                                            ref={cropper => (this.cropper = cropper)}
+                                            viewMode={1}
+                                            zoomable={false}
+                                            aspectRatio={3/4}
+                                            guides={false}
+                                            preview=".cropper-preview"
+                                        />
+                                    </div>
+                                    <div className="preview-container">
+                                        <div className="cropper-preview" />
+                                        <div className="button-row">
+                                            <div className="submit-button" onClick={this.updateUserHeadImage}>确认</div>
+                                            <div className="cancel-button" onClick={this.cancelImg}>取消</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     }
                     {
-                        editImageModalVisible &&
-                        <div className="personal-center-image-upload" style={{wrapStyle}}>
-                            <Cropper
-                                // ref='cropper'
-                                src={src}
-                                style={{copperStyle}}
-                                ref={cropper => this.cropper = cropper}
-                                aspectRatio={3/4}
-                                guides={false}/>
-                            <div className="personal-center-btn-wrap">
-                                <div className="personal-center-image-submit" onClick={this.updateUserHeadImage}>确认</div>
-                                <div className="personal-center-image-cancel" style={{backgroundColor:'#fff',border:'1px solid #0E0E0E'}} onClick={this.cancelImg}>取消</div>
+                        this.state.width <= 768 && editImageModalVisible && <div className="mobile-image-upload-model">
+                            <div className="cropper-container">
+                                <Cropper
+                                    // ref='cropper'
+                                    src={src}
+                                    className="cropper"
+                                    ref={cropper => this.cropper = cropper}
+                                    aspectRatio={3/4}
+                                    guides={false}/>
+                            </div>
+                            <div className="mobile-cropper-btn-wrap">
+                                <div className="submit-button" onClick={this.updateUserHeadImage}>确认</div>
+                                <div className="btn-line"></div>
+                                <div className="cancel-button" onClick={this.cancelImg}>取消</div>
                             </div>
                         </div>
-
                     }
                 </div>
                 <Footer></Footer>

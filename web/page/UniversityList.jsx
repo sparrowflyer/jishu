@@ -6,11 +6,6 @@ import { getCountryList, getSchools} from '../utils/http.js';
 import { isArray } from '../utils/utils.jsx';
 import { NoContent } from '../component/NoContent.js';
 
-// const uniList = [{name:"爱丁堡大学",ename:"University of Edinburgh",img:"./../assets/images/lhover@2x.png"},
-//     {name:"爱丁堡大学",ename:"University of Edinburgh",img:"./../assets/images/lhover@2x.png"},
-//     {name:"爱丁堡大学",ename:"University of Edinburgh",img:"./../assets/images/lhover@2x.png"},
-//     {name:"爱丁堡大学",ename:"University of Edinburgh",img:"./../assets/images/lhover@2x.png"}],
-//     pageSize = 5;
 export class UniversityList extends React.Component {
     constructor(props) {
         super(props);

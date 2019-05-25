@@ -356,11 +356,19 @@ div.personal-center-image-cancel{
     max-width: 1.48rem;
     height: auto;
 }
+.header-title-small{
+    width: .92rem;
+    position: relative;
+}
 .header-title-small img{
-    width: 0.92rem;
+    width: 100%;
     height: auto;
-    margin-top: .06rem;
-    vertical-align: middle;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
 }
 
 .header-menu{
@@ -396,19 +404,23 @@ div.personal-center-image-cancel{
 }
 
 .header-btn{
-    background:rgba(255,226,1,1);
-    border-radius:.25rem;
-    font-size:.14em;
-    font-weight:500;
-    padding: 0.083rem .258rem;
-    color:rgba(14,14,14,1);
+    background: rgba(255,226,1,1);
+    border-radius: .25rem;
+    font-size: .14rem;
+    font-weight: 500;
+    /* padding: 0.083rem .258rem; */
+    color: rgba(14,14,14,1);
     margin-left: .1rem;
+    width: 1.24rem;
+    height: .4rem;
+    line-height: .4rem;
+    text-align: center;
 }
 .header-btn-small{
     background:rgba(255,226,1,1);
     border-radius: .08rem;
     padding: .05rem .08rem .04rem .09rem;
-    font-size: .05em;
+    font-size: .05rem;
     font-weight:500;
     color:rgba(14,14,14,1);
 }
@@ -450,7 +462,7 @@ div.personal-center-image-cancel{
     z-index:10;
     /*top: .24rem;*/
     left: -.17rem;
-    margin-top: .14rem;
+    margin-top: .09rem;
     padding: .1rem .32rem;
 }
 .menu-list li{

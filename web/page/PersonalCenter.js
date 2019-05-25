@@ -233,7 +233,7 @@ class PersonalCenter extends React.Component {
                         this.setState({
                             editImageModalVisible: false
                         });
-                        this.props.alert.error(<div style={{fontSize: '12px'}}>{'头像更新报错:' + err}</div>);
+                        this.props.alert.error(<div style={{fontSize: '12px'}}>{'头像更新失败:' + err}</div>);
                         console.log("更新头像报错",err)
                     })
                 }

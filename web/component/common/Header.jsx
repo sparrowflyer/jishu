@@ -29,7 +29,7 @@ export class Header extends React.Component {
         getUnreadNotificaitonCount().then(resp=>{
             if(resp.status === "success"){
                 this.setState({
-                    notice : resp.data.data
+                    notice : resp.data
                 })
             }
         }).catch(err=>{})
@@ -48,6 +48,7 @@ export class Header extends React.Component {
         let {notice,pathName} = this.state;
         return (
             <div>
+                {/*   大屏header  */}
                 <div className="header-wrap">
                     {/* 登陆与否 */}
                     {
@@ -68,10 +69,10 @@ export class Header extends React.Component {
                         </div> : <Link className="header-btn fr" to="/login">登录/注册</Link>
                     }
                     <ul className="header-menu fr">
-                        <li className={pathName==="/"?"active":""}>
+                        <li className={pathName==="/" ? "active":""}>
                             <Link to="/">主页</Link>
                         </li>
-                        <li className={pathName.indexOf("college")>0?"active":""}>
+                        <li className={pathName.indexOf("college")>0 || pathName.indexOf("Student")>0 ? "active":""}>
                             <Link to="/college">择校服务</Link>
                         </li>
                         {
@@ -87,19 +88,19 @@ export class Header extends React.Component {
                         <img src={require("../../assets/images/UNCLEJEE@2x.png")} alt=""/>
                     </div>
                 </div>
+
+                {/*小屏header*/}
+
                 <div className="header-wrap-small">
                     <div className="header-menu-small">
                         <div className="header-menu-icon">
-                            {/*<div></div>*/}
-                            {/*<div></div>*/}
-                            {/*<div></div>*/}
                             <img src={require("../../assets/images/分组9@2x.png")} alt=""/>
                         </div>
                         <ul className="menu-list">
                             <li className={pathName==="/"?"active":""}>
                                 <Link to="/">主页</Link>
                             </li>
-                            <li className={pathName.indexOf("college")>0?"active":""}>
+                            <li className={pathName.indexOf("college")>0 || pathName.indexOf("Student")>0?"active":""}>
                                 <Link to="/college">择校服务</Link>
                             </li>
                         </ul>

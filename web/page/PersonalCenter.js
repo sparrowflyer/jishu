@@ -332,7 +332,7 @@ class PersonalCenter extends React.Component {
                             activeTab===2
                              && <div className="notice-contain" onClick={this.showDeleteMenu.bind(this,0)}>
                                 <div className="notice-person">
-                                    <img src={require("../assets/images/ca.png")} alt=""/>
+                                    <img src='/image/college/uk.png' alt=""/>
                                     <span className="notice-name">Rodrigo</span>
                                     <span className="notice-oper">关注了你</span>
                                 </div>

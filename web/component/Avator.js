@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useAlert } from 'react-alert';
-import { getUser,updateUserHeadImage,updateUserComment,updateUserNickname,uploadImage } from '../utils/http.js';
+import { getUser,updateUserHeadImage,updateUserComment,updateUserNickname,uploadImage, postUrl } from '../utils/http.js';
 import { getIterativeValue } from '../utils/utils.jsx';
 import Cropper from 'react-cropper';
 import 'cropperjs/dist/cropper.css';
@@ -15,6 +15,8 @@ export class Avator extends React.Component {
             editName:'',
             editComment:'',
             renderState:'',
+            isLike: false,
+            loginUserInfo: null
         };
         this.getAverageScore = this.getAverageScore.bind(this);
         this.editInfo = this.editInfo.bind(this);
@@ -22,7 +24,8 @@ export class Avator extends React.Component {
         this.updateUserNickname = this.updateUserNickname.bind(this);
         this.onChangeComment = this.onChangeComment.bind(this);
         this.onChangeImgFile = this.onChangeImgFile.bind(this);
-
+        this.isLike = this.isLike.bind(this);
+        this.likeOrUnlike = this.likeOrUnlike.bind(this);
     }
     onChangeImgFile(e){
         const file = e.target.files[0];
@@ -88,6 +91,67 @@ export class Avator extends React.Component {
             return (acc + (student[cur] || 0));
         }, 0) / nextNameArr.length).toFixed(1);
     }
+    isLike() {
+        if (!this.state.loginUserInfo) {
+            return ;
+        }
+        postUrl('/checkLikeStudent', {
+            userId: this.state.loginUserInfo.id,
+            studentId: this.props.userID
+        }).then((response) => {
+            let data = response.data;
+            if (data.status === 'success') {
+                this.setState((state) => {
+                    return {
+                        ...state,
+                        isLike: data.data
+                    }
+                })
+            }
+        }).catch((error) => {
+            console.error('判断是否关注', error);
+        });
+    }
+    likeOrUnlike() {
+        if (!this.state.loginUserInfo) {
+            this.props.alert.error(<div style={{fontSize: '12px'}}>请先登录！</div>);
+            return ;
+        }
+        const url = this.state.isLike ? '/unlikeStudent' : '/likeStudent';
+        const desc = this.state.isLike ? '取消关注' : '关注';
+        postUrl(url, {
+            userId: this.state.loginUserInfo.id,
+            likeId: this.props.userID
+        }).then((response) => {
+            let data = response.data;
+            if (data.status === 'success') {
+                this.setState((state) => {
+                    return {
+                        ...state,
+                        isLike: !state.isLike
+                    }
+                })
+            } else {
+                this.props.alert.error(<div style={{fontSize: '12px'}}>{`${desc}失败:${data.errorMsg || `${response.status}${response.statusText}`}`}</div>);
+            }
+        }).catch((error) => {
+            console.error(desc, error);
+            this.props.alert.error(<div style={{fontSize: '12px'}}>{desc}失败！</div>);
+        });
+    }
+    componentDidMount() {
+        let loginUserInfo = null;
+        try {
+            loginUserInfo = JSON.parse(sessionStorage.getItem('jeeUser'));
+        } catch (e) {
+            sessionStorage.removeItem('jeeUser');
+        }
+        this.setState((state) => {
+            return { ...state, loginUserInfo}
+        }, () => {
+            this.isLike();
+        });
+    }
     componentDidUpdate(prevProps) {
         // console.log("Avator",this.props)
         if (this.props.userID !== prevProps.userID) {
@@ -127,6 +191,10 @@ export class Avator extends React.Component {
                 </div>
                 <div className="user">
                     {
+                        this.props.parent === 'StudentDetail' && this.props.isWeb &&
+                            <div className="user_know-btn" onClick={this.likeOrUnlike}>{this.state.isLike ? '取消关注' : '关注'}</div>
+                    }
+                    {
                         this.state.canEdit ? <div className="user_name">
                             <input type="text" defaultValue={this.props.userInfo.nickName} onChange={this.onChangeName.bind(this)}/>
                         </div> : <div className="user_name">{this.props.userInfo.nickName || ''}</div>
@@ -134,6 +202,10 @@ export class Avator extends React.Component {
                     {
                         !this.props.isCenter && this.props.isWeb &&
                             <div className="user_know-btn" onClick={this.props.knowHim}>认识他</div>
+                    }
+                    {
+                        this.props.parent === 'StudentDetail' && !this.props.isWeb &&
+                            <div className="user_like-btn" onClick={this.likeOrUnlike}>{this.state.isLike ? '取消关注' : '关注'}</div>
                     }
                     {
                         this.props.parent === 'PersonalCenter' &&

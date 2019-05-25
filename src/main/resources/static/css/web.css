@@ -1586,9 +1586,14 @@ ul.li-style{
     height: 100%;
     background:rgba(0,0,0,0.3);
 }
+.order-detail-modal .order-question-contain{
+    margin-bottom: .19rem;
+}
 .order-detail-modal .order-contain{
     padding: .3rem .3rem .4rem .6rem;
     margin: 4rem auto;
+    width: 8rem;
+    height: 7.33rem;
 }
 .order-detail-modal li.order-question{
     display: flex;
@@ -1607,16 +1612,16 @@ ul.li-style{
     bottom: 0;
     top: 0;
 }
-.modal-close-topRight{
+.order-modal-close-topRight{
     width:100%;
 }
-.modal-close-topRight img{
+.order-modal-close-topRight img{
     width: .3rem;
     height: .3rem;
     border-radius: 50%;
     float: right;
 }
-.modal-close-topRight:after{
+.order-modal-close-topRight:after{
     display: block;
     content: '';
     clear: both;

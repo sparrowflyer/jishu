@@ -5,10 +5,11 @@ export class ShowMoreOrderDetail extends React.Component {
     constructor(props){
         super(props);
         this.state = {
+            width: document.documentElement.clientWidth || document.body.clientWidth || window.innerWidth,
             orderItem:{},
             showMoreModal:false,
             // shoeMoreData: {}
-        }
+        };
         this.close =this.close.bind(this);
     }
     close(idx){
@@ -16,12 +17,16 @@ export class ShowMoreOrderDetail extends React.Component {
     }
 
     render(){
+        const {width} = this.state;
         return (
             <div className="order-detail-modal">
                     <div className="order-contain">
-                        <div className="modal-close-topRight">
+                        {
+                            width >768 && <div className="order-modal-close-topRight">
                             <img src={require("../assets/images/guanbi1.png")} onClick={this.close} alt=""/>
                         </div>
+                        }
+
                         <div className="flex-row-start">
                             <div className="line-label">买家姓名</div>
                             <div className="line-content">阎杰</div>
@@ -48,6 +53,12 @@ export class ShowMoreOrderDetail extends React.Component {
                         </div>
                         <button className="order-modal-evaluate">待评价</button>
                     </div>
+                {
+                    width <=768 &&
+                        <div className="order-modal-close-midBottom">
+                            <img src={require("../assets/images/guanbi1.png")} alt=""/>
+                        </div>
+                }
             </div>
         )
     }

@@ -1549,3 +1549,53 @@
 .order-question-contain{
     display: flex;
 }
+
+/*订单弹出框*/
+.order-detail-modal{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background:rgba(0,0,0,0.3);
+}
+.order-detail-modal .order-question-contain{
+    margin-bottom: .09rem;
+}
+ .order-detail-modal .order-contain{
+     padding: .18rem .43rem .18rem .13rem;
+     width: 3.4rem;
+     height: 3.28rem;
+     margin: 1.5rem auto 0;
+ }
+.order-detail-modal li.order-question{
+    display: flex;
+    overflow: auto;
+    width: 2.3rem;
+    text-overflow: ellipsis;
+    white-space: normal;
+}
+.order-detail-modal .order-question:before{
+    margin: .05rem .06rem 0 0;
+}
+.order-contain button.order-modal-evaluate{
+    background-color: #FFE201;
+    position: relative;
+    margin: .08rem auto 0;
+    bottom: 0;
+    top: 0;
+}
+ .order-modal-close-midBottom{
+     margin: .2rem auto;
+     width: .3rem;
+     height: .3rem;
+     -webkit-border-radius: 50%;
+     -moz-border-radius: 50%;
+     border-radius: 50%;
+ }
+.order-detail-modal .line-label{
+    margin-left: 0;
+}
+.order-detail-modal .flex-row-start{
+    margin-bottom: .09rem;
+}

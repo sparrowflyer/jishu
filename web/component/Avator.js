@@ -115,7 +115,7 @@ export class Avator extends React.Component {
                 <div className="avator" style={{backgroundImage: 'url(http://' + this.props.userInfo.headImage +')'}}>
                     {
                         this.state.canEdit && <label className="add-img-btn">
-                            {/*<span>更新头像</span>*/}
+                            <span className="pic-edit">更换图片</span>
                             <input style={iptStyle} type="file" accept="image/jpeg,image/jpg,image/png"
                                    onChange={this.onChangeImgFile}/>
                         </label>
@@ -137,7 +137,7 @@ export class Avator extends React.Component {
                     }
                     {
                         this.props.parent === 'PersonalCenter' &&
-                        (this.state.canEdit ? <div className="user_edit-icon tab-title__selected" onClick={this.editInfo.bind(this,true)}>确认修改</div>:
+                        (this.state.canEdit ? <div className="user-info-edit-confirm" onClick={this.editInfo.bind(this,true)}>保存</div>:
                             <div className="jee-edit user_edit-icon" onClick={this.editInfo.bind(this,false)}></div>)
 
                     }
@@ -146,10 +146,16 @@ export class Avator extends React.Component {
                 {
                     this.props.isWeb &&
                         <div className="desc-container">
+                            {/*<div className="user-desc">*/}
+                                <span className="jee-quote-left"></span>
                             {
-                                this.state.canEdit ? <input type="text" defaultValue={this.props.userInfo.comment} onChange={this.onChangeComment.bind(this)}/> :
-                                <span className="desc">{this.props.userInfo.comment || "暂无签名"}</span>
+                                this.state.canEdit ?
+                                    <textarea type="text" rows="1" onChange={this.onChangeComment.bind(this)}>{this.props.userInfo.comment}</textarea>
+                                     :
+                                <span>{this.props.userInfo.comment || "暂无签名"}</span>
                             }
+                                <span className="jee-quote-right"></span>
+                            {/*</div>*/}
                             {/*{getIterativeValue(this.props.userInfo, 'userStudentInfo.description')}*/}
                         </div>
                 }
@@ -166,7 +172,16 @@ export class Avator extends React.Component {
                 {
                     this.props.isWeb ||
                         <div className="desc-container">
-                            <span className="desc">{getIterativeValue(this.props.userInfo, 'userStudentInfo.description')}</span>
+                            {/*<div className="user-desc">*/}
+                                <span className="jee-quote-left"></span>
+                                {
+                                    this.state.canEdit ?
+                                        <textarea type="text" onChange={this.onChangeComment.bind(this)}>{this.props.userInfo.comment}</textarea>
+                                        :
+                                        <span>{this.props.userInfo.comment || "暂无签名"}</span>
+                                }
+                                <span className="jee-quote-right"></span>
+                            {/*</div>*/}
                         </div>
                 }
             </div>

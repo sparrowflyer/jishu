@@ -22,7 +22,7 @@ class StudentDetail extends React.Component {
             visible: false,
             userInfo: {},
             loginUserInfo: {},
-            modalType:"Advisory",//弹窗类别 PaySuccess & WillPay & Advisory
+            modalType: "Advisory" //弹窗类别 PaySuccess & WillPay & Advisory
         };
         this.getUser = this.getUser.bind(this);
         this.updateDimensions = this.updateDimensions.bind(this);
@@ -151,7 +151,7 @@ class StudentDetail extends React.Component {
             <div className="container-with-footer">
                 <div>
                     <Header userInfo={loginUserInfo}></Header>
-                    <Avator parent="StudentDetail" isWeb={this.state.width > 768} userID={this.props.match.params.userID} userInfo={userInfo} knowHim={this.knowHim.bind(this)} isCenter={false}/>
+                    <Avator parent="StudentDetail" isWeb={this.state.width > 768} userID={this.props.match.params.userID} userInfo={userInfo} knowHim={this.knowHim.bind(this)} isCenter={false} alert={this.props.alert}/>
                     <SubTitle cn="他的话题" en="Topic of conversation" top={spacing[0]} bottom={spacing[1]} />
                     <div className="conversation-container">
                         <Conversation title="专业" desc={getIterativeValue(userInfo, 'userStudentInfo.major')} />

@@ -330,7 +330,6 @@ class PersonalCenter extends React.Component {
                                 </div>
                             })
                         }
-                        {/* TODO:通知移动端样式*/}
                         {
                             activeTab===2
                             //  && <div className="notice-contain" onClick={this.showDeleteMenu.bind(this,0)}>

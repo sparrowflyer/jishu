@@ -94,54 +94,56 @@ export class UniversityDetail extends React.Component {
             )
         }
         return (
-            <div>
-                <Header></Header>
-                <div className="uni-banner" style={{backgroundImage: 'url(' + schoolData.homeImage +')'}}>
-                    <div className="headcnt-wrap">
-                        <div className="uni-name">{schoolData.cnName}</div>
-                        <div className="uni-ename">{schoolData.enName}</div>
-                        <div className="uni-desc">
-                            <span className="left-mark jee-quote-left"></span>
-                            {/*src={require("./../assets/images/左引号@2x.png")} */}
-                            <div className="nui-text">{schoolData.description}</div>
-                            <span className="right-mark jee-quote-right"></span>
-                            {/*src={require("./../assets/images/右引号@2x.png")} */}
-                            <div className="clearfloat"></div>
+            <div className="container-with-footer">
+                <div>
+                    <Header></Header>
+                    <div className="uni-banner" style={{backgroundImage: 'url(' + schoolData.homeImage +')'}}>
+                        <div className="headcnt-wrap">
+                            <div className="uni-name">{schoolData.cnName}</div>
+                            <div className="uni-ename">{schoolData.enName}</div>
+                            <div className="uni-desc">
+                                <span className="left-mark jee-quote-left"></span>
+                                {/*src={require("./../assets/images/左引号@2x.png")} */}
+                                <div className="nui-text">{schoolData.description}</div>
+                                <span className="right-mark jee-quote-right"></span>
+                                {/*src={require("./../assets/images/右引号@2x.png")} */}
+                                <div className="clearfloat"></div>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div className="stShow-title">
-                    学生展示
-                    <p className="stShow-subtitle">
-                        Students show
-                    </p>
-                </div>
-                <div className="stus-container">
-                    {stuList.map(stu => {
-                        return <Link className="stu-info fl" key={stu.id} to={"/StudentDetail/"+stu.id}>
-                            <div className="left-pic" style={{backgroundImage: `url(http://${stu.headImage})`}}>
-                            </div>
-                            <div className="right-info">
-                                <div className="info-name">{stu.nickName}</div>
-                                <div className="info-intro subject">{(stu.userStudentInfo && stu.userStudentInfo.major)||"--"}</div>
-                                {/*<div className="info-intro subject-en">School of Geography & Geosciences</div>*/}
-                                <div className="info-intro intro">{(stu.userStudentInfo && stu.userStudentInfo.description)||"--"}</div>
-                                <div className="info-data fl">
-                                    <div className="info-name">{stu.likeAmount||0}</div>
-                                    <div className="info-intro">粉丝数</div>
+                    <div className="stShow-title">
+                        学生展示
+                        <p className="stShow-subtitle">
+                            Students show
+                        </p>
+                    </div>
+                    <div className="stus-container">
+                        {stuList.map(stu => {
+                            return <Link className="stu-info fl" key={stu.id} to={"/StudentDetail/"+stu.id}>
+                                <div className="left-pic" style={{backgroundImage: `url(http://${stu.headImage})`}}>
                                 </div>
-                                {/*<div className="fl">*/}
-                                {/*<div className="info-name">89%</div>*/}
-                                {/*<div className="info-intro">通过率</div>*/}
-                                {/*</div>*/}
-                                <div className="corner-fraction">{this.getAverageScore(stu.userStudentInfo)}</div>
-                            </div>
-                        </Link>
-                    })}
-                    <div className="page-feed clearfloat">
-                        <span className="page-num page-pre jee-arrow-left" onClick={this.go.bind(this,page-1)}></span>
-                        {pageNum}
-                        <span className="page-num page-next jee-arrow-right" onClick={this.go.bind(this,page+1)}></span>
+                                <div className="right-info">
+                                    <div className="info-name">{stu.nickName}</div>
+                                    <div className="info-intro subject">{(stu.userStudentInfo && stu.userStudentInfo.major)||"--"}</div>
+                                    {/*<div className="info-intro subject-en">School of Geography & Geosciences</div>*/}
+                                    <div className="info-intro intro">{(stu.userStudentInfo && stu.userStudentInfo.description)||"--"}</div>
+                                    <div className="info-data fl">
+                                        <div className="info-name">{stu.likeAmount||0}</div>
+                                        <div className="info-intro">粉丝数</div>
+                                    </div>
+                                    {/*<div className="fl">*/}
+                                    {/*<div className="info-name">89%</div>*/}
+                                    {/*<div className="info-intro">通过率</div>*/}
+                                    {/*</div>*/}
+                                    <div className="corner-fraction">{this.getAverageScore(stu.userStudentInfo)}</div>
+                                </div>
+                            </Link>
+                        })}
+                        <div className="page-feed clearfloat">
+                            <span className="page-num page-pre jee-arrow-left" onClick={this.go.bind(this,page-1)}></span>
+                            {pageNum}
+                            <span className="page-num page-next jee-arrow-right" onClick={this.go.bind(this,page+1)}></span>
+                        </div>
                     </div>
                 </div>
                 <Footer></Footer>

@@ -1,6 +1,8 @@
 package com.wanmoxing.jishu.service.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,7 +12,11 @@ import javax.annotation.Resource;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Service;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.wanmoxing.jishu.bean.Article;
 import com.wanmoxing.jishu.bean.PurchaseContact;
+import com.wanmoxing.jishu.constant.CommonConstants;
 import com.wanmoxing.jishu.constant.enums.PurchaseContactStatus;
 import com.wanmoxing.jishu.mapper.PurchaseContactMapper;
 import com.wanmoxing.jishu.service.PurchaseContactService;
@@ -48,8 +54,11 @@ public class PurchaseContactServiceImpl implements PurchaseContactService {
 	}
 
 	@Override
-	public List<PurchaseContact> findByStatuses(List<String> statuses,int userId) {
-		return purchaseContactMapper.findByStatuses(statuses, userId);
+	public PageInfo<PurchaseContact> findByStatuses(List<String> statuses,int userId, int page, int pageSize) {
+		PageHelper.startPage(page, pageSize);
+		List<PurchaseContact> purchaseContacts = purchaseContactMapper.findByStatuses(statuses, userId);
+		PageInfo<PurchaseContact> pageInfo = new PageInfo<>(purchaseContacts);
+		return pageInfo;
 	}
 	
 	@Override

@@ -233,7 +233,7 @@ class PersonalCenter extends React.Component {
                         this.setState({
                             editImageModalVisible: false
                         });
-                        this.props.alert.error(<div style={{fontSize: '12px'}}>{'头像更新报错:' + err}</div>);
+                        this.props.alert.error(<div style={{fontSize: '12px'}}>{'头像更新失败:' + err}</div>);
                         console.log("更新头像报错",err)
                     })
                 }
@@ -252,68 +252,70 @@ class PersonalCenter extends React.Component {
             height: height,
         };
         return (
-            <div>
-                <Header userInfo={userInfo}></Header>
-                <Avator handleFileChange={this.handleFileChange} parent="PersonalCenter" showModal={this.showModal} isCenter={true} updateUserInfo={this.getUser} isWeb={this.state.width > 768} userInfo={userInfo} userID={userID} />
-                <div className="personal-center_tab-title-container">
-                    <span className={activeTab===0?'tab-title__selected':'tab-title'} onClick={this.checkTab.bind(this,0)}>粉丝列表</span>
-                    <span className={activeTab===1?'tab-title__selected':'tab-title'} onClick={this.checkTab.bind(this,1)}>我的关注</span>
-                    <span className={activeTab===2?'tab-title__selected':'tab-title'} onClick={this.checkTab.bind(this,2)}>我的订单</span>
-                </div>
-                {
-                    activeTab === 2 &&  <div className="personal-center_tab-title-container" style={{justifyContent: "flex-start"}}>
-                        <span style={{marginRight:".2rem",}} className={activeType===0?'tab-title__selected':'tab-title'} onClick={this.checkType.bind(this,0)}>未完成</span>
-                        <span className={activeType===1?'tab-title__selected':'tab-title'} onClick={this.checkType.bind(this,1)}>已完成</span>
+            <div className="container-with-footer">
+                <div>
+                    <Header userInfo={userInfo}></Header>
+                    <Avator handleFileChange={this.handleFileChange} parent="PersonalCenter" showModal={this.showModal} isCenter={true} updateUserInfo={this.getUser} isWeb={this.state.width > 768} userInfo={userInfo} userID={userID} />
+                    <div className="personal-center_tab-title-container">
+                        <span className={activeTab===0?'tab-title__selected':'tab-title'} onClick={this.checkTab.bind(this,0)}>粉丝列表</span>
+                        <span className={activeTab===1?'tab-title__selected':'tab-title'} onClick={this.checkTab.bind(this,1)}>我的关注</span>
+                        <span className={activeTab===2?'tab-title__selected':'tab-title'} onClick={this.checkTab.bind(this,2)}>我的订单</span>
                     </div>
-                }
-                <div className={activeTab===2?"personal-center-content":"personal-center-content-fan"}>
                     {
-                        activeTab===0 && fans && fans.map((fan,index)=>{
-                            return <div className="personal-center-fan" key={index}>
-                                <img src={fan.img} alt=""/>
-                                <span>{fan.name||"--"}</span>
-                            </div>
-                        })
+                        activeTab === 2 &&  <div className="personal-center_tab-title-container" style={{justifyContent: "flex-start"}}>
+                            <span style={{marginRight:".2rem",}} className={activeType===0?'tab-title__selected':'tab-title'} onClick={this.checkType.bind(this,0)}>未完成</span>
+                            <span className={activeType===1?'tab-title__selected':'tab-title'} onClick={this.checkType.bind(this,1)}>已完成</span>
+                        </div>
                     }
-                    {
-                        activeTab===1 && following && following.map((fol,index)=>{
-                            return <div className="personal-center-fan" key={index}>
-                                <img src={fol.img} alt=""/>
-                                <span>{fol.name}</span>
-                            </div>
-                        })
-                    }
-                    {
-                        activeTab===2 && orders &&
+                    <div className={activeTab===2?"personal-center-content":"personal-center-content-fan"}>
+                        {
+                            activeTab===0 && fans && fans.map((fan,index)=>{
+                                return <div className="personal-center-fan" key={index}>
+                                    <img src={fan.img} alt=""/>
+                                    <span>{fan.name||"--"}</span>
+                                </div>
+                            })
+                        }
+                        {
+                            activeTab===1 && following && following.map((fol,index)=>{
+                                return <div className="personal-center-fan" key={index}>
+                                    <img src={fol.img} alt=""/>
+                                    <span>{fol.name}</span>
+                                </div>
+                            })
+                        }
+                        {
+                            activeTab===2 && orders &&
                             orders.map((item,index) => {
                                 return (
                                     <Item key={index} item={item}/>
                                 );
                             })
+                        }
+                    </div>
+                    {
+                        activeTab!==2&&<div className="personal-center-content-fan">
+
+                        </div>
+                    }
+                    {
+                        editImageModalVisible &&
+                        <div className="personal-center-image-upload" style={{wrapStyle}}>
+                            <Cropper
+                                // ref='cropper'
+                                src={src}
+                                style={{copperStyle}}
+                                ref={cropper => this.cropper = cropper}
+                                aspectRatio={3/4}
+                                guides={false}/>
+                            <div className="personal-center-btn-wrap">
+                                <div className="personal-center-image-submit" onClick={this.updateUserHeadImage}>确认</div>
+                                <div className="personal-center-image-cancel" style={{backgroundColor:'#fff',border:'1px solid #0E0E0E'}} onClick={this.cancelImg}>取消</div>
+                            </div>
+                        </div>
+
                     }
                 </div>
-                {
-                    activeTab!==2&&<div className="personal-center-content-fan">
-
-                    </div>
-                }
-                {
-                    editImageModalVisible &&
-                    <div className="personal-center-image-upload" style={{wrapStyle}}>
-                        <Cropper
-                            // ref='cropper'
-                            src={src}
-                            style={{copperStyle}}
-                            ref={cropper => this.cropper = cropper}
-                            aspectRatio={3/4}
-                            guides={false}/>
-                        <div className="personal-center-btn-wrap">
-                            <div className="personal-center-image-submit" onClick={this.updateUserHeadImage}>确认</div>
-                            <div className="personal-center-image-cancel" style={{backgroundColor:'#fff',border:'1px solid #0E0E0E'}} onClick={this.cancelImg}>取消</div>
-                        </div>
-                       </div>
-
-                }
                 <Footer></Footer>
             </div>
         );

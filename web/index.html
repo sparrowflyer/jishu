@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Uncle Jee</title>
-    <!-- favicon -->
-    <!--<link rel="icon" href="/image/favicon.png" sizes="32x32" />-->
+    <link rel="icon" href="../static/image/favicon.png" sizes="200x204" />
     <link rel="stylesheet" href="../static/css/style.css" type="text/css" />
     <link media="screen and (min-width: 768px)" rel="stylesheet" href="../static/css/web.css" type="text/css" />
     <link media="screen and (max-width: 768px)" rel="stylesheet" href="../static/css/mobile.css" type="text/css" />
@@ -21,12 +21,6 @@
         }
         document.addEventListener('DOMContentLoaded', refreshRem);
         window.addEventListener('orientationchange' in window ? 'orientationchange' : 'resize', refreshRem);
-
-        var scale = 1 / (window.devicePixelRatio || 1),
-                metaEl = document.createElement('meta');
-        metaEl.setAttribute('name', 'viewport');
-        metaEl.setAttribute('content', 'width=device-width,initial-scale=' + scale + ',maximum-scale=' + scale + ',minimum-scale=' + scale + ',user-scalable=no');
-        document.head.appendChild(metaEl);
     </script>
 </body>
 </html>

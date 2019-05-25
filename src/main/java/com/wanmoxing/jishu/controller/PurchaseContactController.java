@@ -287,9 +287,10 @@ public class PurchaseContactController {
 						return;
 					}
 					
-					// TODO 生成随机码
+					// 生成随机码
 					String randomCode = VerifyCodeUtil.generateVerifyCode(6);
 					User seller = userService.findById(purchaseContact.getSellerId());
+					UserStudentInfo sellerStudentInfo = userStudentInfoService.findByUserId(purchaseContact.getSellerId());
 					String sellerEmail = seller.getEmail();
 					User buyer = userService.findById(purchaseContact.getBuyerId());
 					
@@ -314,13 +315,18 @@ public class PurchaseContactController {
 						messageToNotifyBuyer.append("订单类型： 购买联系方式\n")
 											.append("订单ID： ").append(purchaseContact.getId()).append("\n")
 											.append("订单时间： ").append(TimeUtil.formatTimestamp(purchaseContact.getCreatedTime())).append("\n")
-											.append("订单金额： ").append(purchaseContact.getPaymentAmount()).append("\n")
+											.append("订单金额： ").append(String.valueOf(purchaseContact.getPaymentAmount())).append("\n")
 											.append("卖家： ").append(seller.getNickName()).append("\n")
+											.append("卖家联系方式： ").append(sellerStudentInfo.getContacts()).append("\n")
 											.append("随机码： ").append(randomCode).append("\n");
 						String buyerEmail = buyer.getEmail();
 						if (buyerEmail != null && buyerEmail != "") {
 							EmailUtil.sendEmailCommon(buyerEmail, "购买联系方式成功！", messageToNotifyBuyer.toString());
 						}
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					try {
 						String buyerCellphone = buyer.getCellPhone();
 						if (buyerCellphone != null && buyerCellphone != "") {
 							Map<String, String> smsParams = new HashMap<String, String>();
@@ -328,8 +334,9 @@ public class PurchaseContactController {
 							smsParams.put("purchaseContactCreatedTime", TimeUtil.formatTimestamp(purchaseContact.getCreatedTime()));
 							smsParams.put("purchaseContactPaymentAmount", String.valueOf(purchaseContact.getPaymentAmount()));
 							smsParams.put("seller", seller.getNickName());
+							smsParams.put("sellerContact", sellerStudentInfo.getContacts());
 							smsParams.put("randomCode", randomCode);
-							CellphoneUtil.sendSmsByTemplate(buyerCellphone, "SMS_165676292", smsParams);
+							CellphoneUtil.sendSmsByTemplate(buyerCellphone, "SMS_166080445", smsParams);
 							System.out.println("订单"+purchaseContact.getId()+"给买家的短信发送成功！");
 						}
 					} catch (Exception e) {
@@ -342,13 +349,17 @@ public class PurchaseContactController {
 						messageToNotifySeller.append("订单类型： 购买联系方式\n")
 											.append("订单ID： ").append(purchaseContact.getId()).append("\n")
 											.append("订单时间： ").append(TimeUtil.formatTimestamp(purchaseContact.getCreatedTime())).append("\n")
-											.append("订单金额： ").append(purchaseContact.getPaymentAmount()).append("\n")
+											.append("订单金额： ").append(String.valueOf(purchaseContact.getPaymentAmount())).append("\n")
 											.append("买家： ").append(buyer.getNickName()).append("\n")
 											.append("随机码： ").append(randomCode).append("\n");
 						
 						if (sellerEmail != null && sellerEmail != "") {
 							EmailUtil.sendEmailCommon(sellerEmail, "您有新的购买联系方式订单！", messageToNotifySeller.toString());
 						}
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					try {
 						String sellerCellphone = seller.getCellPhone();
 						if (sellerCellphone != null && sellerCellphone != "") {
 							Map<String, String> smsParams = new HashMap<String, String>();
@@ -377,11 +388,11 @@ public class PurchaseContactController {
 					newBuyerNotification.setUserId(purchaseContact.getSellerId());
 					newBuyerNotification.setTitle("您的联系方式有新购买者！");
 					
-					String userURL = "http://www.unclejee.cn/user/" + buyer.getId();
+					int userId = buyer.getId();
 					String userName = buyer.getNickName();
 					String userImg = buyer.getHeadImage();
 					String content = " 购买了您的联系方式！";
-					newBuyerNotification.setContent(CommUtil.generatePurchaseContactNotificationJSONContent(userURL, userName, userImg, content));
+					newBuyerNotification.setContent(CommUtil.generatePurchaseContactNotificationJSONContent(userId, userName, userImg, content));
 					
 					userNotificationService.insert(newBuyerNotification);
 					

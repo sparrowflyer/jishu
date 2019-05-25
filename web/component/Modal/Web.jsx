@@ -45,8 +45,8 @@ export class ModalWeb extends React.Component {
     }
     goPay(){
         purchaseContactCheck({
-            "sellerId": this.props.loginUserID,
-            "buyerId": this.props.userID,
+            "sellerId": this.props.userID,
+            "buyerId": this.props.loginUserID,
         }).then(response =>{
             // console.log(response)
             if(response.data.status === "success"){

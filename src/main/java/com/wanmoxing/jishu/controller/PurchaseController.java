@@ -300,13 +300,14 @@ public class PurchaseController {
 					newBuyerNotification.setTitle("您的课程有新购买者！");
 					
 					User user = userService.findById(purchase.getBuyerId());
-					String userURL = "http://www.unclejee.cn/user/" + user.getId();
+					int userId = user.getId();
 					String userName = user.getNickName();
 					String userImg = user.getHeadImage();
-					String secondURL = "http://www.unclejee.cn/course/" + course.getId();
+					String secondType = "course";
+					String secondId = String.valueOf(course.getId());
 					String secondName = course.getTitle();
 					String content = " 购买了课程：";
-					newBuyerNotification.setContent(CommUtil.generateJSONContent(userURL, userName, userImg, secondURL, secondName, content));
+					newBuyerNotification.setContent(CommUtil.generateJSONContent(userId, userName, userImg, secondType, secondId, secondName, content));
 					
 					userNotificationService.insert(newBuyerNotification);
 					

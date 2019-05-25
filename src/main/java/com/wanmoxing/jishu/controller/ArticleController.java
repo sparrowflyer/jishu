@@ -829,13 +829,14 @@ public class ArticleController {
 				reportNotification.setTypeId(UserNotificationType.REPORT_ARTICLE.getTypeId());
 				reportNotification.setUserId(user.getId());
 				reportNotification.setTitle("您有一个举报需要处理");
-				String userURL = "http://www.unclejee.cn/user/" + userReport.getId();
+				int userId = userReport.getId();
 				String userName = userReport.getNickName();
 				String userImg = userReport.getHeadImage();
-				String secondURL = "http://www.unclejee.cn/blog/" + articleDatabase.getAid();
+				String secondType = "article";
+				String secondId = String.valueOf(articleDatabase.getAid());
 				String secondName = articleDatabase.getTitle();
 				String content = " 举报了文章：";
-				reportNotification.setContent(CommUtil.generateJSONContent(userURL, userName, userImg, secondURL, secondName, content));
+				reportNotification.setContent(CommUtil.generateJSONContent(userId, userName, userImg, secondType, secondId, secondName, content));
 				userNotificationService.insert(reportNotification);
 			}
 			

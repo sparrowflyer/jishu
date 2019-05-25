@@ -68,11 +68,11 @@ public class UserFanController {
 				addFanNotification.setUserId(userFan.getOwnerId());
 				addFanNotification.setTitle("您有一位新粉丝！");
 				
-				String userURL = "http://www.unclejee.cn/user/" + ownerUser.getId();
+				int userId = ownerUser.getId();
 				String userName = ownerUser.getNickName();
 				String userImg = ownerUser.getHeadImage();
 				String content = " 关注了你";
-				addFanNotification.setContent(CommUtil.generateJSONContent(userURL, userName, userImg, null, null, content));
+				addFanNotification.setContent(CommUtil.generatePurchaseContactNotificationJSONContent(userId, userName, userImg, content));
 				
 				userNotificationService.insert(addFanNotification);
 			} else {

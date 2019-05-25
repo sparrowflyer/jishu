@@ -46,13 +46,13 @@ public class CommUtil {
 		return phone.matches("^1\\d{10}$");
 	}
 	
-	public static String generateJSONContent(String userURL, String userName, String userImg, String secondURL, String secondName, String content) {
+	public static String generateJSONContent(int userId, String userName, String userImg, String secondType, String secondId, String secondName, String content) {
 		StringBuffer jsonContent = new StringBuffer();
 		jsonContent.append("{");
-		jsonContent.append("\"userURL\"");
+		jsonContent.append("\"userId\"");
 		jsonContent.append(":");
 		jsonContent.append("\"");
-		jsonContent.append(userURL);
+		jsonContent.append(userId);
 		jsonContent.append("\"");
 		jsonContent.append(",");
 		
@@ -70,10 +70,17 @@ public class CommUtil {
 		jsonContent.append("\"");
 		jsonContent.append(",");
 		
-		jsonContent.append("\"secondURL\"");
+		jsonContent.append("\"secondType\"");
 		jsonContent.append(":");
 		jsonContent.append("\"");
-		jsonContent.append(secondURL);
+		jsonContent.append(secondType);
+		jsonContent.append("\"");
+		jsonContent.append(",");
+		
+		jsonContent.append("\"secondId\"");
+		jsonContent.append(":");
+		jsonContent.append("\"");
+		jsonContent.append(secondId);
 		jsonContent.append("\"");
 		jsonContent.append(",");
 		
@@ -94,13 +101,13 @@ public class CommUtil {
 		return jsonContent.toString();
 	}
 	
-	public static String generatePurchaseContactNotificationJSONContent(String userURL, String userName, String userImg, String content) {
+	public static String generatePurchaseContactNotificationJSONContent(int userId, String userName, String userImg, String content) {
 		StringBuffer jsonContent = new StringBuffer();
 		jsonContent.append("{");
-		jsonContent.append("\"userURL\"");
+		jsonContent.append("\"userId\"");
 		jsonContent.append(":");
 		jsonContent.append("\"");
-		jsonContent.append(userURL);
+		jsonContent.append(userId);
 		jsonContent.append("\"");
 		jsonContent.append(",");
 		

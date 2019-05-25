@@ -4,20 +4,29 @@ import {Header} from '../component/common/Header.jsx';
 import { Link } from 'react-router-dom';
 import { getCountryList, getSchools} from '../utils/http.js';
 import { isArray } from '../utils/utils.jsx';
-import { NoContent } from '../component/NoContent.js';
 
-// const uniList = [{name:"爱丁堡大学",ename:"University of Edinburgh",img:"./../assets/images/lhover@2x.png"},
-//     {name:"爱丁堡大学",ename:"University of Edinburgh",img:"./../assets/images/lhover@2x.png"},
-//     {name:"爱丁堡大学",ename:"University of Edinburgh",img:"./../assets/images/lhover@2x.png"},
-//     {name:"爱丁堡大学",ename:"University of Edinburgh",img:"./../assets/images/lhover@2x.png"}],
-//     pageSize = 5;
+let countryList = [{
+    name: '',
+    displayName: '不限',
+    param: 'none',
+    logo: './image/college/global.png'
+}, {
+    name: '英国',
+    displayName: '英国',
+    param: '英国',
+    logo: './image/college/uk.png'
+}, {
+    name: '澳洲',
+    displayName: '澳大利亚',
+    param: '澳洲',
+    logo: './image/college/au.png'
+}];
+
 export class UniversityList extends React.Component {
     constructor(props) {
         super(props);
         this.resize = this.resize.bind(this);
         this.getUniversityList = this.getUniversityList.bind(this);
-        this.changeCountry = this.changeCountry.bind(this);
-        this.go = this.go.bind(this);
         this.searchSchool = this.searchSchool.bind(this);
         this.state = {
             searchBlock: false,
@@ -26,7 +35,7 @@ export class UniversityList extends React.Component {
             // countryList:[],
             uniList:[],
             country: "",
-            searchValue:"",//搜索框内容
+            searchValue:""//搜索框内容
         }
     }
     //获取国家列表
@@ -102,7 +111,7 @@ export class UniversityList extends React.Component {
         console.log("searchBlock",this.state.searchBlock);
     }
     render() {
-         let { page,pageSize,uniList,country} = this.state;
+        let { page,pageSize,uniList,country} = this.state;
         const pageNum = [];
         for (let i = 1;i <= pageSize; i++){
             pageNum.push(
@@ -117,35 +126,22 @@ export class UniversityList extends React.Component {
                     <div className="filter-wrap">
                         <ul className="nation-list">
                             <li  className="nation-title">国家</li>
-                            <li className={country==='' ? "nation-item active" : "nation-item"} onClick={this.changeCountry.bind(this,"none")}>
-                                <img src={require("./../assets/images/diqiu@2x.png")} alt=""/>
-                                不限
-                            </li>
-                            {/*{countryList.map((item,index) => {*/}
-                            {/*return (*/}
-                            {/*<li  className={country===item.name ? "nation-item active" : "nation-item"} key={index}>*/}
-                            {/*<img src={item.logo} alt=""/>*/}
-                            {/*{item.name}*/}
-                            {/*</li>*/}
-                            {/*)*/}
-                            {/*})}*/}
-                            <li className={country==='英国' ? "nation-item active" : "nation-item"} onClick={this.changeCountry.bind(this,"英国")}>
-                                <img src={require("./../assets/images/GB@2x.png")} alt=""/>
-                                英国
-                            </li>
-                            {/*<li className="nation-item" onClick={this.changeCountry("美国")}>*/}
-                            {/*<img src={require("./../assets/images/GB@2x.png")} alt=""/>*/}
-                            {/*美国*/}
-                            {/*</li>*/}
-                            {/*<li className="nation-item" onClick={this.changeCountry("加拿大")}>*/}
-                            {/*<img src={require("./../assets/images/ca@2x.png")} alt=""/>*/}
-                            {/*加拿大*/}
-                            {/*</li>*/}
+                            {
+                                countryList.map((item, index) => {
+                                    return (
+                                        <li className={country===item.name ? "nation-item active" : "nation-item"}
+                                            key={index} onClick={this.changeCountry.bind(this, item.param)}>
+                                            <img src={item.logo} />
+                                            {item.displayName}
+                                        </li>
+                                    )
+                                })
+                            }
                             <li className="clearfloat"></li>
                         </ul>
                         <div className="search-wrap">
                             <input className={this.state.searchBlock ? 'active': ''} onChange={this.searchSchool} value={this.state.searchValue} placeholder="输入大学名称搜索" type="text"/>
-                            <img onClick={this.resize} src={require("./../assets/images/搜索@2x.png")} alt=""/>
+                            <img onClick={this.resize} src={require("./../assets/images/search.png")} />
                         </div>
                         {/*<div className="clearfloat"></div>*/}
                     </div>
@@ -171,11 +167,14 @@ export class UniversityList extends React.Component {
                         </div>
                     }
                     {/* 换页签*/}
-                    <div className="page-feed">
-                        <span className="page-num page-pre jee-arrow-left" onClick={this.go.bind(this,page-1)}></span>
-                        {pageNum}
-                        <span className="page-num page-next jee-arrow-right" onClick={this.go.bind(this,page+1)}></span>
-                    </div>
+                    {
+                        isArray(uniList) && uniList.length > 0 &&
+                            <div className="page-feed">
+                                <span className="page-num page-pre jee-arrow-left" onClick={this.go.bind(this,page-1)}></span>
+                                {pageNum}
+                                <span className="page-num page-next jee-arrow-right" onClick={this.go.bind(this,page+1)}></span>
+                            </div>
+                    }
                 </div>
                 <Footer></Footer>
             </div>

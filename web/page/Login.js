@@ -302,7 +302,7 @@ class Login extends React.Component {
                     <div className={`login_item_field ${this.state.pwdError && 'login_item_field_error'}`}>
                         <input type={this.state.isPwd ? 'password' : 'text'} id="pwd" name="pwd" placeholder="密码"
                                onChange={this.handleInputChange} value={this.state.pwd} required />
-                        <span className={this.state.isPwd ? 'jee-eye-blocked ml10' : 'jee-eye ml10'}
+                        <span className={this.state.isPwd ? 'jee-eye-blocked ml10 gesture' : 'jee-eye ml10 gesture'}
                               onClick={this.changePwdType}></span>
                     </div>
                     <div className="login_item_error_msg">{this.state.pwdError}</div>

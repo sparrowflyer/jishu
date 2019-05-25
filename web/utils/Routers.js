@@ -2,7 +2,8 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { HomePage } from '../page/Home.jsx';
 import { UniversityList } from '../page/UniversityList.jsx';
-import {UniversityDetail} from "../page/UniversityDetail.jsx";
+import { UniversityDetail } from "../page/UniversityDetail.jsx";
+import { PayResult } from '../page/PayResult.js';
 import StudentDetailPage from '../page/StudentDetail.js';
 import PersonalCenterPage from '../page/PersonalCenter.js';
 import LoginPage from '../page/Login.js';
@@ -24,6 +25,7 @@ export function Routers() {
                             <Route key={name} path={'/' + name} component={ LoginPage } />
                         )
                     }
+                    <Route path='/jishu/payResult/:result_status/:total_amount' component={ PayResult } />
                 </Switch>
             </div>
         </Router>

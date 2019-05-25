@@ -95,6 +95,17 @@
     height: .24rem;
 }
 
+.user_like-btn {
+    display: inline-block;
+    margin-left: .16rem;
+    font-size: .09rem;
+    line-height: .13rem;
+    color: #303030;
+    background-color: #FFE201;
+    border-radius: .09rem;
+    padding: .02rem .11rem;
+}
+
 .avator_note {
     width: .24rem;
     height: .18rem;

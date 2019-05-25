@@ -146,26 +146,23 @@ export class UniversityList extends React.Component {
                         {/*<div className="clearfloat"></div>*/}
                     </div>
                     {/* 学校列表 */}
-                    {
-                        isArray(uniList) && uniList.length > 0 &&
-                        <div className="container">
-                            {
-                                uniList.map((uni) => {
-                                    return (
-                                        <div className="col-l-4 col-s-2" key={uni.id}>
-                                            <Link to={`/collegeDetail/${uni.id}`} className="card">
-                                                <img src={uni.iconImage} alt=""/>
-                                                <div className="card-name">
-                                                    {uni.cnName}
-                                                    <div className="card-eName">{uni.enName}</div>
-                                                </div>
-                                            </Link>
-                                        </div>
-                                    );
-                                })
-                            }
-                        </div>
-                    }
+                    <div className="container">
+                        {
+                            isArray(uniList) && uniList.map((uni) => {
+                                return (
+                                    <div className="col-l-4 col-s-2" key={uni.id}>
+                                        <Link to={`/collegeDetail/${uni.id}`} className="card">
+                                            <img src={uni.iconImage} alt=""/>
+                                            <div className="card-name">
+                                                {uni.cnName}
+                                                <div className="card-eName">{uni.enName}</div>
+                                            </div>
+                                        </Link>
+                                    </div>
+                                );
+                            })
+                        }
+                    </div>
                     {/* 换页签*/}
                     {
                         isArray(uniList) && uniList.length > 0 &&

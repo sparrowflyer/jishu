@@ -126,6 +126,7 @@
     text-align: center;
     color: #0E0E0E;
     background-color: #FFE201;
+    cursor: pointer;
 }
 
 .school {
@@ -1190,4 +1191,26 @@ ul.li-style{
     border-radius:0 .2rem 0 .2rem;
     font-size:.3rem;
     line-height:.6rem;
+}
+
+.pay_result-desc {
+    color: #0E0E0E;
+    font-size: .3rem;
+    line-height: .42rem;
+    margin-top: .3rem;
+    margin-bottom: .8rem;
+    text-align: center;
+}
+
+.back_home-btn {
+    display: block;
+    color: #0E0E0E;
+    background-color: #FFE201;
+    font-size: .2rem;
+    line-height: .5rem;
+    width: 1.3rem;
+    height: .5rem;
+    border-radius: .3rem;
+    text-align: center;
+    margin: 0 auto;
 }

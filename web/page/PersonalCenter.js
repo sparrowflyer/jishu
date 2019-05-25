@@ -10,24 +10,11 @@ import {getUser, updateUserHeadImage, uploadImage,getUrl} from "../utils/http";
 import Cropper from "react-cropper";
 import { isArray } from '../utils/utils.jsx';
 import { NoContent } from '../component/NoContent.js';
+import {OrderItem} from '../component/OrderItem.jsx';
+import {ShowMoreOrderDetail} from '../component/ShowMoreOrderDetail.jsx'
 
-const contents = [0,1,2,3,4],
-         fList = [{
-            name:"这是个假数据",
-            img:"http://cdn.unclejee.cn/20190118215849_614.jpg",
-        },{
-            name:"这是个假数据",
-            img:"http://cdn.unclejee.cn/20190118215849_614.jpg",
-        },{
-            name:"这是个假数据",
-            img:"http://cdn.unclejee.cn/20190118215849_614.jpg",
-        },{
-            name:"这是个假数据",
-            img:"http://cdn.unclejee.cn/20190118215849_614.jpg",
-        },{
-            name:"这是个假数据",
-            img:"http://cdn.unclejee.cn/20190118215849_614.jpg",
-        }];
+
+const contents = [0,1,2,3,4];
 
 class PersonalCenter extends React.Component {
     constructor(props) {
@@ -49,6 +36,8 @@ class PersonalCenter extends React.Component {
             selectedImageFile: '',//更新头像 存储
             editImageModalVisible: false, //裁剪框显示
             src:"", //裁剪图src
+            orderModalData:{},//订单详情弹出框数据
+            showOrderModal:false,//订单弹窗展示与否
         };
         this.updateDimensions = this.updateDimensions.bind(this);
         this.getFans = this.getFans.bind(this);
@@ -61,6 +50,7 @@ class PersonalCenter extends React.Component {
         this.dataURLtoFile = this.dataURLtoFile.bind(this);
         this.getNotificationByTypeId = this.getNotificationByTypeId.bind(this);
         this.getNotificationType = this.getNotificationType.bind(this);
+        this.showOrderModal = this.showOrderModal.bind(this);
     }
     componentDidMount() {
         let userInfo = '';
@@ -286,8 +276,20 @@ class PersonalCenter extends React.Component {
             });
     }
 
+    //展示订单弹窗
+    showOrderModal(value){
+        if(!value){
+            this.setState({
+                orderModalData: {}
+            })
+        }
+        this.setState({
+            showOrderModal: value
+        })
+    }
+
     render() {
-        let {editImageModalVisible,src,userInfo,userID,activeTab,activeOrderType,activeNoticeType,orders,fans,following,notices,showDelete} = this.state;
+        let {orderModalData,editImageModalVisible,src,userInfo,userID,activeTab,activeOrderType,activeNoticeType,orders,fans,following,notices,showDelete,showOrderModal} = this.state;
         return (
             <div className="container-with-footer">
                 <div>
@@ -315,8 +317,8 @@ class PersonalCenter extends React.Component {
                         {
                             activeTab===0 && isArray(fans) && fans.map((fan,index)=>{
                                 return <div className="personal-center-fan" key={index}>
-                                    <img src={fan.img} alt=""/>
-                                    <span>{fan.name||"--"}</span>
+                                    <img src={"http://" + fan.headImage} alt=""/>
+                                    <span>{fan.nickName||" "}</span>
                                 </div>
                             })
                         }
@@ -328,66 +330,48 @@ class PersonalCenter extends React.Component {
                                 </div>
                             })
                         }
+                        {/* TODO:通知移动端样式*/}
                         {
                             activeTab===2
-                             && <div className="notice-contain" onClick={this.showDeleteMenu.bind(this,0)}>
-                                <div className="notice-person">
-                                    <img src={require("../assets/images/ca.png")} alt=""/>
-                                    <span className="notice-name">Rodrigo</span>
-                                    <span className="notice-oper">关注了你</span>
-                                </div>
-                                <span>2019.05.01 18:00</span>
-                                {
-                                 showDelete && showDelete===0 && <ul className="notice-delete">
-                                        <li>删除</li>
-                                        <li>全部删除</li>
-                                    </ul>
-                                }
-                            </div>
-                            // && isArray(notices) &&
-                            // notices.map((item,index) => {
-                            //     return (
-                            //         <div className="notice-contain">
-                            //             <div className="notive-person">
-                            //                 <img src={require("../assets/images/ca.png")} alt=""/>
-                            //                 <span>Rodrigo</span>
-                            //                 <span>关注了你</span>
-                            //             </div>
-                            //             <span>2019.05.01 18:00</span>
-                            //         </div>
-                            //     );
-                            // })
+                            //  && <div className="notice-contain" onClick={this.showDeleteMenu.bind(this,0)}>
+                            //     <div className="notice-person">
+                            //         <img src={require("../assets/images/search.png")} alt=""/>
+                            //         <span className="notice-name">Rodrigo</span>
+                            //         <span className="notice-oper">关注了你</span>
+                            //     </div>
+                            //     <span>2019.05.01 18:00</span>
+                            //     {
+                            //      showDelete && showDelete===0 && <ul className="notice-delete">
+                            //             <li>删除</li>
+                            //             <li>全部删除</li>
+                            //         </ul>
+                            //     }
+                            // </div>
+                            && isArray(notices) &&
+                            notices.map((item,index) => {
+                                return (
+                                    <div className="notice-contain">
+                                        <div className="notive-person">
+                                            <img src={require("../assets/images/search.png")} alt=""/>
+                                            <span>Rodrigo</span>
+                                            <span>关注了你</span>
+                                        </div>
+                                        <span>2019.05.01 18:00</span>
+                        {
+                            showDelete && showDelete===0 && <ul className="notice-delete">
+                            <li>删除</li>
+                            <li>全部删除</li>
+                            </ul>
+                        }
+                                    </div>
+                                );
+                            })
                         }
                         {
                             activeTab===3 && isArray(orders) &&
                             contents.map((item,index) => {
                                 return (
-                                   <div className="order-contain">
-                                        <div className="order-title">
-                                            <span>20190523001</span>
-                                            <span>2019.05.23 18:00</span>
-                                        </div>
-                                        <div className="order-content">
-                                            <div>
-                                                <span className="line-label">买家姓名</span>
-                                                <span className="line-content">阎杰</span>
-                                            </div>
-                                            <div className="order-question-contain">
-                                                <span className="line-label">买家问题</span>
-                                                <ul>
-                                                    <li className="order-question">问题占位符问题占位符问题占位符问题占位符</li>
-                                                    <li className="order-question">问题占位符问题占位符问题占位符问题占位符</li>
-                                                    {/*<li>问题占位符问题占位符问题占位符问题占位符</li>*/}
-                                                    <li className="question-forMore">剩余两条内容，点击查看详情</li>
-                                                </ul>
-                                            </div>
-                                            <div className="last-item">
-                                                <span className="line-label">订单金额 </span>
-                                                <span className="line-content">¥52</span>
-                                             </div>
-                                        </div>
-                                        <button>待评价</button>
-                                    </div>
+                                   <OrderItem data={item} key={index} clickMore={this.showOrderModal.bind(this,true)}></OrderItem>
                                 );
                             })
                         }
@@ -438,6 +422,7 @@ class PersonalCenter extends React.Component {
                         </div>
                     }
                 </div>
+                { orderModalData && showOrderModal && <ShowMoreOrderDetail data={orderModalData} showOrderModal={this.showOrderModal}></ShowMoreOrderDetail>}
                 <Footer></Footer>
             </div>
         );

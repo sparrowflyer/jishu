@@ -33,9 +33,9 @@ export class Header extends React.Component {
     getNotice(){
         //TODO:获取通知接口不对
         getUnreadNotificaitonCount().then(resp=>{
-            if(resp.status === "success"){
+            if(resp.data.status === "success"){
                 this.setState({
-                    notice : resp.data
+                    notice : resp.data.data
                 })
             }
         }).catch(err=>{})
@@ -86,10 +86,10 @@ export class Header extends React.Component {
                                         </li>
                                         <li className="mb20">
                                             <Link to="/PersonalCenter">消息通知
-                                                { notice && <span className="header-notice">{notice||0}</span>}
+                                                { notice && <span className="header-notice">{notice}</span>}
                                             </Link>
                                         </li>
-                                        <li onClick={this.showModal.bind(this,true)}><a>退出登录</a></li>
+                                        <li onClick={this.showModal.bind(this,true)}><a href="">退出登录</a></li>
                                     </ul>
                                 }
 
@@ -150,11 +150,11 @@ export class Header extends React.Component {
                                         <li className="mb10">
                                             <Link to="/PersonalCenter">
                                                 消息通知
-                                                {notice && <span className="header-notice">{notice||0}</span>}
+                                                {notice && <span className="header-notice">{notice}</span>}
                                             </Link>
                                         </li>
                                         <li onClick={this.showModal.bind(this,true)}>
-                                            <a>退出登录</a>
+                                            <a href="">退出登录</a>
                                         </li>
                                     </ul>
                                 }

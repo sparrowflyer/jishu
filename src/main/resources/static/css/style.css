@@ -512,18 +512,6 @@ div.personal-center-image-cancel{
     /*animation: spin 1s linear infinite;*/
 }
 
-.header-notice{
-    display: inline-block;
-    width: .3rem;
-    background: rgba(255,226,1,1);
-    border-radius: .1rem;
-    font-size: .14rem;
-    font-weight: 400;
-    color: rgba(48,48,48,1);
-    line-height: .2rem;
-    margin-left: .1rem;
-    text-align: center;
-}
 .header-personal-list{
     display: none;
     background: rgba(255,255,255,1);
@@ -969,6 +957,10 @@ ul, li {
     position: absolute;
     right: 0;
     top:0;
+}
+.flex-row-start{
+    display: flex;
+    justify-content: flex-start;
 }
 
 /* 动画 */

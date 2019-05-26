@@ -16,7 +16,7 @@ export class Evaluation extends React.Component {
     evaluate() {
         //提示信息 props
         postUrl('/commentPurchaseContact', {
-            purchaseContactId: '', //订单 props传递
+            purchaseContactId: '', //订单ID props传递 待补充
             scoreResponse: this.state.inspire,
             scoreAttitude: this.state.attitude,
             scoreProfessional: this.state.profession,
@@ -24,11 +24,15 @@ export class Evaluation extends React.Component {
         }).then((response) => {
             let data = response.data;
             if (data.status === 'success') {
-                //关闭弹出框
+                //待补充
+                //关闭弹出框 弹出评价成功提示信息 可以提示组件通过将props进行传递，参考StudentDetail中的Avator的alert属性
             } else {
-
+                //待补充
+                //弹出评价失败提示信息
             }
         }).catch((error) => {
+            //待补充
+            //弹出评价失败提示信息
             console.error(error);
         });
     }
@@ -55,7 +59,7 @@ export class Evaluation extends React.Component {
                         <input type="radio" id="profession2" name="profession" value="2" onChange={this.handleChange}/><label htmlFor="profession2" title="中等">二星</label>
                         <input type="radio" id="profession1" name="profession" value="1" onChange={this.handleChange}/><label htmlFor="profession1" title="很差">一星</label>
                     </fieldset>
-                    <span>分</span>
+                    <span>{this.state.profession}分</span>
                 </div>
                 <div className="star-rating other-star-rating">
                     <span>启发</span>
@@ -66,7 +70,7 @@ export class Evaluation extends React.Component {
                         <input type="radio" id="inspire2" name="inspire" value="2" onChange={this.handleChange}/><label htmlFor="inspire2" title="中等">二星</label>
                         <input type="radio" id="inspire1" name="inspire" value="1" onChange={this.handleChange}/><label htmlFor="inspire1" title="很差">一星</label>
                     </fieldset>
-                    <span>分</span>
+                    <span>{this.state.inspire}分</span>
                 </div>
                 <div className="star-rating last-star-rating">
                     <span>态度</span>
@@ -77,7 +81,7 @@ export class Evaluation extends React.Component {
                         <input type="radio" id="attitude2" name="attitude" value="2" onChange={this.handleChange}/><label htmlFor="attitude2" title="中等">二星</label>
                         <input type="radio" id="attitude1" name="attitude" value="1" onChange={this.handleChange}/><label htmlFor="attitude1" title="很差">一星</label>
                     </fieldset>
-                    <span>分</span>
+                    <span>{this.state.attitude}分</span>
                 </div>
                 <textarea placeholder="请输入你想说的话" className="evaluation-dialog-textarea" name="desc" onChange={this.handleChange} value={this.state.desc}></textarea>
                 <div className="evaluation-dialog-btn-container">

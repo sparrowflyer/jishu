@@ -6,7 +6,9 @@ import java.util.List;
 public enum Country {
 	
 	ENGLAND("英国"),	
-	AUSTRALIA("澳洲");
+	AUSTRALIA("澳洲"),	
+	SINGAPORE("新加坡"),	
+	HONGKONG("香港");
 	
 	private String countryName;
 	

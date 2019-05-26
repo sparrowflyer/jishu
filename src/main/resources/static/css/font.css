@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'icomoon';
-  src:  url('../fonts/icomoon.eot?4961f8');
-  src:  url('../fonts/icomoon.eot?4961f8#iefix') format('embedded-opentype'),
-    url('../fonts/icomoon.ttf?4961f8') format('truetype'),
-    url('../fonts/icomoon.woff?4961f8') format('woff'),
-    url('../fonts/icomoon.svg?4961f8#icomoon') format('svg');
+  src:  url('../fonts/icomoon.eot?qpvjo2');
+  src:  url('../fonts/icomoon.eot?qpvjo2#iefix') format('embedded-opentype'),
+  url('../fonts/icomoon.ttf?qpvjo2') format('truetype'),
+  url('../fonts/icomoon.woff?qpvjo2') format('woff'),
+  url('../fonts/icomoon.svg?qpvjo2#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -24,8 +24,20 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.jee-checkmark:before {
+  content: "\e900";
+}
+.jee-cancel:before {
+  content: "\e901";
+}
+.jee-success:before {
+  content: "\e902";
+}
 .jee-edit:before {
   content: "\e903";
+}
+.jee-menu:before {
+  content: "\e904";
 }
 .jee-thumb-up:before {
   content: "\e905";
@@ -51,18 +63,9 @@
 .jee-arrow-right:before {
   content: "\ea3c";
 }
-.jee-checkmark:before {
-  content: "\e900";
-}
-.jee-cancel:before {
-  content: "\e901";
-}
-.jee-success:before {
-  content: "\e902";
-}
-.jee-menu:before {
-  content: "\e904";
-}
 .jee-arrow-left:before {
   content: "\ea40";
+}
+.jee-star-full:before {
+  content: "\e9d9";
 }

@@ -13,8 +13,11 @@ import org.springframework.stereotype.Service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.wanmoxing.jishu.bean.PurchaseContact;
+import com.wanmoxing.jishu.bean.PurchaseContactDetail;
+import com.wanmoxing.jishu.bean.User;
 import com.wanmoxing.jishu.constant.enums.PurchaseContactStatus;
 import com.wanmoxing.jishu.mapper.PurchaseContactMapper;
+import com.wanmoxing.jishu.mapper.UserMapper;
 import com.wanmoxing.jishu.service.PurchaseContactService;
 
 @Service("purchaseContactService")
@@ -24,6 +27,9 @@ public class PurchaseContactServiceImpl implements PurchaseContactService {
 	@Resource
 	private PurchaseContactMapper purchaseContactMapper;
 
+	@Resource
+	private UserMapper UserMapper;
+	
 	@Override
 	public void insert(PurchaseContact purchaseContact) {
 		purchaseContactMapper.insert(purchaseContact);
@@ -50,10 +56,22 @@ public class PurchaseContactServiceImpl implements PurchaseContactService {
 	}
 
 	@Override
-	public PageInfo<PurchaseContact> findByStatuses(List<String> statuses,int userId, int page, int pageSize) {
+	public PageInfo<PurchaseContactDetail> findByStatuses(List<String> statuses,int userId, int page, int pageSize) {
 		PageHelper.startPage(page, pageSize);
 		List<PurchaseContact> purchaseContacts = purchaseContactMapper.findByStatuses(statuses, userId);
-		PageInfo<PurchaseContact> pageInfo = new PageInfo<>(purchaseContacts);
+		List<PurchaseContactDetail> purchaseContactDetails = new ArrayList<>();
+		for(PurchaseContact purchaseContact : purchaseContacts) {
+			PurchaseContactDetail purchaseContactDetail = new PurchaseContactDetail(purchaseContact);
+			User seller = UserMapper.findById(purchaseContact.getSellerId());
+			User buyer = UserMapper.findById(purchaseContact.getBuyerId());
+			seller.setPassword(null);
+			buyer.setPassword(null);
+			purchaseContactDetail.setBuyerUser(buyer);
+			purchaseContactDetail.setSellerUser(seller);
+			purchaseContactDetails.add(purchaseContactDetail);
+		}
+		
+		PageInfo<PurchaseContactDetail> pageInfo = new PageInfo<>(purchaseContactDetails);
 		return pageInfo;
 	}
 	

@@ -61,16 +61,16 @@ public class UserFanController {
 			if (existingUserFan == null) {
 				userFanService.insert(userFan);
 				// 生成新粉丝通知
-				User ownerUser = userService.findById(userFan.getOwnerId());
+				User fanUser = userService.findById(userFan.getFanId());
 				
 				UserNotification addFanNotification = new UserNotification();
 				addFanNotification.setTypeId(UserNotificationType.NEW_FAN.getTypeId());
 				addFanNotification.setUserId(userFan.getOwnerId());
 				addFanNotification.setTitle("您有一位新粉丝！");
 				
-				int userId = ownerUser.getId();
-				String userName = ownerUser.getNickName();
-				String userImg = ownerUser.getHeadImage();
+				int userId = fanUser.getId();
+				String userName = fanUser.getNickName();
+				String userImg = fanUser.getHeadImage();
 				String content = " 关注了你";
 				addFanNotification.setContent(CommUtil.generatePurchaseContactNotificationJSONContent(userId, userName, userImg, content));
 				

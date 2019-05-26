@@ -1232,6 +1232,11 @@
     margin-right: .22rem;
     width:1.44rem;
 }
+
+.right-info {
+    width: 1.5rem;
+}
+
 .right-info>.info-name{
     margin: .22rem 0 .05rem;
 }

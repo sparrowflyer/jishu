@@ -1222,6 +1222,11 @@ ul.li-style{
     margin-right: .5rem;
     width:3.36rem;
 }
+
+.right-info {
+    width: 3.55rem;
+}
+
 .right-info>.info-name{
     margin: .5rem 0 .12rem;
 }

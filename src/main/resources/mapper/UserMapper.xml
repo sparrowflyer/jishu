@@ -55,7 +55,7 @@
     <select id="findBySchool" parameterType="java.util.Map" resultMap="userResultMap">
         SELECT * FROM jishu.T_USER
         WHERE ID in (SELECT USER_ID FROM jishu.T_SCHOOL_USER WHERE SCHOOL_ID = #{schoolId})
-        ORDER BY LIKE_AMOUNT
+        ORDER BY LIKE_AMOUNT DESC
         <if test=" pageStart &gt;= 0 and pageAmount &gt; 0 ">
         LIMIT #{pageStart}, #{pageAmount}
         </if>

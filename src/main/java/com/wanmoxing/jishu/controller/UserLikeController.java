@@ -14,12 +14,15 @@ import com.alibaba.fastjson.JSONObject;
 import com.wanmoxing.jishu.bean.School;
 import com.wanmoxing.jishu.bean.User;
 import com.wanmoxing.jishu.bean.UserLike;
+import com.wanmoxing.jishu.bean.UserNotification;
 import com.wanmoxing.jishu.constant.CommonConstants;
 import com.wanmoxing.jishu.constant.enums.ResultDTOStatus;
 import com.wanmoxing.jishu.constant.enums.UserLikeType;
+import com.wanmoxing.jishu.constant.enums.UserNotificationType;
 import com.wanmoxing.jishu.dto.ResultDTO;
 import com.wanmoxing.jishu.service.SchoolService;
 import com.wanmoxing.jishu.service.UserLikeService;
+import com.wanmoxing.jishu.service.UserNotificationService;
 import com.wanmoxing.jishu.service.UserService;
 import com.wanmoxing.jishu.util.CommUtil;
 
@@ -33,6 +36,8 @@ public class UserLikeController {
 	private UserService userService;
 	@Resource
 	private SchoolService schoolService;
+	@Resource
+	private UserNotificationService userNotificationService;
 	
 	/**
 	 {
@@ -243,6 +248,18 @@ public class UserLikeController {
 			userLike.setLikeId(likeId);
 			userLike.setLikeType(UserLikeType.STUDENT.getType());
 			userLikeService.insert(userLike);
+			
+			// 生成关注通知
+			UserNotification addFanNotification = new UserNotification();
+			addFanNotification.setTypeId(UserNotificationType.NEW_FAN.getTypeId());
+			addFanNotification.setUserId(userId);
+			addFanNotification.setTitle("您有一位新粉丝！");
+			
+			String userName = student.getNickName();
+			String userImg = student.getHeadImage();
+			String content = " 关注了你";
+			addFanNotification.setContent(CommUtil.generatePurchaseContactNotificationJSONContent(likeId, userName, userImg, content));
+			userNotificationService.insert(addFanNotification);
 			
 			int oldLikeAmount = student.getLikeAmount();
 			student.setLikeAmount(oldLikeAmount+1);

@@ -409,7 +409,8 @@ public class PurchaseContactController {
 	   		"purchaseContactId": "201905021701034661260",
 	   		"scoreResponse": 2,
 	   		"scoreAttitude": 3,
-	   		"scoreProfessional": 4
+	   		"scoreProfessional": 4,
+	   		"comment": "测试评论"
 	    }
 	 * @param jsonParams
 	 * @return
@@ -422,15 +423,25 @@ public class PurchaseContactController {
 			BigDecimal scoreResponse = jsonParams.getBigDecimal("scoreResponse");
 			BigDecimal scoreAttitude = jsonParams.getBigDecimal("scoreAttitude");
 			BigDecimal scoreProfessional = jsonParams.getBigDecimal("scoreProfessional");
+			String comment = jsonParams.getString("comment");
+			
+			if (scoreResponse == null || scoreAttitude == null || scoreProfessional == null) {
+				result.setStatus(ResultDTOStatus.ERROR.getStatus());
+				result.setErrorMsg("参数错误，评分不能为空！");
+				return result;
+			}
 			
 			PurchaseContact purchaseContact = purchaseContactService.find(purchaseContactId);
 			if (purchaseContact == null) {
 				result.setStatus(ResultDTOStatus.ERROR.getStatus());
 				result.setErrorMsg("订单不存在");
+				return result;
 			}
+			
 			purchaseContact.setScoreResponse(scoreResponse);
 			purchaseContact.setScoreAttitude(scoreAttitude);
 			purchaseContact.setScoreProfessional(scoreProfessional);
+			purchaseContact.setComment(comment);
 			purchaseContact.setUpdatedTime(new Timestamp(System.currentTimeMillis()));
 			purchaseContactService.update(purchaseContact);
 			

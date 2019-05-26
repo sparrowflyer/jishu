@@ -120,7 +120,7 @@ export class UniversityDetail extends React.Component {
                         {
                             isArray(stuList) && stuList.map(stu => {
                                 return (
-                                    <Link className="stu-info fl" key={stu.id} to={"/StudentDetail/"+stu.id}>
+                                    <Link className="stu-info" key={stu.id} to={"/StudentDetail/"+stu.id}>
                                         <div className="left-pic" style={{backgroundImage: `url(http://${stu.headImage})`}}></div>
                                         <div className="right-info">
                                             <div className="info-name">{stu.nickName}</div>

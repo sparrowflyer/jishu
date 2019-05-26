@@ -20,7 +20,6 @@ import com.wanmoxing.jishu.constant.CommonConstants;
 import com.wanmoxing.jishu.constant.enums.ResultDTOStatus;
 import com.wanmoxing.jishu.constant.enums.UserNotificationStatus;
 import com.wanmoxing.jishu.constant.enums.UserNotificationType;
-import com.wanmoxing.jishu.constant.enums.UserType;
 import com.wanmoxing.jishu.dto.GetUserNotificationsDTO;
 import com.wanmoxing.jishu.dto.ResultDTO;
 import com.wanmoxing.jishu.service.UserNotificationService;
@@ -135,36 +134,39 @@ public class UserNotificationController {
 				return resultDTO;
 			}
 			
-			User user = (User)session.getAttribute("user");
-			String userType = user.getType();
+//			User user = (User)session.getAttribute("user");
+//			String userType = user.getType();
 			List<UserNotificationClassType> list = new ArrayList<>();
 			UserNotificationClassType userNotificationClassType1 = new UserNotificationClassType();
 			userNotificationClassType1.setId(UserNotificationType.NEW_FAN.getTypeId());
 			userNotificationClassType1.setValue(UserNotificationType.NEW_FAN.getType());
 			
-			UserNotificationClassType userNotificationClassType2 = new UserNotificationClassType();
-			userNotificationClassType2.setId(UserNotificationType.NEW_PURCHASE.getTypeId());
-			userNotificationClassType2.setValue(UserNotificationType.NEW_PURCHASE.getType());
+//			UserNotificationClassType userNotificationClassType2 = new UserNotificationClassType();
+//			userNotificationClassType2.setId(UserNotificationType.NEW_PURCHASE.getTypeId());
+//			userNotificationClassType2.setValue(UserNotificationType.NEW_PURCHASE.getType());
+//			
+//			UserNotificationClassType userNotificationClassType3 = new UserNotificationClassType();
+//			userNotificationClassType3.setId(UserNotificationType.ARTICLE_REPLY.getTypeId());
+//			userNotificationClassType3.setValue(UserNotificationType.ARTICLE_REPLY.getType());
+//			
+//			UserNotificationClassType userNotificationClassType4 = new UserNotificationClassType();
+//			userNotificationClassType4.setId(UserNotificationType.Good_LIKE.getTypeId());
+//			userNotificationClassType4.setValue(UserNotificationType.Good_LIKE.getType());
 			
-			UserNotificationClassType userNotificationClassType3 = new UserNotificationClassType();
-			userNotificationClassType3.setId(UserNotificationType.ARTICLE_REPLY.getTypeId());
-			userNotificationClassType3.setValue(UserNotificationType.ARTICLE_REPLY.getType());
-			
-			UserNotificationClassType userNotificationClassType4 = new UserNotificationClassType();
-			userNotificationClassType4.setId(UserNotificationType.Good_LIKE.getTypeId());
-			userNotificationClassType4.setValue(UserNotificationType.Good_LIKE.getType());
+			UserNotificationClassType userNotificationClassType5 = new UserNotificationClassType();
+			userNotificationClassType5.setId(UserNotificationType.NEW_PURCHASE_CONTACT.getTypeId());
+			userNotificationClassType5.setValue(UserNotificationType.NEW_PURCHASE_CONTACT.getType());
 
 			list.add(userNotificationClassType1);
-			list.add(userNotificationClassType2);
-			list.add(userNotificationClassType3);
-			list.add(userNotificationClassType4);
+			list.add(userNotificationClassType5);
+			
 
-			if(userType.equals(UserType.SYSADMIN.getType())) {
-				UserNotificationClassType userNotificationClassType5 = new UserNotificationClassType();
-				userNotificationClassType5.setId(UserNotificationType.REPORT_ARTICLE.getTypeId());
-				userNotificationClassType5.setValue(UserNotificationType.REPORT_ARTICLE.getType());
-				list.add(userNotificationClassType5);
-			}
+//			if(userType.equals(UserType.SYSADMIN.getType())) {
+//				UserNotificationClassType userNotificationClassType5 = new UserNotificationClassType();
+//				userNotificationClassType5.setId(UserNotificationType.REPORT_ARTICLE.getTypeId());
+//				userNotificationClassType5.setValue(UserNotificationType.REPORT_ARTICLE.getType());
+//				list.add(userNotificationClassType5);
+//			}
 			result.setData(list);
 			return result;
 		} catch (Exception e) {

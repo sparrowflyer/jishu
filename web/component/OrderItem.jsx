@@ -8,7 +8,7 @@ export class OrderItem extends React.Component {
             orderItem:{},
             showMoreModal:false,
             // shoeMoreData: {}
-        }
+        };
         this.showMore =this.showMore.bind(this);
     }
     showMore(idx){

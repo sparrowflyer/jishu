@@ -652,6 +652,9 @@
     line-height:.13rem;
     float: left;
 }
+input.nth-ipt.ph-text{
+    width: 90%;
+}
 .ipt-line{
     /*display: block;*/
     /*content: '';*/

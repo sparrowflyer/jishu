@@ -208,7 +208,7 @@ export class Avator extends React.Component {
                             <div className="user_like-btn" onClick={this.likeOrUnlike}>{this.state.isLike ? '取消关注' : '关注'}</div>
                     }
                     {
-                        this.props.parent === 'PersonalCenter' &&
+                        this.props.parent === 'PersonalCenter'&& this.props.isMine &&
                         (this.state.canEdit ? <div className="user-info-edit-confirm" onClick={this.editInfo.bind(this,true)}>保存</div>:
                             <div className="jee-edit user_edit-icon" onClick={this.editInfo.bind(this,false)}></div>)
 

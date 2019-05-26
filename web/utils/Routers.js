@@ -15,11 +15,15 @@ export function Routers() {
                 <Switch>
                     <Route exact path='/' component={ HomePage } />
                     <Route path='/college' component={ UniversityList } />
-                    <Route path='/collegeDetail/:id' component={ UniversityDetail } />
+                    <Route path='/collegeDetail/:id' render={
+                        (props) => (<UniversityDetail key={props.match.params.id} {...props} />)
+                    } />
                     <Route path='/StudentDetail/:userID' render={
                         (props) => (<StudentDetailPage key={props.match.params.userID} {...props} />)
                     } />
-                    <Route path='/PersonalCenter' component={ PersonalCenterPage } />
+                    <Route path='/PersonalCenter/:userID' render={
+                        (props) => (<PersonalCenterPage key={props.match.params.userID} {...props} />)
+                    } />
                     {
                         ['login', 'register', 'forgetPwd'].map((name) =>
                             <Route key={name} path={'/' + name} component={ LoginPage } />

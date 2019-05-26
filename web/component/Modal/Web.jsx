@@ -154,24 +154,15 @@ export class ModalWeb extends React.Component {
                                     <button className="m-button" onClick={this.changeType.bind(this,"willpay")}>去支付</button>
                                 </div>
                             </div> :
-                            type==="PaySuccess" ? <div className="ta-center">
-                                    <div className="paysuc-contain">
-                                        <img className="mb30" src={require("../../assets/images/chenggong@2x.png")} alt=""/>
-                                        <div className="ta-center">支付成功</div>
-                                    </div>
-                                    <div className="mt42">
-                                        <button className="m-button" onClick={this.propsClose}>完成</button>
-                                    </div>
-                                </div> :
                                 <div className="radio-wrap">
                                     <label className="modal-radio">
-                                        <input checked type="radio" name="payWay" onChange={this.handleType} value="0"/>
+                                        <input disabled type="radio" name="payWay" onChange={this.handleType} value="0"/>
                                         <div className="radio-style"></div>
                                         {/*<div className="jee-checkmark"></div>*/}
-                                        <span>微信支付</span>
+                                        <span style={{color:"#999"}}>微信支付</span>
                                     </label>
                                     <label className="modal-radio">
-                                        <input type="radio" name="payWay" onChange={this.handleType} value="1"/>
+                                        <input type="radio" name="payWay" onChange={this.handleType} value="1" checked required/>
                                         <div className="radio-style"></div>
                                         {/*<div className="jee-checkmark"></div>*/}
                                         <span>支付宝支付</span>
@@ -187,6 +178,15 @@ export class ModalWeb extends React.Component {
         </div>
     }
 }
+// type==="PaySuccess" ? <div className="ta-center">
+//         <div className="paysuc-contain">
+//             <img className="mb30" src={require("../../assets/images/chenggong@2x.png")} alt=""/>
+//             <div className="ta-center">支付成功</div>
+//         </div>
+//         <div className="mt42">
+//             <button className="m-button" onClick={this.propsClose}>完成</button>
+//         </div>
+//     </div> :
 
 ModalWeb.propTypes = {
     type: PropTypes.string.isRequired,

@@ -500,7 +500,7 @@ div.personal-center-image-cancel{
 }
 .header-menu-small:hover .menu-list,.header-menu-small:visited .menu-list {
     display: block;
-    animation: 0.5s ease-out forwards menuShow;
+    /*animation: 0.5s ease-out forwards menuShow;*/
 }
 
 .header-menu-small:hover .header-menu-icon,.header-menu-small:visited .header-menu-icon{
@@ -525,8 +525,10 @@ div.personal-center-image-cancel{
 }
 .header-personal-list li a {
     display: flex;
+    justify-content: flex-start;
     white-space: nowrap;
     flex-wrap: nowrap;
+    align-items: center;
 }
 .header-personal-list li a,.header-menu li a,.menu-list li a{
     color:rgba(132,132,132,1);
@@ -540,7 +542,7 @@ div.personal-center-image-cancel{
 }
 .header-user.header-menu-small:hover .header-personal-list,.header-user.fr:hover .header-personal-list{
     display: block;
-    animation: 0.5s ease-out forwards menuShow;
+    /*animation: 0.5s ease-out forwards menuShow;*/
 }
 
 

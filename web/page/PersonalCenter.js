@@ -2,19 +2,18 @@ import React from 'react';
 import { withRouter } from 'react-router';
 import { withAlert } from 'react-alert';
 import { Avator } from '../component/Avator.js';
-import { Item } from '../component/Item.js';
 import { postUrl ,getUnOrder,getDoOrder} from '../utils/http.js';
 import {Footer} from '../component/common/Footer.jsx';
 import {Header} from '../component/common/Header.jsx';
 import {getUser, updateUserHeadImage, uploadImage,getUrl} from "../utils/http";
 import Cropper from "react-cropper";
 import { isArray } from '../utils/utils.jsx';
-import { NoContent } from '../component/NoContent.js';
 import {OrderItem} from '../component/OrderItem.jsx';
-import {ShowMoreOrderDetail} from '../component/ShowMoreOrderDetail.jsx'
+import {ShowMoreOrderDetail} from '../component/Modal/ShowMoreOrderDetail.jsx'
 
 
 const contents = [0,1,2,3,4];
+const centerTabs = ['粉丝列表','我的关注','消息中心','我的订单'];
 
 class PersonalCenter extends React.Component {
     constructor(props) {
@@ -23,10 +22,12 @@ class PersonalCenter extends React.Component {
             width: document.documentElement.clientWidth || document.body.clientWidth || window.innerWidth,
             height: document.documentElement.clientHeight || document.body.clientHeight || window.innerHeight,
             userID: '',
+            count:0, // 触发header头像信息等更新用
+            isMine:false, //是否本人的个人中心
             following: [],
             fans: [],
             userInfo:{},
-            activeTab: 3,
+            activeTab: 0,
             activeOrderType:0, //订单列表active
             activeNoticeType:0, //消息列表active
             noticeType:[], //消息类型
@@ -51,35 +52,49 @@ class PersonalCenter extends React.Component {
         this.getNotificationByTypeId = this.getNotificationByTypeId.bind(this);
         this.getNotificationType = this.getNotificationType.bind(this);
         this.showOrderModal = this.showOrderModal.bind(this);
+        this.toPersonalCenter = this.toPersonalCenter.bind(this);
     }
     componentDidMount() {
-        let userInfo = '';
-        try {
-            userInfo = JSON.parse(sessionStorage.getItem('jeeUser'))
-        } catch (e) {
-            sessionStorage.removeItem('jeeUser');
-        }
-        if (userInfo) {
-            this.setState((state) => {
-               return { ...state, userInfo , userID:userInfo.id}
+        if(this.props.match.params.userID) {
+            console.log(this.props.location.query)
+            let pageType = this.props.location.query && this.props.location.query.pageType;
+            let userID = this.props.match.params.userID;
+            let userInfo = '';
+            try {
+                userInfo = JSON.parse(sessionStorage.getItem('jeeUser'))
+            } catch (e) {
+                sessionStorage.removeItem('jeeUser');
+            }
+            this.setState({
+                userID: userID,
+                activeTab: pageType === "notice" ? 2 : 0
             });
-            this.getUser(userInfo.id);
-            this.getFans(userInfo.id,1,10);
+            this.setState((state) => {
+                return {...state, isMine: userInfo && (userInfo.id+'') === userID}
+            });
+            this.getUser(userID);
+            this.getFans(userID, 1, 10);
+            this.getNotificationType();
             window.addEventListener('resize', this.updateDimensions);
         } else {
             this.props.history.push('/');
         }
     }
     updateDimensions() {
-        var width = document.documentElement.clientWidth || document.body.clientWidth || window.innerWidth;
+        let width = document.documentElement.clientWidth || document.body.clientWidth || window.innerWidth;
         this.setState((state) => {
             return { ...state, width };
         });
     }
     getNotificationType(){  //获取通知消息类型
-        getUrl("/getNotificationType".then(resp =>{
+        getUrl("/getNotificationType").then(resp =>{
+            if(resp.status === 200){
+                this.setState({
+                    noticeType: resp.data.data
+                })
+            }
             console.log("getNotificationType",resp)
-        })).catch(error=>{});
+        }).catch(error=>{});
     }
     //  根据类型获取通知消息
     getNotificationByTypeId(id){
@@ -169,6 +184,9 @@ class PersonalCenter extends React.Component {
                 } else {
                     this.props.alert.error(`获取${userID}的个人信息失败,原因为${data.errorMsg || `${response.status}${response.statusText}`}`);
                 }
+                this.setState({
+                    count: this.state.count++
+                }); //更新用户数据
             }).catch(error => {
             this.props.alert.error('获取个人信息失败！');
             console.error('获取个人信息', error);
@@ -275,7 +293,6 @@ class PersonalCenter extends React.Component {
                 console.log("上传头像报错",err)
             });
     }
-
     //展示订单弹窗
     showOrderModal(value){
         if(!value){
@@ -287,19 +304,24 @@ class PersonalCenter extends React.Component {
             showOrderModal: value
         })
     }
-
+    //跳转别人的个人中心
+    toPersonalCenter(id){
+        this.props.history.push('/personalCenter/'+id);
+    }
     render() {
-        let {orderModalData,editImageModalVisible,src,userInfo,userID,activeTab,activeOrderType,activeNoticeType,orders,fans,following,notices,showDelete,showOrderModal} = this.state;
+        let {count,isMine,orderModalData,editImageModalVisible,src,userInfo,userID,activeTab,activeOrderType,activeNoticeType,orders,fans,following,notices,showDelete,showOrderModal} = this.state;
         return (
             <div className="container-with-footer">
                 <div>
-                    <Header userInfo={userInfo}></Header>
-                    <Avator handleFileChange={this.handleFileChange} parent="PersonalCenter" showModal={this.showModal} isCenter={true} updateUserInfo={this.getUser} isWeb={this.state.width > 768} userInfo={userInfo} userID={userID} />
+                    <Header updateUser={count}></Header>
+                    <Avator isMine={isMine} handleFileChange={this.handleFileChange} parent="PersonalCenter" showModal={this.showModal} isCenter={true} updateUserInfo={this.getUser} isWeb={this.state.width > 768} userInfo={userInfo} userID={userID} />
                     <div className="personal-center_tab-title-container">
-                        <span className={activeTab===0?'tab-title__selected':'tab-title'} onClick={this.checkTab.bind(this,0)}>粉丝列表</span>
-                        <span className={activeTab===1?'tab-title__selected':'tab-title'} onClick={this.checkTab.bind(this,1)}>我的关注</span>
-                        <span className={activeTab===2?'tab-title__selected':'tab-title'} onClick={this.checkTab.bind(this,2)}>消息中心</span>
-                        <span className={activeTab===3?'tab-title__selected':'tab-title'} onClick={this.checkTab.bind(this,3)}>我的订单</span>
+                        {
+                            centerTabs.map((item,index) => {
+                                if(!isMine && index > 1) return null;
+                                return <span key={index} className={activeTab===index?'tab-title__selected':'tab-title'} onClick={this.checkTab.bind(this,index)}>{item}</span>
+                            })
+                        }
                     </div>
                     {
                         activeTab === 2 &&  <div className="personal-center_small-tabs">
@@ -317,57 +339,42 @@ class PersonalCenter extends React.Component {
                         {
                             activeTab===0 && isArray(fans) && fans.map((fan,index)=>{
                                 return <div className="personal-center-fan" key={index}>
-                                    <img src={"http://" + fan.headImage} alt=""/>
-                                    <span>{fan.nickName||" "}</span>
+                                    <img onClick={this.toPersonalCenter.bind(this,fan.id)} src={"http://" + fan.headImage} alt=""/>
+                                    <span onClick={this.toPersonalCenter.bind(this,fan.id)}>{fan.nickName||" "}</span>
                                 </div>
                             })
                         }
                         {
                             activeTab===1 && isArray(following) && following.map((fol,index)=>{
                                 return <div className="personal-center-fan" key={index}>
-                                    <img src={fol.img} alt=""/>
-                                    <span>{fol.name}</span>
+                                   <img onClick={this.toPersonalCenter.bind(this,fol.id)} src={"http://" + fol.headImage} alt=""/>
+                                    <span onClick={this.toPersonalCenter.bind(this,fol.id)}>{fol.name}</span>
                                 </div>
                             })
                         }
                         {
-                            activeTab===2
-                            //  && <div className="notice-contain" onClick={this.showDeleteMenu.bind(this,0)}>
-                            //     <div className="notice-person">
-                            //         <img src={require("../assets/images/search.png")} alt=""/>
-                            //         <span className="notice-name">Rodrigo</span>
-                            //         <span className="notice-oper">关注了你</span>
-                            //     </div>
-                            //     <span>2019.05.01 18:00</span>
-                            //     {
-                            //      showDelete && showDelete===0 && <ul className="notice-delete">
-                            //             <li>删除</li>
-                            //             <li>全部删除</li>
-                            //         </ul>
-                            //     }
-                            // </div>
-                            && isArray(notices) &&
+                          isMine && activeTab===2 && isArray(notices) &&
                             notices.map((item,index) => {
                                 return (
-                                    <div className="notice-contain">
+                                    <div className="notice-contain" key={index} onClick={this.showDeleteMenu.bind(this,index)}>
                                         <div className="notive-person">
                                             <img src={require("../assets/images/search.png")} alt=""/>
                                             <span>Rodrigo</span>
                                             <span>关注了你</span>
                                         </div>
                                         <span>2019.05.01 18:00</span>
-                        {
-                            showDelete && showDelete===0 && <ul className="notice-delete">
-                            <li>删除</li>
-                            <li>全部删除</li>
-                            </ul>
-                        }
+                                    {
+                                        showDelete && showDelete===index && <ul className="notice-delete">
+                                        <li>删除</li>
+                                        <li>全部删除</li>
+                                        </ul>
+                                    }
                                     </div>
                                 );
                             })
                         }
                         {
-                            activeTab===3 && isArray(orders) &&
+                          isMine && activeTab===3 && isArray(orders) &&
                             contents.map((item,index) => {
                                 return (
                                    <OrderItem data={item} key={index} clickMore={this.showOrderModal.bind(this,true)}></OrderItem>

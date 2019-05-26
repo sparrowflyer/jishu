@@ -24,14 +24,7 @@ export class UniversityDetail extends React.Component {
     }
     componentWillMount (){
       if(this.props.match.params.id) {
-          let id ="";
-          try{
-              id = this.props.match.params.id;
-              window.sessionStorage.setItem("schoolId",id);
-          }catch(e){
-              id = window.sessionStorage.getItem("schoolId");
-
-          }
+          let id = this.props.match.params.id;
           this.setState({
               schoolId: id,
           }) ;

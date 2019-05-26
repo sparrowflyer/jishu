@@ -133,7 +133,7 @@ export class ModalMobile extends React.Component{
                                         questions.length > 1 && questions.map((item,index)=>{
                                             if(index>0)   return <div className="add-line mb13" key={index}>
                                                 <img onClick={this.lessQuestions} className="less-btn" src={require("../../assets/images/guanbi1@2x.png")} alt=""/>
-                                                <input placeholder="问题占位符" name={index} value={item} onChange={this.setQusetions} className="ph-text" type="text"/>
+                                                <input placeholder="问题占位符" name={index} value={item} onChange={this.setQusetions} className="ph-text nth-ipt" type="text"/>
                                             </div>
                                         })
                                     }
@@ -147,24 +147,15 @@ export class ModalMobile extends React.Component{
                                         <button className="m-button" onClick={this.changeType.bind(this,"WillPay")}>去支付</button>
                                     </div>
                                 </div>  :
-                                type === "PaySuccess" ? <div className="ta-center">
-                                        <div className="paysuc-contain">
-                                            <img src={require("../../assets/images/chenggong.png")} alt=""/>
-                                            <div className="ta-center">支付成功</div>
-                                        </div>
-                                        <div className="ta-center">
-                                            <button className="m-button" onClick={this.propsClose}>完成</button>
-                                        </div>
-                                    </div> :
                                     <div className="radio-wrap">
                                         <label className="modal-radio">
-                                            <input checked type="radio" name="payWay" onChange={this.handleType} value="0"/>
+                                            <input disabled type="radio" name="payWay" onChange={this.handleType} value="0"/>
                                             <div className="radio-style"></div>
                                             {/*<div className="jee-checkmark"></div>*/}
-                                            <span>微信支付</span>
+                                            <span style={{color:"#999"}}>微信支付</span>
                                         </label>
                                         <label className="modal-radio">
-                                            <input type="radio" name="payWay" onChange={this.handleType} value="1"/>
+                                            <input checked required type="radio" name="payWay" onChange={this.handleType} value="1"/>
                                             <div className="radio-style"></div>
                                             {/*<div className="jee-checkmark"></div>*/}
                                             <span>支付宝支付</span>
@@ -188,3 +179,13 @@ export class ModalMobile extends React.Component{
 ModalMobile.propTypes = {
     type: PropTypes.string.isRequired
 };
+
+// type === "PaySuccess" ? <div className="ta-center">
+//     <div className="paysuc-contain">
+//         <img src={require("../../assets/images/chenggong.png")} alt=""/>
+//         <div className="ta-center">支付成功</div>
+//     </div>
+//     <div className="ta-center">
+//         <button className="m-button" onClick={this.propsClose}>完成</button>
+//     </div>
+// </div> :

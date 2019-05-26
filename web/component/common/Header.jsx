@@ -10,7 +10,7 @@ export class Header extends React.Component {
             userInfo: {},
             pathName: "",
             notice: 0,
-            showModal:false,
+            isShowModal:false,
             showPersonMenu:false,
             showHeaderMenu:false,
         };
@@ -28,7 +28,7 @@ export class Header extends React.Component {
             userInfo: userInfo ? JSON.parse(userInfo) : {},
             pathName: pathName
         });
-        this.getNotice()
+        this.getNotice();
     }
     getNotice(){
         //TODO:获取通知接口不对
@@ -40,15 +40,22 @@ export class Header extends React.Component {
             }
         }).catch(err=>{})
     }
-    showModal(bool){
-        this.setState({
-            showModal:bool
-        })
+    showModal(value){
+        this.setState((state) => {
+            return {
+                ...state,
+                isShowModal: value
+            }
+        });
     }
     loginOut(){
         sessionStorage.removeItem("jeeUser");
         sessionStorage.clear();
-        this.setState({userInfo:{}});
+
+        this.setState((state) => {
+            return { ...state, userInfo:{}}
+        });
+
         try {
             hashHistory.push('/')
         } catch(e){
@@ -67,9 +74,16 @@ export class Header extends React.Component {
             showHeaderMenu: true
         })
     }
+    componentDidUpdate(preProps){
+        if(preProps.updateUser !== this.props.updateUser){
+            let userInfo = sessionStorage.getItem("jeeUser");
+            this.setState({
+                userInfo: userInfo ? JSON.parse(userInfo) : {},
+            });
+        }
+    }
     render() {
-        let userInfo = this.props.userInfo || this.state.userInfo;
-        let {notice,pathName,showModal,showPersonMenu,showHeaderMenu} = this.state;
+        let {notice,pathName,isShowModal,showPersonMenu,showHeaderMenu,userInfo} = this.state;
         return (
             <div>
                 {/*   大屏header  */}
@@ -82,14 +96,14 @@ export class Header extends React.Component {
                                 {
                                     showPersonMenu && <ul className="header-personal-list">
                                         <li className={pathName==="/PersonalCenter"?"active mb20":"mb20"}>
-                                            <Link to="/PersonalCenter">个人中心</Link>
+                                            <Link to={"/PersonalCenter/"+ userInfo.id}>个人中心</Link>
                                         </li>
                                         <li className="mb20">
-                                            <Link to="/PersonalCenter">消息通知
-                                                { notice && <span className="header-notice">{notice}</span>}
+                                            <Link to={{pathname:"/PersonalCenter/"+ userInfo.id,query:{pageType:'notice'}}}>消息通知
+                                                { notice>0 && <span className="header-notice">{notice}</span>}
                                             </Link>
                                         </li>
-                                        <li onClick={this.showModal.bind(this,true)}><a href="">退出登录</a></li>
+                                        <li style={{cursor: 'pointer'}} onClick={this.showModal.bind(true)}>退出登录</li>
                                     </ul>
                                 }
 
@@ -145,26 +159,22 @@ export class Header extends React.Component {
                                 {
                                     showPersonMenu && <ul className="header-personal-list">
                                         <li className={pathName==="/PersonalCenter"?"active mb10":"mb10"}>
-                                            <Link to="/PersonalCenter">个人中心</Link>
+                                            <Link to={"/PersonalCenter/"+ userInfo.id}>个人中心</Link>
                                         </li>
                                         <li className="mb10">
-                                            <Link to="/PersonalCenter">
-                                                消息通知
-                                                {notice && <span className="header-notice">{notice}</span>}
+                                            <Link to={{pathname:"/PersonalCenter/"+ userInfo.id,query:{pageType:'notice'}}}>消息通知
+                                                {notice>0 && <span className="header-notice">{notice}</span>}
                                             </Link>
                                         </li>
-                                        <li onClick={this.showModal.bind(this,true)}>
-                                            <a href="">退出登录</a>
-                                        </li>
+                                        <li onClick={this.showModal.bind(true)}>退出登录</li>
                                     </ul>
                                 }
                         </div> : <Link className="header-btn-small" to="/login">登录/注册</Link>
                     }
                 </div>
-
                 {/*确认退出登录*/}
                 {
-                 showModal &&   <div className="logout-modal-mask">
+                    isShowModal &&  <div className="logout-modal-mask">
                         <div className="logout-modal">
                             <div className="logout-text">确定要退出当前账户吗</div>
                             <div className="logout-btn">
@@ -172,9 +182,10 @@ export class Header extends React.Component {
                                 <button className="logout-cancel" onClick={this.showModal.bind(this,false)}>关闭</button>
                             </div>
                         </div>
-                     {/*<img src={require("../../assets/images/guanbi1@2x.png")} alt=""/>*/}
+                        {/*<img src={require("../../assets/images/guanbi1@2x.png")} alt=""/>*/}
                     </div>
                 }
+
             </div>
         );
     }

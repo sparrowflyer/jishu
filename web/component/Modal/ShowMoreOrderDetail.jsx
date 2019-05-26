@@ -23,7 +23,7 @@ export class ShowMoreOrderDetail extends React.Component {
                     <div className="order-contain">
                         {
                             width >768 && <div className="order-modal-close-topRight">
-                            <img src={require("../assets/images/guanbi1.png")} onClick={this.close} alt=""/>
+                            <img src={require("../../assets/images/guanbi1.png")} onClick={this.close} alt=""/>
                         </div>
                         }
 
@@ -56,7 +56,7 @@ export class ShowMoreOrderDetail extends React.Component {
                 {
                     width <=768 &&
                         <div className="order-modal-close-midBottom">
-                            <img src={require("../assets/images/guanbi1.png")} alt=""/>
+                            <img src={require("../../assets/images/guanbi1.png")} alt=""/>
                         </div>
                 }
             </div>

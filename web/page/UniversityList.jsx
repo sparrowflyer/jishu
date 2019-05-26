@@ -125,7 +125,7 @@ export class UniversityList extends React.Component {
                     {/* 筛选搜索栏 */}
                     <div className="filter-wrap">
                         <ul className="nation-list">
-                            <li  className="nation-title">国家</li>
+                            <li className="nation-title">国家/地区</li>
                             {
                                 countryList.map((item, index) => {
                                     return (
@@ -152,7 +152,7 @@ export class UniversityList extends React.Component {
                                 return (
                                     <div className="col-l-4 col-s-2" key={uni.id}>
                                         <Link to={`/collegeDetail/${uni.id}`} className="card">
-                                            <img src={uni.iconImage} alt=""/>
+                                            <img src={uni.iconImage} />
                                             <div className="card-name">
                                                 {uni.cnName}
                                                 <div className="card-eName">{uni.enName}</div>

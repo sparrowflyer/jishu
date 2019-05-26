@@ -1610,3 +1610,51 @@
 .order-detail-modal .flex-row-start{
     margin-bottom: .09rem;
 }
+
+.evaluation-dialog-title {
+    color: #0E0E0E;
+    font-size: .14rem;
+    line-height: .2rem;
+    text-align: center;
+}
+
+.star-rating > span {
+    color: #0E0E0E;
+    font-size: .09rem;
+}
+
+.star-rating > fieldset {
+    margin: 0 .18rem;
+}
+
+.evaluation-dialog-textarea {
+    width: 2.6rem;
+    height: .64rem;
+    border-radius: .06rem;
+    border: 1px solid #848484;
+    padding: .09rem;
+}
+
+.evaluation-dialog-btn {
+    width: .59rem;
+    line-height: .24rem;
+    height: .24rem;
+    font-size: .09rem;
+    color: #0E0E0E;
+    background: #FFE201;
+    border-radius: .14rem;
+    cursor: pointer;
+}
+
+.first-star-rating {
+    margin-top: .2rem;
+}
+
+.other-star-rating {
+    margin-top: .15rem;
+    margin-bottom: .15rem;
+}
+
+.last-star-rating {
+    margin-bottom: .2rem;
+}

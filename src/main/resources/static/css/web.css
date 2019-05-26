@@ -1632,3 +1632,51 @@ ul.li-style{
 .order-detail-modal .flex-row-start{
     margin-bottom: .2rem;
 }
+
+.evaluation-dialog-title {
+    color: #0E0E0E;
+    font-size: .3rem;
+    line-height: .42rem;
+    text-align: center;
+}
+
+.star-rating > span {
+    color: #0E0E0E;
+    font-size: .2rem;
+}
+
+.star-rating > fieldset {
+    margin: 0 .4rem;
+}
+
+.evaluation-dialog-textarea {
+    width: 5.62rem;
+    height: 1.38rem;
+    border-radius: .14rem;
+    border: 1px solid #848484;
+    padding: .2rem;
+}
+
+.evaluation-dialog-btn {
+    width: 1.27rem;
+    line-height: .51rem;
+    height: .51rem;
+    font-size: .2rem;
+    color: #0E0E0E;
+    background: #FFE201;
+    border-radius: .31rem;
+    cursor: pointer;
+}
+
+.first-star-rating {
+    margin-top: .5rem;
+}
+
+.other-star-rating {
+    margin-top: .4rem;
+    margin-bottom: .4rem;
+}
+
+.last-star-rating {
+    margin-bottom: .5rem;
+}

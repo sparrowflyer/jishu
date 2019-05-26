@@ -983,3 +983,67 @@ ul, li {
         top: .24rem;
     }
 }
+
+.star-rating {
+    font-family: 'icomoon';
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.star-rating > fieldset {
+    border: none;
+    display: inline-block;
+}
+
+.star-rating > fieldset:not(:checked) > input {
+    position: absolute;
+    top: -99px;
+    clip: rect(0, 0, 0, 0);
+}
+
+.star-rating > fieldset:not(:checked) > label {
+    float: right;
+    width: .95em;
+    padding: 0 .02rem;
+    overflow: hidden;
+    white-space: nowrap;
+    cursor: pointer;
+    font-size: .2rem;
+    color: #D8D8D8;
+}
+
+.star-rating > fieldset:not(:checked) > label:before {
+    content: '\e9d7';
+}
+
+.star-rating > fieldset:not(:checked) > label:hover,
+.star-rating > fieldset:not(:checked) > label:hover ~ label {
+    color: #FFE201;
+    text-shadow: 0 0 3px #FFE201;
+}
+
+.star-rating > fieldset:not(:checked) > label:hover:before,
+.star-rating > fieldset:not(:checked) > label:hover ~ label:before {
+    content: '\e9d9';
+}
+
+.star-rating > fieldset > input:checked ~ label:before {
+    content: '\e9d9';
+    color: #FFE201;
+}
+
+.star-rating > fieldset > label:active {
+    position: relative;
+    top: 2px;
+}
+
+.evaluation-dialog-container {
+    margin: 0 auto;
+    text-align: center;
+}
+
+.evaluation-dialog-btn-container {
+    text-align: center;
+    font-size: 0;
+}

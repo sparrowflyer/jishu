@@ -171,8 +171,8 @@ class StudentDetail extends React.Component {
                         }
                     </div>
                     {
-                        this.state.width <= 768
-                        && <button className="know-btn" onClick={this.knowHim.bind(this, true)}>认识他</button>
+                        this.state.width <= 768 &&
+                            <button className="know-btn" onClick={this.knowHim.bind(this, true)}>认识他</button>
                     }
                     {
                         this.state.width > 768 ?

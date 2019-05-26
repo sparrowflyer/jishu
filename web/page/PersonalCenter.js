@@ -67,14 +67,12 @@ class PersonalCenter extends React.Component {
             }
             this.setState({
                 userID: userID,
-                activeTab: pageType === "notice" ? 2 : 0
-            });
-            this.setState((state) => {
-                return {...state, isMine: userInfo && (userInfo.id+'') === userID}
+                activeTab: pageType === "notice" ? 2 : 0,
+                isMine: userInfo && (userInfo.id+'') === userID
             });
             this.getUser(userID);
             this.getFans(userID, 1, 10);
-            this.getNotificationType();
+            this.getNotificationByTypeId(1);
             window.addEventListener('resize', this.updateDimensions);
         } else {
             this.props.history.push('/');

@@ -11,6 +11,7 @@ export class Evaluation extends React.Component {
             desc: ''
         };
         this.evaluate = this.evaluate.bind(this);
+        this.handleChange = this.handleChange.bind(this);
     }
     evaluate() {
         //提示信息 props
@@ -18,8 +19,8 @@ export class Evaluation extends React.Component {
             purchaseContactId: '', //订单 props传递
             scoreResponse: this.state.inspire,
             scoreAttitude: this.state.attitude,
-            scoreProfessional: this.state.profession
-            //评价内容
+            scoreProfessional: this.state.profession,
+            comment: this.state.desc
         }).then((response) => {
             let data = response.data;
             if (data.status === 'success') {

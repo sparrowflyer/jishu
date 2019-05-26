@@ -1205,13 +1205,17 @@ ul.li-style{
 
 .stus-container{
     padding: 0 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
 }
 .stu-info{
     width:8rem;
     height:4.48rem;
     box-shadow:0 .02rem .2rem 0 rgba(203,203,203,0.5);
     border-radius:.2rem;
-    margin: 0 .3rem .6rem;
+    margin: .3rem 0;
 }
 .left-pic{
     border-radius: .2rem;

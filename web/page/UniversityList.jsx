@@ -21,6 +21,7 @@ let countryList = [{
     param: '澳洲',
     logo: './image/college/au.png'
 }];
+//加新加坡和香港
 
 export class UniversityList extends React.Component {
     constructor(props) {

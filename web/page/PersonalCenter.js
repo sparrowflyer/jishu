@@ -54,6 +54,8 @@ class PersonalCenter extends React.Component {
         this.getNotificationType = this.getNotificationType.bind(this);
         this.showOrderModal = this.showOrderModal.bind(this);
         this.toPersonalCenter = this.toPersonalCenter.bind(this);
+        this.deleteNotice = this.deleteNotice.bind(this);
+        this.deleteNoticeAll = this.deleteNoticeAll.bind(this);
     }
     componentDidMount() {
         if(this.props.match.params.userID) {
@@ -115,13 +117,32 @@ class PersonalCenter extends React.Component {
         this.setState({
             showDelete: idx === this.state.showDelete ? null : idx
         });
-        if(item.status === "unread"){
-            getUrl('/setUserNotificaitonAsRead?id='+item.id).then(response=>{
-                console.log('消息标注',response);
-            }).catch(error=>{
-                console.log('消息标注',error);
-            })
-        }
+    }
+    deleteNotice(item,idx){
+        getUrl('/setUserNotificaitonAsRead?id='+item.id).then(response=>{
+            if(response.status === 200){
+                let data = this.state.notices;
+                if(!data){
+                    return;
+                }
+                data.splice(idx,1);
+                this.setState({
+                    notices: data
+                })
+            }
+            console.log('消息标注',response);
+        }).catch(error=>{
+            console.log('消息标注',error);
+        })
+    }
+    deleteNoticeAll(){
+        this.setState({
+            notices:{}
+        });
+        let data = this.state.notices;
+        data.map((item,index)=>{
+            this.deleteNotice(item,index);
+        })
     }
     getFans(likeStudentId, pageNo, pageAmount) {
         this.setState((state) => {
@@ -368,7 +389,7 @@ class PersonalCenter extends React.Component {
                             <span className={activeOrderType===1?'tab-title__selected':'tab-title'} onClick={this.checkType.bind(this,1)}>已完成</span>
                         </div>
                     }
-                    <div className={(activeOrderType===1&& activeTab===2)?"personal-center-content-orderNotice": (activeOrderType===0&&activeTab===2)?"personal-center-content":"personal-center-content-fan"}>
+                    <div className={(activeTab===2&&activeOrderType===0)?"personal-center-content":"personal-center-content-fan"}>
                         {
                             activeTab===0 && isArray(fans) && fans.map((fan,index)=>{
                                 return <div className="personal-center-fan" key={index}>
@@ -391,15 +412,15 @@ class PersonalCenter extends React.Component {
                                 return (
                                  <div className="notice-contain" key={index} onClick={this.showDeleteMenu.bind(this,item,index)}>
                                      <div className="notice-person">
-                                         <img src={'http://' + item.content.userImg} alt=""/>
-                                         <span className="notice-name">{item.content.userName}</span>
-                                         <span className="notice-oper">{item.content.content}</span>
+                                         <img  onClick={this.toPersonalCenter.bind(this,item.id)} src={'http://' + item.content.userImg} alt=""/>
+                                         <span className="notice-name" title={item.content.userName} onClick={this.toPersonalCenter.bind(this,item.id)}>{item.content.userName}</span>
+                                         <span className="notice-oper" title={item.content.content}>{item.content.content}</span>
                                      </div>
-                                     <span>{item.createdTime}</span>
+                                     <span title={item.createdTime}>{item.createdTime}</span>
                                      {
                                          showDelete && showDelete===index && <ul className="notice-delete">
-                                             <li>删除</li>
-                                             <li>全部删除</li>
+                                             <li onClick={this.deleteNotice.bind(this,item,index)}>删除</li>
+                                             <li onClick={this.deleteNoticeAll}>全部删除</li>
                                          </ul>
                                      }
                                   </div>

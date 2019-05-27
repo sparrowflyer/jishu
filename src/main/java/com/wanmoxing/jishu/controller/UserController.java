@@ -303,11 +303,11 @@ public class UserController {
 		    int userId = jsonParams.getIntValue("userId");
 			int page = jsonParams.getIntValue("page");
 			int pageSize = jsonParams.getIntValue("pageSize");
-			if(userInSession.getId() != userId) {
-				result.setStatus(ResultDTOStatus.ERROR.getStatus());
-				result.setErrorMsg("只能查看自己的订单!");
-				return result;
-			}
+//			if(userInSession.getId() != userId) {
+//				result.setStatus(ResultDTOStatus.ERROR.getStatus());
+//				result.setErrorMsg("只能查看自己的订单!");
+//				return result;
+//			}
 			List<String> statuses = new ArrayList<>();
 			statuses.add(PurchaseContactStatus.PAYED.getStatus());
 			result.setData(purchaseContactService.findByStatuses(statuses, userId, page, pageSize));

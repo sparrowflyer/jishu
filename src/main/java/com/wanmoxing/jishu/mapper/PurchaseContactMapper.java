@@ -21,7 +21,7 @@ public interface PurchaseContactMapper {
 
     public PurchaseContact find(String purchaseContactId);
     
-    public List<PurchaseContact> findByStatuses(@Param(value="statuses") List<String> statuses, int userId);
+    public List<PurchaseContact> findByStatuses(@Param(value="statuses") List<String> statuses, @Param(value="userId") int userId);
     
     public List<PurchaseContact> findAllByStatuses(@Param(value="statuses") List<String> statuses);
 

@@ -15,6 +15,7 @@ public class CommUtil {
 	
 	public static boolean isUserLogined(HttpSession session) {
 		User user = (User) session.getAttribute("user");
+		session.setAttribute("user", user);
 		return user != null;
 	}
 	

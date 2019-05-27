@@ -40,6 +40,7 @@ class PersonalCenter extends React.Component {
             src:"", //裁剪图src
             orderModalData:{},//订单详情弹出框数据
             showOrderModal:false,//订单弹窗展示与否
+            OrderModalType: "MoreDetail" //订单弹窗类别 OrderEvaluate
         };
         this.updateDimensions = this.updateDimensions.bind(this);
         this.getFans = this.getFans.bind(this);
@@ -56,6 +57,8 @@ class PersonalCenter extends React.Component {
         this.toPersonalCenter = this.toPersonalCenter.bind(this);
         this.deleteNotice = this.deleteNotice.bind(this);
         this.deleteNoticeAll = this.deleteNoticeAll.bind(this);
+        this.goPage = this.goPage.bind(this);
+        this.changeOrderModal =this.changeOrderModal.bind(this);
     }
     componentDidMount() {
         if(this.props.match.params.userID) {
@@ -103,11 +106,15 @@ class PersonalCenter extends React.Component {
         getUrl("/getNotificationByTypeId?typeId=" + id).then(response=>{
             if(response.status === 200){
                 let data = response.data.data;
+                let res = [];
                data.length > 0 && data.map(item=>{
-                    item.content = JSON.parse(item.content)
+                   if(item.status === "unread"){
+                       item.content = JSON.parse(item.content);
+                       res.push(item);
+                   }
                 });
                 this.setState({
-                    notices: data
+                    notices: res
                 })
             }
             console.log("getNotificationByTypeId",response)
@@ -136,13 +143,15 @@ class PersonalCenter extends React.Component {
         })
     }
     deleteNoticeAll(){
-        this.setState({
-            notices:{}
-        });
+
         let data = this.state.notices;
         data.map((item,index)=>{
             this.deleteNotice(item,index);
-        })
+        });
+        // this.setState({
+        //     notices:{}
+        // });
+        // this.getNotificationByTypeId(this.state.activeNoticeType===0 ? 1:6);
     }
     getFans(likeStudentId, pageNo, pageAmount) {
         this.setState((state) => {
@@ -180,8 +189,18 @@ class PersonalCenter extends React.Component {
         }).then(resp=>{
             console.log("获取未完成订单",resp);
             if(resp.status === 200 && resp.data){
+                let obj = resp.data.data;
+                obj.list && obj.list.map((item,index) => {
+                    console.log(item.buyerUser,item.buyerUser.nickName);
+                    if(item.questions !== ""){
+                        item.questions = item.questions.split(",");
+                    } else {
+                        item.questions = [];
+                    }
+                    console.log(index,item.questions);
+                });
                 this.setState({
-                    orderObject: resp.data.data
+                    orderObject: obj
                 })
             }else{
                 this.props.alert.error(<div style={{fontSize: '12px'}}>{resp.data.errorMsg || '获取未完成订单异常！'}</div>);
@@ -194,14 +213,23 @@ class PersonalCenter extends React.Component {
     }
     getCompleteOrder(id, page, pageSize){
         getDoOrder({
-            "userId": id || NUmber(this.state.userID),
+            "userId": id || Number(this.state.userID),
             "page": page || this.state.orderObject.page || 1,
             "pageSize":pageSize || this.state.orderObject.pageSize || 8
         }).then(resp=>{
             console.log("获取已完成订单",resp);
             if(resp.status === 200 && resp.data){
+                let obj = resp.data.data;
+                obj.list && obj.list.map((item,index) => {
+                    console.log(item.buyerUser,item.buyerUser.nickName)
+                    if(item.questions !== ""){
+                        item.questions = item.questions.split(",");
+                    } else {
+                        item.questions = [];
+                    }
+                    });
                 this.setState({
-                    orderObject: resp.data.data
+                    orderObject: obj
                 })
             } else {
                 this.props.alert.error(<div style={{fontSize: '12px'}}>{resp.data.errorMsg || '获取已完成订单异常！'}</div>);
@@ -339,21 +367,19 @@ class PersonalCenter extends React.Component {
             });
     }
     //展示订单弹窗
-    showOrderModal(value){
-        if(!value){
-            this.setState({
-                orderModalData: {}
-            })
-        }
+    showOrderModal(value,item,type){
         this.setState({
-            showOrderModal: value
-        })
+            orderModalData: !value ? {}:item
+        });
+        this.setState({
+            showOrderModal: value,
+            OrderModalType: type
+        });
     }
     //跳转别人的个人中心
     toPersonalCenter(id){
         this.props.history.push('/personalCenter/'+id);
     }
-
     //跳转页面-订单
     goPage(value){
         let object = Object.assign({},this.state.orderObject,{pageNum:value});
@@ -362,8 +388,13 @@ class PersonalCenter extends React.Component {
         });
 
     }
+    changeOrderModal(value){
+        this.setState({
+            OrderModalType:value
+        })
+    }
     render() {
-        let {count,isMine,orderModalData,editImageModalVisible,src,userInfo,userID,activeTab,activeOrderType,activeNoticeType,orderObject,fans,following,notices,showDelete,showOrderModal} = this.state;
+        let {OrderModalType,count,isMine,orderModalData,editImageModalVisible,src,userInfo,userID,activeTab,activeOrderType,activeNoticeType,orderObject,fans,following,notices,showDelete,showOrderModal} = this.state;
         return (
             <div className="container-with-footer">
                 <div>
@@ -429,38 +460,19 @@ class PersonalCenter extends React.Component {
                             })
                         }
 
-                        {/*{*/}
-                            {/*isMine &&  activeTab === 2 &&*/}
-                                {/*contents.map((item,index)=>{*/}
-                                    {/*<div className="notice-contain" key={index} onClick={this.showDeleteMenu.bind(this,index)}>*/}
-                                        {/*<div className="notice-person">*/}
-                                            {/*<img src={require("../assets/images/search.png")} alt=""/>*/}
-                                            {/*<span>Rodrigo</span>*/}
-                                            {/*<span>关注了你</span>*/}
-                                        {/*</div>*/}
-                                        {/*<span>2019.05.01 18:00</span>*/}
-                                        {/*{*/}
-                                            {/*showDelete && showDelete===index && <ul className="notice-delete">*/}
-                                                {/*<li>删除</li>*/}
-                                                {/*<li>全部删除</li>*/}
-                                            {/*</ul>*/}
-                                        {/*}*/}
-                                    {/*</div>*/}
-                                {/*})*/}
-                        {/*}*/}
-
                         {
                           isMine && activeTab===3 && orderObject && orderObject.list && isArray(orderObject.list) &&
-                            contents.map((item,index) => {
+                          orderObject.list.map((item,index) => {
                                 return (
-                                   <OrderItem data={item} key={index} clickMore={this.showOrderModal.bind(this,true)}></OrderItem>
+                                   <OrderItem data={item} key={index} clickMore={this.showOrderModal}></OrderItem>
                                 );
                             })
                         }
-                        {
-                            isMine && orderObject && orderObject.pageSize > 0 && <PageBreak pageTotal={orderObject.pages} go={this.goPage} page={orderObject.pageNum}></PageBreak>
-                        }
+
                     </div>
+                    {
+                        isMine && orderObject && orderObject.pages > 1 && <PageBreak pageTotal={orderObject.pages} go={this.goPage} page={orderObject.pageNum}></PageBreak>
+                    }
                     {
                         this.state.width > 768 && editImageModalVisible && <div className="class-cropper-modal">
                             <div className="modal-panel">
@@ -507,7 +519,7 @@ class PersonalCenter extends React.Component {
                         </div>
                     }
                 </div>
-                { orderModalData && showOrderModal && <ShowMoreOrderDetail data={orderModalData} showOrderModal={this.showOrderModal}></ShowMoreOrderDetail>}
+                { orderModalData && showOrderModal && <ShowMoreOrderDetail type={OrderModalType} ChangeOrderModalType={this.changeOrderModal} data={orderModalData} showOrderModal={this.showOrderModal}></ShowMoreOrderDetail>}
                 <Footer></Footer>
             </div>
         );

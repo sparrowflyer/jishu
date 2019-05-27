@@ -1565,8 +1565,11 @@ ul.li-style{
     width: 100%;
     flex-direction: column;
     padding-bottom: .39rem;
-    justify-content: space-between;
+    justify-content: flex-start;
     box-sizing: border-box;
+}
+.order-question-contain .line-label{
+    margin-bottom: 1.42rem;
 }
 .line-label{
     white-space: nowrap;

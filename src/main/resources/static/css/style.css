@@ -1049,3 +1049,9 @@ ul, li {
     text-align: center;
     font-size: 0;
 }
+.pageBreak-contain {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    /*text-align: center;*/
+}

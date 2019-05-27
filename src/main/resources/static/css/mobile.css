@@ -471,7 +471,7 @@
     border-radius:.44rem;
     margin: .16rem;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
     width:1.12rem;
     height:.25rem;
@@ -1356,6 +1356,7 @@ input.nth-ipt.ph-text{
     border-radius: .11rem;
     padding: .14rem .13rem .14rem .16rem;
     box-sizing: border-box;
+    margin-bottom: .21rem;
 }
 .notice-person{
     display: flex;
@@ -1370,14 +1371,14 @@ input.nth-ipt.ph-text{
     border-radius: 50%;
 }
 .notice-person span.notice-name {
-    font-size: .11rem;
+    font-size: .09rem;
     font-weight: 400;
     color: rgba(48, 48, 48, 1);
     line-height: .19rem;
     margin: 0 .05rem 0 .11rem;
 }
 .notice-person span.notice-oper{
-    font-size: .11rem;
+    font-size: .09rem;
     font-weight: 400;
     color: rgba(132,132,132,1);
     line-height: .19rem;
@@ -1387,6 +1388,11 @@ input.nth-ipt.ph-text{
     font-weight: 400;
     color: rgba(132,132,132,1);
     line-height: .12rem;
+}
+.notice-contain span.notice-oper{
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
 }
 .notice-delete{
     position: absolute;

@@ -34,7 +34,7 @@ class PersonalCenter extends React.Component {
             noticeType:[], //消息类型
             notices:[],//通知列表
             showDelete: null,
-            orders:contents || [],
+            orderObject:{},
             selectedImageFile: '',//更新头像 存储
             editImageModalVisible: false, //裁剪框显示
             src:"", //裁剪图src
@@ -99,6 +99,15 @@ class PersonalCenter extends React.Component {
     //  根据类型获取通知消息  关注通知接口 /getNotificationByTypeId?typeId=1  订单通知接口 /getNotificationByTypeId?typeId=6
     getNotificationByTypeId(id){
         getUrl("/getNotificationByTypeId?typeId=" + id).then(response=>{
+            if(response.status === 200){
+                let data = response.data.data;
+               data.length > 0 && data.map(item=>{
+                    item.content = JSON.parse(item.content)
+                });
+                this.setState({
+                    notices: data
+                })
+            }
             console.log("getNotificationByTypeId",response)
         })
     }
@@ -142,12 +151,16 @@ class PersonalCenter extends React.Component {
             console.error('获取粉丝列表：', error);
         });
     }
-    getUncompleteOrder(id){
-        getUnOrder({id:id||this.state.userID}).then(resp=>{
-            console.log("获取未完成订单",resp)
+    getUncompleteOrder(id,page,pageSize){
+        getUnOrder({
+            "userId": id || Number(this.state.userID),
+            "page": page || this.state.orderObject.page || 1,
+            "pageSize":pageSize || this.state.orderObject.pageSize || 8
+        }).then(resp=>{
+            console.log("获取未完成订单",resp);
             if(resp.status === 200 && resp.data){
                 this.setState({
-                    orders: resp.data.data
+                    orderObject: resp.data.data
                 })
             }else{
                 this.props.alert.error(<div style={{fontSize: '12px'}}>{resp.data.errorMsg || '获取未完成订单异常！'}</div>);
@@ -158,12 +171,16 @@ class PersonalCenter extends React.Component {
             console.log("获取未完成订单报错",err)
         })
     }
-    getCompleteOrder(id){
-        getDoOrder({id:id||this.state.userID}).then(resp=>{
-            console.log("获取已完成订单",resp)
+    getCompleteOrder(id, page, pageSize){
+        getDoOrder({
+            "userId": id || NUmber(this.state.userID),
+            "page": page || this.state.orderObject.page || 1,
+            "pageSize":pageSize || this.state.orderObject.pageSize || 8
+        }).then(resp=>{
+            console.log("获取已完成订单",resp);
             if(resp.status === 200 && resp.data){
                 this.setState({
-                    orders: resp.data.data
+                    orderObject: resp.data.data
                 })
             } else {
                 this.props.alert.error(<div style={{fontSize: '12px'}}>{resp.data.errorMsg || '获取已完成订单异常！'}</div>);
@@ -315,8 +332,17 @@ class PersonalCenter extends React.Component {
     toPersonalCenter(id){
         this.props.history.push('/personalCenter/'+id);
     }
+
+    //跳转页面-订单
+    goPage(value){
+        let object = Object.assign({},this.state.orderObject,{pageNum:value});
+        this.setState({
+            orderObject: object
+        });
+
+    }
     render() {
-        let {count,isMine,orderModalData,editImageModalVisible,src,userInfo,userID,activeTab,activeOrderType,activeNoticeType,orders,fans,following,notices,showDelete,showOrderModal} = this.state;
+        let {count,isMine,orderModalData,editImageModalVisible,src,userInfo,userID,activeTab,activeOrderType,activeNoticeType,orderObject,fans,following,notices,showDelete,showOrderModal} = this.state;
         return (
             <div className="container-with-footer">
                 <div>
@@ -342,7 +368,7 @@ class PersonalCenter extends React.Component {
                             <span className={activeOrderType===1?'tab-title__selected':'tab-title'} onClick={this.checkType.bind(this,1)}>已完成</span>
                         </div>
                     }
-                    <div className={activeTab===2?"personal-center-content":"personal-center-content-fan"}>
+                    <div className={(activeOrderType===1&& activeTab===2)?"personal-center-content-orderNotice": (activeOrderType===0&&activeTab===2)?"personal-center-content":"personal-center-content-fan"}>
                         {
                             activeTab===0 && isArray(fans) && fans.map((fan,index)=>{
                                 return <div className="personal-center-fan" key={index}>
@@ -364,10 +390,10 @@ class PersonalCenter extends React.Component {
                             notices.map((item,index) => {
                                 return (
                                  <div className="notice-contain" key={index} onClick={this.showDeleteMenu.bind(this,item,index)}>
-                                     <div className="notive-person">
+                                     <div className="notice-person">
                                          <img src={'http://' + item.content.userImg} alt=""/>
-                                         <span>{item.content.userName}</span>
-                                         <span>{item.content.content}</span>
+                                         <span className="notice-name">{item.content.userName}</span>
+                                         <span className="notice-oper">{item.content.content}</span>
                                      </div>
                                      <span>{item.createdTime}</span>
                                      {
@@ -381,8 +407,29 @@ class PersonalCenter extends React.Component {
                                 );
                             })
                         }
+
+                        {/*{*/}
+                            {/*isMine &&  activeTab === 2 &&*/}
+                                {/*contents.map((item,index)=>{*/}
+                                    {/*<div className="notice-contain" key={index} onClick={this.showDeleteMenu.bind(this,index)}>*/}
+                                        {/*<div className="notice-person">*/}
+                                            {/*<img src={require("../assets/images/search.png")} alt=""/>*/}
+                                            {/*<span>Rodrigo</span>*/}
+                                            {/*<span>关注了你</span>*/}
+                                        {/*</div>*/}
+                                        {/*<span>2019.05.01 18:00</span>*/}
+                                        {/*{*/}
+                                            {/*showDelete && showDelete===index && <ul className="notice-delete">*/}
+                                                {/*<li>删除</li>*/}
+                                                {/*<li>全部删除</li>*/}
+                                            {/*</ul>*/}
+                                        {/*}*/}
+                                    {/*</div>*/}
+                                {/*})*/}
+                        {/*}*/}
+
                         {
-                          isMine && activeTab===3 && isArray(orders) &&
+                          isMine && activeTab===3 && orderObject && orderObject.list && isArray(orderObject.list) &&
                             contents.map((item,index) => {
                                 return (
                                    <OrderItem data={item} key={index} clickMore={this.showOrderModal.bind(this,true)}></OrderItem>
@@ -390,7 +437,7 @@ class PersonalCenter extends React.Component {
                             })
                         }
                         {
-                            <PageBreak pageSize={} page={}></PageBreak>
+                            isMine && orderObject && orderObject.pageSize > 0 && <PageBreak pageTotal={orderObject.pages} go={this.goPage} page={orderObject.pageNum}></PageBreak>
                         }
                     </div>
                     {

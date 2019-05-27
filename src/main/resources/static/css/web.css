@@ -462,6 +462,13 @@
 .personal-center_small-tabs .tab-title__selected,.personal-center_small-tabs .tab-title{
     margin-right: 0;
 }
+.personal-center-content-orderNotice{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-content: space-between;
+    margin: 0 2.5rem;
+}
 .personal-center-content {
     margin: 0 2.95rem;
     display: flex;
@@ -1372,19 +1379,22 @@ ul.li-style{
 
 /*个人中心通知内容样式*/
 .notice-contain{
-    width: 50%;
+    width: 6.33rem;
     padding: .26rem .24rem .26rem .3rem;
     position: relative;
     display: flex;
     justify-content: space-between;
+    margin-right: .64rem;
     background: rgba(255,255,255,1);
     box-shadow: 0 0.02rem 0.16rem 0 rgba(203,203,203,0.5);
     border-radius: .2rem;
     box-sizing: border-box;
+    align-items: center;
+    margin-bottom: .4rem;
 }
 .notice-person{
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
 }
 .notice-person img{
@@ -1413,6 +1423,11 @@ ul.li-style{
     font-weight: 400;
     color: rgba(132,132,132,1);
     line-height: .36rem;
+}
+.notice-contain span{
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
 }
 .notice-delete{
     position: absolute;

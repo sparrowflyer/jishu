@@ -9,7 +9,7 @@ export function PageBreak(props) {
     function pageItem() {
         let pageNum = [];
         {
-            for (let i = 1;i <= props.pageSize; i++){
+            for (let i = 1;i <= props.pageTotal; i++){
                 pageNum.push(
                     <span onClick={go(i) } className={this.state.page === i ? "active page-num" : "page-num"} key={i}>{i}</span>
                 )
@@ -25,6 +25,6 @@ export function PageBreak(props) {
     );
 }
 PageBreak.propTypes = {
-    pageSize: PropTypes.string.isRequired,
+    pageTotal: PropTypes.string.isRequired,
     page:PropTypes.number.isRequired
 };

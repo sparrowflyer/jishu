@@ -16,6 +16,7 @@ export class OrderItem extends React.Component {
     }
 
     render(){
+        let {item} = this.props;
         return (
             <div className="order-contain">
                 <div className="order-title">

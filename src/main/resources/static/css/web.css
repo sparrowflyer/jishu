@@ -423,10 +423,11 @@
 .personal-center_tab-title-container {
     margin: .6rem 3.97rem .6rem 3.97rem;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
 }
 .tab-title__selected,.tab-title{
+    margin-right: .26rem;
     display: inline-block;
     width: 1.8rem;
     height: .6rem;
@@ -458,7 +459,9 @@
     border-radius: .44rem;
     /*line-height: .6rem;*/
 }
-
+.personal-center_small-tabs .tab-title__selected,.personal-center_small-tabs .tab-title{
+    margin-right: 0;
+}
 .personal-center-content {
     margin: 0 2.95rem;
     display: flex;

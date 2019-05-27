@@ -441,24 +441,28 @@
     align-items: center;
 }
 
-.tab-title {
+.tab-title,.tab-title__selected {
     width: .6rem;
     font-size: .09rem;
     line-height: .12rem;
     color: #848484;
     text-align: center;
+    margin-right: .02rem;
+}
+.personal-center_small-tabs .tab-title__selected,.personal-center_small-tabs .tab-title{
+    margin-right: 0;
 }
 
 .tab-title__selected {
     display: inline-block;
-    width: .6rem;
+    /*width: .6rem;*/
     height: .25rem;
     background-color: #FFE201;
     color: #303030;
     border-radius: .44rem;
-    font-size: .09rem;
+    /*font-size: .09rem;*/
     line-height: .25rem;
-    text-align: center;
+    /*text-align: center;*/
 }
 
 .personal-center_small-tabs{

@@ -10,6 +10,7 @@ import Cropper from "react-cropper";
 import { isArray } from '../utils/utils.jsx';
 import {OrderItem} from '../component/OrderItem.jsx';
 import {ShowMoreOrderDetail} from '../component/Modal/ShowMoreOrderDetail.jsx'
+import {PageBreak} from "../component/PageBreak.jsx";
 
 
 const contents = [0,1,2,3,4];
@@ -72,6 +73,7 @@ class PersonalCenter extends React.Component {
             });
             this.getUser(userID);
             this.getFans(userID, 1, 10);
+            // this.getNotificationType();
             this.getNotificationByTypeId(1);
             window.addEventListener('resize', this.updateDimensions);
         } else {
@@ -94,16 +96,23 @@ class PersonalCenter extends React.Component {
             console.log("getNotificationType",resp)
         }).catch(error=>{});
     }
-    //  根据类型获取通知消息
+    //  根据类型获取通知消息  关注通知接口 /getNotificationByTypeId?typeId=1  订单通知接口 /getNotificationByTypeId?typeId=6
     getNotificationByTypeId(id){
         getUrl("/getNotificationByTypeId?typeId=" + id).then(response=>{
             console.log("getNotificationByTypeId",response)
         })
     }
-    showDeleteMenu(idx){
+    showDeleteMenu(item,idx){
         this.setState({
             showDelete: idx === this.state.showDelete ? null : idx
         });
+        if(item.status === "unread"){
+            getUrl('/setUserNotificaitonAsRead?id='+item.id).then(response=>{
+                console.log('消息标注',response);
+            }).catch(error=>{
+                console.log('消息标注',error);
+            })
+        }
     }
     getFans(likeStudentId, pageNo, pageAmount) {
         this.setState((state) => {
@@ -205,7 +214,7 @@ class PersonalCenter extends React.Component {
                 console.log(i);
                 break;
             case 2:
-                this.getNotificationByTypeId(this.state.activeNoticeType);
+                this.getNotificationByTypeId(this.state.activeNoticeType === 0 ? 1:6);
                 break;
             case 3:
                 this.state.activeOrderType===0 ? this.getUncompleteOrder():this.getCompleteOrder();
@@ -217,7 +226,7 @@ class PersonalCenter extends React.Component {
             this.setState({
                 activeNoticeType: idx
             });
-            this.getNotificationByTypeId(idx);
+            this.getNotificationByTypeId(idx===0 ? 1:6);
             return;
         }
         this.setState({
@@ -354,20 +363,21 @@ class PersonalCenter extends React.Component {
                           isMine && activeTab===2 && isArray(notices) &&
                             notices.map((item,index) => {
                                 return (
-                                    <div className="notice-contain" key={index} onClick={this.showDeleteMenu.bind(this,index)}>
-                                        <div className="notive-person">
-                                            <img src={require("../assets/images/search.png")} alt=""/>
-                                            <span>Rodrigo</span>
-                                            <span>关注了你</span>
-                                        </div>
-                                        <span>2019.05.01 18:00</span>
-                                    {
-                                        showDelete && showDelete===index && <ul className="notice-delete">
-                                        <li>删除</li>
-                                        <li>全部删除</li>
-                                        </ul>
-                                    }
-                                    </div>
+                                 <div className="notice-contain" key={index} onClick={this.showDeleteMenu.bind(this,item,index)}>
+                                     <div className="notive-person">
+                                         <img src={'http://' + item.content.userImg} alt=""/>
+                                         <span>{item.content.userName}</span>
+                                         <span>{item.content.content}</span>
+                                     </div>
+                                     <span>{item.createdTime}</span>
+                                     {
+                                         showDelete && showDelete===index && <ul className="notice-delete">
+                                             <li>删除</li>
+                                             <li>全部删除</li>
+                                         </ul>
+                                     }
+                                  </div>
+
                                 );
                             })
                         }
@@ -378,6 +388,9 @@ class PersonalCenter extends React.Component {
                                    <OrderItem data={item} key={index} clickMore={this.showOrderModal.bind(this,true)}></OrderItem>
                                 );
                             })
+                        }
+                        {
+                            <PageBreak pageSize={} page={}></PageBreak>
                         }
                     </div>
                     {

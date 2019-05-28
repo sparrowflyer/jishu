@@ -497,13 +497,13 @@
     align-items: center;
 }
 .personal-center-fan img{
-    width: .5rem;
-    height: .5rem;
+    width: .3rem;
+    height: .3rem;
     border-radius: 50%;
 }
 .personal-center-fan span{
-    font-size: .14rem;
-    line-height: .5rem;
+    font-size: .1rem;
+    line-height: .2rem;
     margin-left: .1rem;
     color: #333;
 }

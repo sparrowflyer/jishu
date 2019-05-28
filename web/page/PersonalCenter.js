@@ -14,7 +14,7 @@ import {PageBreak} from "../component/PageBreak.jsx";
 
 
 const contents = [0,1,2,3,4];
-const centerTabs = ['粉丝列表','我的关注','消息中心','我的订单'];
+const centerTabs = ['粉丝列表','关注列表','消息中心','我的订单'];
 
 class PersonalCenter extends React.Component {
     constructor(props) {
@@ -60,6 +60,7 @@ class PersonalCenter extends React.Component {
         this.goPage = this.goPage.bind(this);
         this.changeOrderModal =this.changeOrderModal.bind(this);
         this.showAlert = this.showAlert.bind(this);
+        this.getFollowing = this.getFollowing.bind(this);
     }
     componentDidMount() {
         if(this.props.match.params.userID) {
@@ -104,22 +105,33 @@ class PersonalCenter extends React.Component {
     }
     //  根据类型获取通知消息  关注通知接口 /getNotificationByTypeId?typeId=1  订单通知接口 /getNotificationByTypeId?typeId=6
     getNotificationByTypeId(id){
-        getUrl("/getNotificationByTypeId?typeId=" + id).then(response=>{
-            if(response.status === 200){
-                let data = response.data.data;
-                let res = [];
-               data.length > 0 && data.map(item=>{
-                   if(item.status === "unread"){
-                       item.content = JSON.parse(item.content);
-                       res.push(item);
-                   }
-                });
-                this.setState({
-                    notices: res
+        let res = [];
+        getUrl("/getNotificationByTypeId?typeId=" + id)
+            .then((response)=>{
+                let data = response.data;
+                if(response.status === 200 && data.status === 'success' && isArray(data.data)){
+                    data.data.map(item=>{
+                        if (item.status === "unread") {
+                            item.content = JSON.parse(item.content);
+                            res.push(item);
+                        }
+                    });
+                }
+                this.setState((state) => {
+                    return {
+                        ...state,
+                        notices: res
+                    }
                 })
-            }
-            console.log("getNotificationByTypeId",response)
-        })
+            }).catch((error) => {
+                this.setState((state) => {
+                    return {
+                        ...state,
+                        notices: []
+                    }
+                });
+                console.error('消息列表', error)
+            });
     }
     showDeleteMenu(item,idx){
         this.setState({
@@ -254,14 +266,36 @@ class PersonalCenter extends React.Component {
                     // sessionStorage.removeItem("jeeUser");
                     // sessionStorage.setItem("jeeUser",JSON.stringify(data.data));
                 } else {
-                    this.props.alert.error(`获取${userID}的个人信息失败,原因为${data.errorMsg || `${response.status}${response.statusText}`}`);
+                    this.props.alert.error(<div style={{fontSize: '12px'}}>{`获取${userID}的个人信息失败,原因为${data.errorMsg || `${response.status}${response.statusText}`}`}</div>);
                 }
                 this.setState({
                     count: this.state.count++
                 }); //更新用户数据
             }).catch(error => {
-            this.props.alert.error('获取个人信息失败！');
+            this.props.alert.error(<div style={{fontSize: '12px'}}>'获取个人信息失败！'</div>);
             console.error('获取个人信息', error);
+        });
+    }
+    getFollowing(studentId, pageNo, pageAmount) {
+        postUrl('/studentLikeUserList', {
+            studentId,
+            pageNo,
+            pageAmount
+        }).then((response) => {
+            let data = response.data;
+            if (response.status === 200 && data.status === 'success') {
+                this.setState((state) => {
+                   return {
+                       ...state,
+                       following: isArray(data.data) ? data.data : []
+                   }
+                });
+            } else {
+                this.props.alert.error(<div style={{fontSize: '12px'}}>{`获取我的关注失败,原因为${data.errorMsg || `${response.status}${response.statusText}`}`}</div>);
+            }
+        }).catch((error) => {
+            console.error('获取关注列表', error);
+            this.props.alert.error(<div style={{fontSize: '12px'}}>获取我的关注失败!</div>);
         });
     }
     componentWillUnmount() {
@@ -276,7 +310,7 @@ class PersonalCenter extends React.Component {
                 this.getFans(this.state.userID,1,10);
                 break;
             case 1:
-                console.log(i);
+                this.getFollowing(this.state.userID, 1, 10);
                 break;
             case 2:
                 this.getNotificationByTypeId(this.state.activeNoticeType === 0 ? 1:6);
@@ -418,7 +452,7 @@ class PersonalCenter extends React.Component {
                     }
                     {
                         activeTab === 3 &&  <div className="personal-center_small-tabs">
-                            <span className={activeOrderType===0?'tab-title__selected':'tab-title'} onClick={this.checkType.bind(this,0)}>未付款</span>
+                            <span className={activeOrderType===0?'tab-title__selected':'tab-title'} onClick={this.checkType.bind(this,0)}>未完成</span>
                             <span className={activeOrderType===1?'tab-title__selected':'tab-title'} onClick={this.checkType.bind(this,1)}>已完成</span>
                         </div>
                     }
@@ -432,10 +466,10 @@ class PersonalCenter extends React.Component {
                             })
                         }
                         {
-                            activeTab===1 && isArray(following) && following.map((fol,index)=>{
+                            activeTab===1 && following.map((fol, index)=>{
                                 return <div className="personal-center-fan" key={index}>
-                                   <img onClick={this.toPersonalCenter.bind(this,fol.id)} src={"http://" + fol.headImage} alt=""/>
-                                    <span onClick={this.toPersonalCenter.bind(this,fol.id)}>{fol.name}</span>
+                                    <img onClick={this.toPersonalCenter.bind(this,fol.id)} src={"http://" + fol.headImage} />
+                                    <span onClick={this.toPersonalCenter.bind(this,fol.id)}>{fol.nickName}</span>
                                 </div>
                             })
                         }

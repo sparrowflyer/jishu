@@ -303,13 +303,20 @@
 
 .evaluation-container {
     margin-top: .16rem;
+    overflow-x: hidden;
+    /*display: flex;*/
+    /*justify-content: space-around;*/
+    /*align-items: center;*/
+}
+.evaluate-scroll{
     display: flex;
+    height: 1.5rem;
     justify-content: space-around;
     align-items: center;
 }
 
-
 .evaluation-item {
+    margin: 0 .08rem;
     width: 1.65rem;
     height: 1.02rem;
     background: #FFFFFF;
@@ -372,6 +379,7 @@
 }
 
 .evaluation-item__active {
+    margin: 0 .08rem;
     width: 1.76rem;
     height: 1.12rem;
     background: #FFFFFF;
@@ -437,7 +445,7 @@
 .personal-center_tab-title-container {
     margin: .2rem .16rem .22rem .16rem;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
 }
 
@@ -959,6 +967,7 @@ input.nth-ipt.ph-text{
     height: .24rem;
 }
 .header-personal-list{
+    cursor: pointer;
     /*top: .34rem;*/
     /*margin-top: .1rem;*/
     right: -.17rem;

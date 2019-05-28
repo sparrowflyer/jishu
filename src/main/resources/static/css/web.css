@@ -262,10 +262,17 @@
 }
 
 .conversation-item {
+    cursor: pointer;
+    padding: .2rem .36rem;
+    box-sizing: border-box;
     display: flex;
     width: 5.85rem;
     justify-content: center;
     align-items: center;
+}
+.conversation-item:hover{
+    box-shadow:0 .02rem .12rem 0 rgba(203,203,203,0.5);
+    border-radius:.2rem;
 }
 
 .conversation-title {
@@ -290,12 +297,20 @@
 .evaluation-container {
     margin-top: .7rem;
     margin-bottom: 1.55rem;
+    overflow-x: hidden;
+    /*display: flex;*/
+    /*justify-content: space-around;*/
+    /*align-items: center;*/
+}
+.evaluate-scroll{
+    height: 4rem;
     display: flex;
     justify-content: space-around;
     align-items: center;
 }
 
 .evaluation-item {
+    margin: 0 .25rem;
      width: 4rem;
      height: 2.51rem;
      background: #FFFFFF;
@@ -358,6 +373,7 @@
 }
 
 .evaluation-item__active {
+    margin: 0 .25rem;
     width: 4.4rem;
     height: 2.6rem;
     background: #FFFFFF;

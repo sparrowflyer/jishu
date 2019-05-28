@@ -12,6 +12,7 @@ import { Footer } from '../component/common/Footer.jsx';
 import { getUser, postUrl } from '../utils/http.js';
 import { getIterativeValue, isArray } from '../utils/utils.jsx';
 
+let timer = null; //滚动定时timer记录
 class StudentDetail extends React.Component {
     constructor(props) {
         super(props);
@@ -22,6 +23,8 @@ class StudentDetail extends React.Component {
             visible: false,
             userInfo: {},
             loginUserInfo: {},
+            scrollNum:0,//评价内容滚动计数
+            scrollDirection:'left', //记录滚动方向
             modalType: "Advisory" //弹窗类别 PaySuccess & WillPay & Advisory
         };
         this.getUser = this.getUser.bind(this);
@@ -104,6 +107,34 @@ class StudentDetail extends React.Component {
                         evaluations: comments
                     }
                 });
+                let num = this.state.width > 768 ? 4 : 2;
+                if(comments.length > num){
+                    timer = setInterval(()=>{
+                        let scrD = this.state.scrollDirection;
+                        let sco = this.state.scrollNum;
+                        if(scrD === 'left') {
+                            if (sco === 0 || sco < comments.length) {
+                                sco += 1;
+                            }
+                            if (sco >= comments.length) {
+                                sco -= 1;
+                                scrD = 'right'
+                            }
+                         } else {
+                                if(sco>0) {
+                                    sco -= 1;
+                                }
+                                else{
+                                    sco += 1;
+                                    scrD = 'left'
+                                }
+                         }
+                        this.setState({
+                            scrollNum: sco,
+                            scrollDirection: scrD
+                        });
+                    },3000)
+                }
             }).catch((error) => {
                 console.error(`获取评价信息:${error}`);
                 that.setState((state) => {
@@ -141,12 +172,17 @@ class StudentDetail extends React.Component {
         });
     }
     componentWillUnmount() {
+        clearInterval(timer);
+        timer = null;
         window.removeEventListener('resize', this.updateDimensions);
     }
 
     render() {
-        let { visible,modalType,userInfo,loginUserInfo } = this.state;
+        let { visible,modalType,userInfo,loginUserInfo,scrollNum,evaluations } = this.state;
         const spacing = this.state.width > 768 ? [80, 50, 80, 75] : [15, 16, 24, 16];
+        let evaItemWidth = this.state.width >768 ? 4.5 : 1.81;
+        let evaArrLen = evaluations.length;
+        let noRollItem = this.state.width > 768 ? 4 : 2;
         return (
             <div className="container-with-footer">
                 <div>
@@ -160,15 +196,17 @@ class StudentDetail extends React.Component {
                     </div>
                     <SubTitle cn="他的评价" en="Evaluation" top={spacing[2]} bottom={spacing[3]} />
                     <div className="evaluation-container">
-                        {
-                            this.state.evaluations.slice(this.state.indexInEvaluations, (this.state.width > 768 ? 4 : 2))
-                                .map((evaluation, index) => {
-                                    return (
-                                        <Evaluation key={index} name={getIterativeValue(evaluation, 'buyer.nickname')} desc={evaluation.comment || ''} professionalScore={evaluation.scoreProfessional || '0.0'} responseScore={evaluation.scoreResponse || '0.0'} attitudeScore={evaluation.scoreAttitude || '0.0'}
-                                                    headImage={getIterativeValue(evaluation, 'buyer.headImage')} isActive={index === 1}/>
-                                    );
-                                })
-                        }
+                        <div className="evaluate-scroll" style={{width:evaItemWidth * evaArrLen +'rem',marginLeft: (scrollNum <= evaArrLen - noRollItem) ? -scrollNum * evaItemWidth + 'rem' : -(evaArrLen - noRollItem) * evaItemWidth + 'rem'}}>
+                            {
+                                //.slice(this.state.indexInEvaluations, (this.state.width > 768 ? 4 : 2))
+                                this.state.evaluations.map((evaluation, index) => {
+                                        return (
+                                            <Evaluation key={index} name={getIterativeValue(evaluation, 'buyer.nickname')} desc={evaluation.comment || ''} professionalScore={evaluation.scoreProfessional || '0.0'} responseScore={evaluation.scoreResponse || '0.0'} attitudeScore={evaluation.scoreAttitude || '0.0'}
+                                                        headImage={getIterativeValue(evaluation, 'buyer.headImage')} isActive={index === scrollNum}/>
+                                        );
+                                    })
+                            }
+                        </div>
                     </div>
                     {
                         this.state.width <= 768 &&

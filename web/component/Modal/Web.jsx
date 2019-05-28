@@ -84,11 +84,13 @@ export class ModalWeb extends React.Component {
         });
     }
     addQuestions(){
-            let arr = this.state.questions;
+        let arr = this.state.questions;
+        if(arr.length<5){
             arr[arr.length] = "";
             this.setState({
                 questions:arr
             })
+        }
     }
     lessQuestions(){
             let arr = this.state.questions;
@@ -143,9 +145,11 @@ export class ModalWeb extends React.Component {
                                         </div>
                                     })
                                 }
-                                <div className="add-line mb30">
-                                    <img onClick={this.addQuestions} src={require("../../assets/images/添加@2x.png")} alt=""/>
-                                </div>
+                                {
+                                    (!questions || questions.length <5) &&<div className="add-line mb30">
+                                        <img onClick={this.addQuestions} src={require("../../assets/images/添加@2x.png")} alt=""/>
+                                    </div>
+                                }
                                 <div className="l-text mb20">你愿意支付</div>
                                 <div className="ipt-wrap">
                                     <input value={money} onChange={this.setMoney}  className="l-text" type="text"/>

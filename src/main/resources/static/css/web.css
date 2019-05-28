@@ -1667,7 +1667,9 @@ ul.li-style{
 .order-detail-modal .flex-row-start{
     margin-bottom: .2rem;
 }
-
+.evaluation-dialog-btn-container{
+    margin-top: .4rem;
+}
 .evaluation-dialog-title {
     color: #0E0E0E;
     font-size: .3rem;

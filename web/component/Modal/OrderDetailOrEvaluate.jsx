@@ -2,7 +2,7 @@ import React from 'react';
 import {isArray} from "../../utils/utils.jsx";
 import { postUrl } from '../../utils/http.js';
 
-export class ShowMoreOrderDetail extends React.Component {
+export class OrderDetailOrEvaluate extends React.Component {
     constructor(props){
         super(props);
         this.state = {
@@ -25,14 +25,7 @@ export class ShowMoreOrderDetail extends React.Component {
     close(idx){
         this.props.showOrderModal(false);
     }
-    componentDidMount(){
-        // let questions = this.props.data.questions;
-        // if(questions){
-        //     this.setState({
-        //         questions: questions
-        //     })
-        // }
-    }
+    componentDidMount(){}
     goEvaluate(){
         this.props.ChangeOrderModalType("OrderEvaluate");
     }
@@ -42,7 +35,7 @@ export class ShowMoreOrderDetail extends React.Component {
     evaluate() {
         //提示信息 props
         postUrl('/commentPurchaseContact', {
-            purchaseContactId: props.data.id, //订单ID props传递 待补充
+            purchaseContactId: this.props.data.id, //订单ID props传递 待补充
             scoreResponse: this.state.inspire,
             scoreAttitude: this.state.attitude,
             scoreProfessional: this.state.profession,
@@ -50,16 +43,23 @@ export class ShowMoreOrderDetail extends React.Component {
         }).then((response) => {
             let data = response.data;
             if (data.status === 'success') {
+                console.log('success',response);
+                this.close();
+                this.props.showAlert('评价成功！');
                 //待补充
                 //关闭弹出框 弹出评价成功提示信息 可以提示组件通过将props进行传递，参考StudentDetail中的Avator的alert属性
             } else {
+                this.close();
+                this.props.showAlert('评价失败！');
                 //待补充
                 //弹出评价失败提示信息
             }
         }).catch((error) => {
+            this.close();
+            this.props.showAlert('评价失败！');
             //待补充
             //弹出评价失败提示信息
-            console.error(error);
+            console.error('error',error);
         });
     }
     handleChange(event) {
@@ -80,14 +80,14 @@ export class ShowMoreOrderDetail extends React.Component {
         let questions = data.questions;
         return (
             <div className="order-detail-modal">
+                <div className="order-contain">
+                    {
+                        width > 768 && <div className="order-modal-close-topRight">
+                            <img src={require("../../assets/images/guanbi1.png")} onClick={this.close} alt=""/>
+                        </div>
+                    }
                 {
-                    type === "MoreDetail" ? <div className="order-contain">
-                        {
-                            width >768 && <div className="order-modal-close-topRight">
-                                <img src={require("../../assets/images/guanbi1.png")} onClick={this.close} alt=""/>
-                            </div>
-                        }
-
+                    type === "MoreDetail" ? <div>
                         <div className="flex-row-start">
                             <div className="line-label">买家姓名</div>
                             <div className="line-content">{data.buyerUser && data.buyerUser.nickName}</div>
@@ -116,10 +116,12 @@ export class ShowMoreOrderDetail extends React.Component {
                             <div className="line-label">订单时间</div>
                             <div className="line-content">{data.createdTime}</div>
                         </div>
-                        {
-                            data.status==="payed" ? <button className="order-modal-evaluate" onClick={this.goEvaluate.bind(this,data)}>待评价</button>:
-                                <button className="order-finish">已完成</button>
-                        }
+                        <div className="order-btn">
+                            {
+                                data.status==="payed" ? <button className="order-modal-evaluate" onClick={this.goEvaluate.bind(this,data)}>待评价</button>:
+                                    <button className="order-finish">已完成</button>
+                            }
+                        </div>
                     </div> :
                         <div className="evaluation-dialog-container">
                             <div className="evaluation-dialog-title">请您对我的本次服务进行评价</div>
@@ -162,11 +164,11 @@ export class ShowMoreOrderDetail extends React.Component {
                             </div>
                         </div>
                 }
-
+                </div>
                 {
-                    width <=768 &&
+                    width <= 768 &&
                         <div className="order-modal-close-midBottom">
-                            <img src={require("../../assets/images/guanbi1.png")} alt=""/>
+                            <img onClick={this.close} src={require("../../assets/images/guanbi1.png")} alt=""/>
                         </div>
                 }
             </div>

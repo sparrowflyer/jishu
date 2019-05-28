@@ -84,10 +84,12 @@ export class ModalMobile extends React.Component{
     }
     addQuestions(){
         let arr = this.state.questions;
-        arr[arr.length] = "";
-        this.setState({
-            questions:arr
-        })
+        if(arr.length<5){
+            arr[arr.length] = "";
+            this.setState({
+                questions:arr
+            })
+        }
     }
     lessQuestions(){
         let arr = this.state.questions;
@@ -137,9 +139,11 @@ export class ModalMobile extends React.Component{
                                             </div>
                                         })
                                     }
-                                    <div className="add-line mb15">
-                                        <img onClick={this.addQuestions} src={require("../../assets/images/添加@2x.png")} alt=""/>
-                                    </div>
+                                    {
+                                        (!questions || questions.length <5) &&<div className="add-line mb15">
+                                            <img onClick={this.addQuestions} src={require("../../assets/images/添加@2x.png")} alt=""/>
+                                        </div>
+                                    }
                                     <div className="l-text mb16">你愿意支付</div>
                                     <input value={money} onChange={this.setMoney} className="ph-text l-text" type="text"/>
                                     <div className="ipt-line"></div>

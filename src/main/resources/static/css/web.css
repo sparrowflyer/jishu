@@ -485,11 +485,14 @@
 }
 
 .personal-center-fan{
+    width: 50%;
     margin-bottom: .2rem;
+    display: flex;
+    align-items: center;
 }
 .personal-center-fan img{
-    width: 1.5rem;
-    height: 1.5rem;
+    width: 1rem;
+    height: 1rem;
     border-radius: 50%;
 }
 .personal-center-fan span{
@@ -1667,7 +1670,9 @@ ul.li-style{
 .order-detail-modal .flex-row-start{
     margin-bottom: .2rem;
 }
-
+.evaluation-dialog-btn-container{
+    margin-top: .4rem;
+}
 .evaluation-dialog-title {
     color: #0E0E0E;
     font-size: .3rem;

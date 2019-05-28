@@ -8,29 +8,21 @@ export class OrderItem extends React.Component {
         this.state = {
             orderItem:{},
             showMoreModal:false,
-            // questions:[],
         };
         this.showMore =this.showMore.bind(this);
+        this.goEvalaute =this.goEvalaute.bind(this);
     }
-    componentDidMount(){
-        // let questions = this.props.data.questions;
-        // if(questions){
-        //     this.setState({
-        //         questions: questions
-        //     })
-        // }
-    }
+    componentDidMount(){}
     showMore(item){
-        this.props.clickMore(true,item,"MoreDetail");
+        this.props.showOrderModal(true,item,"MoreDetail");
     }
     goEvalaute(){
-        this.props.clickMore(true,this.props.data,"OrderEvaluate");
+        this.props.showOrderModal(true,this.props.data,"OrderEvaluate");
     }
 
     render(){
         let {data} = this.props;
         let questions = data.questions;
-        // let {questions} = this.state;
         return (
             <div className="order-contain">
                 <div className="order-title">
@@ -48,12 +40,15 @@ export class OrderItem extends React.Component {
                             {
                                 questions && isArray(questions) && questions.length > 0 &&
                                 questions.map((item,index)=>{
-                                  return  index > 3 && questions.length > 3 ?
-                                        <li className="question-forMore" onClick={this.showMore.bind(this,data)}>剩余内容，点击查看详情</li>:
+                                  return  ((questions.length > 3 && index < 2) || (questions.length<=3)) &&
                                     <li key={index} className="order-question">{item}</li>
                             })
                             }
-
+                            {
+                                questions.length > 3 &&
+                                <li className="question-forMore"
+                                    onClick={this.showMore.bind(this, data)}>剩余内容，点击查看详情</li>
+                            }
                         </ul>
                     </div>
                     <div className="last-item flex-row-start">

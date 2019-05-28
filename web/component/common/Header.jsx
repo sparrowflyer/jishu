@@ -31,7 +31,6 @@ export class Header extends React.Component {
         this.getNotice();
     }
     getNotice(){
-        //TODO:获取通知接口不对
         getUnreadNotificaitonCount().then(resp=>{
             if(resp.data.status === "success"){
                 this.setState({

@@ -488,19 +488,22 @@
     margin: 0 .17rem;
     display: flex;
     flex-wrap: wrap;
+    flex-direction: column;
 }
 
 .personal-center-fan{
     margin-bottom: .2rem;
+    display: flex;
+    align-items: center;
 }
 .personal-center-fan img{
-    width: .5rem;
-    height: .5rem;
+    width: .3rem;
+    height: .3rem;
     border-radius: 50%;
 }
 .personal-center-fan span{
-    font-size: .14rem;
-    line-height: .5rem;
+    font-size: .1rem;
+    line-height: .2rem;
     margin-left: .1rem;
     color: #333;
 }
@@ -623,10 +626,11 @@
 }
 .alert-text{
     position: absolute;
-    top: .1rem;
-    left: .2rem;
+    font-size: .09rem;
+    top: .05rem;
+    left: .08rem;
     border: 1px solid #848484;
-    padding: .05rem .1rem;
+    padding: .03rem .8rem;
     color: #ff0000;
 }
 
@@ -1578,6 +1582,9 @@ input.nth-ipt.ph-text{
 .order-question-contain{
     display: flex;
 }
+.order-question-contain .line-label{
+    margin-bottom: .65rem;
+}
 
 /*订单弹出框*/
 .order-detail-modal{
@@ -1596,6 +1603,9 @@ input.nth-ipt.ph-text{
      width: 3.4rem;
      height: 3.28rem;
      margin: 1.5rem auto 0;
+     -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+     box-sizing: border-box;
  }
 .order-detail-modal li.order-question{
     display: flex;

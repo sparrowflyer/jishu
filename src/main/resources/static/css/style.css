@@ -1055,3 +1055,7 @@ ul, li {
     justify-content: center;
     /*text-align: center;*/
 }
+.order-btn{
+    width: 100%;
+    text-align: center;
+}

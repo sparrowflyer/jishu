@@ -9,7 +9,7 @@ import {getUser, updateUserHeadImage, uploadImage,getUrl} from "../utils/http";
 import Cropper from "react-cropper";
 import { isArray } from '../utils/utils.jsx';
 import {OrderItem} from '../component/OrderItem.jsx';
-import {ShowMoreOrderDetail} from '../component/Modal/ShowMoreOrderDetail.jsx'
+import {OrderDetailOrEvaluate} from '../component/Modal/OrderDetailOrEvaluate.jsx'
 import {PageBreak} from "../component/PageBreak.jsx";
 
 
@@ -59,6 +59,7 @@ class PersonalCenter extends React.Component {
         this.deleteNoticeAll = this.deleteNoticeAll.bind(this);
         this.goPage = this.goPage.bind(this);
         this.changeOrderModal =this.changeOrderModal.bind(this);
+        this.showAlert = this.showAlert.bind(this);
     }
     componentDidMount() {
         if(this.props.match.params.userID) {
@@ -79,7 +80,7 @@ class PersonalCenter extends React.Component {
             this.getUser(userID);
             this.getFans(userID, 1, 10);
             // this.getNotificationType();
-            this.getNotificationByTypeId(1);
+            this.getNotificationByTypeId(this.state.activeNoticeType===0 ? 1:6);
             window.addEventListener('resize', this.updateDimensions);
         } else {
             this.props.history.push('/');
@@ -191,13 +192,11 @@ class PersonalCenter extends React.Component {
             if(resp.status === 200 && resp.data){
                 let obj = resp.data.data;
                 obj.list && obj.list.map((item,index) => {
-                    console.log(item.buyerUser,item.buyerUser.nickName);
                     if(item.questions !== ""){
                         item.questions = item.questions.split(",");
                     } else {
                         item.questions = [];
                     }
-                    console.log(index,item.questions);
                 });
                 this.setState({
                     orderObject: obj
@@ -252,8 +251,8 @@ class PersonalCenter extends React.Component {
                             userInfo: data.data
                         }
                     });
-                    sessionStorage.removeItem("jeeUser");
-                    sessionStorage.setItem("jeeUser",JSON.stringify(data.data));
+                    // sessionStorage.removeItem("jeeUser");
+                    // sessionStorage.setItem("jeeUser",JSON.stringify(data.data));
                 } else {
                     this.props.alert.error(`获取${userID}的个人信息失败,原因为${data.errorMsg || `${response.status}${response.statusText}`}`);
                 }
@@ -393,6 +392,9 @@ class PersonalCenter extends React.Component {
             OrderModalType:value
         })
     }
+    showAlert(value){
+        this.props.alert.show(<div style={{fontSize:'.12rem'}}>{value}</div>);
+    }
     render() {
         let {OrderModalType,count,isMine,orderModalData,editImageModalVisible,src,userInfo,userID,activeTab,activeOrderType,activeNoticeType,orderObject,fans,following,notices,showDelete,showOrderModal} = this.state;
         return (
@@ -420,7 +422,7 @@ class PersonalCenter extends React.Component {
                             <span className={activeOrderType===1?'tab-title__selected':'tab-title'} onClick={this.checkType.bind(this,1)}>已完成</span>
                         </div>
                     }
-                    <div className={(activeTab===2&&activeOrderType===0)?"personal-center-content":"personal-center-content-fan"}>
+                    <div className={(activeTab===2&&activeNoticeType===0)?"personal-center-content":"personal-center-content-fan"}>
                         {
                             activeTab===0 && isArray(fans) && fans.map((fan,index)=>{
                                 return <div className="personal-center-fan" key={index}>
@@ -464,7 +466,7 @@ class PersonalCenter extends React.Component {
                           isMine && activeTab===3 && orderObject && orderObject.list && isArray(orderObject.list) &&
                           orderObject.list.map((item,index) => {
                                 return (
-                                   <OrderItem data={item} key={index} clickMore={this.showOrderModal}></OrderItem>
+                                   <OrderItem data={item} key={index} showOrderModal={this.showOrderModal}></OrderItem>
                                 );
                             })
                         }
@@ -519,7 +521,7 @@ class PersonalCenter extends React.Component {
                         </div>
                     }
                 </div>
-                { orderModalData && showOrderModal && <ShowMoreOrderDetail type={OrderModalType} ChangeOrderModalType={this.changeOrderModal} data={orderModalData} showOrderModal={this.showOrderModal}></ShowMoreOrderDetail>}
+                { orderModalData && showOrderModal && <OrderDetailOrEvaluate showAlert={this.showAlert} type={OrderModalType} ChangeOrderModalType={this.changeOrderModal} data={orderModalData} showOrderModal={this.showOrderModal}></OrderDetailOrEvaluate>}
                 <Footer></Footer>
             </div>
         );

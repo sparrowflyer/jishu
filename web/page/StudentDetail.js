@@ -23,7 +23,7 @@ class StudentDetail extends React.Component {
             visible: false,
             userInfo: {},
             loginUserInfo: {},
-            scrollNum:0,//评价内容滚动计数
+            scrollNum:1,//评价内容滚动页面计数
             scrollDirection:'left', //记录滚动方向
             modalType: "Advisory" //弹窗类别 PaySuccess & WillPay & Advisory
         };
@@ -32,6 +32,7 @@ class StudentDetail extends React.Component {
         this.getComment = this.getComment.bind(this);
         this.changeModalType = this.changeModalType.bind(this);
         this.close = this.close.bind(this);
+        this.refreshEvaList = this.refreshEvaList.bind(this);
     }
     componentDidMount() {
         if (this.props.match.params.userID) {
@@ -45,7 +46,12 @@ class StudentDetail extends React.Component {
                 return { ...state, loginUserInfo}
             });
             this.getUser(this.props.match.params.userID);
-            this.getComment(this.props.match.params.userID, 1, 10);
+            this.refreshEvaList();
+            let num = this.state.width > 768 ? 4 : 2;
+            this.getComment(this.props.match.params.userID, 1, num);
+            this.setState({
+                scrollNum:2
+            });
             window.addEventListener('resize', this.updateDimensions);
         } else {
             this.props.history.push('/');
@@ -101,40 +107,19 @@ class StudentDetail extends React.Component {
                 } else {
                     console.error(`获取评价信息:${data.errorMsg || `${response.status}${response.statusText}`}`);
                 }
+                if(pageNo>1 && comments.length<1){
+                    this.getComment(studentId,1,pageAmount);
+                    this.setState({
+                        scrollNum:1
+                    });
+                    return;
+                }
                 that.setState((state) => {
                     return {
                         ...state,
                         evaluations: comments
                     }
                 });
-                let num = this.state.width > 768 ? 4 : 2;
-                if(comments.length > num){
-                    timer = setInterval(()=>{
-                        let scrD = this.state.scrollDirection;
-                        let sco = this.state.scrollNum;
-                        if(scrD === 'left') {
-                            if (sco === 0 || sco < comments.length) {
-                                sco += 1;
-                            }
-                            if (sco >= comments.length) {
-                                sco -= 1;
-                                scrD = 'right'
-                            }
-                         } else {
-                                if(sco>0) {
-                                    sco -= 1;
-                                }
-                                else{
-                                    sco += 1;
-                                    scrD = 'left'
-                                }
-                         }
-                        this.setState({
-                            scrollNum: sco,
-                            scrollDirection: scrD
-                        });
-                    },3000)
-                }
             }).catch((error) => {
                 console.error(`获取评价信息:${error}`);
                 that.setState((state) => {
@@ -177,17 +162,29 @@ class StudentDetail extends React.Component {
         window.removeEventListener('resize', this.updateDimensions);
     }
 
+    // 定时刷新评价列表数据
+    refreshEvaList(){
+        let num = this.state.width > 768 ? 4 : 2;
+        timer = setInterval(()=>{
+            this.getComment(this.props.match.params.userID, this.state.scrollNum, num)
+            let scrollNum = this.state.scrollNum;
+            this.setState({
+                scrollNum: ++scrollNum
+            })
+        },20000)
+    }
+
     render() {
         let { visible,modalType,userInfo,loginUserInfo,scrollNum,evaluations } = this.state;
         const spacing = this.state.width > 768 ? [80, 50, 80, 75] : [15, 16, 24, 16];
-        let evaItemWidth = this.state.width >768 ? 4.5 : 1.81;
-        let evaArrLen = evaluations.length;
-        let noRollItem = this.state.width > 768 ? 4 : 2;
+        // let evaItemWidth = this.state.width >768 ? 4.5 : 1.81;
+        // let evaArrLen = evaluations.length;
+        // let noRollItem = this.state.width > 768 ? 4 : 2;
         return (
             <div className="container-with-footer">
                 <div>
                     <Header userInfo={loginUserInfo}></Header>
-                    <Avator parent="StudentDetail" isWeb={this.state.width > 768} userID={this.props.match.params.userID} userInfo={userInfo} knowHim={this.knowHim.bind(this)} isCenter={false} alert={this.props.alert}/>
+                    <Avator parent="StudentDetail" isWeb={this.state.width > 768} userID={this.props.match.params.userID} userInfo={userInfo} knowHim={this.knowHim.bind(this)} alert={this.props.alert}/>
                     <SubTitle cn="他的话题" en="Topic of conversation" top={spacing[0]} bottom={spacing[1]} />
                     <div className="conversation-container">
                         <Conversation title="专业" desc={getIterativeValue(userInfo, 'userStudentInfo.major')} />
@@ -196,17 +193,17 @@ class StudentDetail extends React.Component {
                     </div>
                     <SubTitle cn="他的评价" en="Evaluation" top={spacing[2]} bottom={spacing[3]} />
                     <div className="evaluation-container">
-                        <div className="evaluate-scroll" style={{width:evaItemWidth * evaArrLen +'rem',marginLeft: (scrollNum <= evaArrLen - noRollItem) ? -scrollNum * evaItemWidth + 'rem' : -(evaArrLen - noRollItem) * evaItemWidth + 'rem'}}>
+                        {/*<div className="evaluate-scroll" style={{width:evaItemWidth * evaArrLen +'rem',marginLeft: (scrollNum <= evaArrLen - noRollItem) ? -scrollNum * evaItemWidth + 'rem' : -(evaArrLen - noRollItem) * evaItemWidth + 'rem'}}>*/}
                             {
                                 //.slice(this.state.indexInEvaluations, (this.state.width > 768 ? 4 : 2))
                                 this.state.evaluations.map((evaluation, index) => {
                                         return (
-                                            <Evaluation key={index} name={getIterativeValue(evaluation, 'buyer.nickname')} desc={evaluation.comment || ''} professionalScore={evaluation.scoreProfessional || '0.0'} responseScore={evaluation.scoreResponse || '0.0'} attitudeScore={evaluation.scoreAttitude || '0.0'}
-                                                        headImage={getIterativeValue(evaluation, 'buyer.headImage')} isActive={index === scrollNum}/>
+                                            <Evaluation key={index} name={getIterativeValue(evaluation, 'buyer.nickName')} desc={evaluation.comment || ''} professionalScore={evaluation.scoreProfessional || '0.0'} responseScore={evaluation.scoreResponse || '0.0'} attitudeScore={evaluation.scoreAttitude || '0.0'}
+                                                        headImage={getIterativeValue(evaluation, 'buyer.headImage')} isActive={index === 0}/>
                                         );
                                     })
                             }
-                        </div>
+                        {/*</div>*/}
                     </div>
                     {
                         this.state.width <= 768 &&
@@ -214,8 +211,8 @@ class StudentDetail extends React.Component {
                     }
                     {
                         this.state.width > 768 ?
-                            <ModalWeb onClose={this.close} handleChangeType={this.changeModalType} loginUserID={loginUserInfo&&loginUserInfo.id||null} userID={userInfo.id} visible={visible} type={modalType}/>:
-                            <ModalMobile onClose={this.close} handleChangeType={this.changeModalType} loginUserID={loginUserInfo&&loginUserInfo.id||null} userID={userInfo.id} visible={visible} type={modalType}/>
+                            <ModalWeb price={getIterativeValue(userInfo, 'userStudentInfo.contactsPrice')} onClose={this.close} handleChangeType={this.changeModalType} loginUserID={loginUserInfo&&loginUserInfo.id||null} userID={userInfo.id} visible={visible} type={modalType}/>:
+                            <ModalMobile price={getIterativeValue(userInfo, 'userStudentInfo.contactsPrice')} onClose={this.close} handleChangeType={this.changeModalType} loginUserID={loginUserInfo&&loginUserInfo.id||null} userID={userInfo.id} visible={visible} type={modalType}/>
                     }
                 </div>
                 <Footer />

@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.PageInfo;
 import com.wanmoxing.jishu.bean.User;
 import com.wanmoxing.jishu.bean.UserNotification;
 import com.wanmoxing.jishu.bean.UserNotificationClassType;
@@ -182,8 +184,8 @@ public class UserNotificationController {
 	 * @param session
 	 * @return
 	 */
-	@RequestMapping(value = "/getNotificationByTypeId", method = RequestMethod.GET)
-	public ResultDTO getNotificationByType (HttpSession session, @RequestParam("typeId")int typeId) {
+	@RequestMapping(value = "/getNotificationByTypeId", method = RequestMethod.POST)
+	public ResultDTO getNotificationByType (HttpSession session, @RequestBody JSONObject jsonParams) {
 		ResultDTO result = new ResultDTO();
 		try {
 			ResultDTO resultDTO = new ResultDTO();
@@ -193,9 +195,12 @@ public class UserNotificationController {
 				resultDTO.setStatus(ResultDTOStatus.ERROR.getStatus());
 				return resultDTO;
 			}
+			int typeId = jsonParams.getIntValue("typeId");
+			int page = jsonParams.getIntValue("page");
+			int pageSize = jsonParams.getIntValue("pageSize");
 			User user = (User)session.getAttribute("user");
 			int uid = user.getId();
-			List<UserNotification> list = userNotificationService.findByUserIdAndTypeId(uid, typeId);
+			PageInfo<UserNotification> list = userNotificationService.findByUserIdAndTypeId(uid, typeId, page, pageSize);
 			result.setData(list);
 			return result;
 		} catch (Exception e) {

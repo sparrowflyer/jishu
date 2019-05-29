@@ -2,6 +2,7 @@ package com.wanmoxing.jishu.service;
 
 import java.util.List;
 
+import com.github.pagehelper.PageInfo;
 import com.wanmoxing.jishu.bean.UserNotification;
 
 public interface UserNotificationService {
@@ -12,7 +13,7 @@ public interface UserNotificationService {
 	
 	public int findNotificationCount(int userId, String status);
 	
-	public List<UserNotification> findByUserIdAndTypeId(int userId, int typeId);
+	public PageInfo<UserNotification> findByUserIdAndTypeId(int userId, int typeId, int page, int pageSize);
 
     public void insert(UserNotification userNotification);
 

@@ -721,6 +721,7 @@ input.nth-ipt.ph-text{
 .l-text{
     font-weight:500;
     color:rgba(48,48,48,1);
+    background: #fff;
 }
 .li-text{
     font-weight:400;

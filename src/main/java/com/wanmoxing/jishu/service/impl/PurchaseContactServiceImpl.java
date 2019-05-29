@@ -1,6 +1,8 @@
 package com.wanmoxing.jishu.service.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,6 +62,13 @@ public class PurchaseContactServiceImpl implements PurchaseContactService {
 		PageHelper.startPage(page, pageSize);
 		List<PurchaseContact> purchaseContacts = purchaseContactMapper.findByStatuses(statuses, userId);
 		List<PurchaseContactDetail> purchaseContactDetails = new ArrayList<>();
+		Collections.sort(purchaseContacts, new Comparator<PurchaseContact>() {
+
+			@Override
+			public int compare(PurchaseContact o1, PurchaseContact o2) {
+				return o2.getCreatedTime().compareTo(o1.getCreatedTime());
+			}
+		});
 		for(PurchaseContact purchaseContact : purchaseContacts) {
 			PurchaseContactDetail purchaseContactDetail = new PurchaseContactDetail(purchaseContact);
 			User seller = UserMapper.findById(purchaseContact.getSellerId());

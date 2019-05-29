@@ -118,7 +118,7 @@ class PersonalCenter extends React.Component {
         })
             .then((response)=>{
                 let data = response.data;
-                if(response.status === 200 && data.status === 'success' && isArray(data.data)){
+                if(response.status === 200 && data.status === 'success' && isArray(data.data.list)){
                     data.data.list.map(item=>{
                         // if (item.status === "unread") {
                         if(item.content && !isArray(item.content)){

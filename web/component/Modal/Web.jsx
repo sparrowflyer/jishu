@@ -21,7 +21,6 @@ export class ModalWeb extends React.Component {
         this.changeType = this.changeType.bind(this);
         this.addQuestions = this.addQuestions.bind(this);
         this.lessQuestions = this.lessQuestions.bind(this);
-        this.setMoney = this.setMoney.bind(this);
         this.setQusetions = this.setQusetions.bind(this);
         this.propsClose= this.propsClose.bind(this);
         this.setAlert= this.setAlert.bind(this);
@@ -99,15 +98,11 @@ export class ModalWeb extends React.Component {
                 questions:arr
             })
     }
-    setMoney(e){
+    componentDidMount() {
         this.setState({
-            money:e.target.value
+            money:this.props.price
         })
     }
-    // componentDidUpdate(preProps) {
-    //     if(preProps.visible !== this.props.visible) this.setState({ visible: this.props.visible });
-    // }
-
     render() {
         // 通过父组件传递的visile控制显隐
         let {questions,money,alertShow,alertText} = this.state,{type,visible}= this.props;
@@ -152,7 +147,7 @@ export class ModalWeb extends React.Component {
                                 }
                                 <div className="l-text mb20">你愿意支付</div>
                                 <div className="ipt-wrap">
-                                    <input value={money} onChange={this.setMoney}  className="l-text" type="text"/>
+                                    <input value={'¥ '+this.props.price} disabled className="l-text" type="text"/>
                                 </div>
                                 <div className="ta-center mt42">
                                     <button className="m-button" onClick={this.changeType.bind(this,"willpay")}>去支付</button>

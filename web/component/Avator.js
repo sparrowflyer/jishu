@@ -153,13 +153,9 @@ export class Avator extends React.Component {
         });
     }
     componentDidUpdate(prevProps) {
-        // console.log("Avator",this.props)
         if (this.props.userID !== prevProps.userID) {
             getUser(this.props.userID);
         }
-        // if(this.props.userInfo !== prevProps.userInfo){
-        //     sessionStorage.setItem()
-        // }
     }
 
     render(){
@@ -172,7 +168,7 @@ export class Avator extends React.Component {
             zIndex: 9999,
             opacity: 0,
         };
-        const avatorPageBg = (this.props.parent === 'PersonalCenter' ? '../static/image/temp/personalCenter_bg.png' : '../static/image/temp/studentDetail_bg.png');
+        const avatorPageBg = (this.props.parent.indexOf('PersonalCenter') > -1 ? '../static/image/temp/personalCenter_bg.png' : '../static/image/temp/studentDetail_bg.png');
         return (
             <div>
                 <div className="avator_bg" style={{backgroundImage: 'url(' + avatorPageBg +')'}}></div>
@@ -191,7 +187,7 @@ export class Avator extends React.Component {
                 </div>
                 <div className="user">
                     {
-                        this.props.parent === 'StudentDetail' && this.props.isWeb &&
+                        (this.props.parent === 'StudentDetail' || this.props.parent === 'otherPersonalCenter') && this.props.isWeb &&
                             <div className="user_know-btn" onClick={this.likeOrUnlike}>{this.state.isLike ? '取消关注' : '关注'}</div>
                     }
                     {
@@ -200,15 +196,15 @@ export class Avator extends React.Component {
                         </div> : <div className="user_name">{this.props.userInfo.nickName || ''}</div>
                     }
                     {
-                        !this.props.isCenter && this.props.isWeb &&
+                        this.props.parent === 'StudentDetail' && this.props.isWeb &&
                             <div className="user_know-btn" onClick={this.props.knowHim}>认识他</div>
                     }
                     {
-                        this.props.parent === 'StudentDetail' && !this.props.isWeb &&
+                        (this.props.parent === 'StudentDetail' || this.props.parent === 'otherPersonalCenter') && !this.props.isWeb &&
                             <div className="user_like-btn" onClick={this.likeOrUnlike}>{this.state.isLike ? '取消关注' : '关注'}</div>
                     }
                     {
-                        this.props.parent === 'PersonalCenter'&& this.props.isMine &&
+                        this.props.parent.indexOf('PersonalCenter')>-1 && this.props.isMine &&
                         (this.state.canEdit ? <div className="user-info-edit-confirm" onClick={this.editInfo.bind(this,true)}>保存</div>:
                             <div className="jee-edit user_edit-icon" onClick={this.editInfo.bind(this,false)}></div>)
 
@@ -262,6 +258,6 @@ export class Avator extends React.Component {
 }
 
 Avator.propTypes = {
-    parent: PropTypes.oneOf(['PersonalCenter', 'StudentDetail']),
+    parent: PropTypes.oneOf(['otherPersonalCenter','myPersonalCenter', 'StudentDetail']),
     isWeb: PropTypes.bool
 };

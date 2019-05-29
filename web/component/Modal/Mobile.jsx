@@ -21,7 +21,6 @@ export class ModalMobile extends React.Component{
         this.changeType = this.changeType.bind(this);
         this.addQuestions = this.addQuestions.bind(this);
         this.lessQuestions = this.lessQuestions.bind(this);
-        this.setMoney = this.setMoney.bind(this);
         this.setQusetions = this.setQusetions.bind(this);
         this.propsClose= this.propsClose.bind(this);
         this.setAlert= this.setAlert.bind(this);
@@ -98,12 +97,11 @@ export class ModalMobile extends React.Component{
             questions:arr
         })
     }
-    setMoney(e){
+    componentDidMount() {
         this.setState({
-            money:e.target.value
+            money:this.props.price
         })
     }
-    // componentDidUpdate(preProps) {}
     render() {
         // 通过父组件传递的visile控制显隐
         let {questions,money,alertShow,alertText} = this.state,{type,visible}= this.props;
@@ -145,7 +143,7 @@ export class ModalMobile extends React.Component{
                                         </div>
                                     }
                                     <div className="l-text mb16">你愿意支付</div>
-                                    <input value={money} onChange={this.setMoney} className="ph-text l-text" type="text"/>
+                                    <input value={'¥ '+this.props.price} disabled className="ph-text l-text" type="text"/>
                                     <div className="ipt-line"></div>
                                     <div className="ta-center">
                                         <button className="m-button" onClick={this.changeType.bind(this,"WillPay")}>去支付</button>

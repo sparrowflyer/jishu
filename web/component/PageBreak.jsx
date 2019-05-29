@@ -6,27 +6,31 @@ export function PageBreak(props) {
     function go(e) {
         props.goPage(e.target.key);
     }
-   function goPre(){
-        props.goPage(props.page-1)
-    }
-    function goNext(){
-        props.goPage(props.page+1)
-    }
+   // function goPre(e){
+   //      props.goPage(e.target.key)
+   //  }
+   //  function goNext(e){
+   //      props.goPage(e.target.key)
+   //  }
     function pageItem() {
         let pageNum = [];
         {
-            for (let i = 1;i <= props.pageTotal; i++){
+            props.pageArr.map(item=>{
                 pageNum.push(
-                    <span onClick={go} className={page === i ? "active page-num" : "page-num"} key={i}>{i}</span>
+                    <span onClick={go} className={page === item ? "active page-num" : "page-num"} key={item}>{item}</span>
                 )
-            }
+            })
         }
     }
     return (
         <div className="pageBreak-contain">
-            <span className="page-num page-pre jee-arrow-left" onClick={goPre}></span>
+            {
+                props.previous.hasPreviousPage && <span className="page-num page-pre jee-arrow-left"key={props.previous.prePage} onClick={go}></span>
+            }
             {pageItem}
-            <span className="page-num page-next jee-arrow-right" onClick={goNext}></span>
+            {
+                props.next.hasNextPage && <span className="page-num page-next jee-arrow-right" key={props.next.nextPage} onClick={go}></span>
+            }
         </div>
     );
 }

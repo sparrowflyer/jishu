@@ -9,7 +9,6 @@ export class OrderDetailOrEvaluate extends React.Component {
             width: document.documentElement.clientWidth || document.body.clientWidth || window.innerWidth,
             orderItem:{},
             showMoreModal:false,
-            // questions:[],
             modalType:"MoreDetail" ,// 详情 MoreDetail && 评价 OrderEvaluate
             profession: 0,
             inspire: 0,
@@ -17,20 +16,21 @@ export class OrderDetailOrEvaluate extends React.Component {
             desc: ''
         };
         this.close =this.close.bind(this);
-        this.goEvaluate = this.goEvaluate.bind(this);
+        this.goEvalauteOrConfirm = this.goEvalauteOrConfirm.bind(this);
 
         this.evaluate = this.evaluate.bind(this);
         this.handleChange = this.handleChange.bind(this);
     }
-    close(idx){
+    close(){
         this.props.showOrderModal(false);
     }
     componentDidMount(){}
-    goEvaluate(){
-        this.props.ChangeOrderModalType("OrderEvaluate");
+    goEvalauteOrConfirm(){
+        let data = this.props.data;
+        if(["待确认","待评价"].indexOf(data.btnText)>-1){
+            data.btnText === "待评价" ? this.props.ChangeOrderModalType("OrderEvaluate"): this.props.confirmOrder(data);
+        }
     }
-
-
 
     evaluate() {
         //提示信息 props
@@ -45,20 +45,14 @@ export class OrderDetailOrEvaluate extends React.Component {
             if (data.status === 'success') {
                 console.log('success',response);
                 this.close();
-                this.props.showAlert('评价成功！');
-                //待补充
-                //关闭弹出框 弹出评价成功提示信息 可以提示组件通过将props进行传递，参考StudentDetail中的Avator的alert属性
+                this.props.showAlert('success','评价成功！');
             } else {
                 this.close();
-                this.props.showAlert('评价失败！');
-                //待补充
-                //弹出评价失败提示信息
+                this.props.showAlert('error','评价失败！');
             }
         }).catch((error) => {
             this.close();
-            this.props.showAlert('评价失败！');
-            //待补充
-            //弹出评价失败提示信息
+            this.props.showAlert('error','评价失败！');
             console.error('error',error);
         });
     }
@@ -78,6 +72,7 @@ export class OrderDetailOrEvaluate extends React.Component {
         let {data,type} = this.props;
         const {width} = this.state;
         let questions = data.questions;
+        const btnClassName = ["待确认","待评价"].indexOf(data.btnText)>-1 ? "order-evaluate" : "order-finish";
         return (
             <div className="order-detail-modal">
                 <div className="order-contain">
@@ -117,10 +112,7 @@ export class OrderDetailOrEvaluate extends React.Component {
                             <div className="line-content">{data.createdTime}</div>
                         </div>
                         <div className="order-btn">
-                            {
-                                data.status==="payed" ? <button className="order-modal-evaluate" onClick={this.goEvaluate.bind(this,data)}>待评价</button>:
-                                    <button className="order-finish">已完成</button>
-                            }
+                            <button className={btnClassName} onClick={this.goEvalauteOrConfirm}>{data.btnText}</button>
                         </div>
                     </div> :
                         <div className="evaluation-dialog-container">

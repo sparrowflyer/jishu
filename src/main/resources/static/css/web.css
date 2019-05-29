@@ -297,10 +297,10 @@
 .evaluation-container {
     margin-top: .7rem;
     margin-bottom: 1.55rem;
-    overflow-x: hidden;
-    /*display: flex;*/
-    /*justify-content: space-around;*/
-    /*align-items: center;*/
+    /*overflow-x: hidden;*/
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
 }
 .evaluate-scroll{
     height: 4rem;
@@ -439,7 +439,7 @@
 .personal-center_tab-title-container {
     margin: .6rem 3.97rem .6rem 3.97rem;
     display: flex;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: center;
 }
 .tab-title__selected,.tab-title{
@@ -506,6 +506,12 @@
     display: flex;
     align-items: center;
 }
+/*.personal-fan-head{*/
+    /*width: 1rem;*/
+    /*height: 1rem;*/
+    /*background-size: cover;*/
+    /*border-radius: 50%;*/
+/*}*/
 .personal-center-fan img{
     width: 1rem;
     height: 1rem;
@@ -1416,9 +1422,18 @@ ul.li-style{
     margin-right: .64rem;
 }
 .notice-person{
+    position: relative;
     display: flex;
     justify-content: flex-start;
     align-items: center;
+}
+.notice-unread{
+    border: .03rem solid red;
+    border-radius: 50%;
+    position: absolute;
+    z-index: 1000;
+    left: -.1rem;
+    top: 0;
 }
 .notice-person img{
     width: .3rem;
@@ -1573,9 +1588,11 @@ ul.li-style{
 .order-evaluate{
     background:rgba(255,226,1,1);
 }
-.order-finish{
+.order-contain button.order-finish{
     border:1px solid rgba(132,132,132,1);
     color:rgba(132,132,132,1);
+    background: #fff;
+    outline: none;
 }
 .order-content{
     height: 3.2rem;

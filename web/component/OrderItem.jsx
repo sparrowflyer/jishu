@@ -10,19 +10,22 @@ export class OrderItem extends React.Component {
             showMoreModal:false,
         };
         this.showMore =this.showMore.bind(this);
-        this.goEvalaute =this.goEvalaute.bind(this);
+        this.goEvalauteOrConfirm =this.goEvalauteOrConfirm.bind(this);
     }
     componentDidMount(){}
     showMore(item){
         this.props.showOrderModal(true,item,"MoreDetail");
     }
-    goEvalaute(){
-        this.props.showOrderModal(true,this.props.data,"OrderEvaluate");
+    goEvalauteOrConfirm(){
+        let data = this.props.data;
+        if(["待确认","待评价"].indexOf(data.btnText)>-1){
+            data.btnText ==="待评价" ? this.props.showOrderModal(true,data,"OrderEvaluate"): this.props.confirmOrder(data);
+        }
     }
-
     render(){
         let {data} = this.props;
         let questions = data.questions;
+        const btnClassName = ["待确认","待评价"].indexOf(data.btnText)>-1 ? "order-evaluate" : "order-finish";
         return (
             <div className="order-contain">
                 <div className="order-title">
@@ -56,10 +59,11 @@ export class OrderItem extends React.Component {
                         <div className="line-content">{data.paymentAmount}</div>
                     </div>
                 </div>
-                {
-                    data.status==="payed" ? <button className="order-evaluate" onClick={this.goEvalaute}>待评价</button>:
-                        <button className="order-finish">已完成</button>
-                }
+                {/*{*/}
+                    {/*data.status==="payed" ? <button className="order-evaluate" onClick={this.goEvalaute}>待评价</button>:*/}
+                        {/*<button className="order-finish">已完成</button>*/}
+                {/*}*/}
+                <button className={btnClassName} onClick={this.goEvalauteOrConfirm}>{data.btnText}</button>
             </div>
         )
     }

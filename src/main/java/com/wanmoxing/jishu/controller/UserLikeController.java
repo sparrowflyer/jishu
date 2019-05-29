@@ -252,13 +252,13 @@ public class UserLikeController {
 			// 生成关注通知
 			UserNotification addFanNotification = new UserNotification();
 			addFanNotification.setTypeId(UserNotificationType.NEW_FAN.getTypeId());
-			addFanNotification.setUserId(userId);
+			addFanNotification.setUserId(likeId);
 			addFanNotification.setTitle("您有一位新粉丝！");
 			
-			String userName = student.getNickName();
-			String userImg = student.getHeadImage();
+			String userName = user.getNickName();
+			String userImg = user.getHeadImage();
 			String content = " 关注了你";
-			addFanNotification.setContent(CommUtil.generatePurchaseContactNotificationJSONContent(likeId, userName, userImg, content));
+			addFanNotification.setContent(CommUtil.generatePurchaseContactNotificationJSONContent(userId, userName, userImg, content));
 			userNotificationService.insert(addFanNotification);
 			
 			int oldLikeAmount = student.getLikeAmount();

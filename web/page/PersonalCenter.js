@@ -65,6 +65,7 @@ class PersonalCenter extends React.Component {
         this.getFollowing = this.getFollowing.bind(this);
         this.orderDataDispose = this.orderDataDispose.bind(this);
         this.noticeRead = this.noticeRead.bind(this);
+        this.confirmOrder = this.confirmOrder.bind(this);
     }
     componentDidMount() {
         if(this.props.match.params.userID) {
@@ -216,13 +217,13 @@ class PersonalCenter extends React.Component {
             let centerID = this.state.userID;
             let buyTextObj={
                 'payed':"已付款",
-                'serviced':'待评价',
-                'commented':'已完成'
+                'serviced':'去评价',
+                'commented':'已评价'
             },
             sellerTextObj={
-                'payed':"待确认",
-                'serviced':'已完成',
-                'commented':'已完成'
+                'payed':"去确认",
+                'serviced':'待评价',
+                'commented':'已评价'
             };
             data.map((item,index)=>{
                 if(item.questions !== ""){
@@ -418,9 +419,7 @@ class PersonalCenter extends React.Component {
     //展示订单弹窗
     showOrderModal(value,item,type){
         this.setState({
-            orderModalData: !value ? {}:item
-        });
-        this.setState({
+            orderModalData: value ? item : {},
             showOrderModal: value,
             OrderModalType: type
         });

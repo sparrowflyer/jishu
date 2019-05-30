@@ -65,6 +65,7 @@ class PersonalCenter extends React.Component {
         this.getFollowing = this.getFollowing.bind(this);
         this.orderDataDispose = this.orderDataDispose.bind(this);
         this.noticeRead = this.noticeRead.bind(this);
+        this.confirmOrder = this.confirmOrder.bind(this);
     }
     componentDidMount() {
         if(this.props.match.params.userID) {

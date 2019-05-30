@@ -432,7 +432,9 @@ class PersonalCenter extends React.Component {
             {"id":data.id,
             "buyerId":data.buyerId,
             "sellerId":data.sellerId}).then(response=>{
+            console.log('卖家确认订单1',response);
                 if(response.status === 200 && response.data.status === 'success'){
+                    console.log('卖家确认订单2',response);
                     that.props.alert.success(<div style={{fontSize: '12px'}}>确认订单已完成！</div>);
                     let orderList = this.state.unCompleteOrder;
                     orderList.list.map((item,index)=>{
@@ -447,11 +449,11 @@ class PersonalCenter extends React.Component {
                     that.getCompleteOrder();
                     return;
                 }
-            that.props.alert.show(<div style={{fontSize: '12px'}}>确认订单完成失败!</div>);
-                console.log('卖家确认订单已完成成功',response)
+            console.log('卖家确认订单3',response);
+            that.props.alert.error(<div style={{fontSize: '12px'}}>确认订单完成失败!</div>);
             }).catch(error=>{
-            that.props.alert.show(<div style={{fontSize: '12px'}}>{'确认订单完成失败:'+error}</div>);
-            console.log('卖家确认订单已完成成功',error)
+            that.props.alert.error(<div style={{fontSize: '12px'}}>{'确认订单完成失败:'+error}</div>);
+            console.log('卖家确认订单已完成失败',error)
         })
     }
     //跳转别人的个人中心
@@ -461,11 +463,20 @@ class PersonalCenter extends React.Component {
     }
     //跳转页面-订单
     goPage(value){
-        if(this.state.activeOrderType === 0){
-            this.getUncompleteOrder(Number(this.state.userID),value);
-            return;
+        if(this.state.activeTab===3){  //订单换页
+            console.log("gopage-Orders",value);
+
+            if(this.state.activeOrderType === 0){
+                this.getUncompleteOrder(Number(this.state.userID),value);
+
+            }else {
+                this.getCompleteOrder(Number(this.state.userID),value);
+            }
+        } else if(this.state.activeTab===2){ //通知换页
+            console.log("gopage-notices",value);
+         let id = this.state.activeNoticeType===0 ? 1 : 6;
+         this.getNotificationByTypeId(id,value);
         }
-        this.getCompleteOrder(Number(this.state.userID),value);
     }
     changeOrderModal(value){
         this.setState({

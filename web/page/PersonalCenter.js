@@ -434,6 +434,16 @@ class PersonalCenter extends React.Component {
             "sellerId":data.sellerId}).then(response=>{
                 if(response.status === 200 && response.data.status === 'success'){
                     that.props.alert.success(<div style={{fontSize: '12px'}}>确认订单已完成！</div>);
+                    let orderList = this.state.unCompleteOrder;
+                    orderList.list.map((item,index)=>{
+                        if(item.id===data.id){
+                            orderList.list.splice(index,1);
+                            this.setState({
+                                unCompleteOrder:orderList
+                            });
+                            return;
+                        }
+                    });
                     that.getCompleteOrder();
                     return;
                 }

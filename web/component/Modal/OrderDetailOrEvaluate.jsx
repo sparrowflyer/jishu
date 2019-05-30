@@ -27,8 +27,8 @@ export class OrderDetailOrEvaluate extends React.Component {
     componentDidMount(){}
     goEvalauteOrConfirm(){
         let data = this.props.data;
-        if(["待确认","待评价"].indexOf(data.btnText)>-1){
-            data.btnText === "待评价" ? this.props.ChangeOrderModalType("OrderEvaluate"): this.props.confirmOrder(data);
+        if(["去确认","去评价"].indexOf(data.btnText)>-1){
+            data.btnText === "去评价" ? this.props.ChangeOrderModalType("OrderEvaluate"): this.props.confirmOrder(data);
         }
     }
 
@@ -72,7 +72,7 @@ export class OrderDetailOrEvaluate extends React.Component {
         let {data,type} = this.props;
         const {width} = this.state;
         let questions = data.questions;
-        const btnClassName = ["待确认","待评价"].indexOf(data.btnText)>-1 ? "order-evaluate" : "order-finish";
+        const btnClassName = ["去确认","去评价"].indexOf(data.btnText)>-1 ? "order-evaluate" : "order-finish";
         return (
             <div className="order-detail-modal">
                 <div className="order-contain">

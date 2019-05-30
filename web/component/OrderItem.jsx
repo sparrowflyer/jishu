@@ -18,14 +18,14 @@ export class OrderItem extends React.Component {
     }
     goEvalauteOrConfirm(){
         let data = this.props.data;
-        if(["待确认","待评价"].indexOf(data.btnText)>-1){
-            data.btnText ==="待评价" ? this.props.showOrderModal(true,data,"OrderEvaluate"): this.props.confirmOrder(data);
+        if(["去确认","去评价"].indexOf(data.btnText)>-1){
+            data.btnText ==="去评价" ? this.props.showOrderModal(true,data,"OrderEvaluate"): this.props.confirmOrder(data);
         }
     }
     render(){
         let {data} = this.props;
         let questions = data.questions;
-        const btnClassName = ["待确认","待评价"].indexOf(data.btnText)>-1 ? "order-evaluate" : "order-finish";
+        const btnClassName = ["去确认","去评价"].indexOf(data.btnText)>-1 ? "order-evaluate" : "order-finish";
         return (
             <div className="order-contain">
                 <div className="order-title">

@@ -35,7 +35,7 @@ export class OrderDetailOrEvaluate extends React.Component {
     evaluate() {
         //提示信息 props
         postUrl('/commentPurchaseContact', {
-            purchaseContactId: this.props.data.id, //订单ID props传递 待补充
+            purchaseContactId: this.props.data.id,
             scoreResponse: this.state.inspire,
             scoreAttitude: this.state.attitude,
             scoreProfessional: this.state.profession,

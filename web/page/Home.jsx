@@ -7,41 +7,41 @@ import { Link } from 'react-router-dom';
 
 const students = [
     {
-        id: 1,
-        name: '张三',
-        university: "伯恩茅斯大学",
-        img: './image/temp/student1.jpg',
-        desc: '我们可以随时随地分享我们的生活，就算在海外，因为有了这个平台，我们也能感受到生活的充实。'
+        id: 32,
+        name: '李孚',
+        university: "墨尔本大学",
+        img: 'http://cdn.unclejee.cn/20190526222144_229.jpg',
+        desc: '自己DIY拿下爱大、曼大、墨大等20所院校offer'
     }, {
-        id: 2,
-        name: '里斯本',
-        university: '爱丁堡大学',
-        img: './image/temp/student2.jpg',
-        desc: '分享分享分享分享分享分享分享'
+        id: 27,
+        name: '杨Z',
+        university: '伦敦大学学院',
+        img: 'http://cdn.unclejee.cn/20190526230610_102.jpeg',
+        desc: '五年英国留学，熟悉英及英属地各大名牌院校，了解英国和欧洲'
     }, {
-        id: 3,
-        name: '胡汉',
-        university: '凯里顿大学',
-        img: './image/temp/student3.jpg',
-        desc: '我们可以随时随地分享我们的生活，就算在海外，因为有了这个平台，我们也能感受到生活的充实。'
+        id: 34,
+        name: '夏同学',
+        university: '贝尔法斯特大学',
+        img: 'http://cdn.unclejee.cn/20190527170053_789.jpg',
+        desc: '英国留学及申请经验，欧洲多国自由行旅游分享及规划'
     }, {
-        id: 4,
-        name: '莉丝',
-        university: "牛津大学",
-        img: './image/temp/student1.jpg',
-        desc: '生活的充实生活的充实生活的充实生活的充实生活的充实生活的充实生活的充实生活的充实生活的充实'
+        id: 33,
+        name: 'William Wen',
+        university: "卡斯商学院",
+        img: 'http://cdn.unclejee.cn/20190118215849_614.jpg',
+        desc: '近六年英国留学经历，熟知英国各大名牌院校申请流程。熟悉曼彻斯特与伦敦两个城市。'
     }, {
-        id: 5,
-        name: '郝池',
-        university: '爱丁堡大学',
-        img: './image/temp/student2.jpg',
-        desc: '我们可以随时随地分享我们的生活，就算在海外，因为有了这个平台，我们也能感受到生活的充实。'
+        id: 18,
+        name: '米歇尔',
+        university: '牛津大学',
+        img: 'http://cdn.unclejee.cn/20190526142642_613.jpg',
+        desc: '爱音乐，爱唱歌，对各种乐器都有兴趣'
     }, {
-        id: 6,
-        name: '黎平',
-        university: '凯里顿大学',
-        img: './image/temp/student3.jpg',
-        desc: '我们可以随时随地分享我们的生活，就算在海外，因为有了这个平台，我们也能感受到生活的充实。'
+        id: 22,
+        name: 'Cheryl_Yang',
+        university: '牛津大学',
+        img: 'http://cdn.unclejee.cn/20190527233301_603.jpg',
+        desc: '社会科学，应用数学，道教修养，理论物理，以及各种奇奇怪怪的哲学问题'
     }
 ];
 

@@ -54,7 +54,7 @@ public class UserController {
 	private UserNotificationService userNotificationService;
 	@Resource
 	private PurchaseContactService purchaseContactService;
-	
+
 	/**
 	 * 获取User
 	 * @param session
@@ -83,7 +83,7 @@ public class UserController {
 			return result;
 		}
 	}
-	
+
 	/**
 	 * 根据schoolId分页获取所有学生用户信息
 	   {
@@ -102,7 +102,7 @@ public class UserController {
 			int schoolId = jsonParams.getInteger("schoolId");
 			int pageNo = jsonParams.getInteger("pageNo");
 			int pageAmount = jsonParams.getInteger("pageAmount");
-			
+
 			List<User> users = userService.findBySchool(schoolId, pageNo, pageAmount);
 			for (User user : users) {
 				user.setUserStudentInfo(userStudentInfoService.findByUserId(user.getId()));
@@ -116,7 +116,7 @@ public class UserController {
 			}
 			result.setData(resultMap);
 			return result;
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			result.setStatus(ResultDTOStatus.ERROR.getStatus());
@@ -124,10 +124,10 @@ public class UserController {
 			return result;
 		}
 	}
-	
+
 	/**
 	 * 更新昵称 { "id":"1", "nickName":"testname" }
-	 * 
+	 *
 	 * @param session
 	 * @param updateUserNicknameDTO
 	 * @return
@@ -161,7 +161,7 @@ public class UserController {
 
 	/**
 	 * 更新头像 { "id":"1", "headImage":"newHeadImageURL" }
-	 * 
+	 *
 	 * @param session
 	 * @param updateUserHeadImageDTO
 	 * @return
@@ -193,10 +193,10 @@ public class UserController {
 			return result;
 		}
 	}
-	
+
 	/**
 	 * 更新个人签名 { "id":"1", "comment":"我爱叽叔" }
-	 * 
+	 *
 	 * @param session
 	 * @param UpdateUserCommentDTO
 	 * @return
@@ -228,8 +228,8 @@ public class UserController {
 			return result;
 		}
 	}
-	
-	/** 
+
+	/**
 	 * @param session
 	 * @param uid,page
 	 * @return
@@ -255,8 +255,8 @@ public class UserController {
 			return result;
 		}
 	}
-	
-	/** 
+
+	/**
 	 * @param session
 	 * @param uid,page
 	 * @return
@@ -282,10 +282,10 @@ public class UserController {
 			return result;
 		}
 	}
-	
+
 	/**
 	 * 获取用户未完成订单
-	 * 
+	 *
 	 * @param session
 	 * @param User user
 	 * @return
@@ -319,10 +319,10 @@ public class UserController {
 			return result;
 		}
 	}
-	
+
 	/**
 	 * 获取用户未完成订单
-	 * 
+	 *
 	 * @param session
 	 * @param User user
 	 * @return
@@ -358,10 +358,10 @@ public class UserController {
 			return result;
 		}
 	}
-	
+
 	/**
 	 * 卖家完成服务
-	 * 
+	 *
 	 * @param session
 	 * @param User user
 	 * @return
@@ -381,38 +381,47 @@ public class UserController {
 				result.setErrorMsg("只有卖家可以改变订单状态!");
 				return result;
 			}
-			purchaseContactService.updateStatus(PurchaseContactStatus.SERVICED.getStatus(), purchaseContact.getId());
-			
-			User buyer =userService.findById(purchaseContact.getBuyerId());
-			User seller =userService.findById(purchaseContact.getSellerId());
+			PurchaseContact status = purchaseContactService.find(purchaseContact.getId());
+			if (!status.getStatus().equalsIgnoreCase(PurchaseContactStatus.SERVICED.getStatus())) {
+				purchaseContactService.updateStatus(PurchaseContactStatus.SERVICED.getStatus(), purchaseContact.getId());
 
-			PurchaseContact purchaseContactfromDatabase = purchaseContactService.find(purchaseContact.getId());
-			if (!CommUtil.isEmptyOrNull(buyer.getCellPhone())) {
-				Map<String, String> smsParams = new HashMap<String, String>();
-				smsParams.put("purchaseContactId", purchaseContactfromDatabase.getId());
-				smsParams.put("purchaseContactCreatedTime", TimeUtil.formatTimestamp(purchaseContactfromDatabase.getCreatedTime()));
-				smsParams.put("purchaseContactPaymentAmount", String.valueOf(purchaseContactfromDatabase.getPaymentAmount()));
-				smsParams.put("seller", seller.getNickName());
-				smsParams.put("randomCode", purchaseContactfromDatabase.getRandomCode());
-				CellphoneUtil.sendSmsByTemplate(buyer.getCellPhone(), "SMS_165690991", smsParams);
-			} else if(!CommUtil.isEmptyOrNull(buyer.getEmail())) {
-				StringBuffer messageToNotifySeller = new StringBuffer();
-				messageToNotifySeller.append("您有一个新的订单需要您评价\n")
-									.append("订单类型： 购买联系方式\n")
-									.append("订单ID： ").append(purchaseContactfromDatabase.getId()).append("\n")
-									.append("订单时间： ").append(purchaseContactfromDatabase.getCreatedTime()).append("\n")
-									.append("订单金额： ").append(purchaseContactfromDatabase.getPaymentAmount()).append("\n")
-									.append("卖家ID： ").append(seller.getNickName()).append("\n")
-									.append("随机码： ").append(purchaseContactfromDatabase.getRandomCode()).append("\n");
-				EmailUtil.sendEmail(buyer.getEmail(), "您有一个新的订单需要您评价！", messageToNotifySeller.toString());
+				User buyer = userService.findById(purchaseContact.getBuyerId());
+				User seller = userService.findById(purchaseContact.getSellerId());
+
+				PurchaseContact purchaseContactfromDatabase = purchaseContactService.find(purchaseContact.getId());
+
+				if (!CommUtil.isEmptyOrNull(buyer.getCellPhone())) {
+					Map<String, String> smsParams = new HashMap<String, String>();
+					smsParams.put("purchaseContactId", purchaseContactfromDatabase.getId());
+					smsParams.put("purchaseContactCreatedTime", TimeUtil.formatTimestamp(purchaseContactfromDatabase.getCreatedTime()));
+					smsParams.put("purchaseContactPaymentAmount", String.valueOf(purchaseContactfromDatabase.getPaymentAmount()));
+					smsParams.put("seller", seller.getNickName());
+					smsParams.put("randomCode", purchaseContactfromDatabase.getRandomCode());
+					CellphoneUtil.sendSmsByTemplate(buyer.getCellPhone(), "SMS_165690991", smsParams);
+				} else if (!CommUtil.isEmptyOrNull(buyer.getEmail())) {
+					StringBuffer messageToNotifySeller = new StringBuffer();
+					messageToNotifySeller.append("您有一个新的订单需要您评价\n")
+							.append("订单类型： 购买联系方式\n")
+							.append("订单ID： ").append(purchaseContactfromDatabase.getId()).append("\n")
+							.append("订单时间： ").append(purchaseContactfromDatabase.getCreatedTime()).append("\n")
+							.append("订单金额： ").append(purchaseContactfromDatabase.getPaymentAmount()).append("\n")
+							.append("卖家ID： ").append(seller.getNickName()).append("\n")
+							.append("随机码： ").append(purchaseContactfromDatabase.getRandomCode()).append("\n");
+					EmailUtil.sendEmail(buyer.getEmail(), "您有一个新的订单需要您评价！", messageToNotifySeller.toString());
+				}
+				return result;
 			}
-			return result;
 		} catch (Exception e) {
 			e.printStackTrace();
 			result.setStatus(ResultDTOStatus.ERROR.getStatus());
 			result.setErrorMsg("订单设置已完成时发生错误!");
 			return result;
 		}
+
+
+		result.setStatus(ResultDTOStatus.ERROR.getStatus());
+		result.setErrorMsg("订单已经完成!");
+		return result;
 	}
 
 }

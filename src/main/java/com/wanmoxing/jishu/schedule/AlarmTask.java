@@ -30,18 +30,18 @@ import com.wanmoxing.jishu.util.TimeUtil;
 @EnableScheduling
 @Async
 public class AlarmTask {
-	
+
 	@Resource
 	PurchaseContactService purChaseContactservice;
 	@Resource
 	UserService userService;
-	
+
 	@Scheduled(cron="0 0 0/1 * * ?")
 	public void sendSellerEmailOrTelephone() {
 		List<String> statuses = new ArrayList<>();
 		statuses.add(PurchaseContactStatus.PAYED.getStatus());
 		List<PurchaseContact> purchaseContacts = purChaseContactservice.findAllByStatuses(statuses);
-		
+
 		try {
 			for(PurchaseContact purchaseContact:purchaseContacts) {
 				User seller = userService.findById(purchaseContact.getSellerId());
@@ -51,7 +51,7 @@ public class AlarmTask {
 				long now = LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
 			    boolean isOverTwoHour = (past - now) / 1000 / 60 /60 >= 2 ? true : false;
 			    boolean isNotOverThreeHour = (past - now) / 1000 / 60 / 60 < 3 ? true : false;
-			    
+
 			    boolean isOverTwelveHour = (past - now) / 1000 / 60 /60 >= 12 ? true : false;
 			    boolean isNotOverThirteenHour = (past - now) / 1000 / 60 / 60 < 13 ? true : false;
 				//卖家两个小时未点击完成订单，通知卖家
@@ -76,7 +76,7 @@ public class AlarmTask {
 						EmailUtil.sendEmail(seller.getEmail(), "您有一个新的订单需要您完成！", messageToNotifySeller.toString());
 					}
 				}
-			    
+
 			  //卖家12个小时未点击完成订单，再次通知卖家，并且通知jishu管理员
 			    if(isOverTwelveHour && isNotOverThirteenHour) {
 			    	//通知卖家
@@ -99,7 +99,7 @@ public class AlarmTask {
 											.append("随机码： ").append(purchaseContact.getRandomCode()).append("\n");
 						EmailUtil.sendEmail(seller.getEmail(), "您有一个新的订单需要您完成！", messageToNotifySeller.toString());
 					}
-				    
+
 				    //通知jishu管理员
 				    List<User> users = userService.findByType(UserType.SYSADMIN);
 				    for(User user: users) {
@@ -129,5 +129,5 @@ public class AlarmTask {
 			e.printStackTrace();
 		}
 	}
-	
+
 }

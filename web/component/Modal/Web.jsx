@@ -12,7 +12,7 @@ export class ModalWeb extends React.Component {
             payType: 0,
             questions:[],
             resQuestions:[],
-            money:"¥30",
+            money:"",
             alertShow:false,
             alertText:""
         };
@@ -49,6 +49,7 @@ export class ModalWeb extends React.Component {
         }).then(response =>{
             // console.log(response)
             if(response.data.status === "success"){
+                console.log("问题",this.state.resQuestions.join(","))
                 // window.open("/jishu/purchaseContact?sellerId="+this.props.userID+"&buyerId="+this.props.loginUserID+"&questions="+this.state.resQuestions.join(","),"_blank");
                 window.location.href= "/jishu/purchaseContact?sellerId="+this.props.userID+"&buyerId="+this.props.loginUserID+"&questions="+this.state.resQuestions.join(",");
                 return;

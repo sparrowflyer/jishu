@@ -266,21 +266,25 @@ public class PurchaseContactController {
 				
 				// 退款日期超过可退款期限后（如三个月可退款），支付宝系统发送该交易状态通知
 				if (trade_status.equals("TRADE_FINISHED")) {
+					// 暂时不做处理
+					return;
 					// 判断该笔订单是否在商户网站中已经做过处理
-					if (purchaseContact.getStatus().equals(PurchaseContactStatus.ENDED.getStatus())
-							|| purchaseContact.getStatus().equals(PurchaseContactStatus.REFUNDED.getStatus())
-							|| purchaseContact.getStatus().equals(PurchaseContactStatus.CANCELLED.getStatus())) {
-						return;
-					}
-					
-					purchaseContact.setStatus(PurchaseContactStatus.ENDED.getStatus());
-					purchaseContact.setUpdatedTime(new Timestamp(System.currentTimeMillis()));
-					purchaseContactService.update(purchaseContact);
+//					if (purchaseContact.getStatus().equals(PurchaseContactStatus.ENDED.getStatus())
+//							|| purchaseContact.getStatus().equals(PurchaseContactStatus.REFUNDED.getStatus())
+//							|| purchaseContact.getStatus().equals(PurchaseContactStatus.CANCELLED.getStatus())) {
+//						return;
+//					}
+//					
+//					purchaseContact.setStatus(PurchaseContactStatus.ENDED.getStatus());
+//					purchaseContact.setUpdatedTime(new Timestamp(System.currentTimeMillis()));
+//					purchaseContactService.update(purchaseContact);
 				} 
 				// 付款完成后，支付宝系统发送该交易状态通知
 				else if (trade_status.equals("TRADE_SUCCESS")) {
 					// 判断该笔订单是否在商户网站中已经做过处理
 					if (purchaseContact.getStatus().equals(PurchaseContactStatus.PAYED.getStatus())
+							|| purchaseContact.getStatus().equals(PurchaseContactStatus.COMMENTED.getStatus())
+							|| purchaseContact.getStatus().equals(PurchaseContactStatus.SERVICED.getStatus())
 							|| purchaseContact.getStatus().equals(PurchaseContactStatus.ENDED.getStatus())
 							|| purchaseContact.getStatus().equals(PurchaseContactStatus.REFUNDED.getStatus())
 							|| purchaseContact.getStatus().equals(PurchaseContactStatus.CANCELLED.getStatus())) {

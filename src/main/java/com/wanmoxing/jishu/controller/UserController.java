@@ -407,7 +407,7 @@ public class UserController {
 							.append("订单金额： ").append(purchaseContactfromDatabase.getPaymentAmount()).append("\n")
 							.append("卖家ID： ").append(seller.getNickName()).append("\n")
 							.append("随机码： ").append(purchaseContactfromDatabase.getRandomCode()).append("\n");
-					EmailUtil.sendEmail(buyer.getEmail(), "您有一个新的订单需要您评价！", messageToNotifySeller.toString());
+					EmailUtil.sendEmailCommon(buyer.getEmail(), "您有一个新的订单需要您评价！", messageToNotifySeller.toString());
 				}
 				return result;
 			}

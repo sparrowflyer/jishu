@@ -73,7 +73,7 @@ public class AlarmTask {
 											.append("订单金额： ").append(purchaseContact.getPaymentAmount()).append("\n")
 											.append("买家ID： ").append(buyer.getNickName()).append("\n")
 											.append("随机码： ").append(purchaseContact.getRandomCode()).append("\n");
-						EmailUtil.sendEmail(seller.getEmail(), "您有一个新的订单需要您完成！", messageToNotifySeller.toString());
+						EmailUtil.sendEmailCommon(seller.getEmail(), "您有一个新的订单需要您完成！", messageToNotifySeller.toString());
 					}
 				}
 
@@ -97,7 +97,7 @@ public class AlarmTask {
 											.append("订单金额： ").append(purchaseContact.getPaymentAmount()).append("\n")
 											.append("买家ID： ").append(buyer.getNickName()).append("\n")
 											.append("随机码： ").append(purchaseContact.getRandomCode()).append("\n");
-						EmailUtil.sendEmail(seller.getEmail(), "您有一个新的订单需要您完成！", messageToNotifySeller.toString());
+						EmailUtil.sendEmailCommon(seller.getEmail(), "您有一个新的订单需要您完成！", messageToNotifySeller.toString());
 					}
 
 				    //通知jishu管理员
@@ -120,7 +120,7 @@ public class AlarmTask {
 												.append("订单金额： ").append(purchaseContact.getPaymentAmount()).append("\n")
 												.append("卖家ID： ").append(seller.getNickName()).append("\n")
 												.append("随机码： ").append(purchaseContact.getRandomCode()).append("\n");
-							EmailUtil.sendEmail(user.getEmail(), "订单超过12小时仍未完成！", messageToNotifySeller.toString());
+							EmailUtil.sendEmailCommon(user.getEmail(), "订单超过12小时仍未完成！", messageToNotifySeller.toString());
 						}
 				    }
 				}

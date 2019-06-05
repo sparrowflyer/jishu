@@ -146,7 +146,7 @@ export class ModalMobile extends React.Component{
                                     <input value={'¥ '+this.props.price} disabled className="ph-text l-text" type="text"/>
                                     <div className="ipt-line"></div>
                                     <div className="ta-center">
-                                        <button className="m-button" onClick={this.changeType.bind(this,"WillPay")}>去支付</button>
+                                        <button className="m-button" onClick={this.changeType.bind(this,"willpay")}>去支付</button>
                                     </div>
                                 </div>  :
                                     <div className="radio-wrap">
